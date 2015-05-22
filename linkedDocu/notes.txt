@@ -1,0 +1,75 @@
+
+
+Installation of additioanl packages
+
+in composer.json
+
+"elasticsearch/elasticsearch": "~1.0",
+"easyrdf/easyrdf" : "~0.9.0",
+"ml/json-ld"  : "~1.0"
+
+
+swissbib@ub-sbhp01:/usr/local/vufind/vfsblinked$ php /usr/local/bin/composer.phar update
+Loading composer repositories with package information
+Initializing PEAR repository http://pear.php.net
+Updating dependencies (including require-dev)
+  - Removing symfony/yaml (v2.6.4)
+  - Installing symfony/yaml (v2.6.7)
+    Downloading: 100%
+
+  - Removing zf-commons/zfc-rbac (2.4.2)
+  - Installing zf-commons/zfc-rbac (v2.5.1)
+    Downloading: 100%
+
+  - Removing pear-pear.php.net/archive_tar (1.3.15)
+  - Installing pear-pear.php.net/archive_tar (1.3.16)
+    Downloading: 100%
+  - Removing symfony/process (v2.6.4)
+  - Installing symfony/process (v2.6.7)
+    Downloading: 100%
+
+  - Removing symfony/css-selector (v2.6.4)
+  - Installing symfony/css-selector (v2.6.7)
+    Downloading: 100%
+
+  - Installing psr/log (1.0.0)
+    Loading from cache
+
+  - Installing symfony/event-dispatcher (v2.6.7)
+    Downloading: 100%
+
+  - Installing guzzle/guzzle (v3.9.3)
+    Downloading: 100%
+
+  - Installing pimple/pimple (v3.0.0)
+    Downloading: 100%
+
+  - Installing monolog/monolog (1.13.1)
+    Downloading: 100%
+
+  - Installing elasticsearch/elasticsearch (v1.3.4)
+    Downloading: 100%
+
+  - Installing easyrdf/easyrdf (0.9.1)
+    Downloading: 100%
+
+  - Installing ml/iri (1.1.4)
+    Downloading: 100%
+
+  - Installing ml/json-ld (1.0.3)
+    Downloading: 100%
+
+symfony/event-dispatcher suggests installing symfony/dependency-injection ()
+symfony/event-dispatcher suggests installing symfony/http-kernel ()
+guzzle/guzzle suggests installing guzzlehttp/guzzle (Guzzle 5 has moved to a new package name. The package you have installed, Guzzle 3, is deprecated.)
+monolog/monolog suggests installing graylog2/gelf-php (Allow sending log messages to a GrayLog2 server)
+monolog/monolog suggests installing raven/raven (Allow sending log messages to a Sentry server)
+monolog/monolog suggests installing doctrine/couchdb (Allow sending log messages to a CouchDB server)
+monolog/monolog suggests installing ruflin/elastica (Allow sending log messages to an Elastic Search server)
+monolog/monolog suggests installing videlalvaro/php-amqplib (Allow sending log messages to an AMQP server using php-amqplib)
+monolog/monolog suggests installing ext-amqp (Allow sending log messages to an AMQP server (1.0+ required))
+monolog/monolog suggests installing ext-mongo (Allow sending log messages to a MongoDB server)
+monolog/monolog suggests installing aws/aws-sdk-php (Allow sending log messages to AWS services like DynamoDB)
+monolog/monolog suggests installing rollbar/rollbar (Allow sending log messages to Rollbar)
+Writing lock file
+Generating autoload files

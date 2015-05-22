@@ -64,7 +64,10 @@
         "zendframework/zendrest": "2.*",
         "zendframework/zendservice-amazon": "2.*",
         "zendframework/zendservice-recaptcha": "2.*",
-        "zf-commons/zfc-rbac": "~2.4"
+        "zf-commons/zfc-rbac": "~2.4",
+        "elasticsearch/elasticsearch": "~1.0",
+        "easyrdf/easyrdf" : "~0.9.0",
+        "ml/json-ld"  : "~1.0"
     },
     "require-dev": {
         "behat/mink": "1.6.*",
