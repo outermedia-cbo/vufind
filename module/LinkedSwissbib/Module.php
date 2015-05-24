@@ -1,13 +1,19 @@
 <?php
 namespace LinkedSwissbib;
 
-use Zend\ModuleManager\Feature\AutoloaderProviderInterface as Autoloadable;
+
+/**
+ *
+ * @category linked-swissbib
+ * @package  /
+ * @author   Guenter Hipler <guenter.hipler@unibas.ch>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://linked.swissbib.ch  Main Page
+ */
+
+
+
 use Zend\ModuleManager\Feature\ConfigProviderInterface as Configurable;
-use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface as Consolable;
-use Zend\ModuleManager\Feature\InitProviderInterface as Initializable;
-use Zend\ModuleManager\ModuleManagerInterface;
-use Zend\Mvc\MvcEvent;
-use Zend\Console\Adapter\AdapterInterface as Console;
 
 class Module implements Configurable
 {

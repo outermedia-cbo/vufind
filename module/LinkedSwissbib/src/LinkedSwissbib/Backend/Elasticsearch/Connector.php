@@ -1,9 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: swissbib
- * Date: 5/24/15
- * Time: 12:48 PM
+ *
+ * @category linked-swissbib
+ * @package  Backend_Eleasticsearch
+ * @author   Guenter Hipler <guenter.hipler@unibas.ch>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://linked.swissbib.ch  Main Page
  */
 
 namespace LinkedSwissbib\src\LinkedSwissbib\Backend\Elasticsearch;
