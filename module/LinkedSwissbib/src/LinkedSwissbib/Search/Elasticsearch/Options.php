@@ -8,7 +8,7 @@
  * @link     http://linked.swissbib.ch  Main Page
  */
 
-namespace LinkedSwissbib\src\LinkedSwissbib\Search\Search\Elasticsearch;
+namespace LinkedSwissbib\Search\Elasticsearch;
 
 use VuFind\Search\Base\Options as BaseOptions;
 

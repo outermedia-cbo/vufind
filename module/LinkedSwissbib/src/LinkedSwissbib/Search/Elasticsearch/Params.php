@@ -7,7 +7,7 @@
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://linked.swissbib.ch  Main Page
  */
-namespace LinkedSwissbib\src\LinkedSwissbib\Search\Search\Elasticsearch;
+namespace LinkedSwissbib\Search\Elasticsearch;
 
 
 use VuFind\Search\Base\Params as BaseParams;

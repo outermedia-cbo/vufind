@@ -12,13 +12,38 @@ $config = [
         'invokables' => [
             'exploration'    => 'LinkedSwissbib\Controller\ElasticsearchController'
         ]
+    ],
+    'service_manager' => [
+        'factories' => [
+            'LinkedSwissbib\SearchOptionsPluginManager' => 'LinkedSwissbib\Service\Factory::getSearchOptionsPluginManager',
+            'LinkedSwissbib\SearchParamsPluginManager' => 'LinkedSwissbib\Service\Factory::getSearchParamsPluginManager',
+            'LinkedSwissbib\SearchResultsPluginManager' => 'LinkedSwissbib\Service\Factory::getSearchResultsPluginManager'
+            ]
+
+    ],
+    'vufind' => [
+        'plugin_managers' => [
+
+            'search_options' => [
+                'abstract_factories' => ['LinkedSwissbib\Search\Options\PluginFactory'],
+            ],
+            'search_params' => [
+                'abstract_factories' => ['LinkedSwissbib\Search\Params\PluginFactory'],
+            ],
+            'search_results' => [
+                'abstract_factories' => ['LinkedSwissbib\Search\Results\PluginFactory'],
+            ],
+
+        ]
     ]
+
+
 ];
 
 
 // Define static routes -- Controller/Action strings
 $staticRoutes = [
-    'Exploration/Search'
+    'Exploration/Search', 'Elasticsearch/Results'
     ];
 
 $routeGenerator = new \VuFind\Route\RouteGenerator();
