@@ -12,7 +12,7 @@
 namespace LinkedSwissbib\Controller;
 use VuFind\Controller\AbstractSearch;
 
-class ElasticsearchController extends AbstractSearch
+class SparqlController extends AbstractSearch
 {
 
     /**
@@ -20,7 +20,7 @@ class ElasticsearchController extends AbstractSearch
      */
     public function __construct()
     {
-        $this->searchClassId = 'Elasticsearch';
+        $this->searchClassId = 'Sparql';
         parent::__construct();
     }
 
