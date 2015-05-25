@@ -104,15 +104,22 @@ class Backend extends AbstractBackend
         //$params->mergeWith($this->getQueryBuilder()->build($query));
 
 
-        //todo: find ways to serialize the content!
+
         $response   = $this->connector->search($esDSLParams);
+        //todo: fetch the Metadadata for this search
 
         foreach ($response['hits']['hits'] as $hit) {
 
             $source = $hit['_source'];
+            $rdfJson = json_encode($source);
             $rdfGraph = new \EasyRdf_Graph();
-            //$result = $rdfGraph->parse($source,'jsonld');
-            //$t = "";
+            $result = $rdfGraph->parse($rdfJson,'jsonld');
+            $turtle = $rdfGraph->serialise('turtle');
+            $ntriples = $rdfGraph->serialise('ntriples');
+            $jsonld = $rdfGraph->serialise('jsonld');
+
+            //todo: create structures and serialize them in RecordDrivers which are used in the view component
+            $t = "";
 
 
         }
