@@ -18,6 +18,10 @@ use VuFindSearch\Query\AbstractQuery;
 class ESQueryBuilder implements ESQueryBuilderInterface
 {
 
+    /**
+     * @var ESParamBag
+     */
+    protected $params;
 
     /**
      * Build build a query for the target based on VuFind query object.
@@ -28,7 +32,32 @@ class ESQueryBuilder implements ESQueryBuilderInterface
      */
     public function build(AbstractQuery $query)
     {
-        // TODO: Implement build() method.
+        $getParams = [];
+        if ($query) {
+            $getParams['body'] = array(
+                "query" => array(
+                    //"match_all" => $queryAll != null ? [$queryAll] : []
+                    "multi_match" => array(
+                        'query' => $query->getAllTerms(),
+                        'fields' => array(
+                            'bibo:isbn13', 'bibo:isbn10','dct:title', 'dc:format', 'dct:issued'
+                        )
+                    )
+                ));
+        } else {
+            $getParams['body'] = array(
+                "query" => array(
+                    'match_all' => [])
+            );
+        }
+
+        return $getParams;
     }
+
+    public function setParams(ESParamBag $paramsBag)
+    {
+        $this->params = $paramsBag;
+    }
+
 
 }

@@ -11,3 +11,9 @@ http://de.slideshare.net/ostephens/selecting-with-sparql-using-british-national-
 http://www.easyrdf.org/
 consume and produce RDF with PHP
 
+aktuell mögliche Requests
+1) ES
+http://localhost/vflinked/Exploration/Search?lookfor=hello
+
+2) Sparql
+http://localhost/vflinked/Inference/search

@@ -17,6 +17,8 @@ use VuFindSearch\ParamBag;
 use VuFindSearch\Query\AbstractQuery;
 use VuFindSearch\Response\RecordCollectionFactoryInterface;
 
+use LinkedSwissbib\Backend\Elasticsearch\ESParamBag;
+
 class Backend extends AbstractBackend
 {
 
@@ -25,6 +27,29 @@ class Backend extends AbstractBackend
      * @var ESQueryBuilder
      */
     protected $queryBuilder;
+
+
+    /**
+     * @var \LinkedSwissbib\Backend\Elasticsearch\Connector
+     */
+    protected $connector;
+
+
+    /**
+     * Constructor.
+     *
+     * @param Connector $connector SOLR connector
+     *
+     * @return void
+     */
+    public function __construct(Connector $connector)
+    {
+        $this->connector    = $connector;
+        $this->identifier   = null;
+    }
+
+
+
 
 
     /**
@@ -54,7 +79,50 @@ class Backend extends AbstractBackend
                            ParamBag $params = null
     )
     {
-        // TODO: Implement search() method.
+        if (isset($params) && !$params instanceof ESParamBag )
+        {
+            throw new \Exception ("invalid ParamBag type for ElasticSearch target");
+        }
+
+        //Todo;
+        //at the moment I'm not sure how to use the ParamBag and QueryBuilder Type
+        //are we going to do it in the same way as it is done in SOLR (where Param bag creates the list of key-value parameters for the
+        //HTTP-Get query or is the QueryBuilder type responsible for the creation of the ES DSL specific structure
+        //which is at the end a PHP array
+        $params = $params ?: new ESParamBag();
+        //$this->injectResponseWriter($params); SOLR Stuff
+
+        //$params->set('rows', $limit);
+        //$params->set('start', $offset);
+
+        $this->getQueryBuilder()->setParams($params);
+        $esDSLParams = $this->getQueryBuilder()->build($query);
+        $esDSLParams['index'] = 'testsb';
+        //$esDSLParams['type'] = 'RDF';
+
+
+        //$params->mergeWith($this->getQueryBuilder()->build($query));
+
+
+        //todo: find ways to serialize the content!
+        $response   = $this->connector->search($esDSLParams);
+
+        foreach ($response['hits']['hits'] as $hit) {
+
+            $source = $hit['_source'];
+            $rdfGraph = new \EasyRdf_Graph();
+            //$result = $rdfGraph->parse($source,'jsonld');
+            //$t = "";
+
+
+        }
+
+
+        //$collection = $this->createRecordCollection($response);
+        //$this->injectSourceIdentifier($collection);
+
+        //return $collection;
+        return  [];
     }
 
     /**

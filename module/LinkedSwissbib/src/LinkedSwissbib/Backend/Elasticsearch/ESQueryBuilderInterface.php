@@ -25,5 +25,9 @@ interface ESQueryBuilderInterface {
      */
     public function build(AbstractQuery $query);
 
+    //todo: we should use an interface - actually not implemented by VuFind
+    public function setParams (ESParamBag $paramsBag);
+
+
 
 }

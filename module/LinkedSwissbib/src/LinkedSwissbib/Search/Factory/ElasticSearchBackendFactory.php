@@ -52,7 +52,7 @@ class ElasticSearchBackendFactory implements FactoryInterface
 
 
     /**
-     * Create the SOLR connector.
+     * Create the ElasticSearch connector.
      *
      * @return Connector
      */
@@ -137,7 +137,7 @@ class ElasticSearchBackendFactory implements FactoryInterface
     protected function createListeners(Backend $backend)
     {
 
-        //todo look up listeneres creation in SOLR
+        //todo look up listeners creation in SOLR
         //do we need similar in ES?
 
     }
