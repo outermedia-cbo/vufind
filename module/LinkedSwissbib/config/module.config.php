@@ -36,6 +36,12 @@ $config = [
     ],
     'vufind' => [
         'plugin_managers' => [
+            'search_backend'           => [
+                'factories' => [
+                    'ElasticSearch' => 'LinkedSwissbib\Search\Factory\ElasticSearchBackendFactory',
+                ]
+            ],
+
 
             'search_options' => [
                 'abstract_factories' => ['LinkedSwissbib\Search\Options\PluginFactory'],
@@ -48,7 +54,26 @@ $config = [
             ],
 
         ]
+    ],
+    'swissbib' => [
+
+        //todo: do we need a single linkedSwissbib key for the plugin managers which should be merged with the swissbib key and in the
+        // with the vufind keys
+        //vufind_search_options seems to be deprecated now search_options
+        //look it up (we need it for saved searches
+        'plugin_managers' => [
+            'vufind_search_options' => [
+                'abstract_factories' => array('LinkedSwissbib\Search\Options\PluginFactory'),
+            ],
+            'vufind_search_params'  => [
+                'abstract_factories' => array('LinkedSwissbib\Search\Params\PluginFactory'),
+            ],
+            'vufind_search_results' => [
+                'abstract_factories' => array('LinkedSwissbib\Search\Results\PluginFactory'),
+            ]
+        ],
     ]
+
 
 
 ];

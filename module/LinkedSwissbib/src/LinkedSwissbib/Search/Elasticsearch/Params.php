@@ -13,10 +13,20 @@ namespace LinkedSwissbib\Search\Elasticsearch;
 
 
 use VuFind\Search\Base\Params as BaseParams;
+use VuFindSearch\ParamBag;
 
 class Params extends BaseParams
 {
 
+    public function getBackendParameters()
+    {
+
+        //todo: in Solr these Backend Parameters are initialized with the ones configured
+        //hpw can we do this in ES?
+        $backendParams = new ParamBag();
+
+        return $backendParams;
+    }
 
 
 }

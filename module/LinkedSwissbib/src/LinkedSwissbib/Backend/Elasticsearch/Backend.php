@@ -9,7 +9,7 @@
  * @link     http://linked.swissbib.ch  Main Page
  */
 
-namespace LinkedSwissbib\src\LinkedSwissbib\Backend\Elasticsearch;
+namespace LinkedSwissbib\Backend\Elasticsearch;
 
 
 use VuFindSearch\Backend\AbstractBackend;
@@ -19,6 +19,13 @@ use VuFindSearch\Response\RecordCollectionFactoryInterface;
 
 class Backend extends AbstractBackend
 {
+
+
+    /**
+     * @var ESQueryBuilder
+     */
+    protected $queryBuilder;
+
 
     /**
      * Return the record collection factory.
@@ -62,4 +69,72 @@ class Backend extends AbstractBackend
     {
         // TODO: Implement retrieve() method.
     }
+
+    /**
+     * Return query builder.
+     *
+     * Lazy loads an empty default QueryBuilder if none was set.
+     *
+     * @return ESQueryBuilder
+     */
+    public function getQueryBuilder()
+    {
+        if (!$this->queryBuilder) {
+            $this->queryBuilder = new ESQueryBuilder();
+        }
+        return $this->queryBuilder;
+    }
+
+    /**
+     * Set the query builder.
+     *
+     * @param ESQueryBuilder $queryBuilder
+     *
+     * @return void
+     */
+    public function setQueryBuilder(ESQueryBuilder $queryBuilder)
+    {
+        $this->queryBuilder = $queryBuilder;
+    }
+
+
+    /**
+     * Create the query builder.
+     *
+     * @return ESQueryBuilder
+     */
+    protected function createQueryBuilder()
+    {
+
+        /*
+
+        todo : do we need this?
+        $specs   = $this->loadSpecs();
+        $config = $this->config->get('config');
+        $defaultDismax = isset($config->Index->default_dismax_handler)
+            ? $config->Index->default_dismax_handler : 'dismax';
+        */
+        $builder = new ESQueryBuilder();
+
+        // Configure builder:
+        //todo: configure ES Builder if necessary
+        /*
+        $search = $this->config->get($this->searchConfig);
+        $caseSensitiveBooleans
+            = isset($search->General->case_sensitive_bools)
+            ? $search->General->case_sensitive_bools : true;
+        $caseSensitiveRanges
+            = isset($search->General->case_sensitive_ranges)
+            ? $search->General->case_sensitive_ranges : true;
+        $helper = new LuceneSyntaxHelper(
+            $caseSensitiveBooleans, $caseSensitiveRanges
+        );
+        $builder->setLuceneHelper($helper);
+
+        */
+        return $builder;
+    }
+
+
+
 }

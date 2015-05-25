@@ -16,6 +16,15 @@ use VuFind\Search\Base\Results as BaseResults;
 
 class Results extends BaseResults
 {
+
+    /**
+     * Search backend identifiers.
+     *
+     * @var string
+     */
+    protected $backendId = 'ElasticSearch';
+
+
     /**
      * Returns the stored list of facets for the last search
      *
@@ -38,7 +47,22 @@ class Results extends BaseResults
      */
     protected function performSearch()
     {
-        // TODO: Implement performSearch() method.
+        $query  = $this->getParams()->getQuery();
+        $limit  = $this->getParams()->getLimit();
+        $offset = $this->getStartRecord() - 1;
+        $params = $this->getParams()->getBackendParameters();
+        $searchService = $this->getSearchService();
+
+        try {
+            $collection = $searchService
+                ->search($this->backendId, $query, $offset, $limit, $params);
+        } catch (\VuFindSearch\Backend\Exception\BackendException $e) {
+            throw $e;
+        }
+
+        // Construct record drivers for all the items in the response:
+        //todo: by now we don't get any result
+        //$this->results = $collection->getRecords();
     }
 
 

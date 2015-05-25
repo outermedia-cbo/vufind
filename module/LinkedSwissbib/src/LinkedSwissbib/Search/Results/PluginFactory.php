@@ -45,4 +45,16 @@ class PluginFactory extends \VuFind\ServiceManager\AbstractPluginFactory
     }
 
 
+    /**
+     * @inheritDoc
+     */
+    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
+    {
+        $this->defaultNamespace    = 'LinkedSwissbib\Search';
+
+        return parent::canCreateServiceWithName($serviceLocator, $name, $requestedName);
+    }
+
+
+
 }

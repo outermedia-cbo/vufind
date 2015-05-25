@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * @category linked-swissbib
@@ -11,31 +12,23 @@
 namespace LinkedSwissbib\Backend\Elasticsearch;
 
 
-class Connector implements \Zend\Log\LoggerAwareInterface
+use VuFindSearch\ParamBag;
+use VuFindSearch\Query\AbstractQuery;
+
+class ESQueryBuilder implements ESQueryBuilderInterface
 {
-    use \VuFind\Log\LoggerAwareTrait;
 
 
     /**
-     * @var
+     * Build build a query for the target based on VuFind query object.
+     *
+     * @param AbstractQuery $query Query object
+     *
+     * @return ParamBag
      */
-    private $proxy;
-
-
-    /**
-     * Set the HTTP proxy service.
-     *
-     * @param mixed $proxy Proxy service
-     *
-     * @return void
-     *
-     * @todo Typehint on ProxyInterface
-     */
-    public function setProxy($proxy)
+    public function build(AbstractQuery $query)
     {
-        $this->proxy = $proxy;
+        // TODO: Implement build() method.
     }
-
-
 
 }

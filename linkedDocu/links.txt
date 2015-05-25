@@ -1,0 +1,13 @@
+
+
+http://bnowack.de/#about
+-> PHP linked developer
+creator of https://github.com/semsol/arc2
+Anwendung: http://cui.unige.ch/isi/icle-wiki/php_sparql_endpoints
+
+selecting with spraql using British National bibliography
+http://de.slideshare.net/ostephens/selecting-with-sparql-using-british-national-bibliography-as
+
+http://www.easyrdf.org/
+consume and produce RDF with PHP
+
