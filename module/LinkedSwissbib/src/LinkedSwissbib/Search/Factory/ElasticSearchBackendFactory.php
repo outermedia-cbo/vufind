@@ -16,6 +16,7 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use LinkedSwissbib\Backend\Elasticsearch\Backend;
 use LinkedSwissbib\Backend\Elasticsearch\Connector;
+use LinkedSwissbib\Backend\Elasticsearch\Response\RecordCollectionFactory;
 
 class ElasticSearchBackendFactory implements FactoryInterface
 {
@@ -85,6 +86,11 @@ class ElasticSearchBackendFactory implements FactoryInterface
         if ($this->logger) {
             $backend->setLogger($this->logger);
         }
+
+        $manager = $this->serviceLocator->get('LinkedSwissbib\RecordDriverPluginManager');
+        $factory = new RecordCollectionFactory(array($manager, 'getElasticSearchRecord'));
+        $backend->setRecordCollectionFactory($factory);
+
         return $backend;
     }
 

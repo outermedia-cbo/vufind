@@ -114,6 +114,7 @@ class Backend extends AbstractBackend
             $rdfJson = json_encode($source);
             $rdfGraph = new \EasyRdf_Graph();
             $result = $rdfGraph->parse($rdfJson,'jsonld');
+
             $turtle = $rdfGraph->serialise('turtle');
             $ntriples = $rdfGraph->serialise('ntriples');
             $jsonld = $rdfGraph->serialise('jsonld');

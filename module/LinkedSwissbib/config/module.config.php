@@ -30,7 +30,9 @@ $config = [
         'factories' => [
             'LinkedSwissbib\SearchOptionsPluginManager' => 'LinkedSwissbib\Service\Factory::getSearchOptionsPluginManager',
             'LinkedSwissbib\SearchParamsPluginManager' => 'LinkedSwissbib\Service\Factory::getSearchParamsPluginManager',
-            'LinkedSwissbib\SearchResultsPluginManager' => 'LinkedSwissbib\Service\Factory::getSearchResultsPluginManager'
+            'LinkedSwissbib\SearchResultsPluginManager' => 'LinkedSwissbib\Service\Factory::getSearchResultsPluginManager',
+            'LinkedSwissbib\RecordDriverPluginManager' => 'LinkedSwissbib\Service\Factory::getRecordDriverPluginManager',
+
             ]
 
     ],
@@ -52,6 +54,14 @@ $config = [
             'search_results' => [
                 'abstract_factories' => ['LinkedSwissbib\Search\Results\PluginFactory'],
             ],
+            'recorddriver'             => array(
+                'abstract_factories' => ['LinkedSwissbib\RecordDriver\PluginFactory'],
+                'factories' => array(
+                    'elasticsearchRecordDriver'  => 'LinkedSwissbib\RecordDriver\Factory::getElasticSearchRdfRecordDriver',
+
+                )
+            ),
+
 
         ]
     ],

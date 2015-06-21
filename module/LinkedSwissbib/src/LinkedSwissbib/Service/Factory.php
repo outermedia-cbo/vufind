@@ -73,6 +73,17 @@ class Factory
     {
         return static::getGenericPluginManager($sm, 'Search\Results');
     }
+    /**
+     * Construct the RecordDriver Plugin Manager.
+     *
+     * @param ServiceManager $sm Service manager.
+     *
+     * @return \LinkedSwissbib\RecordDriver\PluginManager
+     */
+    public static function getRecordDriverPluginManager(ServiceManager $sm)
+    {
+        return static::getGenericPluginManager($sm, 'RecordDriver');
+    }
 
 
 }
