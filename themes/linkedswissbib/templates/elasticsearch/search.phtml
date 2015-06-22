@@ -1,4 +1,14 @@
 
 <p>&nbsp;</p>
 <h1> powered by fuzzy linked data - Hopp Chur!</h1>
+
+<?
+    $results = $this->results->getResults();
+    foreach ($results as $rdfDriver): ?>
+        <div>
+        <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getRDF()); ?>
+        </div>
+        <div>&nbsp;</div>
+    <?endforeach;?>
+
 <p>&nbsp;</p>

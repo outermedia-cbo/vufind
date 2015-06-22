@@ -18,6 +18,8 @@ use VuFindSearch\Query\AbstractQuery;
 use VuFindSearch\Response\RecordCollectionFactoryInterface;
 
 use LinkedSwissbib\Backend\Elasticsearch\ESParamBag;
+use VuFindSearch\Response\RecordCollectionInterface;
+use VuFindSearch\Backend\Exception\BackendException;
 
 class Backend extends AbstractBackend
 {
@@ -61,7 +63,10 @@ class Backend extends AbstractBackend
      */
     public function getRecordCollectionFactory()
     {
-        // TODO: Implement getRecordCollectionFactory() method.
+        if (!$this->collectionFactory) {
+            $this->collectionFactory = new Response\RecordCollectionFactory();
+        }
+        return $this->collectionFactory;
     }
 
 
@@ -108,6 +113,8 @@ class Backend extends AbstractBackend
         $response   = $this->connector->search($esDSLParams);
         //todo: fetch the Metadadata for this search
 
+        /*
+
         foreach ($response['hits']['hits'] as $hit) {
 
             $source = $hit['_source'];
@@ -124,13 +131,13 @@ class Backend extends AbstractBackend
 
 
         }
+        */
 
-
-        //$collection = $this->createRecordCollection($response);
+        $collection = $this->createRecordCollection($response);
         //$this->injectSourceIdentifier($collection);
 
-        //return $collection;
-        return  [];
+        return $collection;
+        //return  [];
     }
 
     /**
@@ -211,6 +218,44 @@ class Backend extends AbstractBackend
         return $builder;
     }
 
+    /// Internal API
+
+    /**
+     * Create record collection.
+     *
+     * @param string $json Serialized JSON response
+     *
+     * @return RecordCollectionInterface
+     */
+    protected function createRecordCollection($response)
+    {
+        return $this->getRecordCollectionFactory()
+            ->factory($response);
+    }
+
+    /**
+     * Deserialize JSON response.
+     *
+     * @param string $json Serialized JSON response
+     *
+     * @return array
+     *
+     * @throws BackendException Deserialization error
+     */
+    protected function deserialize($json)
+    {
+        $response = json_decode($json, true);
+        $error    = json_last_error();
+        if ($error != \JSON_ERROR_NONE) {
+            throw new BackendException(
+                sprintf('JSON decoding error: %s -- %s', $error, $json)
+            );
+        }
+        $qtime = isset($response['responseHeader']['QTime'])
+            ? $response['responseHeader']['QTime'] : 'n/a';
+        $this->log('debug', 'Deserialized SOLR response', ['qtime' => $qtime]);
+        return $response;
+    }
 
 
 }

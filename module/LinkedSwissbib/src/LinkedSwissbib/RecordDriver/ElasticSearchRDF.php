@@ -35,4 +35,21 @@ class ElasticSearchRDF extends AbstractBase {
     }
 
 
+    public function getRDF($rdfType = 'turtle')
+    {
+
+        $source = $this->fields['_source'];
+        $rdfJson = json_encode($source);
+        $rdfGraph = new \EasyRdf_Graph();
+        $result = $rdfGraph->parse($rdfJson,'jsonld');
+        //todo: evaluate response type - parse error?
+        return $rdfGraph->serialise($rdfType);
+        //$ntriples = $rdfGraph->serialise('ntriples');
+        //$jsonld = $rdfGraph->serialise('jsonld');
+
+
+    }
+
+
+
 }

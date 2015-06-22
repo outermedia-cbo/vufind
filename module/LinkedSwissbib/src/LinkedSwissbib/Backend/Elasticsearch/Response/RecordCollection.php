@@ -16,7 +16,28 @@ use VuFindSearch\Exception\InvalidArgumentException;
 
 class RecordCollection extends AbstractRecordCollection {
 
+    /**
+     * Elasticsearch response.
+     *
+     * @var array
+     */
+    protected $response;
 
+
+    /**
+     * Constructor.
+     *
+     * @param array $response Deserialized SOLR response
+     *
+     * @return void
+     */
+    public function __construct(array $response)
+    {
+        //$this->response = array_replace_recursive(static::$template, $response);
+        //todo: how to get the offset from the ES response
+        $this->offset = 0;
+        $this->rewind();
+    }
 
 
 

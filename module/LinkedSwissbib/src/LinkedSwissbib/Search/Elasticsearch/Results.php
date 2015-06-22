@@ -62,7 +62,7 @@ class Results extends BaseResults
 
         // Construct record drivers for all the items in the response:
         //todo: by now we don't get any result
-        //$this->results = $collection->getRecords();
+        $this->results = $collection->getRecords();
     }
 
 
