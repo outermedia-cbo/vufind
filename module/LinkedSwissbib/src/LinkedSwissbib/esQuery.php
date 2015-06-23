@@ -6,7 +6,9 @@
  * Time: 10:58
  */
 
-require 'vendor/autoload.php';
+namespace LinkedSwissbib;
+use Elastica;
+use EasyRdf_Graph;
 
 class esQuery
 {
@@ -19,7 +21,7 @@ class esQuery
     {
 
         // Create client
-        $client = new Elastica\Client();
+        $client = new  Elastica\Client();
 
         // Define connections to node. Seems a bit verbose, but if we chose the way described on
         // http://elastica.io/getting-started/installation.html it crashed
