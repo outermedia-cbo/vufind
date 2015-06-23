@@ -67,7 +67,8 @@
         "zf-commons/zfc-rbac": "~2.4",
         "elasticsearch/elasticsearch": "~1.0",
         "easyrdf/easyrdf" : "~0.9.0",
-        "ml/json-ld"  : "~1.0"
+        "ml/json-ld"  : "~1.0",
+        "ruflin/elastica": "2.1.0"
     },
     "require-dev": {
         "behat/mink": "1.6.*",
