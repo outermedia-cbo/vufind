@@ -6,9 +6,12 @@
     $results = $this->results->getResults();
     foreach ($results as $rdfDriver): ?>
         <div>
-        <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getRDF()); ?>
+            <a href="<?= $rdfDriver->getUniqueID()?>">document-IRI</a>
         </div>
-        <div>&nbsp;</div>
+        <div>
+            <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getRdf()); ?>
+        </div>
+            <div>&nbsp;</div>
     <?endforeach;?>
 
 <p>&nbsp;</p>
