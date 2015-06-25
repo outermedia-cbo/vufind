@@ -66,9 +66,28 @@ class ElasticSearchRDF extends AbstractBase {
 
     public function getRdfType()
     {
+        if (isset($this->fields['_source']['@type']))
+        {
+            return is_array($this->fields['_source']['@type']) ? $this->fields['_source']['@type'] :
+                [$this->fields['_source']['@type']];
+        } else {
+            return [];
+        }
+
 
     }
 
+    public function getLanguage()
+    {
+        if (isset($this->fields['_source']['dct:language']))
+        {
+            return is_array($this->fields['_source']['dct:language']) ? array_values($this->fields['_source']['dct:language']) :
+                [$this->fields['_source']['dct:language']];
+        } else {
+            return [];
+        }
+
+    }
 
 
 }
