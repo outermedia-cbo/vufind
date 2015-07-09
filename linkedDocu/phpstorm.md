@@ -18,6 +18,12 @@ Danach mit Ctrl+Mouse wheel anpassen
 
 Schriftgrösse resetten: Ctrl+Shift+A -> "Reset font size" eingeben
 
+## vim Plugin
+
+Nur geeignet wenn man vi/vim kennt!
+
+    File -> Settings -> Plugins -> Suchen nach "IdeaVim"
+
 # Im Code navigieren
 
 ## Zur Definition einer Funktion/Klasse springen
