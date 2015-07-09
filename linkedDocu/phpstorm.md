@@ -35,3 +35,16 @@ oder
 # Debugging
 
 Vorgehen gemäss http://www.swissbib.org/wiki/index.php?title=Members:VuFind_Installation
+
+## Installation von Chrome und Extension (optional)
+
+Chrome installieren:
+
+https://www.google.com/intl/en-US/chrome/browser/desktop/index.html -> .deb Datei herunterladen
+
+    sudo dpkg -i XY.deb
+    sudo apt-get -f install
+
+Chrome Extension installieren:
+
+https://chrome.google.com/webstore/detail/jetbrains-ide-support/hmhgeddbohgjknpmjagkdomcpobmllji
