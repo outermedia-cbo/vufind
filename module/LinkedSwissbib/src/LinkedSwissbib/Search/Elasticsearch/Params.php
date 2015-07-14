@@ -28,5 +28,48 @@ class Params extends BaseParams
         return $backendParams;
     }
 
+    /**
+     * Support method for initSearch() -- handle basic settings.
+     *
+     * @param \Zend\StdLib\Parameters $request Parameter object representing user
+     * request.
+     *
+     * @return boolean True if search settings were found, false if not.
+     */
+    protected function initBasicSearch($request)
+    {
+        // If no lookfor parameter was found, we have no search terms to
+        // add to our array!
+        if (is_null($lookfor = $request->get('lookfor'))) {
+            return false;
+        }
+
+        // If lookfor is an array, we may be dealing with a legacy Advanced
+        // Search URL.  If there's only one parameter, we can flatten it,
+        // but otherwise we should treat it as an error -- no point in going
+        // to great lengths for compatibility.
+        if (is_array($lookfor)) {
+            if (count($lookfor) > 1) {
+                throw new \Exception("Unsupported search URL.");
+            }
+            $lookfor = $lookfor[0];
+        }
+
+        // Flatten type arrays for backward compatibility:
+        $handler = $request->get('type');
+        if (is_array($handler)) {
+            $handler = $handler[0];
+        } elseif (empty($handler)) {
+            $handler = "AllFields";
+        }
+
+
+
+        // Set the search:
+        $this->setBasicSearch($lookfor, $handler);
+        return true;
+    }
+
+
 
 }

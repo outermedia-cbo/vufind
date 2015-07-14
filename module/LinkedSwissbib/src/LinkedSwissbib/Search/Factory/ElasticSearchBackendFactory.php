@@ -26,9 +26,31 @@ class ElasticSearchBackendFactory implements FactoryInterface
      */
     private $serviceLocator;
 
+    private $config;
+
     private $logger;
 
+    private $defaultESIndex = ['hosts' => ['sb-s2.swissbib.unibas.ch:8080','sb-s6.swissbib.unibas.ch:8080','sb-s7.swissbib.unibas.ch:8080']];
 
+
+
+    /**
+     * Search configuration file identifier.createQueryBuilder
+     *
+     * @var string
+     */
+    protected $searchConfig;
+    protected $searchYaml;
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->searchConfig = 'searches';
+        $this->searchYaml = 'searchspecsES.yaml';
+    }
 
 
 
@@ -42,6 +64,7 @@ class ElasticSearchBackendFactory implements FactoryInterface
     {
         $this->serviceLocator = $serviceLocator;
         $this->config         = $this->serviceLocator->get('VuFind\Config');
+
         if ($this->serviceLocator->has('VuFind\Logger')) {
             $this->logger = $this->serviceLocator->get('VuFind\Logger');
         }
@@ -64,7 +87,11 @@ class ElasticSearchBackendFactory implements FactoryInterface
         //For the Solr Backend there are e.g. additional Handlers and other stuff
         //we have to evaluate if we need this in a similar way
 
-        $connector = new Connector();
+        /**  @var \Zend\Config\Config $zendConfig */
+        $zendConfig = $this->config->get("config");
+
+        $connector =   isset($zendConfig->LinkedIndex) && isset($zendConfig->LinkedIndex->hosts) ?
+            new Connector($zendConfig->LinkedIndex->toArray()) :  new Connector($this->defaultESIndex);
 
         if ($this->serviceLocator->has('VuFind\Http')) {
             $connector->setProxy($this->serviceLocator->get('VuFind\Http'));
@@ -110,7 +137,8 @@ class ElasticSearchBackendFactory implements FactoryInterface
             ? $config->Index->default_dismax_handler : 'dismax';
 
         */
-        $builder = new ESQueryBuilder();
+        $specs   = $this->loadSpecs();
+        $builder = new ESQueryBuilder($specs);
 
 
         // Configure builder:
@@ -147,6 +175,18 @@ class ElasticSearchBackendFactory implements FactoryInterface
         //do we need similar in ES?
 
     }
+
+    /**
+     * Load the search specs.
+     *
+     * @return array
+     */
+    protected function loadSpecs()
+    {
+        $specReader = $this->serviceLocator->get('VuFind\SearchSpecsReader');
+        return $specReader->get($this->searchYaml);
+    }
+
 
 
 

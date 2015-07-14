@@ -103,16 +103,16 @@ class Backend extends AbstractBackend
 
         $this->getQueryBuilder()->setParams($params);
         $esDSLParams = $this->getQueryBuilder()->build($query);
-        $esDSLParams['index'] = 'testsb';
+        //$esDSLParams['index'] = 'testsb';
         //$esDSLParams['type'] = 'RDF';
 
 
-        $esquery = new esQuery(['sb-s2.swissbib.unibas.ch' => '8080','sb-s6.swissbib.unibas.ch' => '8080', 'sb-s7.swissbib.unibas.ch' => '8080'],
-            'testsb', 'bibliographicResource');
+        //$esquery = new esQuery(['sb-s2.swissbib.unibas.ch' => '8080','sb-s6.swissbib.unibas.ch' => '8080', 'sb-s7.swissbib.unibas.ch' => '8080'],
+        //    'testsb', 'bibliographicResource');
 
-        $esquery->search(10);
+        //$esquery->search(10);
         //$bag = $esquery->serialiserdf('turtle');
-        $test = $esquery->resultSet;
+        //$test = $esquery->resultSet;
 
 
         //$params->mergeWith($this->getQueryBuilder()->build($query));
@@ -191,42 +191,6 @@ class Backend extends AbstractBackend
     }
 
 
-    /**
-     * Create the query builder.
-     *
-     * @return ESQueryBuilder
-     */
-    protected function createQueryBuilder()
-    {
-
-        /*
-
-        todo : do we need this?
-        $specs   = $this->loadSpecs();
-        $config = $this->config->get('config');
-        $defaultDismax = isset($config->Index->default_dismax_handler)
-            ? $config->Index->default_dismax_handler : 'dismax';
-        */
-        $builder = new ESQueryBuilder();
-
-        // Configure builder:
-        //todo: configure ES Builder if necessary
-        /*
-        $search = $this->config->get($this->searchConfig);
-        $caseSensitiveBooleans
-            = isset($search->General->case_sensitive_bools)
-            ? $search->General->case_sensitive_bools : true;
-        $caseSensitiveRanges
-            = isset($search->General->case_sensitive_ranges)
-            ? $search->General->case_sensitive_ranges : true;
-        $helper = new LuceneSyntaxHelper(
-            $caseSensitiveBooleans, $caseSensitiveRanges
-        );
-        $builder->setLuceneHelper($helper);
-
-        */
-        return $builder;
-    }
 
     /// Internal API
 

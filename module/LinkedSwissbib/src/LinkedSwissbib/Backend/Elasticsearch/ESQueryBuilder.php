@@ -24,6 +24,42 @@ class ESQueryBuilder implements ESQueryBuilderInterface
     protected $params;
 
     /**
+     * Search specs for exact searches.
+     *
+     * @var array
+     */
+    protected $exactSpecs = [];
+
+    /**
+     * Search specs.
+     *
+     * @var array
+     */
+    protected $specs = [];
+
+
+
+
+    /**
+     * Constructor.
+     *
+     * @param array  $specs                Search handler specifications
+     * @param string $defaultDismaxHandler Default dismax handler (if no
+     * DismaxHandler set in specs).
+     *
+     * @return void
+     */
+    public function __construct(array $specs = [],
+                                $defaultDismaxHandler = 'dismax'
+    ) {
+        $this->defaultDismaxHandler = $defaultDismaxHandler;
+        $this->setSpecs($specs);
+    }
+
+
+
+
+    /**
      * Build build a query for the target based on VuFind query object.
      *
      * @param AbstractQuery $query Query object
@@ -39,11 +75,12 @@ class ESQueryBuilder implements ESQueryBuilderInterface
                     //"match_all" => $queryAll != null ? [$queryAll] : []
                     "multi_match" => array(
                         'query' => $query->getAllTerms(),
-                        'fields' => array(
-                            'bibo:isbn13', 'bibo:isbn10','dct:title', 'dc:format', 'dct:issued'
+                        'fields' => $this->specs['allfields']->getDismaxFields()
                         )
                     )
-                ));
+                );
+            $getParams['index'] = $this->specs["allfields"]->getIndices();
+            //$getParams['index'] = 'testsb';
         } else {
             $getParams['body'] = array(
                 "query" => array(
@@ -57,6 +94,27 @@ class ESQueryBuilder implements ESQueryBuilderInterface
     public function setParams(ESParamBag $paramsBag)
     {
         $this->params = $paramsBag;
+    }
+
+    /**
+     * Set query builder search specs.
+     *
+     * @param array $specs Search specs
+     *
+     * @return void
+     */
+    public function setSpecs(array $specs)
+    {
+        foreach ($specs as $handler => $spec) {
+            if (isset($spec['ExactSettings'])) {
+                $this->exactSpecs[strtolower($handler)] = new SearchHandler(
+                    $spec['ExactSettings'], $this->defaultDismaxHandler
+                );
+                unset($spec['ExactSettings']);
+            }
+            $this->specs[strtolower($handler)]
+                = new SearchHandler($spec, $this->defaultDismaxHandler);
+        }
     }
 
 

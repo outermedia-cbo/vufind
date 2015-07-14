@@ -10,6 +10,7 @@
 
 namespace LinkedSwissbib\Backend\Elasticsearch;
 
+use VuFindSearch\Backend\Exception\BackendException;
 use VuFindSearch\ParamBag;
 use Elasticsearch\Client;
 
@@ -17,6 +18,13 @@ use Elasticsearch\Client;
 class Connector implements \Zend\Log\LoggerAwareInterface
 {
     use \VuFind\Log\LoggerAwareTrait;
+
+    /** @var array $indexConfig*/
+    private  $indexConfig;
+
+    public function __construct(array $config) {
+        $this->indexConfig = $config;
+    }
 
 
     /**
@@ -144,8 +152,10 @@ class Connector implements \Zend\Log\LoggerAwareInterface
     {
         //todo: configure the ES cluster
 
-        $urlToUse = isset($url) ? $url : 'sb-s2.swissbib.unibas.ch:8080';
-        $client = new Client(['hosts' => [$urlToUse]]);
+        if (!isset($this->indexConfig['hosts'])) {
+            throw new BackendException("target hosts are not configured");
+        }
+        $client = new Client(['hosts' => $this->indexConfig['hosts']]);
         return $client;
     }
 

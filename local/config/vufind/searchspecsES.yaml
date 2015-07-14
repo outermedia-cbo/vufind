@@ -1,0 +1,35 @@
+# seachspecsES.yaml for linked-swissbib
+# search target ElasticSearch
+# ###########
+
+
+
+
+AllFields:
+  DismaxHandler: multi_match
+  UsedTypes:
+    - bibliographicResource
+    - document
+  UsedIndex:
+    - testsb
+  DismaxFields:
+    - dct:title
+    - rdau:publicationStatement #type bibliographicResource
+    - @type
+    - dc:contributor.rdfs:label
+    - dc:contributor.foaf:firstName
+    - dc:contributor.foaf:lastName
+    - dc:contributor.@type
+    - rdau:noteOnResource
+    - dct:bibliographicCitation
+    - bibo:isbn13
+    - bibo:isbn10
+    - dc:contributor #type document
+#   the next two types can't be used in the allfields search because of ES core type date
+#    - dct:issued
+#    - dct:issued.@value
+
+
+
+
+
