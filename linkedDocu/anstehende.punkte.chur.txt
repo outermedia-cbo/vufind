@@ -49,4 +49,11 @@ Dieses sind alles Sachen, die für die Anzeige von Treffern in einer Ergebnislis
 vendor/elasticsearch/elasticsearch/elasticsearch.log
 Wollen wir das?
 
+7) SOLR hat in VuFindSearch\Backend\Solr
+zwei namespaces
+Document und Record
+- wofür werden die überhaupt benutzt?
+- brauchen wir das?
+(ich nehme an, dies sind use cases für update und delete etc. Dafür haben wir in ES eigene API Endpunkte)
+
 
