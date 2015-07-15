@@ -1,0 +1,52 @@
+
+
+nächte Punkte Implementierung Client für ElasticSearch 
+
+
+1) BackendFactory
+- welche Searchspezifikationen brauchen wir für unsere linked-swissbib use caes
+->ElasticSearchBackendFactory->loadSpecs()
+ 
+
+- brauchen wir VuFind/Http als Proxy für die Connection?
+ElasticSearchBackendFactory->createConnector()
+Nein-> kann weg, da wir einen eigenen ES Client benutzen
+
+- welche listeners brauchen wir für das ES Backend?
+ElasticSearchBackendFactory->createListeners()
+
+
+2) Konstruktion der Suche in ES DSL
+- Berücksichtigung von Metadaten für die Suche
+(limit, offset)
+Einstiegspunkt: Backend->search()
+
+- Konstruktion der DSL für ES
+ESQueryBuilder->build()
+(s. den dortigen Kommentar: Berücksichtigung von AbstractQuery, ESParamBag, SearchHandler)
+
+
+3) Methoden auf dem Connector Type
+-> Unterschiede zwischen query und search??
+
+4) RecordDriver (LinkedSwissbib\RecordDriver\ElasticsearchRDF) 
+-> hier sollten noch die Metainformation enthalten sein
+(- Zeitdauer der Suche
+- Anzahl Treffer
+- offset
+- limit
+-> oder nehme ich letzteres aus den Params und Options Objekten?)
+
+5) im Moment benutzen wir den allgemeinen SearchController für das Abrufen von linked-data.
+Exploration ist jedoch ein spezifischer Fall und sollte auch über einen eiegen Controller verwaltet werden
+Für unseren use case benötigen wir möglicherweise nicht solche Dinge wie
+limit, sort, paging ...
+Dieses sind alles Sachen, die für die Anzeige von Treffern in einer Ergebnisliste gebraucht werden
+(linked-swissbib?)
+
+
+6) Elasticsearch - client erstellt eine eigene log - Datei.
+vendor/elasticsearch/elasticsearch/elasticsearch.log
+Wollen wir das?
+
+

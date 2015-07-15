@@ -80,4 +80,17 @@ class SearchHandler
         return $this->specs['UsedIndex'];
     }
 
+
+    /**
+     * Return the types (as part of the index) defined for this specific search handler .
+     *
+     * @return array
+     */
+    public function getTypes()
+    {
+        //todo: implement this -> we need this to build the query!
+        return null;
+    }
+
+
 }

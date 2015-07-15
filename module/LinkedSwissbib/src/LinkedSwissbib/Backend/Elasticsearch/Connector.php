@@ -122,10 +122,13 @@ class Connector implements \Zend\Log\LoggerAwareInterface
         );
         */
 
+        //todo; logging of used time (or use time as feedback to user)
         $time     = microtime(true);
         $response =  $client->search($params);
         $time     = microtime(true) - $time;
 
+        //todo: some kind of error handling
+        //we can suppress errors by configuration on the client type
         /*
         $this->debug(
             sprintf(

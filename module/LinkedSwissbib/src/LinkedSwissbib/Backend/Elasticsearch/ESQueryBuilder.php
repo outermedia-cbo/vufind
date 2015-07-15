@@ -68,6 +68,13 @@ class ESQueryBuilder implements ESQueryBuilderInterface
      */
     public function build(AbstractQuery $query)
     {
+
+        //todo: generate the ES DSL syntax by using:
+        // ESParamBag (all parameters collected from query and configuration)
+        //AbstractQuery (seach terms defined by user and reference to SearchHandler by string)
+        //SearchHandler (provides the definitions from searchspec)
+
+
         $getParams = [];
         if ($query) {
             $getParams['body'] = array(
@@ -80,6 +87,8 @@ class ESQueryBuilder implements ESQueryBuilderInterface
                     )
                 );
             $getParams['index'] = $this->specs["allfields"]->getIndices();
+            //$getParams['type'] = ['bibliographicResource','document'];
+            $getParams['type'] = ['bibliographicResource'];
             //$getParams['index'] = 'testsb';
         } else {
             $getParams['body'] = array(

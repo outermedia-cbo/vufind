@@ -96,7 +96,6 @@ class Backend extends AbstractBackend
         //HTTP-Get query or is the QueryBuilder type responsible for the creation of the ES DSL specific structure
         //which is at the end a PHP array
         $params = $params ?: new ESParamBag();
-        //$this->injectResponseWriter($params); SOLR Stuff
 
         //$params->set('rows', $limit);
         //$params->set('start', $offset);
@@ -110,25 +109,6 @@ class Backend extends AbstractBackend
 
         //todo: fetch the Metadadata for this search
 
-        /*
-
-        foreach ($response['hits']['hits'] as $hit) {
-
-            $source = $hit['_source'];
-            $rdfJson = json_encode($source);
-            $rdfGraph = new \EasyRdf_Graph();
-            $result = $rdfGraph->parse($rdfJson,'jsonld');
-
-            $turtle = $rdfGraph->serialise('turtle');
-            $ntriples = $rdfGraph->serialise('ntriples');
-            $jsonld = $rdfGraph->serialise('jsonld');
-
-            //todo: create structures and serialize them in RecordDrivers which are used in the view component
-            $t = "";
-
-
-        }
-        */
 
         $collection = $this->createRecordCollection($response);
         //$this->injectSourceIdentifier($collection);

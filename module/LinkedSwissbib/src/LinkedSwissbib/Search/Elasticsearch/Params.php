@@ -18,12 +18,40 @@ use LinkedSwissbib\Backend\Elasticsearch\ESParamBag;
 class Params extends BaseParams
 {
 
+
+    /**
+     * Create search backend parameters for advanced features.
+     *
+     * @return ParamBag
+     */
+
     public function getBackendParameters()
     {
+
+
 
         //todo: in Solr these Backend Parameters are initialized with the ones configured
         //hpw can we do this in ES?
         $backendParams = new ESParamBag();
+
+        //todo: do we need spellchecking in linked?
+        $backendParams->set(
+            'spellcheck', $this->getOptions()->spellcheckEnabled() ? 'true' : 'false'
+        );
+
+        $facets = $this->getFacetSettings();
+        if (!empty($facets)) {
+            //todo: implement some kind of facet preparation for ES if we need it for linked-swissbib
+        }
+
+        // Filters
+        $filters = $this->getFilterSettings();
+        foreach ($filters as $filter) {
+            //todo: implement filter preparation for ES if necessary
+        }
+
+
+
 
         return $backendParams;
     }
@@ -70,6 +98,29 @@ class Params extends BaseParams
         return true;
     }
 
+    /**
+     * Return current facet configurations
+     *
+     * @return array $facetSet
+     */
+    public function getFacetSettings()
+    {
+
+        //todo: do we need facets in linked-swissbib
+        return [];
+    }
+
+    /**
+     * Return the current filters as an array of strings ['field:filter']
+     *
+     * @return array $filterQuery
+     */
+    public function getFilterSettings()
+    {
+        //todo: do we need filters in linked-swissbib
+        //if yes - implement preparation for ES
+        return [];
+    }
 
 
 }
