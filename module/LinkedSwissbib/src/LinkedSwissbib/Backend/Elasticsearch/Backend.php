@@ -103,19 +103,6 @@ class Backend extends AbstractBackend
 
         $this->getQueryBuilder()->setParams($params);
         $esDSLParams = $this->getQueryBuilder()->build($query);
-        //$esDSLParams['index'] = 'testsb';
-        //$esDSLParams['type'] = 'RDF';
-
-
-        //$esquery = new esQuery(['sb-s2.swissbib.unibas.ch' => '8080','sb-s6.swissbib.unibas.ch' => '8080', 'sb-s7.swissbib.unibas.ch' => '8080'],
-        //    'testsb', 'bibliographicResource');
-
-        //$esquery->search(10);
-        //$bag = $esquery->serialiserdf('turtle');
-        //$test = $esquery->resultSet;
-
-
-        //$params->mergeWith($this->getQueryBuilder()->build($query));
 
 
 

@@ -10,6 +10,7 @@
 
 namespace LinkedSwissbib\Backend\Elasticsearch;
 
+use Elasticsearch\ClientBuilder;
 use VuFindSearch\Backend\Exception\BackendException;
 use VuFindSearch\ParamBag;
 use Elasticsearch\Client;
@@ -155,7 +156,9 @@ class Connector implements \Zend\Log\LoggerAwareInterface
         if (!isset($this->indexConfig['hosts'])) {
             throw new BackendException("target hosts are not configured");
         }
-        $client = new Client(['hosts' => $this->indexConfig['hosts']]);
+
+        $client = ClientBuilder::create()->setHosts($this->indexConfig['hosts'])->build();
+
         return $client;
     }
 
