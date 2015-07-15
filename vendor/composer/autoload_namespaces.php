@@ -18,13 +18,10 @@ return array(
     'Rbac\\' => array($vendorDir . '/zfr/rbac/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'ProxyManager\\' => array($vendorDir . '/ocramius/proxy-manager/src'),
-    'Pimple' => array($vendorDir . '/pimple/pimple/src'),
     'PHPQRCode' => array($vendorDir . '/aferrandini/phpqrcode/lib'),
     'ML\\JsonLD' => array($vendorDir . '/ml/json-ld'),
     'ML\\IRI' => array($vendorDir . '/ml/iri'),
     'Less' => array($vendorDir . '/oyejorge/less.php/lib'),
-    'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
-    'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
     'EasyRdf_' => array($vendorDir . '/easyrdf/easyrdf/lib'),
     'Behat\\Mink\\Driver' => array($vendorDir . '/behat/mink-zombie-driver/src'),
 );
