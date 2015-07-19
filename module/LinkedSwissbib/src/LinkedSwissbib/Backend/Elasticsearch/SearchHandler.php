@@ -24,8 +24,12 @@ class SearchHandler
     //];
 
     protected static $configKeys = [
-        'DismaxFields', 'DismaxHandler', 'QueryFields',
-        'DismaxParams', 'FilterQuery', 'UsedTypes', 'UsedIndex'
+
+        'UsedTypes', 'UsedIndex', 'nested',
+         'fields', 'query',
+        'bool', 'should', 'multi_match', 'type',
+        'operator', 'path',
+
     ];
 
 
@@ -89,7 +93,12 @@ class SearchHandler
     public function getTypes()
     {
         //todo: implement this -> we need this to build the query!
-        return null;
+        return $this->specs['UsedTypes'];
+    }
+
+    public function getQuery()
+    {
+        return $this->specs['query'];
     }
 
 

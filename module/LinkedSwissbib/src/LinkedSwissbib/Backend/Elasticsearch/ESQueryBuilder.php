@@ -14,6 +14,8 @@ namespace LinkedSwissbib\Backend\Elasticsearch;
 
 use VuFindSearch\ParamBag;
 use VuFindSearch\Query\AbstractQuery;
+use VuFindSearch\Query\Query as VuFindQuery;
+use LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query;
 
 class ESQueryBuilder implements ESQueryBuilderInterface
 {
@@ -66,29 +68,40 @@ class ESQueryBuilder implements ESQueryBuilderInterface
      *
      * @return ParamBag
      */
-    public function build(AbstractQuery $query)
+    public function build(AbstractQuery $vuFindQuery)
     {
+
+
 
         //todo: generate the ES DSL syntax by using:
         // ESParamBag (all parameters collected from query and configuration)
         //AbstractQuery (seach terms defined by user and reference to SearchHandler by string)
         //SearchHandler (provides the definitions from searchspec)
+        if ($vuFindQuery instanceof VuFindQuery) {
+            $searchHandlerType = $this->getSearchHandler($vuFindQuery->getHandler());
+        } else {
+            $searchHandlerType = 'allfields';
+        }
+
+
+        $esQuery = new Query($vuFindQuery,$searchHandlerType);
+        $searchBody =  $esQuery->build();
 
 
         $getParams = [];
-        if ($query) {
+        if ($vuFindQuery) {
             $getParams['body'] = array(
                 "query" => array(
                     //"match_all" => $queryAll != null ? [$queryAll] : []
                     "multi_match" => array(
-                        'query' => $query->getAllTerms(),
-                        'fields' => $this->specs['allfields']->getDismaxFields()
+                        'query' => $vuFindQuery->getAllTerms(),
+                        'fields' => $searchHandlerType->getDismaxFields()
                         )
                     )
                 );
-            $getParams['index'] = $this->specs["allfields"]->getIndices();
+            $getParams['index'] = $searchHandlerType->getIndices();
             //$getParams['type'] = ['bibliographicResource','document'];
-            $getParams['type'] = ['bibliographicResource'];
+            $getParams['type'] = $searchHandlerType->getTypes();
             //$getParams['index'] = 'testsb';
         } else {
             $getParams['body'] = array(
@@ -124,6 +137,12 @@ class ESQueryBuilder implements ESQueryBuilderInterface
             $this->specs[strtolower($handler)]
                 = new SearchHandler($spec, $this->defaultDismaxHandler);
         }
+    }
+
+    protected function getSearchHandler($queryHandlerString)
+    {
+        return  array_key_exists(strtolower($queryHandlerString),$this->specs) ? $this->specs[strtolower($queryHandlerString)] :
+            $this->specs['allfields'];
     }
 
 

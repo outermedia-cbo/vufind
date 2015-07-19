@@ -6,30 +6,64 @@
 
 
 AllFields:
-  DismaxHandler: multi_match
   UsedTypes:
     - bibliographicResource
     - document
   UsedIndex:
     - testsb
-  DismaxFields:
-    - dct:title
-    - rdau:publicationStatement #type bibliographicResource
-    - @type
-    - dc:contributor.rdfs:label
-    - dc:contributor.foaf:firstName
-    - dc:contributor.foaf:lastName
-    - dc:contributor.@type
-    - rdau:noteOnResource
-    - dct:bibliographicCitation
-    - bibo:isbn13
-    - bibo:isbn10
-    - dc:contributor #type document
-#   the next two types can't be used in the allfields search because of ES core type date
-#    - dct:issued
-#    - dct:issued.@value
+  query:
+    bool:
+      should:
+        multi_match:
+          type:
+            - cross_fields #should be default
+          operator:
+            - and #should be default
+          fields:
+            - dct:title
+            - rdau:publicationStatement
+            - @type
+            - dc:contributor.rdfs:label
+            - dc:contributor.@type
+            - rdau:noteOnResource
+            - dct:bibliographicCitation
+            - bibo:isbn13
+            - bibo:isbn10
+        nested:
+          path:
+            - dc:contributor
+          query:
+            multi_match:
+              fields:
+                - dc:contributor.foaf:firstName
+                - dc:contributor.foaf:lastName
+              type:
+                - cross_fields #should be default
+              operator:
+                - and # should be default
 
 
+
+
+Contributor:
+  UsedTypes:
+    - bibliographicResource
+  UsedIndex:
+    - testsb
+  query:
+    #todo think about a mechanism to reference already defined queries
+    nested:
+      path:
+        - dc:contributor
+      query:
+        multi_match:
+          fields:
+            - dc:contributor.foaf:firstName
+            - dc:contributor.foaf:lastName
+          type:
+            - cross_fields #should be default
+          operator:
+            - and # should be default
 
 
 

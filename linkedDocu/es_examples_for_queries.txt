@@ -1,0 +1,106 @@
+        /*
+            mögliche nested Abfrage:
+        GET testsb/bibliographicResource/_search
+  {
+    "query": {
+      "bool": {
+        "should": [
+          {
+            "multi_match": {
+              "query": "Department of Economics University",
+              "fields": ["dct:title","dct:bibliographicCitation"],
+              "type": "cross_fields",
+              "operator": "and"
+
+            }
+          },
+          {
+            "nested": {
+              "path": "dc:contributor",
+              "query": {
+                "bool": {
+                  "must": [
+                    {"match": {
+                      "dc:contributor.foaf:firstName": "Björn"
+                    }},
+                    {
+                      "match": {
+                        "dc:contributor.foaf:lastName": "Griesbach"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+
+        ]
+      }
+    }
+  }
+
+
+
+ diese Abfrage sollte gleichwertig sein
+  {
+    "query": {
+      "bool": {
+        "should": [
+          {
+            "multi_match": {
+              "query": "Department of Economics University",
+              "fields": ["dct:title","dct:bibliographicCitation"],
+              "type": "cross_fields",
+              "operator": "and"
+
+            }
+          },
+          {
+            "nested": {
+              "path": "dc:contributor",
+              "query": {
+
+                "multi_match": {
+                  "query": "Björn Griesbach",
+                  "fields": ["dc:contributor.foaf:firstName","dc:contributor.foaf:lastName"],
+                  "operator" : "and",
+                  "type": "cross_fields"
+                }
+              }
+            }
+          }
+
+        ]
+      }
+    }
+  }
+
+
+
+
+
+
+
+        Suche nach Autor - eindeutig
+
+  GET testsb/bibliographicResource/_search
+  {
+    "size": 20,
+    "query": {
+      "nested": {
+        "path": "dc:contributor",
+        "query": {
+          "multi_match": {
+            "query": "Björn griesbach",
+            "type": "cross_fields",
+             "tie_breaker": 0.3,
+             "fields": ["dc:contributor.foaf:firstName","dc:contributor.foaf:lastName"],
+             "operator": "and"
+
+        }
+      }
+    }
+  }
+}
+
+           */
