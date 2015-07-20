@@ -70,7 +70,9 @@ class SearchHandler
      */
     public function getDismaxFields()
     {
-        return $this->specs['DismaxFields'];
+        //return $this->specs['DismaxFields'];
+        //only a quick patch to provide Chur a quick solution without error
+        return $this->specs['query']['bool']['should']['multi_match']['fields'];
     }
 
     /**
