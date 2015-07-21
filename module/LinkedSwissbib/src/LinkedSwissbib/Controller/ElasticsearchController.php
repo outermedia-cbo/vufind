@@ -37,6 +37,12 @@ class ElasticsearchController extends AbstractSearch
 
     }
 
+    public function authorDetailsAction ()
+    {
+        return parent::resultsAction();
+
+    }
+
 
     /**
      * Convenience method for accessing results
