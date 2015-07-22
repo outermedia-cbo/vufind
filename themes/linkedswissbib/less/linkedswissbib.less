@@ -114,8 +114,15 @@ article.tabs section:target, article.tabs section:target h3 {
   z-index: 1;
 }
 
-article.tabs section:target .tabContent {
+article.tabs section:target .tabContent, article.tabs .initiallyOpened {
   background-color: #ffffff;
+}
+
+article.tabs section:target .tabContent {
+  z-index: 2;
+}
+
+article.tabs .initiallyOpened {
   z-index: 1;
 }
 
