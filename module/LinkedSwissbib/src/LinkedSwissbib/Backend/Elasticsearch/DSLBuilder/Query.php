@@ -24,18 +24,27 @@ class Query implements ESQueryInterface
      * @var SearchHandler
      */
     protected $handler;
+    protected $spec;
+    protected $clauses  = [];
 
 
+    //todo: think about a plugin manager solution
     protected $registeredQueryClasses =
-        ['bool' => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\BooleanQuery'];
+        [
+            'bool' => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\BooleanQuery',
+            'multi_match' => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\MultiMatchQuery',
+            'nested'    => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\NestedQuery',
+            'match' => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\MatchQuery'
+        ];
 
 
 
 
-    public function __construct(AbstractQuery $query, SearchHandler $handler)
+    public function __construct(AbstractQuery $query, array $querySpec)
     {
         $this->query = $query;
-        $this->handler = $handler;
+        //$this->handler = $handler;
+        $this->spec = $querySpec;
 
     }
 
@@ -43,7 +52,15 @@ class Query implements ESQueryInterface
     public function build()
     {
 
-        $queryType = $this->handler->getQuery();
+        $queryType = $this->spec['query'];
+        foreach (array_keys($queryType) as $key)
+        {
+            if (array_key_exists($key,$this->registeredQueryClasses))
+            {
+                $queryClass = new $this->registeredQueryClasses[$key]($this->query, $queryType[$key]);
+                $this->addClause($queryClass);
+            }
+        }
 
         $test = "";
 
@@ -52,7 +69,7 @@ class Query implements ESQueryInterface
 
     public function addClause(ESQueryInterface $query)
     {
-
+        $this->clauses[] = $query;
     }
 
     public function getClause($name)
@@ -69,6 +86,5 @@ class Query implements ESQueryInterface
     {
 
     }
-
 
 }
