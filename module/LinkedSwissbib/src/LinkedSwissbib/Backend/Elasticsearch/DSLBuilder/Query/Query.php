@@ -6,7 +6,7 @@
  * Time: 9:02 PM
  */
 
-namespace LinkedSwissbib\Backend\Elasticsearch\DSLBuilder;
+namespace LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query;
 
 
 use VuFindSearch\Query\AbstractQuery;
@@ -18,7 +18,7 @@ class Query implements ESQueryInterface
     protected $limit;
     protected $size;
 
-    protected $query;
+    protected $userQuery;
 
     /**
      * @var SearchHandler
@@ -31,10 +31,10 @@ class Query implements ESQueryInterface
     //todo: think about a plugin manager solution
     protected $registeredQueryClasses =
         [
-            'bool' => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\BooleanQuery',
-            'multi_match' => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\MultiMatchQuery',
-            'nested'    => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\NestedQuery',
-            'match' => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\MatchQuery'
+            'bool' => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\BooleanQuery',
+            'multi_match' => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\MultiMatchQuery',
+            'nested'    => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\NestedQuery',
+            'match' => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\MatchQuery'
         ];
 
 
@@ -58,33 +58,37 @@ class Query implements ESQueryInterface
             if (array_key_exists($key,$this->registeredQueryClasses))
             {
                 $queryClass = new $this->registeredQueryClasses[$key]($this->query, $queryType[$key]);
-                $this->addClause($queryClass);
+                //todo: we can't use addClause in this way!
+                //$this->addClause($queryClass);
             }
         }
 
-        $test = "";
-
-
     }
 
-    public function addClause(ESQueryInterface $query)
+    public function getName()
     {
-        $this->clauses[] = $query;
+        return  get_class($this);
     }
 
-    public function getClause($name)
+    public function setUserQuery(AbstractQuery $userQuery)
     {
-
+        $this->query = $userQuery;
     }
 
-    public function removeClause($name)
+    public function setSearchSpec(array $searchSpec)
     {
-
+        $this->spec = $searchSpec;
     }
 
-    public function addSpec(array $spec)
+    public function getUserQuery()
     {
-
+        return $this->query;
     }
+
+    public function getSearchSpec()
+    {
+        return $this->spec;
+    }
+
 
 }

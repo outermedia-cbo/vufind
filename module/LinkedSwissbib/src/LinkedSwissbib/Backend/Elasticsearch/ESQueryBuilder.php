@@ -15,7 +15,7 @@ namespace LinkedSwissbib\Backend\Elasticsearch;
 use VuFindSearch\ParamBag;
 use VuFindSearch\Query\AbstractQuery;
 use VuFindSearch\Query\Query as VuFindQuery;
-use LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query;
+use LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\Query;
 
 class ESQueryBuilder implements ESQueryBuilderInterface
 {
@@ -77,14 +77,16 @@ class ESQueryBuilder implements ESQueryBuilderInterface
         // ESParamBag (all parameters collected from query and configuration)
         //AbstractQuery (seach terms defined by user and reference to SearchHandler by string)
         //SearchHandler (provides the definitions from searchspec)
+        //todo: question - getSearchHandler is not defined by the QueryIntrface implemented by AbstractQuery
+        //do we need our own interface to make this more stable?
         if ($vuFindQuery instanceof VuFindQuery) {
             $searchHandlerType = $this->getSearchHandler($vuFindQuery->getHandler());
         } else {
-            $searchHandlerType = 'allfields';
+            $searchHandlerType = $this->getSearchHandler('allfields');
         }
 
 
-        $esQuery = new Query($vuFindQuery,$searchHandlerType);
+        $esQuery = new Query($vuFindQuery,$searchHandlerType->getSpec());
         $searchBody =  $esQuery->build();
 
 

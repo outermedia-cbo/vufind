@@ -103,5 +103,10 @@ class SearchHandler
         return $this->specs['query'];
     }
 
+    public function getSpec()
+    {
+        return $this->specs;
+    }
+
 
 }
