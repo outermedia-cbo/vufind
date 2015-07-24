@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  *
  * @category linked-swissbib
@@ -13,7 +12,7 @@
 namespace LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query;
 
 
-class MultiMatchQuery extends LeafQueryClause
+class Nested extends CompoundQueryClause
 {
 
     /**
@@ -23,26 +22,23 @@ class MultiMatchQuery extends LeafQueryClause
     public function build()
     {
 
-
-        if (!array_key_exists('fields',$this->spec)) {
+        if (!array_key_exists('query',$this->spec))
+        {
             //todo: or do we use some kind of default fields?
             throw new \Exception('missing fields definition in multi_match clause');
         }
+        //$queryClause = ['nested'];
+        $queryClause['nested']['path'] = $this->spec['path'];
 
-        $queryClause['multi_match']['fields'] = $this->spec['fields'];
-        if (array_key_exists('type',$this->spec))
-        {
-            $queryClause['multi_match']['type'] = $this->spec['type'];
-        }
-
-        $queryClause['multi_match']['operator'] = isset($this->spec['operator']) ? $this->spec['operator'] : 'and';
-
-        $queryClause['multi_match']['query'] = $this->query->getAllTerms();
+        /** @var Query $queryClass */
+        $queryClass = new $this->registeredQueryClasses['query']($this->query, $this->spec);
+        $queryClause['nested']['query'] = $queryClass->build();
 
         return $queryClause;
 
-    }
 
+
+    }
 
 
 }

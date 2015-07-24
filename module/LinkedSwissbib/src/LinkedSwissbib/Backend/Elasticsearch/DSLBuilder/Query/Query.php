@@ -1,9 +1,12 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: swissbib
- * Date: 7/19/15
- * Time: 9:02 PM
+ *
+ * @category linked-swissbib
+ * @package  Backend_Eleasticsearch
+ * @author   Guenter Hipler <guenter.hipler@unibas.ch>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://linked.swissbib.ch  Main Page
  */
 
 namespace LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query;
@@ -33,11 +36,10 @@ class Query implements ESQueryInterface
         [
             'bool' => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\BooleanQuery',
             'multi_match' => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\MultiMatchQuery',
-            'nested'    => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\NestedQuery',
-            'match' => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\MatchQuery'
+            'nested'    =>   'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\Nested',
+            'match' => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\MatchQuery',
+            'query' => 'LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\Query'
         ];
-
-
 
 
     public function __construct(AbstractQuery $query, array $querySpec)
@@ -45,23 +47,35 @@ class Query implements ESQueryInterface
         $this->query = $query;
         //$this->handler = $handler;
         $this->spec = $querySpec;
-
     }
 
 
+    /**
+     * @return array
+     */
     public function build()
     {
+
+        $clause = [];
 
         $queryType = $this->spec['query'];
         foreach (array_keys($queryType) as $key)
         {
             if (array_key_exists($key,$this->registeredQueryClasses))
             {
+
+                /** @var Query $queryClass */
                 $queryClass = new $this->registeredQueryClasses[$key]($this->query, $queryType[$key]);
+                $queryClass->setSearchSpec($queryType[$key]);
+
+                $clause = $queryClass->build();
+
                 //todo: we can't use addClause in this way!
                 //$this->addClause($queryClass);
             }
         }
+
+        return $clause;
 
     }
 
