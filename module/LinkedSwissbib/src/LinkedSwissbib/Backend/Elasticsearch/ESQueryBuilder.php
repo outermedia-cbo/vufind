@@ -15,7 +15,8 @@ namespace LinkedSwissbib\Backend\Elasticsearch;
 use VuFindSearch\ParamBag;
 use VuFindSearch\Query\AbstractQuery;
 use VuFindSearch\Query\Query as VuFindQuery;
-use LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query;
+use LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\Query;
+
 
 class ESQueryBuilder implements ESQueryBuilderInterface
 {
@@ -39,17 +40,22 @@ class ESQueryBuilder implements ESQueryBuilderInterface
      */
     protected $specs = [];
 
+    /**
+     * Indexes the search is executed on
+     * @var array
+     */
+    //todo: make it configurable
+    protected $searchIndexes = ['testsb'];
+
 
 
 
     /**
      * Constructor.
-     *
      * @param array  $specs                Search handler specifications
      * @param string $defaultDismaxHandler Default dismax handler (if no
      * DismaxHandler set in specs).
      *
-     * @return void
      */
     public function __construct(array $specs = [],
                                 $defaultDismaxHandler = 'dismax'
@@ -63,52 +69,27 @@ class ESQueryBuilder implements ESQueryBuilderInterface
 
     /**
      * Build build a query for the target based on VuFind query object.
-     *
      * @param AbstractQuery $query Query object
-     *
      * @return ParamBag
      */
     public function build(AbstractQuery $vuFindQuery)
     {
 
 
-
-        //todo: generate the ES DSL syntax by using:
-        // ESParamBag (all parameters collected from query and configuration)
-        //AbstractQuery (seach terms defined by user and reference to SearchHandler by string)
-        //SearchHandler (provides the definitions from searchspec)
+        /** @var SearchHandler $searchHandlerType */
         if ($vuFindQuery instanceof VuFindQuery) {
             $searchHandlerType = $this->getSearchHandler($vuFindQuery->getHandler());
         } else {
-            $searchHandlerType = 'allfields';
+            $searchHandlerType = $this->getSearchHandler('allfields');
         }
 
-
-        $esQuery = new Query($vuFindQuery,$searchHandlerType);
+        $esQuery = new Query($vuFindQuery,$searchHandlerType->getSpec());
         $searchBody =  $esQuery->build();
 
+        $getParams['body']['query'] = $searchBody;
+        $getParams['type'] = $searchHandlerType->getTypes();
+        $getParams['index'] = $this->searchIndexes;
 
-        $getParams = [];
-        if ($vuFindQuery) {
-            $getParams['body'] = array(
-                "query" => array(
-                    //"match_all" => $queryAll != null ? [$queryAll] : []
-                    "multi_match" => array(
-                        'query' => $vuFindQuery->getAllTerms(),
-                        'fields' => $searchHandlerType->getDismaxFields()
-                        )
-                    )
-                );
-            $getParams['index'] = $searchHandlerType->getIndices();
-            //$getParams['type'] = ['bibliographicResource','document'];
-            $getParams['type'] = $searchHandlerType->getTypes();
-            //$getParams['index'] = 'testsb';
-        } else {
-            $getParams['body'] = array(
-                "query" => array(
-                    'match_all' => [])
-            );
-        }
 
         return $getParams;
     }
@@ -120,9 +101,7 @@ class ESQueryBuilder implements ESQueryBuilderInterface
 
     /**
      * Set query builder search specs.
-     *
      * @param array $specs Search specs
-     *
      * @return void
      */
     public function setSpecs(array $specs)
@@ -139,6 +118,10 @@ class ESQueryBuilder implements ESQueryBuilderInterface
         }
     }
 
+
+    /**
+     * @return SearchHandler
+     */
     protected function getSearchHandler($queryHandlerString)
     {
         return  array_key_exists(strtolower($queryHandlerString),$this->specs) ? $this->specs[strtolower($queryHandlerString)] :
