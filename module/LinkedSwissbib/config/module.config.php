@@ -23,8 +23,8 @@ $config = [
     'controllers' => [
         'invokables' => [
             'exploration'    => 'LinkedSwissbib\Controller\ElasticsearchController',
-            'inference'    => 'LinkedSwissbib\Controller\SparqlController',
-
+            'inference'      => 'LinkedSwissbib\Controller\SparqlController',
+            'exploreauthor'  => 'LinkedSwissbib\Controller\ExploreAuthorController',
         ]
     ],
     'service_manager' => [
@@ -89,7 +89,7 @@ $config = [
 
 // Define static routes -- Controller/Action strings
 $staticRoutes = [
-    'Exploration/Search', 'Elasticsearch/Results', 'Sparql/Results', 'Exploration/Author', 'Exploration/AuthorDetails'
+    'Exploration/Search', 'Elasticsearch/Results', 'Sparql/Results', 'Exploration/Author', 'Exploration/AuthorDetails', 'ExploreAuthor/Show'
     ];
 
 $routeGenerator = new \VuFind\Route\RouteGenerator();
