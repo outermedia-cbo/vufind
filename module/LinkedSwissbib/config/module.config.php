@@ -30,17 +30,15 @@ $config = [
     'service_manager' => [
         'factories' => [
             'LinkedSwissbib\SearchOptionsPluginManager' => 'LinkedSwissbib\Service\Factory::getSearchOptionsPluginManager',
-            'LinkedSwissbib\SearchParamsPluginManager' => 'LinkedSwissbib\Service\Factory::getSearchParamsPluginManager',
+            'LinkedSwissbib\SearchParamsPluginManager'  => 'LinkedSwissbib\Service\Factory::getSearchParamsPluginManager',
             'LinkedSwissbib\SearchResultsPluginManager' => 'LinkedSwissbib\Service\Factory::getSearchResultsPluginManager',
-            'LinkedSwissbib\RecordDriverPluginManager' => 'LinkedSwissbib\Service\Factory::getRecordDriverPluginManager',
-
-            ]
-
+            'LinkedSwissbib\RecordDriverPluginManager'  => 'LinkedSwissbib\Service\Factory::getRecordDriverPluginManager',
+        ]
     ],
     'vufind' => [
         'plugin_managers' => [
-            'search_backend'           => [
-                'factories' => [
+            'search_backend' => [
+                'factories'    => [
                     'ElasticSearch' => 'LinkedSwissbib\Search\Factory\ElasticSearchBackendFactory',
                 ]
             ],
@@ -62,7 +60,6 @@ $config = [
 
                 )
             ),
-
 
         ]
     ],
