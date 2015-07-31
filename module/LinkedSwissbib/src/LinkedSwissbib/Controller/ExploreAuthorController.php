@@ -20,4 +20,14 @@ class ExploreAuthorController extends AbstractSearch {
         return parent::resultsAction();
 
     }
+
+    /**
+     * Convenience method for accessing results
+     *
+     * @return \LinkedSwissbib\Search\Results\PluginManager
+     */
+    protected function getResultsManager()
+    {
+        return $this->getServiceLocator()->get('LinkedSwissbib\SearchResultsPluginManager');
+    }
 }
