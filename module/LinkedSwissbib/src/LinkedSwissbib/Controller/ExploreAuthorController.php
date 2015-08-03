@@ -10,7 +10,7 @@ class ExploreAuthorController extends AbstractSearch {
      */
     public function __construct()
     {
-        $this->searchClassId = 'ExploreAuthor';
+        $this->searchClassId = 'Elasticsearch';
         parent::__construct();
     }
 
