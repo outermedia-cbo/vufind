@@ -60,6 +60,7 @@ Contributor:
           fields:
             - dc:contributor.foaf:firstName
             - dc:contributor.foaf:lastName
+            - dc:contributor.rdfs:label
           type:
             - cross_fields #should be default
           operator:
