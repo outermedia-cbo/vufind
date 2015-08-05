@@ -65,9 +65,10 @@
                     </a>
                 </li>
             </ul>
-
         </div>
+        <!-- end persondSidebarContent -->
     </div>
+    <!-- end personSidebar -->
 
     <div id="personJumpTo"><p><b>Springe zu:&nbsp;
             </b><a href="#personWorks">Werke</a>&nbsp;|&nbsp;
@@ -80,10 +81,10 @@
     </div>
 
     <div id="personAuthorWrapper">
+        <div id="personAuthorImage">
+            <img src="../themes/linkedswissbib/images/JohannWolfgangVonGoethe.jpg" alt="Johann Wolfgang von Goethe">
+        </div>
         <div id="personAuthorDescription">
-            <div id="personAuthorImage">
-                <img src="../themes/linkedswissbib/images/JohannWolfgangVonGoethe.jpg" alt="Johann Wolfgang von Goethe">
-            </div>
             <h2>Johann Wolfgang von Goethe</h2>
             Schriftsteller, Publizist, Politiker, Jurist, Naturwissenschaftler, Theaterintendant, Maler, Zeichner<br /><br />
             <p>Geboren: 28. August 1749, Frankfurt am Main<br />
@@ -130,7 +131,7 @@
                             </div>
                             <!-- end list-group -->
                         </div>
-                        <!-- end callabse-details -->
+                        <!-- end collapse-details -->
                     </div>
                     <!-- end holding-details -->
                 </div>
@@ -138,6 +139,7 @@
              </div>
             <!-- end personAccordion -->
         </div>
+        <!-- end personAuthorDescription -->
     </div>
     <!-- end personAuthorWrapper -->
 
@@ -194,11 +196,11 @@
     <div id="personWorks">
         <h4>Werke</h4>
         <div id="tabs">
-        <ul class="recordTabs nav nav-tabs">
-            <li><a href="#tabs-1">Alles</a></li>
-            <li><a href="#tabs-2">Beteiligt an</a></li>
-            <li><a href="#tabs-3">Thema in</a></li>
-        </ul>
+            <ul class="recordTabs nav nav-tabs">
+                <li><a href="#tabs-1">Alles</a></li>
+                <li><a href="#tabs-2">Beteiligt an</a></li>
+                <li><a href="#tabs-3">Thema in</a></li>
+            </ul>
 
 
             <div id="tabs-1">
@@ -219,7 +221,6 @@
                 -->
 
                 <div class="tabContent">
-
                     <?
                     $title = "Goethe";
                     $subtitle = "the writer";
@@ -234,12 +235,14 @@
                     ?>
                     <div id="resultView">
                         <img src=<?echo $coverImage?> alt="Goethe">
-                        <div class="tabContentBibliographic"><h4><?echo $title?></h4>
-                        <p>
-                            <b>Verfasser/Beitragende:&nbsp;</b><?echo $author?><br />
-                            <b>Jahr:&nbsp;</b><?echo $year?><br />
-                            <b>Format:&nbsp;</b><?echo $format?>
-                        </p>
+                        <div class="tabContentBibliographic">
+                            <h4><?echo $title?></h4>
+                            <p>
+                                <?echo $subtitle?><br />
+                                <b>Verfasser/Beitragende:&nbsp;</b><?echo $author?><br />
+                                <b>Jahr:&nbsp;</b><?echo $year?><br />
+                                <b>Format:&nbsp;</b><?echo $format?>
+                            </p>
                         </div>
                         <div class="tabContentButtons" >
                             <img src="<?echo $buttonInstitution?>" alt="Bibliothek"> <br />
@@ -249,7 +252,6 @@
                     </div>
                     <?
                     }
-
                     ?>
                 </div>
                 <!-- end tabContent -->
@@ -257,35 +259,80 @@
             <!-- end tabs-1 -->
 
             <div id="tabs-2">
-                <div class="tabContent"><img src="../themes/linkedswissbib/images/Goethe_Safranski.jpg" alt="Goethe">
-                    <div class="tabContentBibliographic"><h4>Goethe</h4>
-                        <p>
-                            <b>Verfasser/Beitragende:</b> Rüdiger Safranski<br />
-                            <b>Jahr:</b> 2014
-                        </p>
-                    </div>
-                    <div class="tabContentButtons">
-                        <img src="../themes/linkedswissbib/images/button_bibliothek.jpg" alt="Bibliothek"> <br />
-                        <img src="../themes/linkedswissbib/images/button_merkliste.jpg" alt="Merkliste">
-                    </div>
+                <div class="tabContent">
+                    <?
+                    $title = "Goethe";
+                    $subtitle = "the poet";
+                    $author = "Rüdiger Safranski";
+                    $year = "2014";
+                    $format = "Buch";
+                    $coverImage = "../themes/linkedswissbib/images/Goethe_Safranski.jpg";
+                    $buttonInstitution = "../themes/linkedswissbib/images/button_bibliothek.jpg";
+                    $buttonList = "../themes/linkedswissbib/images/button_merkliste.jpg";
+
+                    for ($i = 0; $i <= 2; $i++) {
+                        ?>
+                        <div id="resultView">
+                            <img src=<?echo $coverImage?> alt="Goethe">
+                            <div class="tabContentBibliographic">
+                                <h4><?echo $title?></h4>
+                                <p>
+                                    <?echo $subtitle?><br />
+                                    <b>Verfasser/Beitragende:&nbsp;</b><?echo $author?><br />
+                                    <b>Jahr:&nbsp;</b><?echo $year?><br />
+                                    <b>Format:&nbsp;</b><?echo $format?>
+                                </p>
+                            </div>
+                            <div class="tabContentButtons" >
+                                <img src="<?echo $buttonInstitution?>" alt="Bibliothek"> <br />
+                                <img src="<?echo $buttonList?>" alt="Merkliste">
+                            </div>
+                            <br>
+                        </div>
+                    <?
+                    }
+                    ?>
                 </div>
                 <!-- end tabContent -->
             </div>
             <!-- end tabs-2 -->
+
             <div id="tabs-3">
-                <div class="tabContent"><img src="../themes/linkedswissbib/images/Goethe_Mecklenburg.jpg" alt="Goethe">
-                    <div class="tabContentBibliographic"><h4>Goethe</h4>
-                        <p>
-                            <b>Verfasser/Beitragende:</b> Norbert Mecklenburg<br />
-                            <b>Jahr:</b> 2014
-                        </p>
-                    </div>
-                    <div class="tabContentButtons">
-                        <img src="../themes/linkedswissbib/images/button_bibliothek.jpg" alt="Bibliothek"> <br />
-                        <img src="../themes/linkedswissbib/images/button_merkliste.jpg" alt="Merkliste">
-                    </div>
+                <div class="tabContent">
+                    <?
+                    $title = "Goethe";
+                    $subtitle = "the German";
+                    $author = "Norbert Mecklenburg";
+                    $year = "2014";
+                    $format = "Buch";
+                    $coverImage = "../themes/linkedswissbib/images/Goethe_Mecklenburg.jpg";
+                    $buttonInstitution = "../themes/linkedswissbib/images/button_bibliothek.jpg";
+                    $buttonList = "../themes/linkedswissbib/images/button_merkliste.jpg";
+
+                    for ($i = 0; $i <= 2; $i++) {
+                        ?>
+                        <div id="resultView">
+                            <img src=<?echo $coverImage?> alt="Goethe">
+                            <div class="tabContentBibliographic">
+                                <h4><?echo $title?></h4>
+                                <p>
+                                    <?echo $subtitle?><br />
+                                    <b>Verfasser/Beitragende:&nbsp;</b><?echo $author?><br />
+                                    <b>Jahr:&nbsp;</b><?echo $year?><br />
+                                    <b>Format:&nbsp;</b><?echo $format?>
+                                </p>
+                            </div>
+                            <div class="tabContentButtons" >
+                                <img src="<?echo $buttonInstitution?>" alt="Bibliothek"> <br />
+                                <img src="<?echo $buttonList?>" alt="Merkliste">
+                            </div>
+                            <br>
+                        </div>
+                    <?
+                    }
+                    ?>
                 </div>
-                <!-- end tabContent -->
+            <!-- end tabContent -->
             </div>
             <!-- end tabs-3 -->
         </div>
@@ -297,9 +344,6 @@
         </script>
     </div>
     <!-- end personWorks -->
-
-
-
 
     <div id="personWorkTypes">
         <h4>Werke als...</h4>
@@ -324,7 +368,6 @@
             <figcaption>Film / Video (4'756)</figcaption>
         </figure>
     </div>
-
 
     <div id="personCarousel">
         <h4>Werke von Zeitgenossen</h4>
@@ -442,7 +485,6 @@
                             </div>
                         </a>
                     </div>
-
                 </div>
             </div>
 
