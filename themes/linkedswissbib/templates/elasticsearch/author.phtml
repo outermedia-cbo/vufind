@@ -30,13 +30,13 @@ allen Katalogen | NEBIS | IDS Basel Bern | ID Luzern | RERO | Alexandria
 </p>
 </div>
 
-<?
+    <?
     $results = $this->results->getResults();
     foreach ($results as $rdfDriver): ?>
         <div>
             <a href="<?= $rdfDriver->getUniqueID()?>">document-IRI</a>
         </div>
-        <div>
+        <div id="resultView">
             <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getRdf()); ?>
         </div>
             <div>&nbsp;</div>

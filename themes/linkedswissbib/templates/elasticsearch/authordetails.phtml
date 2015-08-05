@@ -200,9 +200,11 @@
             <li><a href="#tabs-3">Thema in</a></li>
         </ul>
 
-        <div>
+
             <div id="tabs-1">
-                <div class="tabContent"><img src="../themes/linkedswissbib/images/Goethe_Catalano.jpg" alt="Goethe">
+                <!--
+                <div class="tabContent">
+                <img src="../themes/linkedswissbib/images/Goethe_Catalano.jpg" alt="Goethe">
                     <div class="tabContentBibliographic"><h4>Goethe</h4>
                         <p>
                             <b>Verfasser/Beitragende:</b> Gabriella Catalano<br />
@@ -214,7 +216,46 @@
                         <img src="../themes/linkedswissbib/images/button_merkliste.jpg" alt="Merkliste">
                     </div>
                 </div>
+                -->
+
+                <div class="tabContent">
+
+                    <?
+                    $title = "Goethe";
+                    $subtitle = "the writer";
+                    $author = "Gabriella Catalano";
+                    $year = "2011";
+                    $format = "Buch";
+                    $coverImage = "../themes/linkedswissbib/images/Goethe_Catalano.jpg";
+                    $buttonInstitution = "../themes/linkedswissbib/images/button_bibliothek.jpg";
+                    $buttonList = "../themes/linkedswissbib/images/button_merkliste.jpg";
+
+                    for ($i = 0; $i <= 2; $i++) {
+                    ?>
+                    <div id="resultView">
+                        <img src=<?echo $coverImage?> alt="Goethe">
+                        <div class="tabContentBibliographic"><h4><?echo $title?></h4>
+                        <p>
+                            <b>Verfasser/Beitragende:&nbsp;</b><?echo $author?><br />
+                            <b>Jahr:&nbsp;</b><?echo $year?><br />
+                            <b>Format:&nbsp;</b><?echo $format?>
+                        </p>
+                        </div>
+                        <div class="tabContentButtons" >
+                            <img src="<?echo $buttonInstitution?>" alt="Bibliothek"> <br />
+                            <img src="<?echo $buttonList?>" alt="Merkliste">
+                        </div>
+                    <br>
+                    </div>
+                    <?
+                    }
+
+                    ?>
+                </div>
+                <!-- end tabContent -->
             </div>
+            <!-- end tabs-1 -->
+
             <div id="tabs-2">
                 <div class="tabContent"><img src="../themes/linkedswissbib/images/Goethe_Safranski.jpg" alt="Goethe">
                     <div class="tabContentBibliographic"><h4>Goethe</h4>
@@ -228,7 +269,9 @@
                         <img src="../themes/linkedswissbib/images/button_merkliste.jpg" alt="Merkliste">
                     </div>
                 </div>
+                <!-- end tabContent -->
             </div>
+            <!-- end tabs-2 -->
             <div id="tabs-3">
                 <div class="tabContent"><img src="../themes/linkedswissbib/images/Goethe_Mecklenburg.jpg" alt="Goethe">
                     <div class="tabContentBibliographic"><h4>Goethe</h4>
@@ -242,16 +285,21 @@
                         <img src="../themes/linkedswissbib/images/button_merkliste.jpg" alt="Merkliste">
                     </div>
                 </div>
+                <!-- end tabContent -->
             </div>
+            <!-- end tabs-3 -->
         </div>
+        <!-- end tabs -->
+        <script>
+            $(function() {
+                $( "#tabs" ).tabs();
+            });
+        </script>
     </div>
+    <!-- end personWorks -->
 
-    <script>
-        $(function() {
-            $( "#tabs" ).tabs();
-        });
-    </script>
-    </div>
+
+
 
     <div id="personWorkTypes">
         <h4>Werke als...</h4>
@@ -821,7 +869,7 @@
         <div id="main" class="hotag">
         </div>
 
-        <!-- Link causes problems if placed on page's head -->
+        <!-- Link causes problems if placed at page's head -->
         <script src="../themes/linkedswissbib/js/jquery.hotag.js"></script>
         <script>
             var tags = [{"counts":2,"tag":"Dies","href":"#"},
