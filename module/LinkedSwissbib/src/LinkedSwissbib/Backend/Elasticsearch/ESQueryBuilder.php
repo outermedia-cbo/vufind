@@ -88,7 +88,8 @@ class ESQueryBuilder implements ESQueryBuilderInterface
 
         $getParams['body']['query'] = $searchBody;
         $getParams['type'] = $searchHandlerType->getTypes();
-        $getParams['index'] = $this->searchIndexes;
+        //$getParams['index'] = $this->searchIndexes;
+        $getParams['index'] = $searchHandlerType->getIndices();
 
 
         return $getParams;
