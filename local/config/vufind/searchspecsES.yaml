@@ -10,7 +10,7 @@ AllFields:
     - bibliographicResource
     - document
   UsedIndex:
-    - testsb
+    - testsb3
   query:
     bool:
       should:
@@ -23,8 +23,7 @@ AllFields:
             - dct:title
             - rdau:publicationStatement
             - @type
-            - dc:contributor.rdfs:label
-            - dc:contributor.@type
+            - dct:contributor.@id
             - rdau:noteOnResource
             - dct:bibliographicCitation
             - bibo:isbn13
@@ -52,20 +51,19 @@ Contributor:
     - testsb
   query:
     #todo think about a mechanism to reference already defined queries
-    nested:
-      path:
-        - dc:contributor
-      query:
-        multi_match:
-          fields:
-            - dc:contributor.foaf:firstName
-            - dc:contributor.foaf:lastName
-            - dc:contributor.rdfs:label
-            - dc:contributor.@id
-          type:
-            - cross_fields #should be default
-          operator:
-            - and # should be default
+#    nested:
+#      path:
+#        - dct:BibliographicResource.dc:contributor
+#      query:
+      multi_match:
+        fields:
+          - dct:BibliographicResource.dc:contributor.@id
+#          - dct:BibliographicResource.dc:contributor.foaf:firstName
+#          - dct:BibliographicResource.dct:title
+        type:
+          - cross_fields #should be default
+        operator:
+          - and # should be default
 
 
 
