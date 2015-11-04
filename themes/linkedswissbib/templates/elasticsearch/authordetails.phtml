@@ -86,14 +86,20 @@
         <div id="personAuthorDescription">
             <?
             $results = $this->results->getResults();
-            foreach ($results as $rdfDriver): ?>
+            if (count($results) == 1) {
+                foreach ($results as $rdfDriver): ?>
+                    <div id="resultView">
+                        <h2>
+                            <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getFirstName()); ?>
+                            <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getLastName()); ?>
+                        </h2>
+                    </div>
+                <?endforeach;
+            } else { ?>
                 <div id="resultView">
-                    <h2>
-                        <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getFirstName()); ?>
-                        <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getLastName()); ?>
-                    </h2>
+                    <h2>Johann Wolfgang von Goethe</h2>
                 </div>
-            <?endforeach;?>
+            <? }; ?>
             Schriftsteller, Publizist, Politiker, Jurist, Naturwissenschaftler, Theaterintendant, Maler, Zeichner<br /><br />
             <p>Geboren: 28. August 1749, Frankfurt am Main<br />
                 Gestorben; 22. März 1832, Weimar
