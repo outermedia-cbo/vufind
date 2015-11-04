@@ -94,5 +94,14 @@ class ElasticSearchRDF extends AbstractBase {
 
     }
 
+    public function getFirstName()
+    {
+        return $this->fields['_source']['foaf:firstName'];
+    }
+
+    public function getLastName()
+    {
+        return $this->fields['_source']['foaf:lastName'];
+    }
 
 }
