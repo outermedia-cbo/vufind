@@ -90,8 +90,8 @@
                 foreach ($results as $rdfDriver): ?>
                     <div id="resultView">
                         <h2>
-                            <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getFirstName()); ?>
-                            <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getLastName()); ?>
+                            <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getFirstNameContributor()); ?>
+                            <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getLastNameContributor()); ?>
                         </h2>
                     </div>
                 <?endforeach;
