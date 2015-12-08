@@ -80,3 +80,22 @@ Resources:
           - cross_fields #should be default
         operator:
           - and # should be default
+
+Work:
+  UsedTypes:
+    - work
+  UsedIndex:
+    - testsb
+  query:
+    #todo think about a mechanism to reference already defined queries
+#    nested:
+#      path:
+#        - dct:BibliographicResource.dc:contributor
+#      query:
+      multi_match:
+        fields:
+          - _id
+        type:
+          - cross_fields #should be default
+        operator:
+          - and # should be default

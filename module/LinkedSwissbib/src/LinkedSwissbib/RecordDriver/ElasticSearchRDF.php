@@ -169,6 +169,53 @@ class ElasticSearchRDF extends AbstractBase {
         return $this->fields['_source']['dct:title'];
     }
 
+    public function getWorkTitle()
+    {
+        $workTitle = $this->fields['_source']['dct:title'][0];
+        return $workTitle;
+    }
+
+    public function getWorkInstances()
+    {
+        $array = $this->fields['_source']['bf:hasInstance'];
+
+        for ($i = 0; $i <= count($array); $i++) {
+            foreach ($array[$i] as $key => $item) {
+                $instances[] = $item;
+                return $instances[$i];
+            }
+        }
+    }
+
+    /* Ergänzungen laufen noch nicht - Vorlage für die Integration einer zweiten Suchabfrage
+
+    public function getWorkInstances()
+        {
+            $array = $this->fields['_source']['bf:hasInstance'];
+
+            for ($i = 0; $i <= count($array); $i++) {
+                foreach ($array[$i] as $key => $item) {
+                        $instances[] = $item;
+                }
+            }
+            $blub = [
+                'index' => 'testsb',
+                'type' => 'bibliographicResource',
+                'body' => [
+                    'query' => [
+                        'filtered' => [
+                            'filter' => [
+                                'terms' => [
+                                    '_id' => '$instances'
+                                 ]
+                             ]
+                        ]
+                    ]
+                ]
+            ];
+            public function search($blub){}
+         }*/
+
     public function getType()
     {
         return $this->fields['_source']['rdf:type']["@id"];
