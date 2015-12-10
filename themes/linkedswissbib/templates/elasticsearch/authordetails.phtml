@@ -1,7 +1,7 @@
 <div id="allWrapper">
     <div id="personSidebar">
         <div id="personSidebarContent">
-            <h4>Dieser Autor in externen Katalogen:</h4>
+            <!--<h4>Dieser Autor in externen Katalogen:</h4>
             <ul>
                 <li class="externalLink">
                     <a rel="external" href="http://data.bnf.fr/11905269" target="_blank">
@@ -63,12 +63,12 @@
                         <span class ="externalLink">Historisches Lexikon der Schweiz (HLS)</span>
                     </a>
                 </li>
-            </ul>
+            </ul>-->
 
             <div class="sidebar col-table-fix-md hidden-print resultView">
                 <h4>Externe Links</h4>
                 <ul id="side-panel-union" class="list-group">
-                    <li class="list-group-item title" href="#side-collapse-union" data-toggle="collapse">Dieser Autor in externen Katalogen</li>
+                    <li class="list-group-item title" href="#side-collapse-union" data-toggle="collapse" style="background:#0d785b; color:#fff">Dieser Autor in externen Katalogen</li>
                     <div id="side-collapse-union" class="collapse in">
                         <a class="list-group-item facetAND" rel="external" href="http://data.bnf.fr/11905269" target="_blank">
                             <img class="externalLink" alt="" src="http://www.bnf.fr/bnf_dev/icono/favicon.ico">
@@ -94,6 +94,32 @@
                         <a class="list-group-item narrowGroupHidden-union hidden" href="javascript:lessFacets('narrowGroupHidden-union')">weniger ...</a>
                     </div>
                 </ul>
+
+                <ul id="side-panel-union" class="list-group">
+                    <li class="list-group-item title" href="#side-collapse-union" data-toggle="collapse" style="background:#0d785b; color:#fff" >Dieser Autor auf externen Websites</li>
+                    <div id="side-collapse-union" class="collapse in">
+                        <a class="list-group-item facetAND" rel="external" href="http://de.wikipedia.org/wiki/Johann_Wolfgang_von_Goethe" target="_blank">
+                            <img class="externalLink" alt="" src="http://de.wikipedia.org/favicon.ico">
+                            <span class="externalLink">Wikipedia (Deutsch)</span>
+                        </a>
+                        <a class="list-group-item facetAND" rel="external" href="http://de.wikisource.org/wiki/Johann_Wolfgang_von_Goethe" target="_blank">
+                            <img class="externalLink" alt="" src="http://wikisource.org/favicon.ico">
+                            <span class="externalLink">Wikisource</span>
+                        </a>
+                        <a class="list-group-item facetAND" rel="external" href="http://viaf.org/viaf/24602065" target="_blank">
+                            <img class="externalLink" alt="" src="http://viaf.org/viaf/images/viaf.ico">
+                            <span class="externalLink">VIAF - Virtual International Authority File</span>
+                        </a>
+                        <a id="more-narrowGroupHidden-union" class="list-group-item" href="javascript:moreFacets('narrowGroupHidden-union')">mehr ...</a>
+                        <a class="list-group-item facetAND narrowGroupHidden-union hidden" rel="external" href="http://www.hls-dhs-dss.ch/textes/d/D11638.php" target="_blank">
+                            <img class="externalLink" alt="" src="http://www.hls-dhs-dss.ch/favicon.ico">
+                            <span class="externalLink">Historisches Lexikon der Schweiz (HLS)</span>
+                        </a>
+                        <a class="list-group-item narrowGroupHidden-union hidden" href="javascript:lessFacets('narrowGroupHidden-union')">weniger ...</a>
+                    </div>
+                </ul>
+
+
                 <h4>Suche verfeinern</h4>
                 <ul id="side-panel-union" class="list-group">
                     <li class="list-group-item title" href="#side-collapse-union" data-toggle="collapse"> Bibliotheksverbund </li>
