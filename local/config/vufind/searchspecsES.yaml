@@ -94,7 +94,7 @@ Work:
 #      query:
       multi_match:
         fields:
-          - _id
+          - @id
         type:
           - cross_fields #should be default
         operator:
