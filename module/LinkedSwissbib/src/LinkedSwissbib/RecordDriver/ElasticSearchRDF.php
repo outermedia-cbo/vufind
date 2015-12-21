@@ -169,6 +169,11 @@ class ElasticSearchRDF extends AbstractBase {
         return $this->fields['_source']['dct:title'];
     }
 
+    public function getStatementOfResponsibility    ()
+    {
+        return $this->fields['_source']['rdau:statementOfResponsibility'];
+    }
+
     public function getWorkTitle()
     {
         $workTitle = $this->fields['_source']['dct:title'][0];

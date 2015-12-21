@@ -67,9 +67,9 @@
 
             <div class="sidebar col-table-fix-md hidden-print resultView">
                 <h4>Externe Links</h4>
-                <ul id="side-panel-union" class="list-group">
-                    <li class="list-group-item title" href="#side-collapse-union" data-toggle="collapse" style="background:#0d785b; color:#fff">Dieser Autor in externen Katalogen</li>
-                    <div id="side-collapse-union" class="collapse in">
+                <ul id="side-panel-externalCatalogues" class="list-group">
+                    <li class="list-group-item title" href="#side-collapse-externalCatalogues" data-toggle="collapse" style="background:#0d785b; color:#fff">Dieser Autor in externen Katalogen</li>
+                    <div id="side-collapse-externalCatalogues" class="collapse in">
                         <a class="list-group-item facetAND" rel="external" href="http://data.bnf.fr/11905269" target="_blank">
                             <img class="externalLink" alt="" src="http://www.bnf.fr/bnf_dev/icono/favicon.ico">
                             <span class="externalLink">Bibliothèque nationale de France (Frankreich)</span>
@@ -95,9 +95,9 @@
                     </div>
                 </ul>
 
-                <ul id="side-panel-union" class="list-group">
-                    <li class="list-group-item title" href="#side-collapse-union" data-toggle="collapse" style="background:#0d785b; color:#fff" >Dieser Autor auf externen Websites</li>
-                    <div id="side-collapse-union" class="collapse in">
+                <ul id="side-panel-externalLinks" class="list-group">
+                    <li class="list-group-item title" href="#side-collapse-externalLinks" data-toggle="collapse" style="background:#0d785b; color:#fff" >Dieser Autor auf externen Websites</li>
+                    <div id="side-collapse-externalLinks" class="collapse in">
                         <a class="list-group-item facetAND" rel="external" href="http://de.wikipedia.org/wiki/Johann_Wolfgang_von_Goethe" target="_blank">
                             <img class="externalLink" alt="" src="http://de.wikipedia.org/favicon.ico">
                             <span class="externalLink">Wikipedia (Deutsch)</span>
@@ -268,6 +268,7 @@
                         $title =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getTitle());
                         /* $title = $title;
                         $subtitle = "the writer";*/
+                        $statementOfResponsibility =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getStatementOfResponsibility());
                         $author = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getName());
                         $year = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPublicationStatement());
                         $format = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getRdfType());;
@@ -283,6 +284,7 @@
                                 <div class="tabContentBibliographic">
                                     <div class="tabContentText">
                                     <h4><?echo $title?></h4>
+                                    <p><?echo $statementOfResponsibility ?></p>
                                     <p>
                                         <?echo $subtitle?><br />
                                         <b>Verfasser/Beitragende:&nbsp;</b><? echo $author ?><br />
