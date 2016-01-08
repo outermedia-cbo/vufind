@@ -180,6 +180,7 @@ class ElasticSearchRDF extends AbstractBase {
         return $workTitle;
     }
 
+    // TODO: gibt immer nur ein Element zurück, da return die Funktion sofort beendet
     public function getWorkInstances()
     {
         $array = $this->fields['_source']['bf:hasInstance'];
