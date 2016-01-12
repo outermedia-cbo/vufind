@@ -10,8 +10,10 @@
  */
 namespace LinkedSwissbib\Search\Factory;
 
+use VuFindSearch\Backend\BackendInterface;
 
 use LinkedSwissbib\Backend\Elasticsearch\ESQueryBuilder;
+use LinkedSwissbib\Search\Elasticsearch\RecursiveSearchListener;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use LinkedSwissbib\Backend\Elasticsearch\Backend;
@@ -170,11 +172,26 @@ class ElasticSearchBackendFactory implements FactoryInterface
      */
     protected function createListeners(Backend $backend)
     {
-
-        //todo look up listeners creation in SOLR
+        //todo look up listeners creation in SOLR ( module/VuFind/src/VuFind/Search/Factory/AbstractSolrBackendFactory.php )
         //do we need similar in ES?
 
+        $events = $this->serviceLocator->get('SharedEventManager');
+        $this->getRecursiveSearchListener($backend)->attach($events);
     }
+
+
+    /**
+     * Get a RecursiveSearchListener
+     *
+     * @param BackendInterface $backend Search backend
+     *
+     * @return RecursiveSearchListener
+     */
+    protected function getRecursiveSearchListener(BackendInterface $backend)
+    {
+        return new RecursiveSearchListener($backend);
+    }
+
 
     /**
      * Load the search specs.
