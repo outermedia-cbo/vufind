@@ -142,17 +142,162 @@ class ElasticSearchRDF extends AbstractBase {
         return $name;
     }
 
-
-
-/*    public function getFirstNameResources()
+    public function getFirstName()
     {
-        return $this->fields['_source']['dc:contributor']['foaf:Person']['foaf:firstName'];
+        return $this->fields['_source']['foaf:firstName'];
     }
 
-    public function getLastNameResources()
+    public function getLastName()
     {
-        return $this->fields['_source']['dc:contributor']['foaf:Person']['foaf:lastName'];
-    }*/
+        return $this->fields['_source']['foaf:lastName'];
+    }
+
+    public function getOccupation()
+    {
+        $array = $this->fields['_source']['dbp:occupation'];
+        if (isset($this->fields['_source']['dbp:occupation']['@id'])) {
+            foreach ($array as $key => $item) {
+                    $occupation = $item;
+            }
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                foreach ($array[$i] as $key => $item) {
+                        $occupation .= $item . ", ";
+                }
+            }
+        }
+        $occupation = rtrim($occupation, ", ");
+        return $occupation;
+    }
+
+    public function getBirthDate()
+    {
+        $array = $this->fields['_source']['dbp:birthYear'];
+        if (!is_array($array)){
+            return $this->fields['_source']['dbp:birthYear'];
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                $birthDate .= $array[$i] . " oder ";
+            }
+            $birthDate = rtrim($birthDate, " oder ");
+            return $birthDate;
+        }
+    }
+
+    public function getBirthPlace()
+    {
+        $array = $this->fields['_source']['dbp:birthPlace'];
+        if (isset($this->fields['_source']['dbp:birthPlace']['@id'])) {
+            foreach ($array as $key => $item) {
+                $birthPlace = $item;
+            }
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                foreach ($array[$i] as $key => $item) {
+                    $birthPlace .= $item . " oder ";
+                }
+            }
+        }
+        $birthPlace = rtrim($birthPlace, " oder ");
+        return $birthPlace;
+    }
+
+    public function getDeathDate()
+    {
+        $array = $this->fields['_source']['dbp:deathYear'];
+        if (!is_array($array)){
+            return $this->fields['_source']['dbp:deathYear'];
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                $deathDate .= $array[$i] . " oder ";
+            }
+            $deathDate = rtrim($deathDate, " oder ");
+            return $deathDate;
+        }
+    }
+
+    public function getDeathPlace()
+    {
+        $array = $this->fields['_source']['dbp:deathPlace'];
+        if (isset($this->fields['_source']['dbp:deathPlace']['@id'])) {
+            foreach ($array as $key => $item) {
+                $birthPlace = $item;
+            }
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                foreach ($array[$i] as $key => $item) {
+                    $deathPlace .= $item . " oder ";
+                }
+            }
+        }
+        $deathPlace = rtrim($deathPlace, " oder ");
+        return $deathPlace;
+    }
+
+    public function getGenre()
+    {
+        $array = $this->fields['_source']['dbp:genre'];
+        if (isset($this->fields['_source']['dbp:genre']['@id'])) {
+            foreach ($array as $key => $item) {
+                $genre = $item;
+            }
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                foreach ($array[$i] as $key => $item) {
+                    $genre .= $item . ", ";
+                }
+            }
+        }
+        $genre = rtrim($genre, ", ");
+        return $genre;
+    }
+
+    public function getMovement()
+    {
+        $array = $this->fields['_source']['dbp:movement'];
+        if (isset($this->fields['_source']['dbp:movement']['@id'])) {
+            foreach ($array as $key => $item) {
+                $movement = $item;
+            }
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                foreach ($array[$i] as $key => $item) {
+                    $movement .= $item . ", ";
+                }
+            }
+        }
+        $movement = rtrim($movement, ", ");
+        return $movement;
+    }
+
+    public function getInfluenced()
+    {
+        $array = $this->fields['_source']['dbp:influenced'];
+        if (isset($this->fields['_source']['dbp:influenced']['@id'])) {
+            foreach ($array as $key => $item) {
+                $influenced = $item;
+            }
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                foreach ($array[$i] as $key => $item) {
+                    $influenced .= $item . ", ";
+                }
+            }
+        }
+        $influenced = rtrim($influenced, ", ");
+        return $influenced;
+    }
+
+
+    /*    public function getFirstNameResources()
+        {
+            return $this->fields['_source']['dc:contributor']['foaf:Person']['foaf:firstName'];
+        }
+
+        public function getLastNameResources()
+        {
+            return $this->fields['_source']['dc:contributor']['foaf:Person']['foaf:lastName'];
+        }*/
 
     public function getPublicationStatement()
     {
