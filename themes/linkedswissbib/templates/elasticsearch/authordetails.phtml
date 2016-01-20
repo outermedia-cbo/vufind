@@ -185,9 +185,8 @@
             $firstName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getFirstName());
             $lastName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getLastName());
             $occupation =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getOccupation());
-            # $nationality =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->())
+            $nationality =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNationality());
             $birthDate =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getBirthDate());
-            # $nationality =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->());
             $birthPlace =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getBirthPlace());
             $deathDate =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getDeathDate());
             $deathPlace =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getDeathPlace());
@@ -195,10 +194,10 @@
             $genre =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getGenre());
             $movement =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getMovement());
             $influenced =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getInfluenced());
-            # $influencedBy =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->());
-            # $partner =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->());
-            # $spouse =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->());
-            # $notableWork =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->());
+            $influencedBy =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getInfluencedBy());
+            $partner =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPartner());
+            $spouse =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getSpouse());
+            $notableWork =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNotableWork());
             # $source =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->()); #owl:sameAs
             {
             ?>
@@ -206,6 +205,7 @@
                 <h4><?echo $firstName ?></h4>
                 <p><?echo $lastName ?></p>
                 <p><?echo $occupation?></p>
+                <p><?echo $nationality?></p>
                 <p><?echo $birthDate?></p>
                 <p><?echo $birthPlace?></p>
                 <p><?echo $deathDate?></p>
@@ -213,6 +213,10 @@
                 <p><?echo $genre?></p>
                 <p><?echo $movement?></p>
                 <p><?echo $influenced?></p>
+                <p><?echo $influencedBy?></p>
+                <p><?echo $partner?></p>
+                <p><?echo $spouse?></p>
+                <p><?echo $notableWork?></p>
             </div>
             <?
             }

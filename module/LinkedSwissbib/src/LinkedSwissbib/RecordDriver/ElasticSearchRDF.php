@@ -170,6 +170,24 @@ class ElasticSearchRDF extends AbstractBase {
         return $occupation;
     }
 
+    public function getNationality()
+    {
+        $array = $this->fields['_source']['dbp:nationality'];
+        if (isset($this->fields['_source']['dbp:nationality']['@id'])) {
+            foreach ($array as $key => $item) {
+                $nationality = $item;
+            }
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                foreach ($array[$i] as $key => $item) {
+                    $nationality .= $item . ", ";
+                }
+            }
+        }
+        $nationality = rtrim($nationality, ", ");
+        return $nationality;
+    }
+
     public function getBirthDate()
     {
         $array = $this->fields['_source']['dbp:birthYear'];
@@ -288,16 +306,88 @@ class ElasticSearchRDF extends AbstractBase {
         return $influenced;
     }
 
-
-    /*    public function getFirstNameResources()
-        {
-            return $this->fields['_source']['dc:contributor']['foaf:Person']['foaf:firstName'];
+    public function getInfluencedBy()
+    {
+        $array = $this->fields['_source']['dbp:influencedBy'];
+        if (isset($this->fields['_source']['dbp:influencedBy']['@id'])) {
+            foreach ($array as $key => $item) {
+                $influencedBy = $item;
+            }
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                foreach ($array[$i] as $key => $item) {
+                    $influencedBy .= $item . ", ";
+                }
+            }
         }
+        $influencedBy = rtrim($influencedBy, ", ");
+        return $influencedBy;
+    }
 
-        public function getLastNameResources()
-        {
-            return $this->fields['_source']['dc:contributor']['foaf:Person']['foaf:lastName'];
-        }*/
+    public function getPartner()
+    {
+        $array = $this->fields['_source']['dbp:partner'];
+        if (isset($this->fields['_source']['dbp:partner']['@id'])) {
+            foreach ($array as $key => $item) {
+                $partner = $item;
+            }
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                foreach ($array[$i] as $key => $item) {
+                    $partner .= $item . ", ";
+                }
+            }
+        }
+        $partner = rtrim($partner, ", ");
+        return $partner;
+    }
+
+    public function getSpouse()
+    {
+        $array = $this->fields['_source']['dbp:spouse'];
+        if (isset($this->fields['_source']['dbp:spouse']['@id'])) {
+            foreach ($array as $key => $item) {
+                $spouse = $item;
+            }
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                foreach ($array[$i] as $key => $item) {
+                    $spouse .= $item . ", ";
+                }
+            }
+        }
+        $spouse = rtrim($spouse, ", ");
+        return $spouse;
+    }
+
+    public function getNotableWork()
+    {
+        $array = $this->fields['_source']['dbp:notableWork'];
+        if (isset($this->fields['_source']['dbp:notableWork']['@id'])) {
+            foreach ($array as $key => $item) {
+                $notableWork = $item;
+            }
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                foreach ($array[$i] as $key => $item) {
+                    $notableWork .= $item . ", ";
+                }
+            }
+        }
+        $notableWork = rtrim($notableWork, ", ");
+        return $notableWork;
+    }
+
+
+        /*    public function getFirstNameResources()
+            {
+                return $this->fields['_source']['dc:contributor']['foaf:Person']['foaf:firstName'];
+            }
+
+            public function getLastNameResources()
+            {
+                return $this->fields['_source']['dc:contributor']['foaf:Person']['foaf:lastName'];
+            }*/
 
     public function getPublicationStatement()
     {
