@@ -179,69 +179,75 @@
         </div>
 
         <div id="personAuthorDescription">
-            <?
-            $results = $this->results->getResults();
-            foreach ($results as $rdfDriver):
-            $firstName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getFirstName());
-            $lastName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getLastName());
-            $occupation =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getOccupation());
-            $nationality =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNationality());
-            $birthDate =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getBirthDate());
-            $birthPlace =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getBirthPlace());
-            $deathDate =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getDeathDate());
-            $deathPlace =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getDeathPlace());
-            # $biography = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->());
-            $genre =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getGenre());
-            $movement =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getMovement());
-            $influenced =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getInfluenced());
-            $influencedBy =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getInfluencedBy());
-            $partner =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPartner());
-            $spouse =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getSpouse());
-            $notableWork =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNotableWork());
-            # $source =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->()); #owl:sameAs
-            {
-            ?>
-            <div>
-                <h4><?echo $firstName ?></h4>
-                <p><?echo $lastName ?></p>
-                <p><?echo $occupation?></p>
-                <p><?echo $nationality?></p>
-                <p><?echo $birthDate?></p>
-                <p><?echo $birthPlace?></p>
-                <p><?echo $deathDate?></p>
-                <p><?echo $deathPlace?></p>
-                <p><?echo $genre?></p>
-                <p><?echo $movement?></p>
-                <p><?echo $influenced?></p>
-                <p><?echo $influencedBy?></p>
-                <p><?echo $partner?></p>
-                <p><?echo $spouse?></p>
-                <p><?echo $notableWork?></p>
-            </div>
-            <?
-            }
-            endforeach;
-            ?>
-
-            <?
+<!--            <?/*
             $results = $this->results->getResults();
             if (count($results) == 1) {
-                foreach ($results as $rdfDriver): ?>
+                foreach ($results as $rdfDriver): */?>
                     <div>
                         <h2>
-                            <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getFirstNameContributor()); ?>
-                            <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getLastNameContributor()); ?>
+                            <?/*=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getFirstNameContributor()); */?>
+                            <?/*=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getLastNameContributor()); */?>
                         </h2>
                     </div>
-                <?endforeach;
-            } else { ?>
+                <?/*endforeach;
+            } else { */?>
                 <div id="resultView">
                     <h2>Johann Wolfgang von Goethe</h2>
                 </div>
-            <? }; ?>
-            Schriftsteller, Publizist, Politiker, Jurist, Naturwissenschaftler, Theaterintendant, Maler, Zeichner<br /><br />
-            <p>Geboren: 28. August 1749, Frankfurt am Main<br />
-                Gestorben; 22. März 1832, Weimar
+            --><?/* }; */?>
+
+            <?
+            $results = $this->results->getResults();
+            foreach ($results as $rdfDriver):
+                $firstName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getFirstName());
+                $lastName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getLastName());
+                $occupation =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getOccupation());
+                $nationality =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNationality());
+                $birthDate =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getBirthDate());
+                $birthPlace =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getBirthPlace());
+                $deathDate =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getDeathDate());
+                $deathPlace =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getDeathPlace());
+                # $biography = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->());
+                $genre =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getGenre());
+                $movement =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getMovement());
+                $alternativeNames = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getAlternativeNames());
+                $pseudonym = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPseudonym());
+                $influenced =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getInfluenced());
+                $influencedBy =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getInfluencedBy());
+                $partner =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPartner());
+                $spouse =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getSpouse());
+                $notableWork =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNotableWork());
+                # $source =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->()); #owl:sameAs
+                {
+                ?>
+                    <!--
+                    <div>
+                        <h4><?echo $firstName ?></h4>
+                        <p><?echo $lastName ?></p>
+
+                        <p><?echo $nationality?></p>
+                        <p><?echo $birthDate?></p>
+                        <p><?echo $birthPlace?></p>
+                        <p><?echo $deathDate?></p>
+                        <p><?echo $deathPlace?></p>
+                        <p><?echo $genre?></p>
+                        <p><?echo $movement?></p>
+                        <p><?echo $influenced?></p>
+                        <p><?echo $influencedBy?></p>
+                        <p><?echo $partner?></p>
+                        <p><?echo $spouse?></p>
+                        <p><?echo $notableWork?></p>
+                    </div>
+                    -->
+
+            <h2><?echo $firstName . " " . $lastName ?></h2>
+            <!-- Schriftsteller, Publizist, Politiker, Jurist, Naturwissenschaftler, Theaterintendant, Maler, Zeichner<br /><br /> -->
+            <p><?echo $occupation?></p>
+            <p><b>Geboren:</b><?echo $birthDate . ", " . $birthPlace?><br />
+               <b>Gestorben;</b> <?echo $deathDate . ", " . $deathPlace?><br />
+                <!-- Geboren: 28. August 1749, Frankfurt am Main<br />
+                Gestorben; 22. März 1832, Weimar -->
+               <b>Nationalität:</b><? $nationality?><br>
             </p>
 
             <div id="personAccordion">
@@ -264,19 +270,29 @@
                                                     erfuhren eine aufwendige Ausbildung durch Hauslehrer. Dem Wunsch seines Vaters folgend studierte Goethe in Strassburg und Leipzig Rechtswissenschaft und war danach
                                                     als Advokat in Wetzlar und Frankfurt tätig. Gleichzeitig drängten ihn Talent und Neigung zur Dichtkunst, die ihm mit dem Drama Götz von Berlichingen einen frühen
                                                     Erfolg und Anerkennung in der literarischen Welt zuteilwerden liess.</div>
-                                    <div id="personMoreDetails">Drama, Deutsche Literatur, Schauspiel, Gedichte</div>
-                                    <div id="personMoreLabels">Genre/Kategorie:</div>
-                                    <div id="personMoreDetails">wilhelminische Ära, Romantik, Aufklärung</div>
-                                    <div id="personMoreLabels">Bewegung, Zeit, Ära:</div>
-                                    <div id="personMoreDetails">Johann Wolfgang von Göthe<br />
+                                    <div id="personMoreDetails"><?echo $notableWork?><!--Drama, Deutsche Literatur, Schauspiel, Gedichte --></div>
+                                    <div id="personMoreLabels">Wichtigste Werke <br> (Notable Work):<br> (Genre):</div>
+                                    <div id="personMoreDetails"><?echo $genre?><!--Drama, Deutsche Literatur, Schauspiel, Gedichte --></div>
+                                    <div id="personMoreLabels">Genre/Kategorie <br> (Genre):</div>
+                                    <div id="personMoreDetails"><?echo $movement?><!-- wilhelminische Ära, Romantik, Aufklärung --></div>
+                                    <div id="personMoreLabels">Bewegung, Zeit, Ära <br> (Movement):</div>
+                                    <div id="personMoreDetails"> <? echo $alternativeNames?>
+                                                    <!-- Johann Wolfgang von Göthe<br />
                                                     Wolfgang von Goethe<br />
                                                     Wolfgang Goethe<br />
-                                                    Johann Wolfgang Goethe</div>
+                                                    Johann Wolfgang Goethe--></div>
                                     <div id="personMoreLabels">Namensvarianten:</div>
-                                    <div id="personMoreDetails">Elisabeth Goethe (Mutter)<br />
+                                    <div id="personMoreDetails"> <? echo $pseudonym?></div>
+                                   <div id="personMoreLabels">Pseudonyme:</div>
+                                    <div id="personMoreDetails">
+                                                    <?echo $partner . "(Partner/s)<br>" .
+                                                           $spouse  . "(Spouse/s)<br>" .
+                                                           $influenced . "(influenced)<br>" .
+                                                           $influencedBy . "(influencedBy)<br>" ?>
+                                                    <!-- Elisabeth Goethe (Mutter)<br />
                                                     Friedel Knolle (berufliche Beziehung)<br />
                                                     Rolf Alpers (berufliche Beziehung)<br />
-                                                    Hermann Heinzel (berufliche Beziehung)<br /></div>
+                                                    Hermann Heinzel (berufliche Beziehung)<br /> --></div>
                                     <div id="personMoreLabels">In Beziehung stehend:</div>
                                     <div id="personMoreDetails">VIAF - Virtual International Authority File<br />
                                                     Wikipedia (Deutsch)<br /></div>
@@ -291,6 +307,10 @@
                 <!-- end accordion -->
              </div>
             <!-- end personAccordion -->
+            <?
+            }
+            endforeach;
+            ?>
         </div>
         <!-- end personAuthorDescription -->
     </div>

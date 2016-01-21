@@ -378,6 +378,42 @@ class ElasticSearchRDF extends AbstractBase {
         return $notableWork;
     }
 
+    public function getAlternativeNames()
+    {
+        $array = $this->fields['_source']['dbp:alternativeNames'];
+        if (isset($this->fields['_source']['dbp:alternativeNames']['@id'])) {
+            foreach ($array as $key => $item) {
+                $alternativeNames = $item;
+            }
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                foreach ($array[$i] as $key => $item) {
+                    $alternativeNames .= $item . "<br> ";
+                }
+            }
+        }
+        $alternativeNames = rtrim($alternativeNames, "<br> ");
+        return $alternativeNames;
+    }
+
+    public function getPseudonym()
+    {
+        $array = $this->fields['_source']['dbp:pseudonym'];
+        if (isset($this->fields['_source']['dbp:pseudonym']['@id'])) {
+            foreach ($array as $key => $item) {
+                $pseudonym = $item;
+            }
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                foreach ($array[$i] as $key => $item) {
+                    $pseudonym .= $item . "<br> ";
+                }
+            }
+        }
+        $pseudonym = rtrim($pseudonym, "<br> ");
+        return $pseudonym;
+    }
+
 
         /*    public function getFirstNameResources()
             {
