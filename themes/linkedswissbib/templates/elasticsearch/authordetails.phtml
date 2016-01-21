@@ -1,70 +1,6 @@
 <div id="allWrapper">
     <div id="personSidebar">
         <div id="personSidebarContent">
-            <!--<h4>Dieser Autor in externen Katalogen:</h4>
-            <ul>
-                <li class="externalLink">
-                    <a rel="external" href="http://data.bnf.fr/11905269" target="_blank">
-                        <i class="externalIcon">
-                            <img class="externalLink" alt="" src="http://www.bnf.fr/bnf_dev/icono/favicon.ico">
-                        </i>
-                        <span class ="externalLink">Bibliothèque nationale de France (Frankreich)</span>
-                    </a>
-                </li>
-                <li class="externalLink">
-                    <a rel="external" href="http://id.loc.gov/authorities/names/n79003362" target="_blank">
-                        <i class="externalIcon">
-                            <img class="externalLink" alt="" src="http://www.loc.gov/favicon.ico">
-                        </i>
-                        <span class ="externalLink">Library of Congress (USA)</span>
-                    </a>
-                </li>
-                <li class="externalLink">
-                    <a rel="external" href="https://www.deutsche-digitale-bibliothek.de/entity/118540238" target="_blank">
-                        <i class="dummyIcon">
-                            <img class="externalLink" alt="" src="../themes/linkedswissbib/images/dummyIcon.jpg">
-                        </i>
-                        <span class ="externalLink">Deutsche Digitale Bibliothek (Deutschland)</span>
-                    </a>
-                </li>
-            </ul>
-            <p>&nbsp;</p>
-            <h4>Dieser Autor auf externen Websites:</h4>
-            <ul>
-                <li class="externalLink">
-                    <a rel="external" href="http://de.wikipedia.org/wiki/Johann_Wolfgang_von_Goethe" target="_blank">
-                        <i class="externalIcon">
-                            <img class="externalLink" alt="" src="http://de.wikipedia.org/favicon.ico">
-                        </i>
-                        <span class ="externalLink">Wikipedia (Deutsch)</span>
-                    </a>
-                </li>
-                <li class="externalLink">
-                    <a rel="external" href="http://de.wikisource.org/wiki/Johann_Wolfgang_von_Goethe" target="_blank">
-                        <i class="externalIcon">
-                            <img class="externalLink" alt="" src="http://wikisource.org/favicon.ico">
-                        </i>
-                        <span class ="externalLink">Wikisource</span>
-                    </a>
-                </li>
-                <li class="externalLink">
-                    <a rel="external" href="http://viaf.org/viaf/24602065" target="_blank">
-                        <i class="externalIcon">
-                            <img class="externalLink" alt="" src="http://viaf.org/viaf/images/viaf.ico">
-                        </i>
-                        <span class ="externalLink">VIAF - Virtual International Authority File</span>
-                    </a>
-                </li>
-                <li class="externalLink">
-                    <a rel="external" href="http://www.hls-dhs-dss.ch/textes/d/D11638.php" target="_blank">
-                        <i class="externalIcon">
-                            <img class="externalLink" alt="" src="http://www.hls-dhs-dss.ch/favicon.ico">
-                        </i>
-                        <span class ="externalLink">Historisches Lexikon der Schweiz (HLS)</span>
-                    </a>
-                </li>
-            </ul>-->
-
             <div class="sidebar col-table-fix-md hidden-print resultView">
                 <h4>Externe Links</h4>
                 <ul id="side-panel-externalCatalogues" class="list-group">
@@ -163,6 +99,32 @@
     </div>
     <!-- end personSidebar -->
 
+    <?
+    $results = $this->results->getResults();
+    foreach ($results as $rdfDriver):
+    $firstName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getFirstName());
+    $lastName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getLastName());
+    $thumbnail =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getThumbnail());
+    $occupation =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getOccupation());
+    $nationality =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNationality());
+    $birthDate =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getBirthDate());
+    $birthPlace =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getBirthPlace());
+    $deathDate =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getDeathDate());
+    $deathPlace =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getDeathPlace());
+    $biography = $rdfDriver->getBiography();
+    $genre =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getGenre());
+    $movement =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getMovement());
+    $alternativeNames = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getAlternativeNames());
+    $pseudonym = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPseudonym());
+    $influenced =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getInfluenced());
+    $influencedBy =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getInfluencedBy());
+    $partner =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPartner());
+    $spouse =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getSpouse());
+    $notableWork =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNotableWork());
+    $source =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getSource());
+    {
+    ?>
+
     <div id="personJumpTo"><p><b>Springe zu:&nbsp;
             </b><a href="#personWorks">Werke</a>&nbsp;|&nbsp;
             <a href="#personWorkTypes">Werke als...</a>&nbsp;|&nbsp;
@@ -173,11 +135,14 @@
         </p>
     </div>
 
-    <div id="personAuthorWrapper">
-        <div id="personAuthorImage">
-            <img src="../themes/linkedswissbib/images/JohannWolfgangVonGoethe.jpg" alt="Johann Wolfgang von Goethe">
-        </div>
 
+    <div id="personAuthorWrapper">
+        <!-- <div id="personAuthorImage">
+            <img src="../themes/linkedswissbib/images/JohannWolfgangVonGoethe.jpg" alt="Johann Wolfgang von Goethe">
+        </div> -->
+        <div id="personAuthorImage">
+            <img src="<? echo $thumbnail ?>" alt="<? echo $thumbnail ?>">
+        </div>
         <div id="personAuthorDescription">
 <!--            <?/*
             $results = $this->results->getResults();
@@ -196,58 +161,15 @@
                 </div>
             --><?/* }; */?>
 
-            <?
-            $results = $this->results->getResults();
-            foreach ($results as $rdfDriver):
-                $firstName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getFirstName());
-                $lastName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getLastName());
-                $occupation =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getOccupation());
-                $nationality =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNationality());
-                $birthDate =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getBirthDate());
-                $birthPlace =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getBirthPlace());
-                $deathDate =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getDeathDate());
-                $deathPlace =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getDeathPlace());
-                # $biography = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->());
-                $genre =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getGenre());
-                $movement =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getMovement());
-                $alternativeNames = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getAlternativeNames());
-                $pseudonym = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPseudonym());
-                $influenced =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getInfluenced());
-                $influencedBy =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getInfluencedBy());
-                $partner =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPartner());
-                $spouse =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getSpouse());
-                $notableWork =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNotableWork());
-                # $source =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->()); #owl:sameAs
-                {
-                ?>
-                    <!--
-                    <div>
-                        <h4><?echo $firstName ?></h4>
-                        <p><?echo $lastName ?></p>
-
-                        <p><?echo $nationality?></p>
-                        <p><?echo $birthDate?></p>
-                        <p><?echo $birthPlace?></p>
-                        <p><?echo $deathDate?></p>
-                        <p><?echo $deathPlace?></p>
-                        <p><?echo $genre?></p>
-                        <p><?echo $movement?></p>
-                        <p><?echo $influenced?></p>
-                        <p><?echo $influencedBy?></p>
-                        <p><?echo $partner?></p>
-                        <p><?echo $spouse?></p>
-                        <p><?echo $notableWork?></p>
-                    </div>
-                    -->
 
             <h2><?echo $firstName . " " . $lastName ?></h2>
             <!-- Schriftsteller, Publizist, Politiker, Jurist, Naturwissenschaftler, Theaterintendant, Maler, Zeichner<br /><br /> -->
             <p><?echo $occupation?></p>
-            <p><b>Geboren:</b><?echo $birthDate . ", " . $birthPlace?><br />
-               <b>Gestorben;</b> <?echo $deathDate . ", " . $deathPlace?><br />
+            <p><b>Geboren:</b> <?echo $birthDate . ", " . $birthPlace?><br />
+               <b>Gestorben:</b> <?echo $deathDate . ", " . $deathPlace?><br />
                 <!-- Geboren: 28. August 1749, Frankfurt am Main<br />
                 Gestorben; 22. März 1832, Weimar -->
-               <b>Nationalität:</b><? $nationality?><br>
+               <b>Nationalität:</b> <? echo $nationality?><br>
             </p>
 
             <div id="personAccordion">
@@ -264,12 +186,12 @@
                         <div aria-labelledby="heading-details" role="tabpanel" class="panel-collapse collapse" level="1" id="collapse-details">
                             <div class="list-group">
                                     <div id="personDetailsLabel">Biografie:</div>
-                                    <div id="personDetails">Johann Wolfgang von Goethe (* 28. August 1749 in Frankfurt am Main als Johann Wolfgang Goethe; † 22. März 1832 in Weimar), geadelt 1782,
+                                    <div id="personDetails"><?echo $biography?><!--Johann Wolfgang von Goethe (* 28. August 1749 in Frankfurt am Main als Johann Wolfgang Goethe; † 22. März 1832 in Weimar), geadelt 1782,
                                                     gilt als einer der bedeutendsten Repräsentanten deutschsprachiger Dichtung. Goethe stammte aus einer angesehenen bürgerlichen Familie; sein Grossvater
                                                     mütterlicherseits war als Stadtschultheiss höchster Beamter der Stadt Frankfurt, sein Vater Doktor der Rechte und kaiserlicher Rat. Er und seine Schwester Cornelia
                                                     erfuhren eine aufwendige Ausbildung durch Hauslehrer. Dem Wunsch seines Vaters folgend studierte Goethe in Strassburg und Leipzig Rechtswissenschaft und war danach
                                                     als Advokat in Wetzlar und Frankfurt tätig. Gleichzeitig drängten ihn Talent und Neigung zur Dichtkunst, die ihm mit dem Drama Götz von Berlichingen einen frühen
-                                                    Erfolg und Anerkennung in der literarischen Welt zuteilwerden liess.</div>
+                                                    Erfolg und Anerkennung in der literarischen Welt zuteilwerden liess. --></div>
                                     <div id="personMoreDetails"><?echo $notableWork?><!--Drama, Deutsche Literatur, Schauspiel, Gedichte --></div>
                                     <div id="personMoreLabels">Wichtigste Werke <br /> (Notable Work):</div>
                                     <div id="personMoreDetails"><?echo $genre?><!--Drama, Deutsche Literatur, Schauspiel, Gedichte --></div>
@@ -293,9 +215,10 @@
                                                     Friedel Knolle (berufliche Beziehung)<br />
                                                     Rolf Alpers (berufliche Beziehung)<br />
                                                     Hermann Heinzel (berufliche Beziehung)<br /> --></div>
-                                    <div id="personMoreLabels">In Beziehung stehend:</div>
-                                    <div id="personMoreDetails">VIAF - Virtual International Authority File<br />
-                                                    Wikipedia (Deutsch)<br /></div>
+                                    <div id="personMoreLabels">In Beziehung <br></b>stehend:</div>
+                                    <div id="personMoreDetails"><? echo $source?>
+                                        <!-- VIAF - Virtual International Authority File<br />
+                                                    Wikipedia (Deutsch)<br /> --></div>
                                     <div id="personMoreLabels">Quellen:</div>
                             </div>
                             <!-- end list-group -->

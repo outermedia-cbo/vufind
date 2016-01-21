@@ -142,6 +142,23 @@ class ElasticSearchRDF extends AbstractBase {
         return $name;
     }
 
+    public function getThumbnail()
+    {
+        $array = $this->fields['_source']['dbp:thumbnail'];
+        if (!isset($array)){
+            return "../themes/linkedswissbib/images/personAvatar.png";
+        } elseif (isset($this->fields['_source']['dbp:thumbnail']['@id'])) {
+            foreach ($array as $key => $item) {
+                $thumbnail = $item;
+            }
+        } else {
+            foreach ($array[0] as $key => $item) {
+                $thumbnail = $item;
+            }
+        }
+        return $thumbnail;
+    }
+
     public function getFirstName()
     {
         return $this->fields['_source']['foaf:firstName'];
@@ -262,6 +279,22 @@ class ElasticSearchRDF extends AbstractBase {
         }
         $deathPlace = rtrim($deathPlace, " oder ");
         return $deathPlace;
+    }
+
+    public function getBiography()
+    {
+        $array = $this->fields['_source']['dbp:abstract'];
+        if (!isset($array)){
+            return "No content";
+        } elseif (!is_array($array)){
+            return $this->fields['_source']['dbp:abstract'];
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                $abstract .= preg_replace(['/</','/>/'], ['&lt;','&gt;'], $array[$i]) . "<br/>";
+            }
+            $abstract = rtrim($abstract, "<br/>" );
+            return $abstract;
+        }
     }
 
     public function getGenre()
@@ -416,11 +449,11 @@ class ElasticSearchRDF extends AbstractBase {
         } else {
             for ($i = 0; $i <= count($array); $i++) {
                 foreach ($array[$i] as $key => $item) {
-                    $alternativeNames .= $item . "<br> ";
+                    $alternativeNames .= $item . ", ";
                 }
             }
         }
-        $alternativeNames = rtrim($alternativeNames, "<br> ");
+        $alternativeNames = rtrim($alternativeNames, ", ");
         return $alternativeNames;
     }
 
@@ -436,12 +469,28 @@ class ElasticSearchRDF extends AbstractBase {
         } else {
             for ($i = 0; $i <= count($array); $i++) {
                 foreach ($array[$i] as $key => $item) {
-                    $pseudonym .= $item . "<br> ";
+                    $pseudonym .= $item . ", ";
                 }
             }
         }
-        $pseudonym = rtrim($pseudonym, "<br> ");
+        $pseudonym = rtrim($pseudonym, ", ");
         return $pseudonym;
+    }
+
+    public function getSource()
+    {
+        $array = $this->fields['_source']['owl:sameAs'];
+        if (!isset($array)){
+            return "No content";
+        } elseif (!is_array($array)){
+            return $this->fields['_source']['owl:sameAs'];
+        } else {
+            for ($i = 0; $i <= count($array); $i++) {
+                $source .= $array[$i] . ", ";
+            }
+            $source = rtrim($source, ", ");
+            return $source;
+        }
     }
 
 
