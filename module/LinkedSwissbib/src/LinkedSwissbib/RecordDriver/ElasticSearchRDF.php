@@ -155,7 +155,9 @@ class ElasticSearchRDF extends AbstractBase {
     public function getOccupation()
     {
         $array = $this->fields['_source']['dbp:occupation'];
-        if (isset($this->fields['_source']['dbp:occupation']['@id'])) {
+        if (!isset($array)){
+            return "No content";
+        } elseif (isset($this->fields['_source']['dbp:occupation']['@id'])) {
             foreach ($array as $key => $item) {
                     $occupation = $item;
             }
@@ -173,7 +175,9 @@ class ElasticSearchRDF extends AbstractBase {
     public function getNationality()
     {
         $array = $this->fields['_source']['dbp:nationality'];
-        if (isset($this->fields['_source']['dbp:nationality']['@id'])) {
+        if (!isset($array)){
+            return "No content";
+        } elseif (isset($this->fields['_source']['dbp:nationality']['@id'])) {
             foreach ($array as $key => $item) {
                 $nationality = $item;
             }
@@ -191,7 +195,9 @@ class ElasticSearchRDF extends AbstractBase {
     public function getBirthDate()
     {
         $array = $this->fields['_source']['dbp:birthYear'];
-        if (!is_array($array)){
+        if (!isset($array)){
+            return "No content";
+        } elseif (!is_array($array)){
             return $this->fields['_source']['dbp:birthYear'];
         } else {
             for ($i = 0; $i <= count($array); $i++) {
@@ -205,7 +211,9 @@ class ElasticSearchRDF extends AbstractBase {
     public function getBirthPlace()
     {
         $array = $this->fields['_source']['dbp:birthPlace'];
-        if (isset($this->fields['_source']['dbp:birthPlace']['@id'])) {
+        if (!isset($array)){
+            return "No content";
+        } elseif (isset($this->fields['_source']['dbp:birthPlace']['@id'])) {
             foreach ($array as $key => $item) {
                 $birthPlace = $item;
             }
@@ -223,7 +231,9 @@ class ElasticSearchRDF extends AbstractBase {
     public function getDeathDate()
     {
         $array = $this->fields['_source']['dbp:deathYear'];
-        if (!is_array($array)){
+        if (!isset($array)){
+            return "No content";
+        } elseif (!is_array($array)){
             return $this->fields['_source']['dbp:deathYear'];
         } else {
             for ($i = 0; $i <= count($array); $i++) {
@@ -237,7 +247,9 @@ class ElasticSearchRDF extends AbstractBase {
     public function getDeathPlace()
     {
         $array = $this->fields['_source']['dbp:deathPlace'];
-        if (isset($this->fields['_source']['dbp:deathPlace']['@id'])) {
+        if (!isset($array)){
+            return "No content";
+        } elseif (isset($this->fields['_source']['dbp:deathPlace']['@id'])) {
             foreach ($array as $key => $item) {
                 $birthPlace = $item;
             }
@@ -255,7 +267,9 @@ class ElasticSearchRDF extends AbstractBase {
     public function getGenre()
     {
         $array = $this->fields['_source']['dbp:genre'];
-        if (isset($this->fields['_source']['dbp:genre']['@id'])) {
+        if (!isset($array)){
+            return "No content";
+        } elseif (isset($this->fields['_source']['dbp:genre']['@id'])) {
             foreach ($array as $key => $item) {
                 $genre = $item;
             }
@@ -273,7 +287,9 @@ class ElasticSearchRDF extends AbstractBase {
     public function getMovement()
     {
         $array = $this->fields['_source']['dbp:movement'];
-        if (isset($this->fields['_source']['dbp:movement']['@id'])) {
+        if (!isset($array)){
+            return "No content";
+        } elseif (isset($this->fields['_source']['dbp:movement']['@id'])) {
             foreach ($array as $key => $item) {
                 $movement = $item;
             }
@@ -291,7 +307,9 @@ class ElasticSearchRDF extends AbstractBase {
     public function getInfluenced()
     {
         $array = $this->fields['_source']['dbp:influenced'];
-        if (isset($this->fields['_source']['dbp:influenced']['@id'])) {
+        if (!isset($array)){
+            return "No content";
+        } elseif (isset($this->fields['_source']['dbp:influenced']['@id'])) {
             foreach ($array as $key => $item) {
                 $influenced = $item;
             }
@@ -309,7 +327,9 @@ class ElasticSearchRDF extends AbstractBase {
     public function getInfluencedBy()
     {
         $array = $this->fields['_source']['dbp:influencedBy'];
-        if (isset($this->fields['_source']['dbp:influencedBy']['@id'])) {
+        if (!isset($array)){
+            return "No content";
+        } elseif (isset($this->fields['_source']['dbp:influencedBy']['@id'])) {
             foreach ($array as $key => $item) {
                 $influencedBy = $item;
             }
@@ -327,7 +347,9 @@ class ElasticSearchRDF extends AbstractBase {
     public function getPartner()
     {
         $array = $this->fields['_source']['dbp:partner'];
-        if (isset($this->fields['_source']['dbp:partner']['@id'])) {
+        if (!isset($array)){
+            return "No content";
+        } elseif (isset($this->fields['_source']['dbp:partner']['@id'])) {
             foreach ($array as $key => $item) {
                 $partner = $item;
             }
@@ -345,7 +367,9 @@ class ElasticSearchRDF extends AbstractBase {
     public function getSpouse()
     {
         $array = $this->fields['_source']['dbp:spouse'];
-        if (isset($this->fields['_source']['dbp:spouse']['@id'])) {
+        if (!isset($array)){
+            return "No content";
+        } elseif (isset($this->fields['_source']['dbp:spouse']['@id'])) {
             foreach ($array as $key => $item) {
                 $spouse = $item;
             }
@@ -363,7 +387,9 @@ class ElasticSearchRDF extends AbstractBase {
     public function getNotableWork()
     {
         $array = $this->fields['_source']['dbp:notableWork'];
-        if (isset($this->fields['_source']['dbp:notableWork']['@id'])) {
+        if (!isset($array)){
+            return "No content";
+        } elseif (isset($this->fields['_source']['dbp:notableWork']['@id'])) {
             foreach ($array as $key => $item) {
                 $notableWork = $item;
             }
@@ -381,7 +407,9 @@ class ElasticSearchRDF extends AbstractBase {
     public function getAlternativeNames()
     {
         $array = $this->fields['_source']['dbp:alternativeNames'];
-        if (isset($this->fields['_source']['dbp:alternativeNames']['@id'])) {
+        if (!isset($array)){
+            return "No content";
+        } elseif (isset($this->fields['_source']['dbp:alternativeNames']['@id'])) {
             foreach ($array as $key => $item) {
                 $alternativeNames = $item;
             }
@@ -399,7 +427,9 @@ class ElasticSearchRDF extends AbstractBase {
     public function getPseudonym()
     {
         $array = $this->fields['_source']['dbp:pseudonym'];
-        if (isset($this->fields['_source']['dbp:pseudonym']['@id'])) {
+        if (!isset($array)){
+            return "No content";
+        } elseif (isset($this->fields['_source']['dbp:pseudonym']['@id'])) {
             foreach ($array as $key => $item) {
                 $pseudonym = $item;
             }
