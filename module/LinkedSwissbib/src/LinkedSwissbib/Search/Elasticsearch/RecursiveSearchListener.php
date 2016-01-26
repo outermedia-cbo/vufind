@@ -67,7 +67,7 @@ class RecursiveSearchListener {
         $backend = $event->getParam('backend');
         if ($backend == $this->backend->getIdentifier()) {
             $result = $event->getTarget();
-            foreach ($result->getRecords() as $record) {
+            foreach ($result->getRecords() as $record) { // $record is instance of ElasticSearchRDF
                 $id = $record->getUniqueId();
             }
         }
