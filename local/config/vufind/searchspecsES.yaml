@@ -75,7 +75,7 @@ Resources:
 #      query:
       multi_match:
         fields:
-          - dc:contributor.foaf:Person.@id
+          - dct:contributor.foaf:Person.@id
         type:
           - cross_fields #should be default
         operator:
