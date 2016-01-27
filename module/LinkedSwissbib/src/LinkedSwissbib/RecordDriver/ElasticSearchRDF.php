@@ -110,9 +110,9 @@ class ElasticSearchRDF extends AbstractBase {
 
     public function getName()
     {
-        $array = $this->fields['_source']['dc:contributor']['foaf:Person'];
+        $array = $this->fields['_source']['dct:contributor']['foaf:Person'];
 
-        if (isset($this->fields['_source']['dc:contributor']['foaf:Person']['foaf:firstName']) || isset($this->fields['_source']['dc:contributor']['foaf:Person']['foaf:lastName'])) {
+        if (isset($this->fields['_source']['dct:contributor']['foaf:Person']['foaf:firstName']) || isset($this->fields['_source']['dct:contributor']['foaf:Person']['foaf:lastName'])) {
             foreach ($array as $key => $item) {
                 if ($key == 'foaf:firstName' ) {
                     $firstName = $item . " ";
