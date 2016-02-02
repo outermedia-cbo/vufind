@@ -270,7 +270,7 @@ class ElasticSearchRDF extends AbstractBase {
             return "No content";
         } elseif (isset($this->fields['_source']['dbp:deathPlace']['@id'])) {
             foreach ($array as $key => $item) {
-                $birthPlace = $item;
+                $deathPlace = $item;
             }
         } else {
             for ($i = 0; $i <= count($array); $i++) {
@@ -527,15 +527,24 @@ class ElasticSearchRDF extends AbstractBase {
 
     public function getWorkTitle()
     {
-        $workTitle = $this->fields['_source']['dct:title'][0];
-        return $workTitle;
+        $array = $this->fields['_source']['dct:title'];
+        if (!isset($array)){
+        return "No content";
+        } elseif (!is_array($array)){
+            return $this->fields['_source']['dct:title'];
+        } else {
+            for ($i = 0; $i <= 0; $i++) {
+                $workTitle .= $array[$i];
+            }
+            return $workTitle;
+        }
     }
+
 
     // TODO: gibt immer nur ein Element zurück, da return die Funktion sofort beendet
     public function getWorkInstances()
     {
         $array = $this->fields['_source']['bf:hasInstance'];
-
         for ($i = 0; $i <= count($array); $i++) {
             foreach ($array[$i] as $key => $item) {
                 $instances[] = $item;

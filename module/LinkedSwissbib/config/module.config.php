@@ -92,7 +92,7 @@ $config = [
 
 // Define static routes -- Controller/Action strings
 $staticRoutes = [
-    'Exploration/Search', 'Elasticsearch/Results', 'Sparql/Results', 'Exploration/Author', 'Exploration/AuthorDetailsOld', 'Exploration/Work', 'Exploration/AuthorDetails'
+    'Exploration/Search', 'Elasticsearch/Results', 'Sparql/Results', 'Exploration/Author', 'Exploration/AuthorDetailsOld', 'Exploration/Work', 'Exploration/AuthorDetails', 'Exploration/workOld'
     ];
 
 $routeGenerator = new \VuFind\Route\RouteGenerator();
