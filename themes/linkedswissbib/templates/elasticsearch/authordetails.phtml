@@ -70,26 +70,26 @@
                         <?
                         $results = $this->results->getResults();
                         foreach ($results as $rdfDriver):
-                        $firstName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getFirstName());
-                        $lastName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getLastName());
-                        $thumbnail =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getThumbnail());
-                        $occupation =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getOccupation());
-                        $nationality =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNationality());
+                        $alternativeNames = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getAlternativeNames());
+                        $biography = $rdfDriver->getBiography();
                         $birthDate =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getBirthDate());
                         $birthPlace =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getBirthPlace());
                         $deathDate =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getDeathDate());
                         $deathPlace =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getDeathPlace());
-                        $biography = $rdfDriver->getBiography();
+                        $firstName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getFirstName());
                         $genre =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getGenre());
-                        $movement =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getMovement());
-                        $alternativeNames = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getAlternativeNames());
-                        $pseudonym = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPseudonym());
                         $influenced =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getInfluenced());
                         $influencedBy =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getInfluencedBy());
-                        $partner =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPartner());
-                        $spouse =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getSpouse());
+                        $lastName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getLastName());
+                        $movement =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getMovement());
+                        $nationality =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNationality());
                         $notableWork =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNotableWork());
+                        $occupation =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getOccupation());
+                        $partner =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPartner());
+                        $pseudonym = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPseudonym());
+                        $spouse =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getSpouse());
                         $source =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getSource());
+                        $thumbnail =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getThumbnail());
                         {
                         ?>
 
@@ -268,18 +268,16 @@
                                     <?
                                     $results = $this->results->getResults();
                                     foreach ($results as $rdfDriver):
-                                    $title =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getTitle());
-                                    /* $title = $title;
-                                    $subtitle = "the writer";*/
-                                    $statementOfResponsibility =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getStatementOfResponsibility());
                                     $author = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getName());
-                                    $year = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPublicationStatement());
-                                    $format = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getRdfType());;
                                     $coverImage = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getISBN10());
-                                    $numberOfInstitutions = "2 Bibliotheken";
+                                    $format = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getRdfType());
                                     $holdingInstitution = "ETH Zürich - Bibliothek HDB";
                                     $linkToHoldings = "#";
                                     $linkToOtherEditions ="#";
+                                    $numberOfInstitutions = "2 Bibliotheken";
+                                    $statementOfResponsibility =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getStatementOfResponsibility());
+                                    $title =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getTitle());
+                                    $year = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPublicationStatement());
                                     {
                                     ?>
                                     <!-- start result list form-->
