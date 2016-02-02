@@ -140,79 +140,45 @@
                             </div>
                             <!-- end class row -->
                             <div id="collapse-details" class="panel-collapse collapse" aria-labelledby="heading-details" role="tabpanel" level="1">
-                                <div class="list-group">
+                                <dl>
                                     <div class="row">
-                                        <!-- biography -->
-                                        <div class="col-sm-2">
-                                            <p><strong>Biografie: </strong></p>
-                                        </div>
-                                        <div class="col-sm-10">
-                                            <p><? echo $biography ?></p>
-                                        </div>
+                                        <dt class="col-sm-2"><p>Biografie:</p></dt>
+                                        <dd class="col-sm-10"><p><? echo $biography ?></p></dd>
                                     </div>
                                     <div class="row">
-                                        <!-- notable work -->
-                                        <div class="col-sm-2">
-                                            <p><strong>Wichtigste Werke: </strong></p>
-                                        </div>
-                                        <div class="col-sm-10">
-                                            <p><? echo $notableWork ?></p>
-                                        </div>
+                                         <dt class="col-sm-2"><p>Wichtigste Werke:</p></dt>
+                                         <dd class="col-sm-10"><p><? echo $notableWork ?></p></dd>
                                     </div>
                                     <div class="row">
-                                        <!-- genre -->
-                                        <div class="col-sm-2">
-                                            <p><strong>Genre: </strong></p>
-                                        </div>
-                                        <div class="col-sm-10">
-                                            <p><? echo $genre ?></p>
-                                        </div>
+                                        <dt class="col-sm-2"><p>Genre:</dt>
+                                         <dd class="col-sm-10"><? echo $genre ?></p></dd>
                                     </div>
                                     <div class="row">
-                                        <!-- movement -->
-                                        <div class="col-sm-2">
-                                            <p><strong>Bewegung, Zeit, Ära (Movement): </strong></p>
-                                        </div>
-                                        <div class="col-sm-10">
-                                            <p><? echo $movement ?></p>
-                                        </div>
+                                        <dt class="col-sm-2"><p>Bewegung, Zeit, Ära (Movement):</p></dt>
+                                         <dd class="col-sm-10"><p><? echo $biography ?></p></dd>
                                     </div>
                                     <div class="row">
-                                        <!-- name variants -->
-                                        <div class="col-sm-2">
-                                            <p><strong>Namensvarianten: </strong></p>
-                                        </div>
-                                        <div class="col-sm-10">
-                                            <p><? echo $pseudonym ?></p>
-                                        </div>
+                                        <dt class="col-sm-2"><p>Namens-<br>varianten:</p></dt>
+                                          <dd class="col-sm-10"><p><? echo $pseudonym ?></p></dd>
                                     </div>
                                     <div class="row">
-                                        <!-- relations -->
-                                        <div class="col-sm-2">
-                                            <p><strong>In Beziehung stehend: </strong></p>
-                                        </div>
-                                        <div class="col-sm-10">
-                                            <p>
-                                                <?echo
-                                                    $partner . " (Partner/s)<br>" .
-                                                    $spouse  . " (Spouse/s)<br>" .
-                                                    $influenced . " (influenced)<br>" .
-                                                    $influencedBy . " (influencedBy)<br>"
-                                                ?>
-                                            </p>
-                                        </div>
+                                        <dt class="col-sm-2"><p>In Beziehung stehend:</p></dt>
+                                        <dd class="col-sm-10">
+                                        <p>
+                                        <?echo
+                                            $partner . " (Partner/s)<br>" .
+                                            $spouse  . " (Spouse/s)<br>" .
+                                            $influenced . " (influenced)<br>" .
+                                            $influencedBy . " (influencedBy)<br>"
+                                        ?>
+                                        </p>
+                                        </dd>
                                     </div>
                                     <div class="row">
-                                        <!-- sources -->
-                                        <div class="col-sm-2">
-                                            <p><strong>Quellen: </strong></p>
-                                        </div>
-                                        <div class="col-sm-10">
-                                            <p><? echo $source ?></p>
-                                        </div>
+                                        <dt class="col-sm-2"><p>Quellen:</p></dt>
+                                        <dd class="col-sm-10"><p><? echo $source ?></p></dd>
                                     </div>
-                                </div>
-                                <!-- end class list-group -->
+                                </dl>
                             </div>
                             <!-- end id collapse-moreAuthorDetails -->
                         </div>

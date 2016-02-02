@@ -98,6 +98,7 @@ class ElasticSearchRDF extends AbstractBase {
 
     }
 
+    /*
     public function getFirstNameContributor()
     {
         return $this->fields['_source']['foaf:firstName'];
@@ -107,6 +108,7 @@ class ElasticSearchRDF extends AbstractBase {
     {
         return $this->fields['_source']['foaf:lastName'];
     }
+    */
 
     public function getName()
     {
@@ -492,7 +494,6 @@ class ElasticSearchRDF extends AbstractBase {
             return $source;
         }
     }
-
 
         /*    public function getFirstNameResources()
             {
