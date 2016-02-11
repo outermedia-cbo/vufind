@@ -121,10 +121,16 @@ class Connector implements \Zend\Log\LoggerAwareInterface
             sprintf('=> %s %s', $client->getMethod(), $client->getUri())
         );
         */
+        $searchstring = '{"index":"testsb","type":"work"}
+{"query":{"filtered":{"filter":{"bool":{"must":{"term":{"@id":"http://data.swissbib.ch/work/168038781"}}}}}}}
+{"index":"testsb","type":"bibliographicResource"}
+{"query":{"filtered":{"filter":{"bool":{"must":{"term":{"bf:instanceOf.@id":"168038781"}}}}}}}
+';
+        $params["body"] = $searchstring;
 
         //todo; logging of used time (or use time as feedback to user)
         $time     = microtime(true);
-        $response =  $client->search($params);
+        $response =  $client->msearch($params);
         $time     = microtime(true) - $time;
 
         //todo: some kind of error handling
