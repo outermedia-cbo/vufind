@@ -37,19 +37,7 @@ class ElasticsearchController extends AbstractSearch
 
     }
 
-    public function authorDetailsOldAction ()
-    {
-        return parent::resultsAction();
-
-    }
-
     public function workAction ()
-    {
-        return parent::resultsAction();
-
-    }
-
-    public function workOldAction ()
     {
         return parent::resultsAction();
 
