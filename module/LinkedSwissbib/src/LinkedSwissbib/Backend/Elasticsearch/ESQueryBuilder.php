@@ -5,6 +5,7 @@
  * @category linked-swissbib
  * @package  Backend_Eleasticsearch
  * @author   Guenter Hipler <guenter.hipler@unibas.ch>
+ * @author   Philipp Kuntschik <Philipp.Kuntschik@HTWChur.ch>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://linked.swissbib.ch  Main Page
  */
@@ -12,10 +13,11 @@
 namespace LinkedSwissbib\Backend\Elasticsearch;
 
 
+use LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\MultisearchQuery;
+use LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\Query;
 use VuFindSearch\ParamBag;
 use VuFindSearch\Query\AbstractQuery;
 use VuFindSearch\Query\Query as VuFindQuery;
-use LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\Query;
 
 
 class ESQueryBuilder implements ESQueryBuilderInterface
@@ -74,8 +76,6 @@ class ESQueryBuilder implements ESQueryBuilderInterface
      */
     public function build(AbstractQuery $vuFindQuery)
     {
-
-
         /** @var SearchHandler $searchHandlerType */
         if ($vuFindQuery instanceof VuFindQuery) {
             $searchHandlerType = $this->getSearchHandler($vuFindQuery->getHandler());
@@ -83,14 +83,12 @@ class ESQueryBuilder implements ESQueryBuilderInterface
             $searchHandlerType = $this->getSearchHandler('allfields');
         }
 
-        $esQuery = new Query($vuFindQuery,$searchHandlerType->getSpec());
+        $esQuery = new MultisearchQuery($vuFindQuery,$searchHandlerType->getSpec(), $this);
         $searchBody =  $esQuery->build();
 
-        $getParams['body']['query'] = $searchBody;
+        $getParams['body'] = $searchBody;
         $getParams['type'] = $searchHandlerType->getTypes();
-        //$getParams['index'] = $this->searchIndexes;
         $getParams['index'] = $searchHandlerType->getIndices();
-
 
         return $getParams;
     }
@@ -123,7 +121,7 @@ class ESQueryBuilder implements ESQueryBuilderInterface
     /**
      * @return SearchHandler
      */
-    protected function getSearchHandler($queryHandlerString)
+    public function getSearchHandler($queryHandlerString)
     {
         return  array_key_exists(strtolower($queryHandlerString),$this->specs) ? $this->specs[strtolower($queryHandlerString)] :
             $this->specs['allfields'];

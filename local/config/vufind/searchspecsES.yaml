@@ -2,6 +2,37 @@
 # search target ElasticSearch
 # ###########
 
+# author for id
+AuthorForId:
+  Multisearch:
+    - BibliographicResourceForAuthor
+  UsedTypes:
+    - person
+  UsedIndex:
+    - testsb
+  query:
+    multi_match:
+      fields:
+        - @id
+      type:
+        - cross_fields #should be default
+      operator:
+        - and # should be default
+
+# bibliographicResource for Author
+BibliographicResourceForAuthor:
+  UsedTypes:
+    - bibliographicResource
+  UsedIndex:
+    - testsb
+  query:
+    multi_match:
+      fields:
+        - dct:contributor
+      type:
+        - cross_fields #should be default
+      operator:
+        - and # should be default
 
 
 
@@ -23,7 +54,7 @@ AllFields:
             - dct:title
             - rdau:publicationStatement
             - @type
-            - dct:contributor.@id
+            - dct:contributor
             - rdau:noteOnResource
             - dct:bibliographicCitation
             - bibo:isbn13
@@ -75,7 +106,7 @@ Resources:
 #      query:
       multi_match:
         fields:
-          - dct:contributor.foaf:Person.@id
+          - dct:contributor
         type:
           - cross_fields #should be default
         operator:
