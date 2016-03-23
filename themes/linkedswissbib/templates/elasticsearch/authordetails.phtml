@@ -76,12 +76,13 @@
                         $birthPlace =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getBirthPlace());
                         $deathDate =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getDeathDate());
                         $deathPlace =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getDeathPlace());
-                        $firstName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getFirstName());
+//                        $firstName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getFirstName());
                         $genre =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getGenre());
                         $influenced =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getInfluenced());
                         $influencedBy =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getInfluencedBy());
-                        $lastName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getLastName());
+//                        $lastName =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getLastName());
                         $movement =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getMovement());
+                        $nameAsLabel = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNameAsLabel());
                         $nationality =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNationality());
                         $notableWork =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNotableWork());
                         $occupation =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getOccupation());
@@ -102,7 +103,7 @@
                                 <div class="col-sm-10">
                                     <div class="meta">
                                         <h2>
-                                            <?echo $firstName . " " . $lastName ?>
+                                            <?echo $nameAsLabel ?>
                                         </h2>
                                     </div>
                                     <!-- occupation -->
@@ -111,15 +112,15 @@
                                     </div>
                                     <!-- birthdate, birthplace -->
                                     <div class="meta">
-                                        <span><strong>Geboren: </strong></span><span><? echo $birthDate . ", " . $birthPlace ?></span><br>
+                                        <span><strong>Geboren: </strong></span><span><? echo $birthDate . $birthPlace ?></span><br>
                                     </div>
                                     <!-- deathdate, deathplace -->
                                     <div class="meta">
-                                        <span><strong>Gestorben: </strong></span><span><? echo $deathDate . ", " . $deathPlace ?></span><br>
+                                        <span><strong>Gestorben: </strong></span><span><? echo $deathDate . $deathPlace ?></span><br>
                                     </div>
                                     <!-- deathdate, deathplace -->
                                     <div class="meta">
-                                        <span><strong>Nationalität: </strong></span><span><? echo $deathDate . ", " . $nationality ?></span><br><br>
+                                        <span><strong>Nationalität: </strong></span><span><? echo $nationality ?></span><br><br>
                                     </div>
                                     <div id="accordion" class="panel-group" aria-multiselectable="true" role="tablist">
                                         <div id="holdings-details" class="panel panel-default">
@@ -155,11 +156,15 @@
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2"><p>Bewegung, Zeit, Ära (Movement):</p></dt>
-                                         <dd class="col-sm-10"><p><? echo $biography ?></p></dd>
+                                         <dd class="col-sm-10"><p><? echo $movement ?></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2"><p>Namens-<br>varianten:</p></dt>
-                                          <dd class="col-sm-10"><p><? echo $pseudonym ?></p></dd>
+                                          <dd class="col-sm-10"><p><? echo $alternativeNames ?></p></dd>
+                                    </div>
+                                    <div class="row">
+                                        <dt class="col-sm-2"><p>Pseudonyme:</p></dt>
+                                        <dd class="col-sm-10"><p><? echo $pseudonym?></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2"><p>In Beziehung stehend:</p></dt>
@@ -899,7 +904,27 @@
                                                 <input maxlength="4" class="form-control" name="publishDateto" id="publishDateto" value="" placeholder="2017" type="text">
                                             </div>
                                         </div>
-                                        <div class="slider-container"><div id="" class="slider slider-horizontal"><div class="slider-track"><div style="left: 0px; width: 0%;" class="slider-track-low"></div><div style="left: 0%; width: 100%;" class="slider-selection"></div><div style="right: 0px; width: 0%;" class="slider-track-high"></div><div tabindex="0" style="left: 0%;" class="slider-handle min-slider-handle"></div><div tabindex="0" style="left: 100%;" class="slider-handle max-slider-handle"></div></div><div style="left: 50%; margin-left: -41.5px;" class="tooltip tooltip-main top hide"><div class="tooltip-arrow"></div><div class="tooltip-inner">300 : 2017</div></div><div style="left: 0%; margin-left: -20px;" class="tooltip tooltip-min top hide"><div class="tooltip-arrow"></div><div class="tooltip-inner">300</div></div><div style="left: 100%; margin-left: -24px;" class="tooltip tooltip-max top hide"><div class="tooltip-arrow"></div><div class="tooltip-inner">2017</div></div></div><input value="300,2017" data-value="300,2017" style="display: none;" class="hidden" id="publishDatedateSlider" type="text"></div>
+                                        <div class="slider-container">
+                                            <div id="" class="slider slider-horizontal">
+                                                <div class="slider-track">
+                                                    <div style="left: 0px; width: 0%;" class="slider-track-low"></div>
+                                                    <div style="left: 0%; width: 100%;" class="slider-selection"></div>
+                                                    <div style="right: 0px; width: 0%;" class="slider-track-high"></div>
+                                                    <div tabindex="0" style="left: 0%;" class="slider-handle min-slider-handle"></div>
+                                                    <div tabindex="0" style="left: 100%;" class="slider-handle max-slider-handle"></div>
+                                                </div>
+                                                <div style="left: 50%; margin-left: -41.5px;" class="tooltip tooltip-main top hide">
+                                                    <div class="tooltip-arrow"></div><div class="tooltip-inner">300 : 2017</div>
+                                                </div>
+                                                <div style="left: 0%; margin-left: -20px;" class="tooltip tooltip-min top hide">
+                                                    <div class="tooltip-arrow"></div>
+                                                    <div class="tooltip-inner">300</div>
+                                                </div><div style="left: 100%; margin-left: -24px;" class="tooltip tooltip-max top hide">
+                                                    <div class="tooltip-arrow"></div><div class="tooltip-inner">2017</div>
+                                                </div>
+                                            </div>
+                                            <input value="300,2017" data-value="300,2017" style="display: none;" class="hidden" id="publishDatedateSlider" type="text">
+                                        </div>
                                         <input class="btn btn-default" value="Suchen" type="submit">
                                     </form>
                                 </li>

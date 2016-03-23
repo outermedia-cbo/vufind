@@ -9,28 +9,30 @@
  */
 
 namespace LinkedSwissbib\RecordDriver;
+
 use VuFind\RecordDriver\AbstractBase;
 
-class ElasticSearchRDF extends AbstractBase {
+class ElasticSearchRDF extends AbstractBase
+{
 
+    const FALLBACK_LANGUAGE = 'en';
     protected $propertiesToNameSpaces = [
-        'rdf:type'  => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
-        'dc11:format'   => 'http://purl.org/dc/elements/1.1/format',
-        'dc:hasPart'    => 'http://purl.org/dc/terms/hasPart',
-        'dc:issued' =>  'http://purl.org/dc/terms/issued',
-        'dc:language'   =>  'http://purl.org/dc/terms/language',
-        'dc:title'  =>  'http://purl.org/dc/terms/title',
-        'bibo:isbn10'   =>  'http://purl.org/ontology/bibo/isbn10',
-        'bibo:isbn13'   =>  'http://purl.org/ontology/bibo/isbn13',
-        'ns0:contentType'   =>  'http://rdaregistry.info/Elements/u/contentType',
-        'ns0:mediaType' =>  'http://rdaregistry.info/Elements/u/mediaType',
-        'ns0:noteOnResource'    =>  'http://rdaregistry.info/Elements/u/noteOnResource',
-        'ns0:placeOfPublication'    =>  'http://rdaregistry.info/Elements/u/placeOfPublication',
-        'ns0:publicationStatement'  =>  'http://rdaregistry.info/Elements/u/publicationStatement',
-        'rdfs:isDefinedBy'  =>  'http://www.w3.org/2000/01/rdf-schema#isDefinedBy'
+        'rdf:type' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+        'dc11:format' => 'http://purl.org/dc/elements/1.1/format',
+        'dc:hasPart' => 'http://purl.org/dc/terms/hasPart',
+        'dc:issued' => 'http://purl.org/dc/terms/issued',
+        'dc:language' => 'http://purl.org/dc/terms/language',
+        'dc:title' => 'http://purl.org/dc/terms/title',
+        'bibo:isbn10' => 'http://purl.org/ontology/bibo/isbn10',
+        'bibo:isbn13' => 'http://purl.org/ontology/bibo/isbn13',
+        'ns0:contentType' => 'http://rdaregistry.info/Elements/u/contentType',
+        'ns0:mediaType' => 'http://rdaregistry.info/Elements/u/mediaType',
+        'ns0:noteOnResource' => 'http://rdaregistry.info/Elements/u/noteOnResource',
+        'ns0:placeOfPublication' => 'http://rdaregistry.info/Elements/u/placeOfPublication',
+        'ns0:publicationStatement' => 'http://rdaregistry.info/Elements/u/publicationStatement',
+        'rdfs:isDefinedBy' => 'http://www.w3.org/2000/01/rdf-schema#isDefinedBy'
 
     ];
-
 
     /**
      * Get text that can be displayed to represent this record in breadcrumbs.
@@ -67,17 +69,17 @@ class ElasticSearchRDF extends AbstractBase {
 
     }
 
-/*
-    public function getRdfType()
-    {
-        if (isset($this->fields['_source']['@type']))
+    /*
+        public function getRdfType()
         {
-            return is_array($this->fields['_source']['@type']) ? $this->fields['_source']['@type'] :
-                [$this->fields['_source']['@type']];
-        } else {
-            return [];
-        }
-    }*/
+            if (isset($this->fields['_source']['@type']))
+            {
+                return is_array($this->fields['_source']['@type']) ? $this->fields['_source']['@type'] :
+                    [$this->fields['_source']['@type']];
+            } else {
+                return [];
+            }
+        }*/
 
     public function getRdfType()
     {
@@ -88,8 +90,7 @@ class ElasticSearchRDF extends AbstractBase {
 
     public function getLanguage()
     {
-        if (isset($this->fields['_source']['dct:language']))
-        {
+        if (isset($this->fields['_source']['dct:language'])) {
             return is_array($this->fields['_source']['dct:language']) ? array_values($this->fields['_source']['dct:language']) :
                 [$this->fields['_source']['dct:language']];
         } else {
@@ -116,12 +117,12 @@ class ElasticSearchRDF extends AbstractBase {
 
         if (isset($this->fields['_source']['dct:contributor']['foaf:Person']['foaf:firstName']) || isset($this->fields['_source']['dct:contributor']['foaf:Person']['foaf:lastName'])) {
             foreach ($array as $key => $item) {
-                if ($key == 'foaf:firstName' ) {
+                if ($key == 'foaf:firstName') {
                     $firstName = $item . " ";
                 }
             }
             foreach ($array as $key => $item) {
-                if ($key == 'foaf:lastName' ) {
+                if ($key == 'foaf:lastName') {
                     $lastName = $item;
                 }
             }
@@ -129,12 +130,12 @@ class ElasticSearchRDF extends AbstractBase {
         } else {
             for ($i = 0; $i <= count($array); $i++) {
                 foreach ($array[$i] as $key => $item1) {
-                    if ($key == 'foaf:firstName' ) {
+                    if ($key == 'foaf:firstName') {
                         $name .= $item1 . " ";
                     }
                 }
                 foreach ($array[$i] as $key => $item2) {
-                    if ($key == 'foaf:lastName' ) {
+                    if ($key == 'foaf:lastName') {
                         $name .= $item2 . "; ";
                     }
                 }
@@ -147,20 +148,18 @@ class ElasticSearchRDF extends AbstractBase {
     public function getThumbnail()
     {
         $array = $this->fields['_source']['dbp:thumbnail'];
-        if (!isset($array)){
+        if (!isset($array)) {
             return "../themes/linkedswissbib/images/personAvatar.png";
-        } elseif (isset($this->fields['_source']['dbp:thumbnail']['@id'])) {
-            foreach ($array as $key => $item) {
-                $thumbnail = $item;
-            }
+        } elseif (!is_array($array)) {
+            return $array;
         } else {
-            foreach ($array[0] as $key => $item) {
-                $thumbnail = $item;
+            for ($i = 0; $i <= 0; $i++) {
+                $thumbnail = $array[$i];
             }
+            return $thumbnail;
         }
-        return $thumbnail;
     }
-
+/*
     public function getFirstName()
     {
         return $this->fields['_source']['foaf:firstName'];
@@ -169,448 +168,319 @@ class ElasticSearchRDF extends AbstractBase {
     public function getLastName()
     {
         return $this->fields['_source']['foaf:lastName'];
+    }*/
+
+    /* independent from given language */
+    public function getAlternativeNames()
+    {
+        $array = $this->fields['_source']['schema:alternateName'];
+
+        if (!isset($array)) {
+            return "No content";
+        } elseif (!is_array($array)) {
+            return $array;
+        } elseif (count($array)===1) {
+            $result = reset($array);
+            return $result;
+        } else {
+            foreach ($array as $outerarray => $innerarray) {
+                    $result .= $innerarray . ", ";
+            }
+            $result = rtrim($result, ", ");
+            return $result;
+        }
+
     }
 
-    public function getOccupation()
+    public function getBiography($lang = 'de')
     {
-        $array = $this->fields['_source']['dbp:occupation'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (isset($this->fields['_source']['dbp:occupation']['@id'])) {
-            foreach ($array as $key => $item) {
-                    $occupation = $item;
-            }
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                foreach ($array[$i] as $key => $item) {
-                        $occupation .= $item . ", ";
-                }
-            }
-        }
-        $occupation = rtrim($occupation, ", ");
-        return $occupation;
-    }
-
-    public function getNationality()
-    {
-        $array = $this->fields['_source']['dbp:nationality'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (isset($this->fields['_source']['dbp:nationality']['@id'])) {
-            foreach ($array as $key => $item) {
-                $nationality = $item;
-            }
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                foreach ($array[$i] as $key => $item) {
-                    $nationality .= $item . ", ";
-                }
-            }
-        }
-        $nationality = rtrim($nationality, ", ");
-        return $nationality;
+        return $result = $this->getValueForProperty($lang, 'dbp:abstract');
     }
 
     public function getBirthDate()
     {
-        $array = $this->fields['_source']['dbp:birthYear'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (!is_array($array)){
-            return $this->fields['_source']['dbp:birthYear'];
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                $birthDate .= $array[$i] . " oder ";
+        $date = $this->fields['_source']['dbp:birthDate'];
+        if(isset($date)) {
+            if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
+                $result = date("d.m.Y");
+                return $result  . ", ";
+            } elseif (preg_match("/^[0-9]{4}$/", $date)) {
+                $result = $date;
+                return $result  . ", ";
+            } else {
+                return "No content, ";
             }
-            $birthDate = rtrim($birthDate, " oder ");
-            return $birthDate;
+        } elseif(!isset($date)) {
+            $date = $this->fields['_source']['schema:birthDate'];
+            if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
+                $result = date("d.m.Y");
+                return $result . ", ";
+            } elseif (preg_match("/^[0-9]{4}$/", $date)) {
+                $result = $date;
+                return $result . ", ";
+            } else {
+                return "No content, ";
+            }
+        } else {
+            return "No content, ";
         }
     }
 
-    public function getBirthPlace()
-    {
-        $array = $this->fields['_source']['dbp:birthPlace'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (isset($this->fields['_source']['dbp:birthPlace']['@id'])) {
-            foreach ($array as $key => $item) {
-                $birthPlace = $item;
-            }
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                foreach ($array[$i] as $key => $item) {
-                    $birthPlace .= $item . " oder ";
-                }
-            }
-        }
-        $birthPlace = rtrim($birthPlace, " oder ");
-        return $birthPlace;
+    public function getBirthPlace($lang = 'de') {
+        return $result = $this->getValueForProperty($lang, 'lsb:dbpBirthPlaceAsLiteral');
     }
 
     public function getDeathDate()
     {
-        $array = $this->fields['_source']['dbp:deathYear'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (!is_array($array)){
-            return $this->fields['_source']['dbp:deathYear'];
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                $deathDate .= $array[$i] . " oder ";
+        $date = $this->fields['_source']['dbp:deathDate'];
+        if(isset($date)) {
+            if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
+                $result = date("d.m.Y");
+                return $result . ", ";
+            } elseif (preg_match("/^[0-9]{4}$/", $date)) {
+                $result = $date;
+                return $result . ", ";
+            } else {
+                return "No content, ";
             }
-            $deathDate = rtrim($deathDate, " oder ");
-            return $deathDate;
+        } elseif(!isset($date)) {
+            $date = $this->fields['_source']['schema:deathDate'];
+            if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
+                $result = date("d.m.Y");
+                return $result . ", ";
+            } elseif (preg_match("/^[0-9]{4}$/", $date)) {
+                $result = $date;
+                return $result . ", ";
+            } else {
+                return "No content, ";
+            }
+        } else {
+            return "No content, ";
         }
     }
 
-    public function getDeathPlace()
+    public function getDeathPlace($lang = 'de')
     {
-        $array = $this->fields['_source']['dbp:deathPlace'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (isset($this->fields['_source']['dbp:deathPlace']['@id'])) {
-            foreach ($array as $key => $item) {
-                $deathPlace = $item;
-            }
+        return $result = $this->getValueForProperty($lang, 'lsb:dbpDeathPlaceAsLiteral');
+    }
+
+    public function getGenre($lang = 'de') {
+        return $result = $this->getValueForProperty($lang, 'lsb:dbpGenreAsLiteral');
+    }
+
+    public function getInfluenced($lang = 'de')
+    {
+        return $result = $this->getValueForProperty($lang, 'lsb:dbpInfluenced');
+    }
+
+    public function getInfluencedBy($lang = 'de')
+    {
+        return $result = $this->getValueForProperty($lang, 'lsb:dbpInfluencedBy');
+    }
+
+    public function getMovement($lang = 'de')
+    {
+        return $result = $this->getValueForProperty($lang, 'lsb:dbpMovementAsLiteral');
+    }
+
+    public function getNameAsLabel()
+    {
+        $firstName = $this->fields['_source']['foaf:firstName'] . " ";
+        $lastName = $this->fields['_source']['foaf:lastName'];
+        $name = $this->fields['_source']['foaf:name'];
+
+        if (isset($lastName)) {
+            $result = $firstName . $lastName;
+            return $result;
+        } elseif(isset($name)) {
+            $result = $name;
+            return $result;
         } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                foreach ($array[$i] as $key => $item) {
-                    $deathPlace .= $item . " oder ";
+            return "No content";
+        }
+    }
+
+    public function getNationality($lang = 'de')
+    {
+        return $result = $this->getValueForProperty($lang, 'lsb:dbpNationalityAsLiteral');
+    }
+
+    public function getNotableWork($lang = 'de'){
+        return $result = $this->getValueForProperty($lang, 'dbp:notableWork');
+    }
+
+    public function getOccupation($lang = 'de')
+    {
+        return $result = $this->getValueForProperty($lang, 'lsb:dbpOccupationAsLiteral');
+    }
+
+    public function getPartner($lang = 'de')
+    {
+        return $result = $this->getValueForProperty($lang, 'lsb:dbpPartnerAsLiteral');
+    }
+
+    public function getPseudonym($lang = 'de')
+    {
+        return $result = $this->getValueForProperty($lang, 'dbp:pseudonym');
+    }
+
+    public function getSpouse($lang = 'de')
+    {
+        return $result = $this->getValueForProperty($lang, 'lsb:dbpSpouseAsLiteral');
+    }
+
+    /* gets value for language dependent public functions */
+    private function getValueForProperty($lang, $property)
+    {
+        $array = $this->fields['_source'][$property];
+        return $this->getValueFromArray($lang, $array);
+    }
+
+    /* gets values from array for language dependent public functions */
+    private function getValueFromArray($lang, $array)
+    {
+        if (!isset($array)) {
+            return "No content";
+        } elseif (!is_array($array)) {
+            return $array;
+        } elseif (count($array)===1) {
+            /* returns first result independent from language if array consists of only on object */
+            $result = reset($array);
+            return $result;
+        } else {
+            foreach ($array as $outerarray => $innerarray) {
+                if (array_key_exists($lang, $innerarray)) {
+                    /* returns value in given language if value exists in given language */
+                    $result .= $innerarray[$lang] . ", ";
+                } elseif (array_key_exists(FALLBACK_LANGUAGE, $innerarray)) {
+                    /* returns value in English if value does not exist in given language */
+                    $fallbackResult .= $innerarray[FALLBACK_LANGUAGE] . ", ";
                 }
             }
-        }
-        $deathPlace = rtrim($deathPlace, " oder ");
-        return $deathPlace;
-    }
-
-    public function getBiography()
-    {
-        $array = $this->fields['_source']['dbp:abstract'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (!is_array($array)){
-            return $this->fields['_source']['dbp:abstract'];
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                $abstract .= preg_replace(['/</','/>/'], ['&lt;','&gt;'], $array[$i]) . "<br/>";
-            }
-            $abstract = rtrim($abstract, "<br/>" );
-            return $abstract;
-        }
-    }
-
-    public function getGenre()
-    {
-        $array = $this->fields['_source']['dbp:genre'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (isset($this->fields['_source']['dbp:genre']['@id'])) {
-            foreach ($array as $key => $item) {
-                $genre = $item;
-            }
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                foreach ($array[$i] as $key => $item) {
-                    $genre .= $item . ", ";
+            if (empty($result)) {
+                if (!empty($fallbackResult)) {
+                    $result = $fallbackResult;
+                } else {
+                    return "No content";
                 }
             }
-        }
-        $genre = rtrim($genre, ", ");
-        return $genre;
-    }
-
-    public function getMovement()
-    {
-        $array = $this->fields['_source']['dbp:movement'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (isset($this->fields['_source']['dbp:movement']['@id'])) {
-            foreach ($array as $key => $item) {
-                $movement = $item;
-            }
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                foreach ($array[$i] as $key => $item) {
-                    $movement .= $item . ", ";
-                }
-            }
-        }
-        $movement = rtrim($movement, ", ");
-        return $movement;
-    }
-
-    public function getInfluenced()
-    {
-        $array = $this->fields['_source']['dbp:influenced'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (isset($this->fields['_source']['dbp:influenced']['@id'])) {
-            foreach ($array as $key => $item) {
-                $influenced = $item;
-            }
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                foreach ($array[$i] as $key => $item) {
-                    $influenced .= $item . ", ";
-                }
-            }
-        }
-        $influenced = rtrim($influenced, ", ");
-        return $influenced;
-    }
-
-    public function getInfluencedBy()
-    {
-        $array = $this->fields['_source']['dbp:influencedBy'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (isset($this->fields['_source']['dbp:influencedBy']['@id'])) {
-            foreach ($array as $key => $item) {
-                $influencedBy = $item;
-            }
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                foreach ($array[$i] as $key => $item) {
-                    $influencedBy .= $item . ", ";
-                }
-            }
-        }
-        $influencedBy = rtrim($influencedBy, ", ");
-        return $influencedBy;
-    }
-
-    public function getPartner()
-    {
-        $array = $this->fields['_source']['dbp:partner'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (isset($this->fields['_source']['dbp:partner']['@id'])) {
-            foreach ($array as $key => $item) {
-                $partner = $item;
-            }
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                foreach ($array[$i] as $key => $item) {
-                    $partner .= $item . ", ";
-                }
-            }
-        }
-        $partner = rtrim($partner, ", ");
-        return $partner;
-    }
-
-    public function getSpouse()
-    {
-        $array = $this->fields['_source']['dbp:spouse'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (isset($this->fields['_source']['dbp:spouse']['@id'])) {
-            foreach ($array as $key => $item) {
-                $spouse = $item;
-            }
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                foreach ($array[$i] as $key => $item) {
-                    $spouse .= $item . ", ";
-                }
-            }
-        }
-        $spouse = rtrim($spouse, ", ");
-        return $spouse;
-    }
-
-    public function getNotableWork()
-    {
-        $array = $this->fields['_source']['dbp:notableWork'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (isset($this->fields['_source']['dbp:notableWork']['@id'])) {
-            foreach ($array as $key => $item) {
-                $notableWork = $item;
-            }
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                foreach ($array[$i] as $key => $item) {
-                    $notableWork .= $item . ", ";
-                }
-            }
-        }
-        $notableWork = rtrim($notableWork, ", ");
-        return $notableWork;
-    }
-
-    public function getAlternativeNames()
-    {
-        $array = $this->fields['_source']['dbp:alternativeNames'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (isset($this->fields['_source']['dbp:alternativeNames']['@id'])) {
-            foreach ($array as $key => $item) {
-                $alternativeNames = $item;
-            }
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                foreach ($array[$i] as $key => $item) {
-                    $alternativeNames .= $item . ", ";
-                }
-            }
-        }
-        $alternativeNames = rtrim($alternativeNames, ", ");
-        return $alternativeNames;
-    }
-
-    public function getPseudonym()
-    {
-        $array = $this->fields['_source']['dbp:pseudonym'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (isset($this->fields['_source']['dbp:pseudonym']['@id'])) {
-            foreach ($array as $key => $item) {
-                $pseudonym = $item;
-            }
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                foreach ($array[$i] as $key => $item) {
-                    $pseudonym .= $item . ", ";
-                }
-            }
-        }
-        $pseudonym = rtrim($pseudonym, ", ");
-        return $pseudonym;
-    }
-
-    public function getSource()
-    {
-        $array = $this->fields['_source']['owl:sameAs'];
-        if (!isset($array)){
-            return "No content";
-        } elseif (!is_array($array)){
-            return $this->fields['_source']['owl:sameAs'];
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                $source .= $array[$i] . ", ";
-            }
-            $source = rtrim($source, ", ");
-            return $source;
+            $result = rtrim($result, ", ");
+            return $result;
         }
     }
 
-        /*    public function getFirstNameResources()
-            {
-                return $this->fields['_source']['dc:contributor']['foaf:Person']['foaf:firstName'];
-            }
-
-            public function getLastNameResources()
-            {
-                return $this->fields['_source']['dc:contributor']['foaf:Person']['foaf:lastName'];
-            }*/
-
-    public function getPublicationStatement()
-    {
-        return $this->fields['_source']['rdau:P60333'];
-    }
-
-    public function getFormat()
-    {
-        return $this->fields['_source']['dc:format'];
-    }
-
-    public function getTitle()
-    {
-        return $this->fields['_source']['dct:title'];
-    }
-
-    public function getStatementOfResponsibility()
-    {
-        return $this->fields['_source']['rdau:P60339'];
-    }
-
-    public function getWorkTitle()
-    {
-        $array = $this->fields['_source']['dct:title'];
-        if (!isset($array)){
+public
+function getSource()
+{
+    $array = $this->fields['_source']['owl:sameAs'];
+    if (!isset($array)) {
         return "No content";
-        } elseif (!is_array($array)){
-            return $this->fields['_source']['dct:title'];
-        } else {
-            for ($i = 0; $i <= 0; $i++) {
-                $workTitle .= $array[$i];
-            }
-            return $workTitle;
-        }
-    }
-
-
-    // TODO: gibt immer nur ein Element zurück, da return die Funktion sofort beendet
-    public function getWorkInstances()
-    {
-        $array = $this->fields['_source']['bf:hasInstance'];
+    } elseif (!is_array($array)) {
+        return $this->fields['_source']['owl:sameAs'];
+    } else {
         for ($i = 0; $i <= count($array); $i++) {
-            foreach ($array[$i] as $key => $item) {
-                $instances[] = $item;
-                return $instances[$i];
-            }
+            $source .= $array[$i] . ", ";
+        }
+        $source = rtrim($source, ", ");
+        return $source;
+    }
+}
+
+/*    public function getFirstNameResources()
+    {
+        return $this->fields['_source']['dc:contributor']['foaf:Person']['foaf:firstName'];
+    }
+
+    public function getLastNameResources()
+    {
+        return $this->fields['_source']['dc:contributor']['foaf:Person']['foaf:lastName'];
+    }*/
+
+public
+function getPublicationStatement()
+{
+    return $this->fields['_source']['rdau:P60333'];
+}
+
+public
+function getFormat()
+{
+    return $this->fields['_source']['dc:format'];
+}
+
+public
+function getTitle()
+{
+    return $this->fields['_source']['dct:title'];
+}
+
+public
+function getStatementOfResponsibility()
+{
+    return $this->fields['_source']['rdau:P60339'];
+}
+
+public
+function getWorkTitle()
+{
+    $array = $this->fields['_source']['dct:title'];
+    if (!isset($array)) {
+        return "No content";
+    } elseif (!is_array($array)) {
+        return $this->fields['_source']['dct:title'];
+    } else {
+        for ($i = 0; $i <= 0; $i++) {
+            $workTitle .= $array[$i];
+        }
+        return $workTitle;
+    }
+}
+
+
+// TODO: gibt immer nur ein Element zurück, da return die Funktion sofort beendet
+public
+function getWorkInstances()
+{
+    $array = $this->fields['_source']['bf:hasInstance'];
+    for ($i = 0; $i <= count($array); $i++) {
+        foreach ($array[$i] as $key => $item) {
+            $instances[] = $item;
+            return $instances[$i];
         }
     }
+}
 
-    /* Ergänzungen laufen noch nicht - Vorlage für die Integration einer zweiten Suchabfrage
+public
+function getType()
+{
+    return $this->fields['_source']['rdf:type']["@id"];
+}
 
-    public function getWorkInstances()
-        {
-            $array = $this->fields['_source']['bf:hasInstance'];
+public
+function getCover()
+{
+    $about = $this->fields['_source']['rdfs:isDefinedBy']['@id'];
+    $id = substr($about, 33, 9);
+    $url_start = 'https://resources.swissbib.ch/Cover/Show?isn=';
+    $url_end = '&size=small';
+    $link_cover = $url_start . $id . $url_end;
+    return $link_cover;
+}
 
-            for ($i = 0; $i <= count($array); $i++) {
-                foreach ($array[$i] as $key => $item) {
-                        $instances[] = $item;
-                }
-            }
-            $blub = [
-                'index' => 'testsb',
-                'type' => 'bibliographicResource',
-                'body' => [
-                    'query' => [
-                        'filtered' => [
-                            'filter' => [
-                                'terms' => [
-                                    '_id' => '$instances'
-                                 ]
-                             ]
-                        ]
-                    ]
-                ]
-            ];
-            public function search($blub){}
-         }*/
-
-    public function getType()
-    {
-        return $this->fields['_source']['rdf:type']["@id"];
+public
+function getISBN10()
+{
+    if (isset($this->fields['_source']['bibo:isbn10'])) {
+        $isbn10 = $this->fields['_source']['bibo:isbn10'];
+        $url_start = 'https://resources.swissbib.ch/Cover/Show?isn=';
+        $url_end = '&size=small';
+        $link_cover = $url_start . $isbn10 . $url_end;
+        return $link_cover;
+    } elseif ($this->fields['_source']['rdf:type']['@id'] == "http://purl.org/ontology/bibo/Article") {
+        return "../themes/linkedswissbib/images/icon_article.png";
+    } else {
+        return "../themes/linkedswissbib/images/icon_no_image_available.gif";
     }
-
-    public function getCover()
-    {
-       $about = $this->fields['_source']['rdfs:isDefinedBy']['@id'];
-       $id = substr($about, 33, 9);
-       $url_start = 'https://resources.swissbib.ch/Cover/Show?isn=';
-       $url_end = '&size=small';
-       $link_cover = $url_start.$id.$url_end;
-       return $link_cover;
-    }
-
-    public function getISBN10()
-    {
-        if (isset($this->fields['_source']['bibo:isbn10']))
-        {
-            $isbn10 = $this->fields['_source']['bibo:isbn10'];
-            $url_start = 'https://resources.swissbib.ch/Cover/Show?isn=';
-            $url_end = '&size=small';
-            $link_cover = $url_start.$isbn10.$url_end;
-            return $link_cover;
-        } elseif ($this->fields['_source']['rdf:type']['@id'] == "http://purl.org/ontology/bibo/Article") {
-            return "../themes/linkedswissbib/images/icon_article.png";
-        } else {
-            return "../themes/linkedswissbib/images/icon_no_image_available.gif";
-        }
-    }
+}
 
 }
