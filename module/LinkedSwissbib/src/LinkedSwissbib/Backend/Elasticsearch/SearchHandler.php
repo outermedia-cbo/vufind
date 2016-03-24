@@ -5,6 +5,7 @@
  * @category linked-swissbib
  * @package  Backend_Eleasticsearch
  * @author   Guenter Hipler <guenter.hipler@unibas.ch>
+ * @author   Philipp Kuntschik <Philipp.Kuntschik@HTWChur.ch>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://linked.swissbib.ch  Main Page
  */
@@ -28,7 +29,7 @@ class SearchHandler
 
     protected static $configKeys = [
 
-        'UsedTypes', 'UsedIndex', 'nested',
+        'UsedTypes', 'UsedIndex', 'Multisearch','nested',
          'fields', 'query',
         'bool', 'should', 'multi_match', 'type',
         'operator', 'path',
