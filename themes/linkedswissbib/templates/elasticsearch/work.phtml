@@ -73,7 +73,7 @@
                         $coverImage = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getCover());
                         $instance =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getWorkInstances());
                         $genre = "No content due to missing properties";
-                        $originalLanguage = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getOriginalLanguage());
+                        /* $originalLanguage = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getOriginalLanguage()); */
                         $statementOfResponsibility =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getStatementOfResponsibility());
                         $title =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getWorkTitle());
                         $source = "No content due to missing properties";
@@ -244,7 +244,7 @@
                                     $numberOfInstitutions = "2 Bibliotheken";
                                     $statementOfResponsibility =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getStatementOfResponsibility());
                                     $title =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getTitle());
-                                    $year = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPublicationStatement());
+                                    $year = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getYear());
                                     {
                                     ?>
                                     <!-- start result list form-->

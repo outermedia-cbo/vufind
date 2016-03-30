@@ -175,7 +175,7 @@ class ElasticSearchRDF extends AbstractBase
         }
     }
 
-    /* Currently on URIs availabe */
+    /* Currently on URIs available */
     public function getName()
     {
         $array = $this->fields['_source']['dct:contributor'];
