@@ -43,9 +43,10 @@ allen Katalogen | NEBIS | IDS Basel Bern | ID Luzern | RERO | Alexandria
                 <b>Beschreibung:</b> &nbsp; <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getRdfType()); ?><br />
                 <b>Link Cover (ID):</b> &nbsp; <a rel="external" href="<?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getCover()); ?>">
                 <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getCover()); ?></a><br />
-                <b>Link Cover (ISBN10):</b> &nbsp; <a rel="external" href="<?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getISBN10()); ?>">
-                <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getISBN10()); ?></a><br />
-                <img src="<?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getISBN10()); ?>">
+                <!-- Useed to be ->getISBN10; getter was deleted -->
+                <b>Link Cover (ISBN10):</b> &nbsp; <a rel="external" href="<?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getCover()); ?>">
+                <?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getCover()); ?></a><br />
+                <img src="<?=  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getCover()); ?>">
             </p>
             <br />
         </div>
