@@ -35,6 +35,20 @@ BibliographicResourceForAuthor:
         - and # should be default
 
 
+AutocompleteAuthor:
+  UsedTypes:
+    - person
+  UsedIndex:
+    - testsb
+  query:
+    multi_match:
+      fields:
+        - foaf:name
+      type:
+        - cross_fields #should be default
+      operator:
+        - and # should be default
+
 
 AllFields:
   UsedTypes:
