@@ -56,7 +56,12 @@ class ElasticSearch implements AutocompleteInterface{
             $current = $object->getRawData();
             $type = $current['_type'];
             $id = $current['_source']['@id'];
-            $displayname = $current['_source']['foaf:name'];
+
+            if(isset($current['_source']['foaf:firstName']) && isset($current['_source']['foaf:lastName']))
+                $displayname = $current['_source']['foaf:firstName'] . ' ' . $current['_source']['foaf:lastName'];
+            else
+                $displayname = $current['_source']['foaf:name'];
+
             $results[] = array($id, $type, $displayname);
         }
         return $results;
