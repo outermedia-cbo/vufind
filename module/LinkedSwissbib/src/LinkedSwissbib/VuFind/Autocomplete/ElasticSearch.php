@@ -35,7 +35,9 @@ class ElasticSearch implements AutocompleteInterface{
         $this->searchObject->getParams()->getQuery()->setString($query);
         $searchResults = $this->searchObject->getResults();
 
-        return $searchResults;
+        $results = $this->refine($searchResults);
+
+        return $results;
     }
 
     /**
@@ -48,4 +50,15 @@ class ElasticSearch implements AutocompleteInterface{
      */
     public function setConfig($params){}
 
+    private function refine($searchResults){
+        $results = array();
+        foreach ($searchResults as $object) {
+            $current = $object->getRawData();
+            $type = $current['_type'];
+            $id = $current['_source']['@id'];
+            $displayname = $current['_source']['foaf:name'];
+            $results[] = array($id, $type, $displayname);
+        }
+        return $results;
+    }
 }

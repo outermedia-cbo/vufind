@@ -299,6 +299,9 @@ $(document).ready(function() {
       } while(t.length > 0);
     });
 
+  /*
+  removed and moved to linked.swissbib/js/linkedswissbib/common.js to enable autosuggest customization
+
   // Search autocomplete
   $('.autocomplete').typeahead(
     {
@@ -331,7 +334,7 @@ $(document).ready(function() {
         });
       }
     }
-  );
+  );*/
 
   // Checkbox select all
   $('.checkbox-select-all').change(function() {

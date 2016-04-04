@@ -6,4 +6,8 @@ return array(
         'compiled.less'
     ),
 
+    'js'      => array(
+        'linkedswissbib/common.js',
+    ),
+
 );
