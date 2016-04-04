@@ -127,7 +127,7 @@
                                             <div id="heading-details" class="panel-heading" role="tab">
                                                 <h3 class="panel-title">
                                                     <a aria-expanded="false" href="#collapse-details" data-toggle="collapse">
-                                                        <span>Mehr Details zu <? echo $firstName." ".$lastName ?></span>
+                                                        <span>Mehr Details zu <? echo $nameAsLabel ?></span>
                                                     </a>
                                                 </h3>
                                             </div>
@@ -274,15 +274,17 @@
                                     $results = $this->results->getResults();
                                     foreach ($results as $rdfDriver):
                                     $author = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getName());
-                                    $coverImage = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getISBN10());
+                                    $coverImage = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getCover());
+                                    $edition = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getEdition());
                                     $format = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getRdfType());
                                     $holdingInstitution = "ETH Zürich - Bibliothek HDB";
                                     $linkToHoldings = "#";
                                     $linkToOtherEditions ="#";
                                     $numberOfInstitutions = "2 Bibliotheken";
+                                    $publicationStatement = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPublicationStatement());
                                     $statementOfResponsibility =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getStatementOfResponsibility());
                                     $title =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getTitle());
-                                    $year = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPublicationStatement());
+                                    $year = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getYear());
                                     {
                                     ?>
                                     <!-- start result list form-->
@@ -316,6 +318,11 @@
                                                     <!-- Zeitschriftentitel, Erscheinungsjahr -->
                                                     <div class="meta">
                                                         <span class="hidden-xs label"><strong>Jahr:</strong></span><span><? echo $year ?></span><br>
+                                                    </div>
+                                                    <!-- end class meta -->
+                                                    <!-- Ausgabe -->
+                                                    <div class="meta">
+                                                        <span class="hidden-xs label"><strong>Ausgabe:</strong></span><span><? echo $edition ?></span><br>
                                                     </div>
                                                     <!-- end class meta -->
                                                     <!-- ID #TODO: Why do we need this?

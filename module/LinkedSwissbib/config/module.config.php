@@ -92,8 +92,8 @@ $config = [
 
 // Define static routes -- Controller/Action strings
 $staticRoutes = [
-    'Exploration/Search', 'Elasticsearch/Results', 'Sparql/Results', 'Exploration/Author', 'Exploration/AuthorDetails'
-];
+    'Exploration/Search', 'Elasticsearch/Results', 'Sparql/Results', 'Exploration/Author', 'Exploration/Work', 'Exploration/AuthorDetails'
+    ];
 
 $routeGenerator = new \VuFind\Route\RouteGenerator();
 $routeGenerator->addStaticRoutes($config, $staticRoutes);

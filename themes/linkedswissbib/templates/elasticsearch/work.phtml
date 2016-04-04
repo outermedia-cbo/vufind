@@ -63,24 +63,22 @@
                             <!-- end class col-md-3 -->
                         </div>
                         <!-- end class results-top row -->
-
                         <?
                         $results = $this->results->getResults();
                         foreach ($results as $rdfDriver):
-                        $coverImage = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getISBN10());
+                        $abstract = "No content due to missing properties";
+                        $alternativeTitle = "No content due to missing properties";
+                        /*$alternativeTitle = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getAlternativeTitle());*/
+                        $author = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getNameWork());
+                        $coverImage = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getCover());
                         $instance =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getWorkInstances());
+                        $genre = "No content due to missing properties";
+                        /* $originalLanguage = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getOriginalLanguage()); */
                         $statementOfResponsibility =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getStatementOfResponsibility());
                         $title =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getWorkTitle());
-
-                        /*
-                        $alternativeTitle = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->get());
-                        $author = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->get());
-                        $genre = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->get());
-                        $summary = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->get());
-                        $person = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->get());
-                        $source = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->get());
-                        $topics = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->get());
-                        $year = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->get());*/
+                        $source = "No content due to missing properties";
+                        $subjectHeading = "No content due to missing properties";
+                        $year = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getYear());
                         {
                         ?>
                                 <div class="container-fluid">
@@ -103,13 +101,13 @@
                                             <div class="meta">
                                                 <span><strong>Verfasser/Beitragende: </strong></span><span><? echo $author ?></span><br>
                                             </div>
-                                            <!-- genre -->
+                                            <!-- year -->
                                             <div class="meta">
-                                                <span><strong>Form/Gattung: </strong></span><span><? echo $genre ?></span><br>
+                                                <span><strong>Jahr: </strong></span><span><? echo $year ?></span><br>
                                             </div>
-                                            <!-- topics -->
+                                            <!-- subject headings -->
                                             <div class="meta">
-                                                <span><strong>Themen/Schlagworte: </strong></span><span><? echo $topics ?></span><br><br>
+                                                <span><strong>Themen/Schlagworte: </strong></span><span><? echo $subjectHeading ?></span><br><br>
                                             </div>
                                             <div id="accordion" class="panel-group" aria-multiselectable="true" role="tablist">
                                                 <div id="holdings-details" class="panel panel-default">
@@ -133,7 +131,7 @@
                                         <dl>
                                             <div class="row">
                                                 <dt class="col-sm-2"><p>Zusammenfassung:</p></dt>
-                                                <dd class="col-sm-10"><p><? echo $summary ?></p></dd>
+                                                <dd class="col-sm-10"><p><? echo $abstract ?></p></dd>
                                             </div>
                                             <div class="row">
                                                 <dt class="col-sm-2"><p>Gattung:</p></dt>
@@ -142,14 +140,6 @@
                                             <div class="row">
                                                 <dt class="col-sm-2"><p>Titelvarianten:</dt>
                                                 <dd class="col-sm-10"><? echo $alternativeTitle ?></p></dd>
-                                            </div>
-                                            <div class="row">
-                                                <dt class="col-sm-2"><p>Personenseiten:</p></dt>
-                                                <dd class="col-sm-10"><p><? echo $person ?></p></dd>
-                                            </div>
-                                            <div class="row">
-                                                <dt class="col-sm-2"><p>Namens-<br>varianten:</p></dt>
-                                                <dd class="col-sm-10"><p><? echo $pseudonym ?></p></dd>
                                             </div>
                                             <div class="row">
                                                 <dt class="col-sm-2"><p>Quellen:</p></dt>
@@ -246,7 +236,7 @@
                                     $results = $this->results->getResults();
                                     foreach ($results as $rdfDriver):
                                     $author = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getName());
-                                    $coverImage = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getISBN10());
+                                    $coverImage = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getCover());
                                     $format = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getRdfType());
                                     $holdingInstitution = "ETH Zürich - Bibliothek HDB";
                                     $linkToHoldings = "#";
@@ -254,7 +244,7 @@
                                     $numberOfInstitutions = "2 Bibliotheken";
                                     $statementOfResponsibility =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getStatementOfResponsibility());
                                     $title =  preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getTitle());
-                                    $year = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getPublicationStatement());
+                                    $year = preg_replace(['/</','/>/'], ['&lt;','&gt;'], $rdfDriver->getYear());
                                     {
                                     ?>
                                     <!-- start result list form-->
@@ -288,6 +278,11 @@
                                                     <!-- Zeitschriftentitel, Erscheinungsjahr -->
                                                     <div class="meta">
                                                         <span class="hidden-xs label"><strong>Jahr:</strong></span><span><? echo $year ?></span><br>
+                                                    </div>
+                                                    <!-- end class meta -->
+                                                    <!-- Ausgabe -->
+                                                    <div class="meta">
+                                                        <span class="hidden-xs label"><strong>Ausgabe:</strong></span><span><? echo $edition ?></span><br>
                                                     </div>
                                                     <!-- end class meta -->
                                                     <!-- ID #TODO: Why do we need this?

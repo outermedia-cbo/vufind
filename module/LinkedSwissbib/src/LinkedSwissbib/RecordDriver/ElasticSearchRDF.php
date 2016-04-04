@@ -69,23 +69,100 @@ class ElasticSearchRDF extends AbstractBase
 
     }
 
-    /*
-        public function getRdfType()
-        {
-            if (isset($this->fields['_source']['@type']))
-            {
-                return is_array($this->fields['_source']['@type']) ? $this->fields['_source']['@type'] :
-                    [$this->fields['_source']['@type']];
-            } else {
-                return [];
-            }
-        }*/
-
     public function getRdfType()
     {
-        $rdfType = $this->fields['_source']['rdf:type']['@id'];
+        $rdfType = $this->fields['_source']['rdf:type'];
         $rdfType = substr_replace($rdfType, " ", 0, 30);
         return $rdfType;
+    }
+
+    /* Currently no properties
+    public function getAlternativeTitle()
+    {
+        $array = $this->fields['_source']['dct:alternative'];
+
+        if (!isset($array)) {
+            return "No content";
+        } elseif (!is_array($array)) {
+            return $array;
+        } elseif (count($array)===1) {
+            $result = reset($array);
+            return $result;
+        } else {
+            foreach ($array as $outerarray => $innerarray) {
+                $result .= $innerarray . ", ";
+            }
+            $result = rtrim($result, ", ");
+            return $result;
+        }
+    }
+    */
+
+    public function getEdition()
+    {
+        $result = $this->fields['_source']['bibo:edition'];
+        if(!isset($result)){
+            return "No content";
+        } else {
+            return $result;
+        }
+    }
+
+    public function getCover()
+    {
+        if (isset($this->fields['_source']['bibo:isbn10'])) {
+            $isbn10 = $this->fields['_source']['bibo:isbn10'];
+            $url_start = 'https://resources.swissbib.ch/Cover/Show?isn=';
+            $url_end = '&size=small';
+            $link_cover = $url_start . $isbn10 . $url_end;
+            return $link_cover;
+        } elseif ($this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Article") {
+            return "../themes/linkedswissbib/images/icon_article.png";
+        } else {
+            return "../themes/linkedswissbib/images/icon_no_image_available.gif";
+        }
+    }
+
+    /* Currently no properties
+    public function getOriginalLanguage()
+    {
+        $result = $this->fields['_source']['dbp:originalLanguage'];
+        if(!isset($result)){
+            return "No content";
+        } else {
+            return $result;
+        }
+    }
+    */
+
+    public function getStatementOfResponsibility()
+    {
+        return $this->fields['_source']['rdau:P60339'];
+    }
+
+    public function getTitle()
+    {
+        return $this->fields['_source']['dct:title'];
+    }
+
+    public function getYear()
+    {
+        $result = $this->fields['_source']['dct:issued'];
+        if(!isset($result)){
+            return "No content";
+        } else {
+            return $result;
+        }
+    }
+
+    public function getNameWork()
+    {
+        $result = $this->fields['_source']['dct:contributor'][0];
+        if(!isset($result)){
+            return "No content";
+        } else {
+            return $result;
+        }
     }
 
     public function getLanguage()
@@ -96,21 +173,30 @@ class ElasticSearchRDF extends AbstractBase
         } else {
             return [];
         }
-
     }
 
-    /*
-    public function getFirstNameContributor()
+    /* Currently on URIs available */
+    public function getName()
     {
-        return $this->fields['_source']['foaf:firstName'];
+        $array = $this->fields['_source']['dct:contributor'];
+
+        if (!isset($array)) {
+            return "No content";
+        } elseif (!is_array($array)) {
+            return $array;
+        } elseif (count($array)===1) {
+            $result = reset($array);
+            return $result;
+        } else {
+            foreach ($array as $outerarray => $innerarray) {
+                $result .= $innerarray . ", ";
+            }
+            $result = rtrim($result, ", ");
+            return $result;
+        }
     }
 
-    public function getLastNameContributor()
-    {
-        return $this->fields['_source']['foaf:lastName'];
-    }
-    */
-
+    /* Currently only URIs available
     public function getName()
     {
         $array = $this->fields['_source']['dct:contributor']['foaf:Person'];
@@ -144,21 +230,8 @@ class ElasticSearchRDF extends AbstractBase
         $name = rtrim($name, "; ");
         return $name;
     }
+    */
 
-    public function getThumbnail()
-    {
-        $array = $this->fields['_source']['dbp:thumbnail'];
-        if (!isset($array)) {
-            return "../themes/linkedswissbib/images/personAvatar.png";
-        } elseif (!is_array($array)) {
-            return $array;
-        } else {
-            for ($i = 0; $i <= 0; $i++) {
-                $thumbnail = $array[$i];
-            }
-            return $thumbnail;
-        }
-    }
 /*
     public function getFirstName()
     {
@@ -189,7 +262,6 @@ class ElasticSearchRDF extends AbstractBase
             $result = rtrim($result, ", ");
             return $result;
         }
-
     }
 
     public function getBiography($lang = 'de')
@@ -329,6 +401,21 @@ class ElasticSearchRDF extends AbstractBase
         return $result = $this->getValueForProperty($lang, 'lsb:dbpSpouseAsLiteral');
     }
 
+    public function getThumbnail()
+    {
+        $array = $this->fields['_source']['dbp:thumbnail'];
+        if (!isset($array)) {
+            return "../themes/linkedswissbib/images/personAvatar.png";
+        } elseif (!is_array($array)) {
+            return $array;
+        } else {
+            for ($i = 0; $i <= 0; $i++) {
+                $thumbnail = $array[$i];
+            }
+            return $thumbnail;
+        }
+    }
+
     /* gets value for language dependent public functions */
     private function getValueForProperty($lang, $property)
     {
@@ -386,39 +473,22 @@ function getSource()
     }
 }
 
-/*    public function getFirstNameResources()
-    {
-        return $this->fields['_source']['dc:contributor']['foaf:Person']['foaf:firstName'];
-    }
 
-    public function getLastNameResources()
-    {
-        return $this->fields['_source']['dc:contributor']['foaf:Person']['foaf:lastName'];
-    }*/
-
+/* place, publisher, year */
 public
 function getPublicationStatement()
 {
     return $this->fields['_source']['rdau:P60333'];
 }
 
+/* physical description*/
 public
 function getFormat()
 {
     return $this->fields['_source']['dc:format'];
 }
 
-public
-function getTitle()
-{
-    return $this->fields['_source']['dct:title'];
-}
 
-public
-function getStatementOfResponsibility()
-{
-    return $this->fields['_source']['rdau:P60339'];
-}
 
 public
 function getWorkTitle()
@@ -450,37 +520,5 @@ function getWorkInstances()
     }
 }
 
-public
-function getType()
-{
-    return $this->fields['_source']['rdf:type']["@id"];
-}
-
-public
-function getCover()
-{
-    $about = $this->fields['_source']['rdfs:isDefinedBy']['@id'];
-    $id = substr($about, 33, 9);
-    $url_start = 'https://resources.swissbib.ch/Cover/Show?isn=';
-    $url_end = '&size=small';
-    $link_cover = $url_start . $id . $url_end;
-    return $link_cover;
-}
-
-public
-function getISBN10()
-{
-    if (isset($this->fields['_source']['bibo:isbn10'])) {
-        $isbn10 = $this->fields['_source']['bibo:isbn10'];
-        $url_start = 'https://resources.swissbib.ch/Cover/Show?isn=';
-        $url_end = '&size=small';
-        $link_cover = $url_start . $isbn10 . $url_end;
-        return $link_cover;
-    } elseif ($this->fields['_source']['rdf:type']['@id'] == "http://purl.org/ontology/bibo/Article") {
-        return "../themes/linkedswissbib/images/icon_article.png";
-    } else {
-        return "../themes/linkedswissbib/images/icon_no_image_available.gif";
-    }
-}
 
 }
