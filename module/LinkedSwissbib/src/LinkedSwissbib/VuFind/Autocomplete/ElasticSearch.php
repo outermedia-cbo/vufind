@@ -37,7 +37,7 @@ class ElasticSearch implements AutocompleteInterface{
 
         $results = $this->refine($searchResults);
 
-        return $results;
+        return array_unique($results, SORT_REGULAR);
     }
 
     /**
@@ -55,6 +55,8 @@ class ElasticSearch implements AutocompleteInterface{
         foreach ($searchResults as $object) {
             $current = $object->getRawData();
             $type = $current['_type'];
+            if($type!= 'person')
+                break; //TODO: we ignore everything except person for now
             $id = $current['_source']['@id'];
 
             if(isset($current['_source']['foaf:firstName']) && isset($current['_source']['foaf:lastName']))
