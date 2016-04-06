@@ -17,7 +17,7 @@ class ElasticSearchRDF extends AbstractBase
 {
 
     const FALLBACK_LANGUAGE = 'en';
-    const ARRAY_SEPARATOR = ", ";
+    const ARRAY_SEPARATOR = ', ';
     protected $propertiesToNameSpaces = [
         'rdf:type' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
         'dc11:format' => 'http://purl.org/dc/elements/1.1/format',
@@ -50,12 +50,13 @@ class ElasticSearchRDF extends AbstractBase
     {
         if (isset($this->fields['_source'][$lookup]))
             return $this->fields['_source'][$lookup];
-        return $fallback;
+        else
+            return $fallback;
     }
 
     private function getValueForProperty($lang, $lookup, $fallback = "no content provided")
     {
-        if(!isset($this->fields['_source'][$lookup]))
+        if (!isset($this->fields['_source'][$lookup]))
             return $fallback;
         $array = $this->fields['_source'][$lookup];
         return $this->getValueFromArray($lang, $array);
@@ -63,7 +64,8 @@ class ElasticSearchRDF extends AbstractBase
 
     private function getValueFromArray($lang, $array)
     {
-        $result = ""; $fallbackResult = "";
+        $result = "";
+        $fallbackResult = "";
         if (!is_array($array)) {
             return $array;
         } elseif (count($array) === 1) {
@@ -90,7 +92,8 @@ class ElasticSearchRDF extends AbstractBase
         }
     }
 
-    private function parseDate($date){
+    private function parseDate($date)
+    {
         if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
             return date("d.m.Y");
         } elseif (preg_match("/^[0-9]{4}$/", $date)) {
@@ -218,7 +221,7 @@ class ElasticSearchRDF extends AbstractBase
 
     public function getNameAsLabel()
     {
-        if(isset($this->fields['_source']['foaf:firstName']) && isset($this->fields['_source']['foaf:lastName']))
+        if (isset($this->fields['_source']['foaf:firstName']) && isset($this->fields['_source']['foaf:lastName']))
             return $this->fields['_source']['foaf:firstName'] . " " . $this->fields['_source']['foaf:lastName'];
         return $this->getValueIfAvailable('foaf:name');
     }
@@ -247,7 +250,10 @@ class ElasticSearchRDF extends AbstractBase
 
     public function getAlternativeNames()
     {
-        return implode(self::ARRAY_SEPARATOR,$this->getValueIfAvailable('schema:alternateName'));
+        $result = $this->getValueIfAvailable('schema:alternateName');
+        if (is_array($result))
+            return implode(self::ARRAY_SEPARATOR, $this->getValueIfAvailable('schema:alternateName'));
+        return $result;
     }
 
     public function getThumbnail()
@@ -257,12 +263,30 @@ class ElasticSearchRDF extends AbstractBase
 
     public function getSource()
     {
-        return implode(self::ARRAY_SEPARATOR,$this->getValueIfAvailable('owl:sameAs'));
+        $result = $this->getValueIfAvailable('schema:alternateName');
+        if (is_array($result))
+            return implode(self::ARRAY_SEPARATOR, $this->getValueIfAvailable('owl:sameAs'));
+        return $result;
     }
 
     public function getName()
     {
         return $this->getValueIfAvailable('dct:contributor');
+    }
+
+    public function isPerson()
+    {
+        return $this->getDataType() == "person" ? true : false;
+    }
+
+    public function isInstance()
+    {
+        return $this->getDataType() == "bibliographicResource" ? true : false;
+    }
+
+    public function getDataType()
+    {
+        return $this->fields['_type'];
     }
 
     /* Currently no properties
@@ -400,12 +424,8 @@ class ElasticSearchRDF extends AbstractBase
     }
 
 
-
-
-
 // TODO: gibt immer nur ein Element zurück, da return die Funktion sofort beendet
-    public
-    function getWorkInstances()
+    public function getWorkInstances()
     {
         $array = $this->fields['_source']['bf:hasInstance'];
         for ($i = 0; $i <= count($array); $i++) {
