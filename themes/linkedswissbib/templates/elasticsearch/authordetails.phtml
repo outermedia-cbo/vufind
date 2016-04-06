@@ -208,8 +208,730 @@
                             <!-- end id collapse-more -->
                         </div>
                         <!-- end class container-fluid -->
+                        <!-- SEGMENT Werke -->
+                        <div id="works" class="results-top row">
+                            <h2>Werke</h2>
+                        </div>
+                        <!-- end class results-top row -->
+                        <div id="tabs">
+                            <div class="row">
+                                <ul class="recordTabs nav nav-tabs">
+                                    <li><a href="#tabs-1">Alles (4'048)</a></li>
+                                    <li><a href="#tabs-2">Beteiligt an (560)</a></li>
+                                    <li><a href="#tabs-3">Thema in (63)</a></li>
+                                </ul>
+                            </div>
+                            <div id="tabs-1">
+                                <div class="tab-pane">
+                                    <div class="hidden-print search-controls clearfix row">
+                                        <div class="col-lg-6 col-md-7 col-sm-7">
+                                            <div class="pagination-container hidden-print">
+                                                <div class="hidden-sm hidden-xs">
+                                                    Treffer <strong>1</strong> - <strong>20</strong>
+                                                    von <strong>4'048</strong>
+                                                </div>
+                                                <!-- end class hidden-sm hidden-xs -->
+                                                <div class="hidden-md hidden-lg">
+                                                    <strong>4'048</strong> Treffer
+                                                </div>
+                                                <ul class="pagination">
+                                                    <li class="hidden-sm hidden-xs page">
+                                                        <a href="#">Seite:</a>
+                                                    </li>
+                                                    <li class="inactive"><a href="#"><i
+                                                                class="fa fa-caret-left"></i></a></li>
+                                                    <li class="page-numbers">
+                                                        <a>
+                                                            <span class="marked">1</span> von <span
+                                                                class="standard">203</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;page=2"><i
+                                                                class="fa fa-caret-right"></i></a></li>
+                                                </ul>
+                                            </div>
+                                            <!-- end class hidden-md hidden-lg -->
+                                        </div>
+                                        <!-- end class col-lg-6 col-md-7 col-sm-7 -->
+                                        <div class="col-lg-6 col-md-5 col-sm-5 text-right">
+                                            <form class="form-inline" action="/Search/Results" method="get" name="sort">
+                                                <input name="lookfor" value="malaria" type="hidden"><input name="type"
+                                                                                                           value="AllFields"
+                                                                                                           type="hidden">
+                                                <input name="sortControlElement" value="sortControlElement"
+                                                       type="hidden">
+                                                <label for="sort_options_1">Sortieren nach</label>
+                                                <select id="sort_options_1" name="sort" class="jumpMenu form-control">
+                                                    <option value="relevance" selected="selected">Relevanz</option>
+                                                    <option value="publishDateSort desc">Jahr (neuestes zuerst)</option>
+                                                    <option value="publishDateSort asc">Jahr (ältestes zuerst)</option>
+                                                    <option value="author_sort asc">Autor (A-Z)</option>
+                                                    <option value="author_sort desc">Autor (Z-A)</option>
+                                                    <option value="title_sort asc">Titel (A-Z)</option>
+                                                    <option value="title_sort desc">Titel (Z-A)</option>
+                                                </select>
+                                                <noscript><input type="submit" class="btn btn-default" value="Suchen"/>
+                                                </noscript>
+                                            </form>
+                                            <form class="form-inline"
+                                                  action="/Search/Results?lookfor=malaria&amp;type=AllFields"
+                                                  method="post">
+                                                <input name="limitControlElement" value="limitControlElement"
+                                                       type="hidden">
+                                                <label for="limit">Treffer pro Seite</label>
+                                                <select id="limit" name="limit" class="jumpMenu form-control">
+                                                    <option value="5">5</option>
+                                                    <option value="10">10</option>
+                                                    <option value="20" selected="selected">20</option>
+                                                    <option value="40">40</option>
+                                                    <option value="60">60</option>
+                                                    <option value="80">80</option>
+                                                    <option value="100">100</option>
+                                                </select>
+                                                <noscript><input type="submit" value="Suchen"/></noscript>
+                                            </form>
+                                            <div class="view-buttons hidden-xs">
+                                            </div>
+                                        </div>
+                                        <!-- end class col-lg-6 col-md-5 col-sm-5 text-right -->
+                                    </div>
+                                    <!-- end class hidden-print search-controls clearfix row -->
+                                </div>
+                                <!-- end class tabContent -->
+                            </div>
+                            <!-- end id tabs-1 -->
+                            <div id="tabs-2">
+                                <div class="tab-pane">
+                                    <br>Noch keine Inhalte <br>
+                                </div>
+                                <!-- end class tabContent -->
+                            </div>
+                            <!-- end id tabs-2 -->
+                            <div id="tabs-3">
+                                <div class="tab-pane">
+                                    <br>Noch keine Inhalte <br>
+                                </div>
+                                <!-- end class tabContent -->
+                            </div>
+                            <!-- end id tabs-3 -->
+                        </div>
+                        <!-- end div tabs -->
+                        <script>
+                            $(function () {
+                                $("#tabs").tabs();
+                            });
+                        </script>
+
+                        <!-- SEGMENT Medientyp -->
+                        <div id="mediaType" class="results-top row">
+                            <h2>Medientypen</h2>
+                        </div>
+                        <!-- end class results-top row -->
+                        <div class="row">
+                            <ul class="list-inline">
+                                <li>
+                                    <a href="#">
+                                        <figure>
+                                            <img class="img-responsive"
+                                                 src="../themes/linkedswissbib/images/icon_hoerbuch.jpg" alt="Hörbuch">
+                                            <figcaption>Hörbuch / Tonaufnahme (5'601)<br></figcaption>
+                                        </figure>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <figure>
+                                            <img src="../themes/linkedswissbib/images/icon_noten.jpg" alt="Noten">
+                                            <figcaption>Noten (Partitur) (650)<br></figcaption>
+                                        </figure>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <figure>
+                                            <img src="../themes/linkedswissbib/images/icon_eBook.jpg" alt="eBook">
+                                            <figcaption>eBook (1'256)<br></figcaption>
+                                        </figure>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <figure>
+                                            <img src="../themes/linkedswissbib/images/icon_buch.jpg" alt="Buch">
+                                            <figcaption>gedrucktes Buch (34'455)<br></figcaption>
+                                        </figure>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <figure style="vertical-align: top;">
+                                            <img style="vertical-align: top;"
+                                                 src="../themes/linkedswissbib/images/icon_video.jpg" alt="video">
+                                            <figcaption>Film / Video (4'756)<br></figcaption>
+                                        </figure>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- end class row -->
+
+                        <!-- SEGMENT Werke von Zeitgenossen -->
+                        <div id="worksOfContemporaries" class="results-top row">
+                            <h2>Werke von Zeitgenossen</h2>
+                        </div>
+                        <!-- end class results-top row -->
+                        <div class="row">
+                            <div data-ride="carousel" class="carousel slide" id="similar-items-carousel">
+
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li class="active" data-slide-to="0" data-target="#similar-items-carousel"></li>
+                                    <li data-slide-to="1" data-target="#similar-items-carousel"></li>
+                                    <li data-slide-to="2" data-target="#similar-items-carousel"></li>
+                                </ol>
+
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner">
+                                    <div class="item active">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <a href="/Record/32887101X" class="hover-overlay"
+                                                   style="min-height: 200px;">
+                                                    <img title="Until you make the shore"
+                                                         src="https://resources.swissbib.ch/Cover/Show?isn=1908836679&amp;size=large"
+                                                         style="max-height: 200px;">
+
+                                                    <div class="content">
+                                                        <i title="Buch" class="fa fa-x fa-buch"></i>
+                                                        <b>Until you make the shore</b>
+                                                        <br>von: Conaway, Cameron
+                                                        <br>Veröffentlicht: 2014
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <div class="col-sm-3">
+                                                <a href="/Record/175208727" class="hover-overlay"
+                                                   style="min-height: 200px;">
+                                                    <img title="Incarnadine : poems"
+                                                         src="https://resources.swissbib.ch/Cover/Show?isn=1555976352&amp;size=large"
+                                                         style="max-height: 200px;">
+
+                                                    <div class="content">
+                                                        <i title="Buch" class="fa fa-x fa-buch"></i>
+                                                        <b>Incarnadine : poems</b>
+                                                        <br>von: Szybist, Mary
+                                                        <br>Veröffentlicht: 2013
+                                                    </div>
+                                                </a>
+
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <a href="/Record/176525807" class="hover-overlay"
+                                                   style="min-height: 200px;">
+                                                    <img title="Sightline : poems"
+                                                         src="https://resources.swissbib.ch/Cover/Show?isn=0976640554&amp;size=large"
+                                                         style="max-height: 200px;">
+
+                                                    <div class="content">
+                                                        <i title="Buch" class="fa fa-x fa-buch"></i>
+                                                        <b>Sightline : poems</b>
+                                                        <br>von: Austen, Elizabeth
+                                                        <br>Veröffentlicht: 2010
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <a href="/Record/314280111" class="hover-overlay"
+                                                   style="min-height: 200px">
+                                                    <img title="Start with a small guitar : poems"
+                                                         src="https://resources.swissbib.ch/Cover/Show?isn=0988924838&amp;size=large"
+                                                         style="max-height: 200px;">
+
+                                                    <div class="content">
+                                                        <i title="Buch" class="fa fa-x fa-buch"></i>
+                                                        <b>Start with a small guitar : poems</b>
+                                                        <br>von: Thompson, Lynne
+                                                        <br>Veröffentlicht: 2013
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <a href="/Record/327412496" class="hover-overlay"
+                                                   style="min-height: 200px;">
+                                                    <img title="Copia : poems"
+                                                         src="https://resources.swissbib.ch/Cover/Show?isn=1938160460&amp;size=large"
+                                                         style="max-height: 200px;">
+
+                                                    <div class="content">
+                                                        <i title="Buch" class="fa fa-x fa-buch"></i>
+                                                        <b>Copia : poems</b>
+                                                        <br>von: Meitner, Erika
+                                                        <br>Veröffentlicht: 2014
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <a href="/Record/304901997" class="hover-overlay"
+                                                   style="min-height: 200px;">
+                                                    <img title="Embark : poems"
+                                                         src="https://resources.swissbib.ch/Cover/Show?isn=0976640570&amp;size=large"
+                                                         style="max-height: 200px;">
+
+                                                    <div class="content">
+                                                        <i title="Buch" class="fa fa-x fa-buch"></i>
+                                                        <b>Embark : poems</b>
+                                                        <br>Veröffentlicht: 2012
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <a href="/Record/307411990" class="hover-overlay"
+                                                   style="min-height: 200px;">
+                                                    <img title="Collected poems"
+                                                         src="https://resources.swissbib.ch/Cover/Show?isn=1598530836&amp;size=large"
+                                                         style="max-height: 200px;">
+
+                                                    <div class="content">
+                                                        <i title="Buch" class="fa fa-x fa-buch"></i>
+                                                        <b>Collected poems</b>
+                                                        <br>von: Cullen, Countee
+                                                        <br>Veröffentlicht: 2013
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <a href="/Record/331150034" class="hover-overlay"
+                                                   style="min-height: 200px;">
+                                                    <img title="Streaming : poems"
+                                                         src="https://resources.swissbib.ch/Cover/Show?isn=1566893755&amp;size=large"
+                                                         style="max-height: 200px;">
+
+                                                    <div class="content">
+                                                        <i title="Buch" class="fa fa-x fa-buch"></i>
+                                                        <b>Streaming : poems</b>
+                                                        <br>von: Coke, Allison Adelle Hedge
+                                                        <br>Veröffentlicht: 2014
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <a href="/Record/335357466" class="hover-overlay"
+                                                   style="min-height: 200px;">
+                                                    <img title="Selfish : poems"
+                                                         src="https://resources.swissbib.ch/Cover/Show?isn=1555977081&amp;size=large"
+                                                         style="max-height: 200px;">
+
+                                                    <div class="content">
+                                                        <i title="Buch" class="fa fa-x fa-buch"></i>
+                                                        <b>Selfish : poems</b>
+                                                        <br>von: Goldbarth, Albert
+                                                        <br>Veröffentlicht: 2015
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <a href="/Record/182619362" class="hover-overlay"
+                                                   style="min-height: 200px;">
+                                                    <img title="Rumors of Earth : poems"
+                                                         src="https://resources.swissbib.ch/Cover/Show?isn=1890193348&amp;size=large"
+                                                         style="max-height: 200px;">
+
+                                                    <div class="content">
+                                                        <i title="Buch" class="fa fa-x fa-buch"></i>
+                                                        <b>Rumors of Earth : poems</b>
+                                                        <br>von: Edwards, Robert
+                                                        <br>Veröffentlicht: 2011
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <a href="/Record/318749041" class="hover-overlay"
+                                                   style="min-height: 200px;">
+                                                    <img title="The earth avails : poems"
+                                                         src="https://resources.swissbib.ch/Cover/Show?isn=1555976662&amp;size=large"
+                                                         style="max-height: 200px;">
+
+                                                    <div class="content">
+                                                        <i title="Buch" class="fa fa-x fa-buch"></i>
+                                                        <b>The earth avails : poems</b>
+                                                        <br>von: Wunderlich, Mark
+                                                        <br>Veröffentlicht: 2014
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <a href="/Record/185321690" class="hover-overlay"
+                                                   style="min-height: 200px;">
+                                                    <img title="Must a violence : poems"
+                                                         src="https://resources.swissbib.ch/Cover/Show?isn=1609381297&amp;size=large"
+                                                         style="max-height: 200px;">
+
+                                                    <div class="content">
+                                                        <i title="Buch" class="fa fa-x fa-buch"></i>
+                                                        <b>Must a violence : poems</b>
+                                                        <br>von: Buchanan, Oni
+                                                        <br>Veröffentlicht: 2012
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end class carousel-inner -->
+                                <!-- Controls -->
+                                <a data-slide="prev" role="button" href="#similar-items-carousel"
+                                   class="left carousel-control">
+                                    <span class="fa fa-chevron-left glyphicon-chevron-left"></span>
+                                </a>
+                                <a data-slide="next" role="button" href="#similar-items-carousel"
+                                   class="right carousel-control">
+                                    <span class="fa fa-chevron-right glyphicon-chevron-right"></span>
+                                </a>
+
+                            </div>
+                            <!-- end class carousel slide -->
+                        </div>
+                        <!-- end row -->
+
+                        <!-- SEGMENT Verwandte Themen -->
+                        <div id="relatedTopics" class="results-top row">
+                            <h2>Verwandte Themen</h2>
+                        </div>
+                        <!-- end class results-top row -->
+                        <div class="row">
+                            <div id="main" class="hotag"></div>
+                            <!-- Link causes problems if placed at page's head -->
+                            <script src="../themes/linkedswissbib/js/jquery.hotag.js"></script>
+                            <script>
+                                var tags = [{"counts": 2, "tag": "Dies", "href": "#"},
+                                    {"counts": 1, "tag": "ist", "href": "#"},
+                                    {"counts": 1, "tag": "eine", "href": "#"},
+                                    {"counts": 5, "tag": "Tag Cloud", "href": "#"},
+                                    {"counts": 2, "tag": "und", "href": "#"},
+                                    {"counts": 1, "tag": "zeigt", "href": "#"},
+                                    {"counts": 2, "tag": "verwandte", "href": "#"},
+                                    {"counts": 5, "tag": "Themen", "href": "#"},
+                                    {"counts": 1, "tag": "das", "href": "#"},
+                                    {"counts": 2, "tag": "heisst", "href": "#"},
+                                    {"counts": 6, "tag": "Schlagworte", "href": "#"},
+                                    {"counts": 1, "tag": "welche", "href": "#"},
+                                    {"counts": 1, "tag": "mit", "href": "#"},
+                                    {"counts": 4, "tag": "der Person", "href": "#"},
+                                    {"counts": 1, "tag": "beziehungsweise", "href": "#"},
+                                    {"counts": 5, "tag": "deren Werke", "href": "#"},
+                                    {"counts": 3, "tag": "in Verbindung stehen", "href": "#"}
+                                ];
+                                $("#main").hotag({
+                                    tags: tags,
+                                    containerClass: 'hotag'
+                                });
+                            </script>
+                        </div>
+                        <!-- end class row -->
+
+                        <!-- SEGMENT Autoren mit ähnlichen Themen -->
+                        <div id="authorsWithSimilarTopics" class="results-top row">
+                            <h2>Autoren mit ähnlichen Themen</h2>
+                        </div>
+                        <!-- end class results-top row -->
+                        <div class="row">
+                            <ul class="list-inline">
+                                <li>
+                                    <a href="#">
+                                        <figure>
+                                            <img src="../themes/linkedswissbib/images/FriedrichSchiller.jpg"
+                                                 alt="Friedrich Schiller">
+                                            <figcaption>Friedrich Schiller</figcaption>
+                                        </figure>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <figure>
+                                            <img src="../themes/linkedswissbib/images/HeinrichHeine.jpg"
+                                                 alt="Heinrich Heine">
+                                            <figcaption>Heinrich Heine</figcaption>
+                                        </figure>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <figure>
+                                            <img src="../themes/linkedswissbib/images/FriedrichNietzsche.jpg"
+                                                 alt="Friedrich Nietzsche">
+                                            <figcaption>Friedrich Nietzsche</figcaption>
+                                        </figure>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <figure>
+                                            <img src="../themes/linkedswissbib/images/GottholdEphraimLessing.jpg"
+                                                 alt="Gotthold Ephraim Lessing">
+                                            <figcaption>Gotthold Ephraim Lessing</figcaption>
+                                        </figure>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <figure>
+                                            <img src="../themes/linkedswissbib/images/ImmanuelKant.jpg"
+                                                 alt="Immanuel Kant">
+                                            <figcaption>Immanuel Kant</figcaption>
+                                        </figure>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- end class row -->
+
+                        <!-- SEGMENT Autoren und Beitragende gemeinsamer Werke -->
+                        <div id="authorsOfCommonWorks" class="results-top row">
+                            <h2>Autoren und Beitragende gemeinsamer Werke</h2>
+                        </div>
+                        <!-- end class results-top row -->
+                        <div class="row">
+                            <ul class="list-inline">
+                                <li>
+                                    <a href="#">
+                                        <figure>
+                                            <img src="../themes/linkedswissbib/images/ThomasMann.jpg" alt="Thomas Mann">
+                                            <figcaption>Thomas Mann</figcaption>
+                                        </figure>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <figure>
+                                            <img src="../themes/linkedswissbib/images/FriedrichSchiller.jpg"
+                                                 alt="Friedrich Schiller">
+                                            <figcaption>Friedrich Schiller</figcaption>
+                                        </figure>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <figure>
+                                            <img src="../themes/linkedswissbib/images/ImmanuelKant.jpg"
+                                                 alt="Immanuel Kant">
+                                            <figcaption>Immanuel Kant</figcaption>
+                                        </figure>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- end class row -->
+
                     </div>
                     <!-- end class col-md-9 col-table-fix-md resultView bg-white -->
+
+                    <!-- start sidebar -->
+                    <div style="" class="sidebar col-md-3 col-table-fix-md hidden-print resultView">
+                        <h4>Suche verfeinern</h4>
+                        <!--
+                          MyLibraries (swissbib jargon 'Favoriten' are implemented as Solr-QueryFacets
+                          They are going to be merged with the usual Term-FacetList placed in the SideFacets component of VF2
+                          Because we use institutions as additional facets beside 'Favoriten'  but 'Favoriten' are queried against the institution index in Solr too
+                          I added an additional mylibrary index field which enables us to merge both groups in one list in the SideFacets Component
+                          One alternative could be to map the field names on the level of the application (complicated configuration, error prone and complicated for
+                          others to work with it. Another alternative to could be to use a separated template only for these facets (and to duplicate code) which isn't really nice also
+                        -->
+                        <!-- start filter Bibliotheksverbund -->
+                        <ul class="list-group" id="side-panel-union">
+                            <li class="list-group-item title" data-toggle="collapse" href="#side-collapse-union">
+                                Bibliotheksverbund
+                            </li>
+                            <div id="side-collapse-union" class="collapse in">
+                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22IDS%22"
+                                   class="list-group-item facetAND">
+                                    <span class="badge">2'759</span>Informationsverbund Deutschschweiz
+                                </a>
+                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22IDSBB%22"
+                                   class="list-group-item facetAND">
+                                    <span class="badge">1'591</span> IDS Basel Bern</a>
+                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22NEBIS%22"
+                                   class="list-group-item facetAND">
+                                    <span class="badge">1'480</span>NEBIS</a>
+                                <a id="more-narrowGroupHidden-union" class="list-group-item"
+                                   href="javascript:moreFacets('narrowGroupHidden-union')">mehr ...</a>
+                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22RE81%22"
+                                   class="list-group-item facetAND narrowGroupHidden-union hidden">
+                                    <span class="badge">306</span>RERO Vaud
+                                </a>
+                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22IDSLU%22"
+                                   class="list-group-item facetAND narrowGroupHidden-union hidden">
+                                    <span class="badge">228</span>IDS Luzern
+                                </a>
+                                <a class="list-group-item narrowGroupHidden-union hidden"
+                                   href="javascript:lessFacets('narrowGroupHidden-union')">weniger ...</a>
+                            </div>
+                            <!-- end class collapse in -->
+                        </ul>
+                        <!-- end filter Bibliotheksverbund -->
+                        <!-- end filter Verfasser/Beitreagende -->
+                        <ul class="list-group" id="side-panel-navAuthor_full">
+                            <li class="list-group-item title" data-toggle="collapse"
+                                href="#side-collapse-navAuthor_full">
+                                Verfasser/Beitragende
+                            </li>
+                            <div id="side-collapse-navAuthor_full" class="collapse in">
+                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=navAuthor_full%3A%22Tanner%2C+Marcel%22"
+                                   class="list-group-item facetAND">
+                                    <span class="badge">121</span>Tanner, Marcel
+                                </a>
+                                <a id="more-narrowGroupHidden-navAuthor_full" class="list-group-item"
+                                   href="javascript:moreFacets('narrowGroupHidden-navAuthor_full')">mehr ...</a>
+                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=navAuthor_full%3A%22Lengeler%2C+Christian%22"
+                                   class="list-group-item facetAND narrowGroupHidden-navAuthor_full hidden">
+                                    <span class="badge">44</span>Lengeler, Christian
+                                </a>
+                                <a class="list-group-item narrowGroupHidden-format hidden"
+                                   href="javascript:lessFacets('narrowGroupHidden-format')">weniger ...</a>
+                            </div>
+                            <!-- end class collapse in -->
+                        </ul>
+                        <!-- end filter Verfasser/Beitreagende -->
+                        <!-- start filter Sprache -->
+                        <ul class="list-group" id="side-panel-language">
+                            <li class="list-group-item title" data-toggle="collapse" href="#side-collapse-language">
+                                Sprache
+                            </li>
+                            <div id="side-collapse-language" class="collapse in">
+                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=language%3A%22eng%22"
+                                   class="list-group-item facetAND">
+                                    <span class="badge">2'602</span>Englisch
+                                </a>
+                                <a id="more-narrowGroupHidden-language" class="list-group-item"
+                                   href="javascript:moreFacets('narrowGroupHidden-language')">mehr ...</a>
+                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=language%3A%22dut%22"
+                                   class="list-group-item facetAND narrowGroupHidden-language hidden">
+                                    <span class="badge">20</span>Niederländisch
+                                </a>
+                                <a class="list-group-item narrowGroupHidden-language hidden"
+                                   href="javascript:lessFacets('narrowGroupHidden-language')">weniger ...</a>
+                            </div>
+                            <!-- end class collapse in -->
+                        </ul>
+                        <!-- end filter Sprache -->
+                        <!-- start filter Thema -->
+                        <ul class="list-group" id="side-panel-navSub_green">
+                            <li class="list-group-item title" data-toggle="collapse" href="#side-collapse-navSub_green">
+                                Thema
+                            </li>
+                            <div id="side-collapse-navSub_green" class="collapse in">
+                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=navSub_green%3A%22Malaria%22"
+                                   class="list-group-item facetAND">
+                                    <span class="badge">344</span>Malaria
+                                </a>
+                                <a id="more-narrowGroupHidden-navSub_green" class="list-group-item"
+                                   href="javascript:moreFacets('narrowGroupHidden-navSub_green')">mehr ...</a>
+                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=navSub_green%3A%22Medizin%22"
+                                   class="list-group-item facetAND narrowGroupHidden-navSub_green hidden">
+                                    <span class="badge">47</span>Medizin</a>
+                                <a class="list-group-item narrowGroupHidden-navSubform hidden"
+                                   href="javascript:lessFacets('narrowGroupHidden-navSubform')">weniger ...</a>
+                            </div>
+                            <!-- end class collapse in -->
+                        </ul>
+                        <!-- end filter Thema -->
+                        <ul class="list-group" id="side-panel-publishDate">
+                            <li class="list-group-item title" data-toggle="collapse" href="#side-collapse-publishDate">
+                                Erscheinungsjahr
+                            </li>
+                            <div id="side-collapse-publishDate" class="collapse in">
+                                <script type="text/javascript">
+                                    //&lt;!--
+                                    $(document).ready(function () {
+                                        var fillTexts = function () {
+                                            var v = publishDatedateSlider.getValue();
+                                            $('#publishDatefrom').val(v[0]);
+                                            $('#publishDateto').val(v[1]);
+                                        };
+                                        var publishDatedateSlider = $('#publishDatedateSlider')
+                                            .slider({
+                                                'min': 300,
+                                                'max': 2017,
+                                                'handle': "square",
+                                                'tooltip': "hide",
+                                                'value': [300, 2017]
+                                            })
+                                            .on('slide', fillTexts)
+                                            .data('slider');
+                                    });
+                                    //--&gt;
+                                </script>
+                                <li class="list-group-item">
+                                    <form action="" name="publishDateFilter" id="publishDateFilter">
+                                        <input name="lookfor" value="malaria" type="hidden">
+                                        <input name="type" value="AllFields" type="hidden">
+                                        <input name="daterange[]" value="publishDate" type="hidden">
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <label for="publishDatefrom">
+                                                    Von:
+                                                </label>
+                                                <input maxlength="4" class="form-control" name="publishDatefrom"
+                                                       id="publishDatefrom" value="" placeholder="300" type="text">
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="publishDateto">
+                                                    Bis:
+                                                </label>
+                                                <input maxlength="4" class="form-control" name="publishDateto"
+                                                       id="publishDateto" value="" placeholder="2017" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="slider-container">
+                                            <div id="" class="slider slider-horizontal">
+                                                <div class="slider-track">
+                                                    <div style="left: 0px; width: 0%;" class="slider-track-low"></div>
+                                                    <div style="left: 0%; width: 100%;" class="slider-selection"></div>
+                                                    <div style="right: 0px; width: 0%;" class="slider-track-high"></div>
+                                                    <div tabindex="0" style="left: 0%;"
+                                                         class="slider-handle min-slider-handle"></div>
+                                                    <div tabindex="0" style="left: 100%;"
+                                                         class="slider-handle max-slider-handle"></div>
+                                                </div>
+                                                <div style="left: 50%; margin-left: -41.5px;"
+                                                     class="tooltip tooltip-main top hide">
+                                                    <div class="tooltip-arrow"></div>
+                                                    <div class="tooltip-inner">300 : 2017</div>
+                                                </div>
+                                                <div style="left: 0%; margin-left: -20px;"
+                                                     class="tooltip tooltip-min top hide">
+                                                    <div class="tooltip-arrow"></div>
+                                                    <div class="tooltip-inner">300</div>
+                                                </div>
+                                                <div style="left: 100%; margin-left: -24px;"
+                                                     class="tooltip tooltip-max top hide">
+                                                    <div class="tooltip-arrow"></div>
+                                                    <div class="tooltip-inner">2017</div>
+                                                </div>
+                                            </div>
+                                            <input value="300,2017" data-value="300,2017" style="display: none;"
+                                                   class="hidden" id="publishDatedateSlider" type="text">
+                                        </div>
+                                        <input class="btn btn-default" value="Suchen" type="submit">
+                                    </form>
+                                </li>
+                            </div>
+                            <!-- end class collapse in -->
+                        </ul>
+                    </div>
+                    <!-- end sidebar -->
                 </div>
                 <!-- end class row bg-grey -->
             </div>
@@ -221,3 +943,20 @@
     <div id="bottom-puffer"></div>
 </div>
 <!-- end class main -->
+<!-- MODAL IN CASE WE NEED ONE -->
+<div id="modal" class="modal fade hidden-print" tabindex="-1" role="dialog" aria-labelledby="modalTitle"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 id="modalTitle" class="modal-title"></h4>
+            </div>
+            <div class="modal-body">wird geladen......</div>
+        </div>
+    </div>
+</div>
+<!-- piwik analytics come here -->
+<!-- #TODO: Do we need this?
+<ul class="vakata-context"></ul><div style="display: none;" id="jstree-marker">&nbsp;</div>
+-->
