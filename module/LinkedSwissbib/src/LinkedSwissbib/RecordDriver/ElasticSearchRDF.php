@@ -49,8 +49,10 @@ class ElasticSearchRDF extends AbstractBase
     private function getValueIfAvailable($lookup, $fallback = "no content provided")
     {
         if (isset($this->fields['_source'][$lookup]))
-            return $this->fields['_source'][$lookup];
-        return $fallback;
+            $result = $this->fields['_source'][$lookup];
+        else
+            $result = $fallback;
+        return preg_replace(['/</','/>/'], ['&lt;','&gt;'],$result);
     }
 
     private function getValueForProperty($lang, $lookup, $fallback = "no content provided")
@@ -247,7 +249,10 @@ class ElasticSearchRDF extends AbstractBase
 
     public function getAlternativeNames()
     {
-        return implode(self::ARRAY_SEPARATOR,$this->getValueIfAvailable('schema:alternateName'));
+        $result = $this->getValueIfAvailable('schema:alternateName');
+        if(is_array($result))
+            return implode(self::ARRAY_SEPARATOR,$result);
+        return $result;
     }
 
     public function getThumbnail()
@@ -257,12 +262,30 @@ class ElasticSearchRDF extends AbstractBase
 
     public function getSource()
     {
-        return implode(self::ARRAY_SEPARATOR,$this->getValueIfAvailable('owl:sameAs'));
+        $result = $this->getValueIfAvailable('owl:sameAs');
+        if(is_array($result))
+            return implode(self::ARRAY_SEPARATOR,$result);
+        return $result;
     }
 
     public function getName()
     {
         return $this->getValueIfAvailable('dct:contributor');
+    }
+
+    public function isPerson()
+    {
+        return $this->getDataType() == "person" ? true : false;
+    }
+
+    public function isInstance()
+    {
+        return $this->getDataType() == "bibliographicResource" ? true : false;
+    }
+
+    public function getDataType()
+    {
+        return $this->fields['_type'];
     }
 
     /* Currently no properties
