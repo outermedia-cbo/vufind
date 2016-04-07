@@ -52,6 +52,10 @@ class ElasticSearchRDF extends AbstractBase
             $result = $this->fields['_source'][$lookup];
         else
             $result = $fallback;
+
+        if(is_array($result))
+            $result = implode(self::ARRAY_SEPARATOR,$result);
+
         return preg_replace(['/</','/>/'], ['&lt;','&gt;'],$result);
     }
 
@@ -249,10 +253,7 @@ class ElasticSearchRDF extends AbstractBase
 
     public function getAlternativeNames()
     {
-        $result = $this->getValueIfAvailable('schema:alternateName');
-        if(is_array($result))
-            return implode(self::ARRAY_SEPARATOR,$result);
-        return $result;
+        return $this->getValueIfAvailable('schema:alternateName');
     }
 
     public function getThumbnail()
@@ -262,10 +263,7 @@ class ElasticSearchRDF extends AbstractBase
 
     public function getSource()
     {
-        $result = $this->getValueIfAvailable('owl:sameAs');
-        if(is_array($result))
-            return implode(self::ARRAY_SEPARATOR,$result);
-        return $result;
+        return $this->getValueIfAvailable('owl:sameAs');
     }
 
     public function getName()
@@ -355,7 +353,7 @@ class ElasticSearchRDF extends AbstractBase
             $url_end = '&size=small';
             $link_cover = $url_start . $isbn10 . $url_end;
             return $link_cover;
-        } elseif ($this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Article") {
+        } elseif (isset($this->fields['_source']['rdf:type']) && $this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Article") {
             return "../themes/linkedswissbib/images/icon_article.png";
         } else {
             return "../themes/linkedswissbib/images/icon_no_image_available.gif";
