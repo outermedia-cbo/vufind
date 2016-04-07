@@ -41,7 +41,7 @@ $(document).ready(function() {
         }
     ).bind('typeahead:selected', function(obj, datum, name) {
 
-            baseurl = 'http://localhost/sbrd/';
+            baseurl = 'http://' + window.location.hostname + '/sbrd/';
             authorDetail = 'Exploration/AuthorDetails?lookfor=' + datum['val'][0] + '&type=AuthorForId';
 
             window.location.href = baseurl + authorDetail;
