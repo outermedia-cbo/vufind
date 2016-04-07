@@ -2,8 +2,12 @@
 return array(
   'extends' => 'sbvfrdsingle',
     'less' => array(
-        'active' => true,
+        'active' => false,
         'compiled.less'
+    ),
+
+    'js'      => array(
+        'linkedswissbib/common.js',
     ),
 
 );

@@ -6,14 +6,13 @@
  * @category linked-swissbib
  * @package  /
  * @author   Guenter Hipler <guenter.hipler@unibas.ch>
+ * @author   Philipp Kuntschik <Philipp.Kuntschik@HTWChur.ch>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://linked.swissbib.ch  Main Page
  */
 
 
 namespace Swissbib\Module\Config;
-
-
 
 
 $config = [
@@ -23,8 +22,10 @@ $config = [
     'controllers' => [
         'invokables' => [
             'exploration' => 'LinkedSwissbib\Controller\ElasticsearchController',
+
             'inference'   => 'LinkedSwissbib\Controller\SparqlController',
             'ajax'        => 'LinkedSwissbib\Controller\AjaxController'
+
         ]
     ],
     'service_manager' => [
@@ -34,18 +35,21 @@ $config = [
             'LinkedSwissbib\SearchResultsPluginManager' => 'LinkedSwissbib\Service\Factory::getSearchResultsPluginManager',
             'LinkedSwissbib\RecordDriverPluginManager' => 'LinkedSwissbib\Service\Factory::getRecordDriverPluginManager',
 
-            ]
+        ]
 
     ],
     'vufind' => [
         'plugin_managers' => [
-            'search_backend'           => [
+            'search_backend' => [
                 'factories' => [
                     'ElasticSearch' => 'LinkedSwissbib\Search\Factory\ElasticSearchBackendFactory',
                 ]
             ],
-
-
+            'autocomplete' => [
+                'factories' => [
+                    'esac' => 'LinkedSwissbib\VuFind\Autocomplete\Factory::getElasticSearch',
+                ],
+            ],
             'search_options' => [
                 'abstract_factories' => ['LinkedSwissbib\Search\Options\PluginFactory'],
             ],
@@ -55,14 +59,13 @@ $config = [
             'search_results' => [
                 'abstract_factories' => ['LinkedSwissbib\Search\Results\PluginFactory'],
             ],
-            'recorddriver'             => array(
+            'recorddriver' => array(
                 'abstract_factories' => ['LinkedSwissbib\RecordDriver\PluginFactory'],
                 'factories' => array(
-                    'elasticsearchRecordDriver'  => 'LinkedSwissbib\RecordDriver\Factory::getElasticSearchRdfRecordDriver',
+                    'elasticsearchRecordDriver' => 'LinkedSwissbib\RecordDriver\Factory::getElasticSearchRdfRecordDriver',
 
                 )
             ),
-
 
         ]
     ],
@@ -76,7 +79,7 @@ $config = [
             'vufind_search_options' => [
                 'abstract_factories' => array('LinkedSwissbib\Search\Options\PluginFactory'),
             ],
-            'vufind_search_params'  => [
+            'vufind_search_params' => [
                 'abstract_factories' => array('LinkedSwissbib\Search\Params\PluginFactory'),
             ],
             'vufind_search_results' => [
@@ -84,7 +87,6 @@ $config = [
             ]
         ],
     ]
-
 
 
 ];
