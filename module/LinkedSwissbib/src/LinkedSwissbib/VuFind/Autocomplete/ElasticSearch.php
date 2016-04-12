@@ -61,8 +61,12 @@ class ElasticSearch implements AutocompleteInterface{
 
             if(isset($current['_source']['foaf:firstName']) && isset($current['_source']['foaf:lastName']))
                 $displayname = $current['_source']['foaf:firstName'] . ' ' . $current['_source']['foaf:lastName'];
-            else
+            elseif(isset($current['_source']['foaf:lastName']))
+                $displayname =  $current['_source']['foaf:lastName'];
+            elseif(isset($current['_source']['foaf:name']))
                 $displayname = $current['_source']['foaf:name'];
+            else
+                break;
 
             $results[] = array($id, $type, $displayname);
         }
