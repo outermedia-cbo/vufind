@@ -88,7 +88,11 @@ class Params extends BaseParams
         if (is_array($handler)) {
             $handler = $handler[0];
         } elseif (empty($handler)) {
-            $handler = "AllFields";
+            if ($request->get('method') == 'getAuthor') {
+                $handler = "AuthorForId";
+            } else {
+                $handler = "AllFields";
+            }
         }
 
 
