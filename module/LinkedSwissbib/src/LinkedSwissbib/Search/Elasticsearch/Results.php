@@ -38,10 +38,6 @@ class Results extends BaseResults
         // TODO: Implement getFacetList() method.
     }
 
-    public function getResults() {
-        return $this->results;
-    }
-
     /**
      * Abstract support method for performAndProcessSearch -- perform a search based
      * on the parameters passed to the object.  This method is responsible for
