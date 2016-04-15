@@ -224,9 +224,9 @@ class ElasticSearchRDF extends AbstractBase
 
     public function getNameAsLabel()
     {
-        if(isset($current['_source']['foaf:firstName']) && isset($current['_source']['foaf:lastName']))
+        if(isset($this->fields['_source']['foaf:firstName']) && isset($this->fields['_source']['foaf:lastName']))
             return $this->fields['_source']['foaf:firstName'] . " " . $this->fields['_source']['foaf:lastName'];
-        elseif(isset($current['_source']['foaf:lastName']))
+        elseif(isset($this->fields['_source']['foaf:lastName']))
             return $this->fields['_source']['foaf:lastName'];
         return $this->getValueIfAvailable('foaf:name');
     }
