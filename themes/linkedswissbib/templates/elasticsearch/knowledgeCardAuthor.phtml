@@ -1,0 +1,93 @@
+<?
+$instances = array();
+
+$results = $this->results->getResults();
+foreach ($results as $singleResult):
+    if ($singleResult->isPerson()) {
+        $person_uniqueId = $singleResult->getUniqueID();
+        $person_alternativeNames = $singleResult->getAlternativeNames();
+        $person_biography = $singleResult->getBiography();
+        $person_birthDate = $singleResult->getBirthDate();
+        $person_birthPlace = $singleResult->getBirthPlace();
+        $person_deathDate = $singleResult->getDeathDate();
+        $person_deathPlace = $singleResult->getDeathPlace();
+        $person_genre = $singleResult->getGenre();
+        $person_influenced = $singleResult->getInfluenced();
+        $person_influencedBy = $singleResult->getInfluencedBy();
+        $person_movement = $singleResult->getMovement();
+        $person_nameAsLabel = $singleResult->getNameAsLabel();
+        $person_nationality = $singleResult->getNationality();
+        $person_notableWork = $singleResult->getNotableWork();
+        $person_occupation = $singleResult->getOccupation();
+        $person_partner = $singleResult->getPartner();
+        $person_pseudonym = $singleResult->getPseudonym();
+        $person_spouse = $singleResult->getSpouse();
+        $person_source = $singleResult->getSource();
+        $person_thumbnail = $singleResult->getThumbnail();
+    } else
+        $instances[] = $singleResult;
+endforeach;
+?>
+<!-- Knowledge Card-->
+<div class="knowledgeCard">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script>
+        $(function() {
+            $( "#dialog" ).dialog({
+                autoOpen: false,
+                modal: true,
+                height: 500,
+                width: 700,
+                show: {
+                    effect: "show",
+                    duration: 1000
+                },
+                hide: {
+                    effect: "hide",
+                    duration: 1000
+                }
+            });
+
+            $( "#opener" ).click(function() {
+                $( "#dialog" ).dialog( "open" );
+            });
+        });
+    </script>
+
+    <div class= "knowledgeCard" id="dialog" title="<? echo $person_nameAsLabel ?>">
+        <div>
+            <div class="col-sm-2">
+                <h2></h2>
+                <img class="img-responsive" src="<? echo $person_thumbnail ?>"
+                     alt="<? echo $person_thumbnail ?>">
+            </div>
+            <div class="col-sm-10">
+                <div class="meta">
+                    <h2>
+                        <? echo $person_nameAsLabel ?>
+                    </h2>
+                </div>
+                <!-- occupation -->
+                <div class="meta">
+                    <p><? echo $person_occupation ?></p>
+                </div>
+                <!-- birthdate, birthplace -->
+                <div class="meta">
+                    <span><strong>Geboren: </strong></span><span><? echo $person_birthDate . " " . $person_birthPlace ?></span><br>
+                </div>
+                <!-- deathdate, deathplace -->
+                <div class="meta">
+                    <span><strong>Gestorben: </strong></span><span><? echo $person_deathDate . " " . $person_deathPlace ?></span><br>
+                </div>
+                <!-- deathdate, deathplace -->
+                <div class="meta">
+                    <span><strong>Nationalität: </strong></span><span><? echo $person_nationality ?></span><br><br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end id dialog -->
+</div>
+<button id="opener"> Mehr Details</button>
+<!-- end id knowledgeCard -->
+
