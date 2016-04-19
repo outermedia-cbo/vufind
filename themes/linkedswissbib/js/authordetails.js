@@ -13,11 +13,9 @@ $(document).ready(function() {
             var authoruris = this.innerHTML;
 
             authoruris = authoruris.replace(/\s+/g, ''); // remove spaces: http://stackoverflow.com/a/5963202
-
             authoruris = authoruris.split(','); // split entries when meeting a ',' and convert to array of strings: http://stackoverflow.com/a/5269873
 
             authoruris.forEach( function(authoruri) {
-
                 uri2name[authoruri] = '';
             });
         });
@@ -44,9 +42,7 @@ $(document).ready(function() {
                 .done(function (msg) {
 
                     var uri = msg.person[0]._source["@id"]; // can't use variable 'uri' from outside directly
-
-                    uri2name[uri] = msg.person[0]._source["foaf:lastName"] + ", " + msg.person[0]._source["foaf:firstName"];
-
+                    uri2name[uri] = extractName(msg.person[0]);
                     replaceInAuthorUris(uri, uri2name[uri]);
                 });
         }
@@ -55,10 +51,22 @@ $(document).ready(function() {
     function replaceInAuthorUris(theOld, theNew) {
 
         $( ".authoruris" ).each(function() {
-
             this.innerHTML = this.innerHTML.replace(new RegExp($.ui.autocomplete.escapeRegex(theOld), 'g'), theNew); // http://stackoverflow.com/a/13157996
-
         });
+    }
+
+    function extractName(json) {
+        var source = json._source;
+
+        if (('foaf:lastName' in source) && ('foaf:firstName') in source) {
+            return source['foaf:firstName'] + ' ' + source['foaf:lastName'];
+        } else if ('foaf:lastName' in source) {
+            return source['foaf:lastName'];
+        } else if ('foaf:name' in source) {
+            return source['foaf:name'];
+        } else {
+            return '';
+        }
     }
 
 });
