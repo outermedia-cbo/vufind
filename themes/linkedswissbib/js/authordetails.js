@@ -42,8 +42,10 @@ $(document).ready(function() {
                 .done(function (msg) {
 
                     var uri = msg.person[0]._source["@id"]; // can't use variable 'uri' from outside directly
-                    uri2name[uri] = extractName(msg.person[0]);
-                    replaceInAuthorUris(uri, uri2name[uri]);
+                    var name = extractName(msg.person[0]);
+                    uri2name[uri] = name;
+                    var link = '<a href="http://' + window.location.hostname + '/sbrd/Exploration/AuthorDetails?lookfor=' + uri + '&type=AuthorForId">' + name + '</a>';
+                    replaceInAuthorUris(uri, link);
                 });
         }
     }
