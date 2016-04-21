@@ -37,14 +37,17 @@ $(document).ready(function() {
 
             $.ajax({
                 method: "GET",
-                url: "http://" + window.location.hostname + "/sbrd/Ajax/Json?lookfor=" + uri + "&method=getAuthor&searcher=Elasticsearch"
+                url: "http://" + window.location.hostname + "/sbrd/Ajax/Json?lookfor=" + uri +
+                    "&method=getAuthor&searcher=Elasticsearch"
             })
                 .done(function (msg) {
 
                     var uri = msg.person[0]._source["@id"]; // can't use variable 'uri' from outside directly
                     var name = extractName(msg.person[0]);
                     uri2name[uri] = name;
-                    var link = '<a href="http://' + window.location.hostname + '/sbrd/Exploration/AuthorDetails?lookfor=' + uri + '&type=AuthorForId">' + name + '</a>';
+                    var link = '<a href="http://' + window.location.hostname +
+                        '/sbrd/Exploration/AuthorDetails?lookfor=' + uri + '&type=AuthorForId">' + name + '</a>';
+                    link += '<a href="#"><span class="fa fa-info-circle fa-lg"></span></a>';
                     replaceInAuthorUris(uri, link);
                 });
         }
