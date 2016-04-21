@@ -2,6 +2,7 @@
     <script src="../themes/linkedswissbib/js/authordetails.js"></script>
     <?
     $instances = array();
+    $basePath = $this->basePath();
 
     $results = $this->results->getResults();
     foreach ($results as $singleResult):
@@ -34,13 +35,13 @@
         <ul class="breadcrumb hidden-print">
 
             <li>
-                <a href="/sbrd/Exploration/AuthorDetailsResponsive?lookfor=<? echo $person_uniqueId ?>&amp;type=Contributor">Suche</a>
+                <a href=" <?= $basePath ?>/Exploration/AuthorDetailsResponsive?lookfor=<? echo $person_uniqueId ?>&amp;type=Contributor">Suche</a>
             </li>
             <!-- Example from swissbib classic
                 <a href="/Search/Results?lookfor=malaria&type=AllFields">Suche: malaria</a>
             -->
             <li class="active"><a
-                    href="/sbrd/Exploration/AuthorDetailsResponsive?lookfor=<? echo $person_uniqueId ?>&amp;type=Contributor"><? echo $person_uniqueId ?></a>
+                    href="<?= $basePath ?>/Exploration/AuthorDetailsResponsive?lookfor=<? echo $person_uniqueId ?>&amp;type=Contributor"><? echo $person_uniqueId ?></a>
             </li>
             <li class="active">Personenseite</li>
             <?
@@ -74,24 +75,24 @@
                                 <div class="searchtools">
                                     <div class="searchtools hidden-print">
                                         <!-- #TODO: Replace static links -->
-                                        <a href="?lookfor=malaria&amp;type=AllFields&amp;view=rss"
+                                        <a href="<?= $basePath ?>?lookfor=malaria&amp;type=AllFields&amp;view=rss"
                                            title="Neue Einträge zu dieser Suche per Feed gemeldet bekommen"><i
                                                 class="fa fa-rss"></i></a>
-                                        <a href="/Search/Email" id="mailSearch29097239" title="Per E-Mail versenden"><i
+                                        <a href="<?= $basePath ?>/Search/Email" id="mailSearch29097239" title="Per E-Mail versenden"><i
                                                 class="fa fa-envelope"></i></a>
-                                        <a href="/MyResearch/SaveSearch?save=29097239" title="Suche speichern"><i
+                                        <a href="<?= $basePath ?>/MyResearch/SaveSearch?save=29097239" title="Suche speichern"><i
                                                 class="fa fa-plus-square"></i></a>
                                         <!-- Styling & Funktionstests -->
                                         <a class="export-toggle dropdown-toggle hidden-xs hidden-sm"
-                                           data-toggle="dropdown" href="/Record//Export" title=" Exportieren"><i
+                                           data-toggle="dropdown" href="<?= $basePath ?>/Record//Export" title=" Exportieren"><i
                                                 class="fa fa-share"></i></a>
                                         <ul class="dropdown-menu" role="export-menu">
                                             <li class="visible-md visible-lg">
-                                                <a href="https://www.swissbib.ch/Cart/doExport?f=EndNote">Exportieren
+                                                <a href="<?= $basePath ?>/doExport?f=EndNote">Exportieren
                                                     nach EndNote</a>
                                             </li>
                                             <li class="visible-md visible-lg">
-                                                <a href="https://www.swissbib.ch/Cart/doExport?f=BibTeX">Exportieren
+                                                <a href="<?= $basePath ?>/Cart/doExport?f=BibTeX">Exportieren
                                                     nach BibTeX</a>
                                             </li>
                                         </ul>
@@ -255,7 +256,7 @@
                                         </div>
                                         <!-- end class col-lg-6 col-md-7 col-sm-7 -->
                                         <div class="col-lg-6 col-md-5 col-sm-5 text-right">
-                                            <form class="form-inline" action="/Search/Results" method="get" name="sort">
+                                            <form class="form-inline" action="<?= $basePath ?>/Search/Results" method="get" name="sort">
                                                 <input name="lookfor" value="malaria" type="hidden"><input name="type" value="AllFields" type="hidden">    <input name="sortControlElement" value="sortControlElement" type="hidden">
                                                 <label for="sort_options_1">Sortieren nach</label>
                                                 <select id="sort_options_1" name="sort" class="jumpMenu form-control">
@@ -269,7 +270,7 @@
                                                 </select>
                                                 <noscript><input type="submit" class="btn btn-default" value="Suchen" /></noscript>
                                             </form>
-                                            <form class="form-inline" action="/Search/Results?lookfor=malaria&amp;type=AllFields" method="post">
+                                            <form class="form-inline" action="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields" method="post">
                                                 <input name="limitControlElement" value="limitControlElement" type="hidden">
                                                 <label for="limit">Treffer pro Seite</label>
                                                 <select id="limit" name="limit" class="jumpMenu form-control">
@@ -409,7 +410,7 @@
                                                 <li class="inactive"><a href="#"><i class="fa fa-caret-left"></i></a></li>
                                                 <li class="page-numbers"><a><span class="marked">1</span> von <span class="standard">203</span></a>
                                                 </li>
-                                                <li><a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;page=2"><i class="fa fa-caret-right"></i></a></li>
+                                                <li><a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;page=2"><i class="fa fa-caret-right"></i></a></li>
                                             </ul>
                                         </div>
                                         <!-- end class pagination-container hidden-print -->
@@ -531,7 +532,7 @@
                                             </div>
 
                                             <div class="col-sm-3">
-                                                <a href="/Record/175208727" class="hover-overlay"
+                                                <a href="<?= $basePath ?>/Record/175208727" class="hover-overlay"
                                                    style="min-height: 200px;">
                                                     <img title="Incarnadine : poems"
                                                          src="https://resources.swissbib.ch/Cover/Show?isn=1555976352&amp;size=large"
@@ -547,7 +548,7 @@
 
                                             </div>
                                             <div class="col-sm-3">
-                                                <a href="/Record/176525807" class="hover-overlay"
+                                                <a href="<?= $basePath ?>/Record/176525807" class="hover-overlay"
                                                    style="min-height: 200px;">
                                                     <img title="Sightline : poems"
                                                          src="https://resources.swissbib.ch/Cover/Show?isn=0976640554&amp;size=large"
@@ -562,7 +563,7 @@
                                                 </a>
                                             </div>
                                             <div class="col-sm-3">
-                                                <a href="/Record/314280111" class="hover-overlay"
+                                                <a href="<?= $basePath ?>/Record/314280111" class="hover-overlay"
                                                    style="min-height: 200px">
                                                     <img title="Start with a small guitar : poems"
                                                          src="https://resources.swissbib.ch/Cover/Show?isn=0988924838&amp;size=large"
@@ -582,7 +583,7 @@
                                     <div class="item">
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <a href="/Record/327412496" class="hover-overlay"
+                                                <a href="<?= $basePath ?>/Record/327412496" class="hover-overlay"
                                                    style="min-height: 200px;">
                                                     <img title="Copia : poems"
                                                          src="https://resources.swissbib.ch/Cover/Show?isn=1938160460&amp;size=large"
@@ -597,7 +598,7 @@
                                                 </a>
                                             </div>
                                             <div class="col-sm-3">
-                                                <a href="/Record/304901997" class="hover-overlay"
+                                                <a href="<?= $basePath ?>/Record/304901997" class="hover-overlay"
                                                    style="min-height: 200px;">
                                                     <img title="Embark : poems"
                                                          src="https://resources.swissbib.ch/Cover/Show?isn=0976640570&amp;size=large"
@@ -611,7 +612,7 @@
                                                 </a>
                                             </div>
                                             <div class="col-sm-3">
-                                                <a href="/Record/307411990" class="hover-overlay"
+                                                <a href="<?= $basePath ?>/Record/307411990" class="hover-overlay"
                                                    style="min-height: 200px;">
                                                     <img title="Collected poems"
                                                          src="https://resources.swissbib.ch/Cover/Show?isn=1598530836&amp;size=large"
@@ -626,7 +627,7 @@
                                                 </a>
                                             </div>
                                             <div class="col-sm-3">
-                                                <a href="/Record/331150034" class="hover-overlay"
+                                                <a href="<?= $basePath ?>/Record/331150034" class="hover-overlay"
                                                    style="min-height: 200px;">
                                                     <img title="Streaming : poems"
                                                          src="https://resources.swissbib.ch/Cover/Show?isn=1566893755&amp;size=large"
@@ -646,7 +647,7 @@
                                     <div class="item">
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <a href="/Record/335357466" class="hover-overlay"
+                                                <a href="<?= $basePath ?>/Record/335357466" class="hover-overlay"
                                                    style="min-height: 200px;">
                                                     <img title="Selfish : poems"
                                                          src="https://resources.swissbib.ch/Cover/Show?isn=1555977081&amp;size=large"
@@ -661,7 +662,7 @@
                                                 </a>
                                             </div>
                                             <div class="col-sm-3">
-                                                <a href="/Record/182619362" class="hover-overlay"
+                                                <a href="<?= $basePath ?>/Record/182619362" class="hover-overlay"
                                                    style="min-height: 200px;">
                                                     <img title="Rumors of Earth : poems"
                                                          src="https://resources.swissbib.ch/Cover/Show?isn=1890193348&amp;size=large"
@@ -676,7 +677,7 @@
                                                 </a>
                                             </div>
                                             <div class="col-sm-3">
-                                                <a href="/Record/318749041" class="hover-overlay"
+                                                <a href="<?= $basePath ?>/Record/318749041" class="hover-overlay"
                                                    style="min-height: 200px;">
                                                     <img title="The earth avails : poems"
                                                          src="https://resources.swissbib.ch/Cover/Show?isn=1555976662&amp;size=large"
@@ -691,7 +692,7 @@
                                                 </a>
                                             </div>
                                             <div class="col-sm-3">
-                                                <a href="/Record/185321690" class="hover-overlay"
+                                                <a href="<?= $basePath ?>/Record/185321690" class="hover-overlay"
                                                    style="min-height: 200px;">
                                                     <img title="Must a violence : poems"
                                                          src="https://resources.swissbib.ch/Cover/Show?isn=1609381297&amp;size=large"
@@ -873,23 +874,23 @@
                                 Bibliotheksverbund
                             </li>
                             <div id="side-collapse-union" class="collapse in">
-                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22IDS%22"
+                                <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22IDS%22"
                                    class="list-group-item facetAND">
                                     <span class="badge">2'759</span>Informationsverbund Deutschschweiz
                                 </a>
-                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22IDSBB%22"
+                                <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22IDSBB%22"
                                    class="list-group-item facetAND">
                                     <span class="badge">1'591</span> IDS Basel Bern</a>
-                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22NEBIS%22"
+                                <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22NEBIS%22"
                                    class="list-group-item facetAND">
                                     <span class="badge">1'480</span>NEBIS</a>
                                 <a id="more-narrowGroupHidden-union" class="list-group-item"
                                    href="javascript:moreFacets('narrowGroupHidden-union')">mehr ...</a>
-                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22RE81%22"
+                                <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22RE81%22"
                                    class="list-group-item facetAND narrowGroupHidden-union hidden">
                                     <span class="badge">306</span>RERO Vaud
                                 </a>
-                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22IDSLU%22"
+                                <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22IDSLU%22"
                                    class="list-group-item facetAND narrowGroupHidden-union hidden">
                                     <span class="badge">228</span>IDS Luzern
                                 </a>
@@ -906,13 +907,13 @@
                                 Verfasser/Beitragende
                             </li>
                             <div id="side-collapse-navAuthor_full" class="collapse in">
-                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=navAuthor_full%3A%22Tanner%2C+Marcel%22"
+                                <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=navAuthor_full%3A%22Tanner%2C+Marcel%22"
                                    class="list-group-item facetAND">
                                     <span class="badge">121</span>Tanner, Marcel
                                 </a>
                                 <a id="more-narrowGroupHidden-navAuthor_full" class="list-group-item"
                                    href="javascript:moreFacets('narrowGroupHidden-navAuthor_full')">mehr ...</a>
-                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=navAuthor_full%3A%22Lengeler%2C+Christian%22"
+                                <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=navAuthor_full%3A%22Lengeler%2C+Christian%22"
                                    class="list-group-item facetAND narrowGroupHidden-navAuthor_full hidden">
                                     <span class="badge">44</span>Lengeler, Christian
                                 </a>
@@ -928,13 +929,13 @@
                                 Sprache
                             </li>
                             <div id="side-collapse-language" class="collapse in">
-                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=language%3A%22eng%22"
+                                <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=language%3A%22eng%22"
                                    class="list-group-item facetAND">
                                     <span class="badge">2'602</span>Englisch
                                 </a>
                                 <a id="more-narrowGroupHidden-language" class="list-group-item"
                                    href="javascript:moreFacets('narrowGroupHidden-language')">mehr ...</a>
-                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=language%3A%22dut%22"
+                                <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=language%3A%22dut%22"
                                    class="list-group-item facetAND narrowGroupHidden-language hidden">
                                     <span class="badge">20</span>Niederländisch
                                 </a>
@@ -950,13 +951,13 @@
                                 Thema
                             </li>
                             <div id="side-collapse-navSub_green" class="collapse in">
-                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=navSub_green%3A%22Malaria%22"
+                                <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=navSub_green%3A%22Malaria%22"
                                    class="list-group-item facetAND">
                                     <span class="badge">344</span>Malaria
                                 </a>
                                 <a id="more-narrowGroupHidden-navSub_green" class="list-group-item"
                                    href="javascript:moreFacets('narrowGroupHidden-navSub_green')">mehr ...</a>
-                                <a href="/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=navSub_green%3A%22Medizin%22"
+                                <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=navSub_green%3A%22Medizin%22"
                                    class="list-group-item facetAND narrowGroupHidden-navSub_green hidden">
                                     <span class="badge">47</span>Medizin</a>
                                 <a class="list-group-item narrowGroupHidden-navSubform hidden"
