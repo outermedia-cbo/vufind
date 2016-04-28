@@ -47,7 +47,8 @@ endforeach;
                 }
             });
 
-            $( "#opener" ).click(function() {
+            $(document).on('click', '.kcopener', function() {
+                console.log("kcopener was clicked");
                 $( "#dialog" ).dialog( "open" );
             });
         });
@@ -354,6 +355,6 @@ endforeach;
     <!-- end id dialog -->
 </div>
 <!-- end id knowledgeCard -->
-<button id="opener"> Mehr Details</button>
+<button class="kcopener"> Mehr Details</button>
 
 
