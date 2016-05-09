@@ -37,6 +37,8 @@ class AjaxController extends VFAjaxController {
 
         $response = $this->getResponse();
         $response->getHeaders()->addHeaderLine( 'Content-Type', 'application/json' );
+        $response->getHeaders()->addHeaderLine( 'Access-Control-Allow-Origin', '*' );
+
         $response->setContent(json_encode($content));
         return $response;
     }
