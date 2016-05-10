@@ -28,9 +28,9 @@ foreach ($results as $singleResult):
         $instances[] = $singleResult;
 endforeach;
 ?>
+
 <!-- Knowledge Card-->
 <div class="knowledgeCard">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script>
         $(function() {
             $( "#dialog" ).dialog({
@@ -53,7 +53,6 @@ endforeach;
             });
         });
     </script>
-
     <div id="dialog" title="<? echo $person_nameAsLabel . " (BIRTHYEAR - DEATHYEAR NEEDED)" ?>">
         <!-- SEGEMENT Header -->
         <div >
@@ -63,11 +62,6 @@ endforeach;
                      alt="<? echo $person_thumbnail ?>">
             </div>
             <div class="col-sm-9">
-                <div class="meta">
-                    <h2>
-                        <? echo $person_nameAsLabel . " (BIRTHYEAR - DEATHYEAR NEEDED)" ?>
-                    </h2>
-                </div>
                 <!-- occupation -->
                 <div class="meta">
                     <p><? echo $person_occupation ?></p>
