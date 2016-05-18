@@ -37,6 +37,7 @@ endforeach;
                 autoOpen: false,
                 modal: true,
                 width: 700,
+                responsive: true,
                 show: {
                     effect: "show",
                     duration: 1000
@@ -47,11 +48,16 @@ endforeach;
                 }
             });
 
+            $("#dialog").dialog({width: $(window).width() * 0.8, height: $(window).height() * 0.8});
+
             $(document).on('click', '.kcopener', function() {
                 console.log("kcopener was clicked");
                 $( "#dialog" ).dialog( "open" );
             });
         });
+
+
+
     </script>
     <div id="dialog" title="<? echo $person_nameAsLabel . " (BIRTHYEAR - DEATHYEAR NEEDED)" ?>">
         <!-- SEGEMENT Header -->
@@ -99,7 +105,7 @@ endforeach;
         </div>
         <!-- end class results-top row -->
         <div class="col-sm-12">
-            <div class="row">
+            <div class="row hidden-xs">
                 <div data-ride="carousel" class="carousel slide" id="similar-items-carousel-knowledgeCard">
 
                     <!-- Indicators -->
