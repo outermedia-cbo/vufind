@@ -50,6 +50,15 @@ class ElasticSearch implements AutocompleteInterface{
      */
     public function setConfig($params){}
 
+    private function parseDate($date){
+        if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
+            return date("Y");
+        } elseif (preg_match("/^[0-9]{4}$/", $date)) {
+            return $date;
+        }
+        return "could not parse date!";
+    }
+
     private function refine($searchResults){
         $results = array();
         foreach ($searchResults as $object) {
@@ -62,20 +71,19 @@ class ElasticSearch implements AutocompleteInterface{
             if (!isset($current['_source']['dbp:birthDate']) && ($current['_source']['schema:birthDate']) && ($current['_source']['dbp:birthYear'])) {
                     $birthDate = "?";
                 } elseif (isset($current['_source']['schema:birthDate'])) {
-                    $birthDate = $current['_source']['schema:birthDate'];
+                    $birthDate = $this->parseDate($current['_source']['schema:birthDate']);
                 } elseif (isset($current['_source']['dbp:birthDate'])) {
-                    $birthDate = $current['_source']['dbp:birthDate'];
+                    $birthDate = $this->parseDate($current['_source']['dbp:birthDate']);
                 } elseif (isset($current['_source']['dbp:birthYear'])) {
                     $birthDate = $current['_source']['dbp:birthYear'];
                 }
 
-
             if (!isset($current['_source']['dbp:deathDate']) && ($current['_source']['schema:deathDate']) && ($current['_source']['dbp:deathYear'])) {
                 $deathDate = "?";
             } elseif (isset($current['_source']['schema:deathhDate'])) {
-                $deathDate = $current['_source']['schema:deathDate'];
+                $deathDate = $this->parseDate($current['_source']['schema:deathDate']);
             } elseif (isset($current['_source']['dbp:deathDate'])) {
-                $deathDate = $current['_source']['dbp:deathhDate'];
+                $deathDate = $this->parseDate($current['_source']['dbp:deathhDate']);
             } elseif (isset($current['_source']['dbp:deathYear'])) {
                 $deathDate = $current['_source']['dbp:deathYear'];
             }
