@@ -56,7 +56,6 @@ class ElasticSearch implements AutocompleteInterface{
         } elseif (preg_match("/^[0-9]{4}$/", $date)) {
             return $date;
         }
-        return "could not parse date!";
     }
 
     private function refine($searchResults){
