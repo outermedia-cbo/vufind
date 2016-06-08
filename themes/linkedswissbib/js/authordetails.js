@@ -47,7 +47,7 @@ $(document).ready(function() {
                     uri2name[uri] = name;
                     var link = '<a href="http://' + window.location.hostname +
                         '/sbrd/Exploration/AuthorDetails?lookfor=' + uri + '&type=AuthorForId">' + name + '</a>';
-                    link += '<span class="fa fa-info-circle fa-lg kcopener"></span>';
+                    link += '<span class="fa fa-info-circle fa-lg kcopener" authorId="' + uri +'"></span>';
                     replaceInAuthorUris(uri, link);
                 });
         }
