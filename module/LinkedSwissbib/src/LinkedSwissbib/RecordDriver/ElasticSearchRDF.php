@@ -73,7 +73,7 @@ class ElasticSearchRDF extends AbstractBase
         if (!is_array($array)) {
             return $array;
         } elseif (count($array) === 1) {
-            /* returns first result independent from language if array consists of only on object */
+            /* returns first result independent from language if array consists of only one object */
             return reset($array);
         } else {
             foreach ($array as $outerarray => $innerarray) {

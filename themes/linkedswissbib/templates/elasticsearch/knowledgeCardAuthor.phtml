@@ -1,34 +1,3 @@
-<?
-$instances = array();
-
-$results = $this->results->getResults();
-foreach ($results as $singleResult):
-    if ($singleResult->isPerson()) {
-        $person_uniqueId = $singleResult->getUniqueID();
-        $person_alternativeNames = $singleResult->getAlternativeNames();
-        $person_biography = $singleResult->getBiography();
-        $person_birthDate = $singleResult->getBirthDate();
-        $person_birthPlace = $singleResult->getBirthPlace();
-        $person_deathDate = $singleResult->getDeathDate();
-        $person_deathPlace = $singleResult->getDeathPlace();
-        $person_genre = $singleResult->getGenre();
-        $person_influenced = $singleResult->getInfluenced();
-        $person_influencedBy = $singleResult->getInfluencedBy();
-        $person_movement = $singleResult->getMovement();
-        $person_nameAsLabel = $singleResult->getNameAsLabel();
-        $person_nationality = $singleResult->getNationality();
-        $person_notableWork = $singleResult->getNotableWork();
-        $person_occupation = $singleResult->getOccupation();
-        $person_partner = $singleResult->getPartner();
-        $person_pseudonym = $singleResult->getPseudonym();
-        $person_spouse = $singleResult->getSpouse();
-        $person_source = $singleResult->getSource();
-        $person_thumbnail = $singleResult->getThumbnail();
-    } else
-        $instances[] = $singleResult;
-endforeach;
-?>
-
 <!-- Knowledge Card-->
 <div class="knowledgeCard">
     <script>
@@ -36,8 +5,8 @@ endforeach;
             $( "#dialog" ).dialog({
                 autoOpen: false,
                 modal: true,
-                maxWidth: 700,
                 responsive: true,
+                height: 'auto',
                 show: {
                     effect: "show",
                     duration: 1000
@@ -48,41 +17,184 @@ endforeach;
                 }
             });
 
-            $("#dialog").dialog({width: $(window).width() * 0.8, height: $(window).height() * 0.8});
+            function getValueIfAvailable (lookup, fallback) {
+                if (typeof lookup !== 'undefined') {
+                    if ($.isArray(lookup)) {
+                        return lookup[0];
+                    } else {
+                        return lookup;
+                    }
+                } else {
+                    return fallback;
+                }
+            }
+
+            // get Dates; source priority as follows: dbpDate, schemaDate, dbpYear)
+            function getDate (data, dbpDate, schemaDate, dbpYear) {
+
+                var dates = data.person[0]._source;
+
+                if ((dbpDate in dates)) {
+                    var date = dates[dbpDate];
+                } else if (schemaDate in dates) {
+                    var date =  dates[schemaDate];
+                } else if (dbpYear in dates) {
+                    var date =  dates[dbpYear];
+                } else {
+                    var date =  'no content provided';
+                }
+
+                //check whether first character is a number or not
+                var letter = isNaN(date[0]);
+                console.log(letter);
+
+                //if the first charackter is a number
+                if (letter == false) {
+                    if (date.length >= 4) {
+                        var kc_year = date.slice(0, 4);
+                        //console.log(result);
+                    } else {
+                        var kc_year = kc_date;
+                    }
+
+                    if (date.length > 4) {
+                        var kc_date = date.replace(/(\d{4})-(\d{1,2})-(\d{1,2})/, function(match,y,m,d) {
+                            return d + '.' + m + '.' + y;
+                        });
+                    } else if (date.length == 4) {
+                        var kc_date = date;
+                    } else {
+                        var kc_date = 'no content provided';
+                    }
+                // if the first character is not a number
+                } else {
+                    var kc_date = 'no content provided';
+                    var kc_year = 'no content provided';
+                }
+                return [kc_date, kc_year];
+                //console.log(result);
+            }
+
+            // get Values from array (comma separated output)
+            function getValues (data, property) {
+
+                var array = data.person[0]._source[property];
+
+                if (typeof array !== 'undefined') {
+                    if ($.isArray(array)) {
+                        var result = "";
+                        var fallbackResult = "";
+                        for (var key in array) {
+                            if (typeof array[key].de !== 'undefined') {
+                                result += array[key].de + ", ";
+                            } else if (typeof array[key].en !== 'undefined') {
+                                fallbackResult += array[key].en + ", ";
+                            }
+                        }
+                        var result = result.substring(0, result.length - 2);
+                        var fallbackResult = fallbackResult.substring(0, fallbackResult.length - 2);
+                    } else {
+                        if (typeof array.de !== 'undefined') {
+                            var result = array.de;
+                        } else if (typeof array.en !== 'undefined') {
+                            var fallbackResult = array.en;
+                        }
+                    }
+                } else {
+                    var result = 'no content provided';
+                }
+
+                if (!result) {
+                    if (fallbackResult) {
+                        var result = fallbackResult;
+                    } else {
+                        result = "no content provided";
+                    }
+                }
+                return result;
+                //console.log(result);
+            }
+
+            $("#dialog").dialog({width: $(window).width() * 0.9 });
 
             $(document).on('click', '.kcopener', function() {
                 console.log("kcopener was clicked");
-                $( "#dialog" ).dialog( "open" );
+
+                var authorId = $(this).attr("authorid");
+
+                $.getJSON('http://193.5.58.96/sbrd/Ajax/Json?lookfor=' + authorId + '&method=getAuthor&searcher=Elasticsearch', function(data) {
+
+                    //kc_birthDate
+                    var birthDates = getDate(data,'dbp:birthDate', 'schema:birthDate', 'dbp:birthYear');
+                    var kc_birthDate = birthDates[0];
+                    var kc_birthYear = birthDates[1];
+
+                    var deathDates = getDate(data,'dbp:deathDate', 'schema:deathDate', 'dbp:deathYear');
+                    var kc_deathDate = birthDates[0];
+                    var kc_deathYear = birthDates[1];
+
+                    var kc_birthPlace = getValues(data, 'lsb:dbpBirthPlaceAsLiteral');
+
+                    var kc_deathPlace = getValues(data, 'lsb:dbpDeathPlaceAsLiteral');
+
+                    var kc_nationality = getValues(data, 'lsb:dbpNationalityAsLiteral');
+
+                    var kc_occupation = getValues(data, 'lsb:dbpOccupationAsLiteral');
+
+                    var kc_thumbnail = getValueIfAvailable (data.person[0]._source['dbp:thumbnail'], "../themes/linkedswissbib/images/personAvatar.png");
+
+                    //kc_names
+                    var names = data.person[0]._source;
+
+                    if (('foaf:lastName' in names) && ('foaf:firstName') in names) {
+                        var kc_name = names['foaf:firstName'] + ' ' + names['foaf:lastName'];
+                    } else if ('foaf:lastName' in names) {
+                        var kc_name =  names['foaf:lastName'];
+                    } else if ('foaf:name' in names) {
+                        var kc_name =  names['foaf:name'];
+                    } else {
+                        var kc_name =  'no content provided';
+                    }
+
+                    //Contents KnowledgeCard
+                    $('#ui-id-1').text(kc_name + ' (' + kc_birthYear + ' - ' + kc_deathYear + ')'); //Title/Widget-Header
+                    $('#kc_nationality').text(kc_nationality);
+                    console.log(data); // console.log(data.person);
+                    $('#kc_birthDate').text(kc_birthDate);
+                    $('#kc_birthPlace').text(kc_birthPlace);
+                    $('#kc_deathDate').text(kc_deathDate);
+                    $('#kc_deathPlace').text(kc_deathPlace);
+                    $('#kc_occupation').text(kc_occupation);
+                    $('#kc_thumbnail').attr('src', kc_thumbnail);
+
+                    $( "#dialog" ).dialog( "open" );
+                });
             });
         });
 
-
-
     </script>
-    <div id="dialog" title="<? echo $person_nameAsLabel . " (BIRTHYEAR - DEATHYEAR NEEDED)" ?>">
+    <div id="dialog" title="">
         <!-- SEGEMENT Header -->
-        <div >
-            <div class="col-sm-3">
-                <h2></h2>
-                <img class="img-responsive" src="<? echo $person_thumbnail ?>"
-                     alt="<? echo $person_thumbnail ?>">
+        <div class="row">
+            <div class="col-sm-3 col-md-2">
+                <img class="img-responsive" id="kc_thumbnail" src= "" alt="kc_thumbnail">
             </div>
             <div class="col-sm-9">
                 <!-- occupation -->
                 <div class="meta">
-                    <p><? echo $person_occupation ?></p>
+                    <p id="kc_occupation"></p>
                 </div>
                 <!-- birthdate, birthplace -->
                 <div class="meta">
-                    <span><strong>Geboren: </strong></span><span><? echo $person_birthDate . " " . $person_birthPlace ?></span><br>
+                    <span><strong>Geboren: </strong></span><span id="kc_birthDate"></span>, <span id="kc_birthPlace"></span><br>
                 </div>
                 <!-- deathdate, deathplace -->
                 <div class="meta">
-                    <span><strong>Gestorben: </strong></span><span><? echo $person_deathDate . " " . $person_deathPlace ?></span><br>
+                    <span><strong>Gestorben: </strong></span><span id="kc_deathDate"></span>, <span id="kc_deathPlace"><br>
                 </div>
                 <!-- deathdate, deathplace -->
                 <div class="meta">
-                    <span><strong>Nationalität: </strong></span><span><? echo $person_nationality ?></span><br><br>
+                    <span><strong>Nationalität: </strong></span><span id="kc_nationality"></span><br><br>
                 </div>
                 <!-- subject -->
                 <div class="meta">
@@ -92,7 +204,7 @@ endforeach;
         </div>
 
         <!-- SEGMENT Literatur und Medien -->
-        <!-- Carousel differs from authordetails in the following point:
+        <!-- Carousel differs from authordetails.phtml in the following point:
         - Cover: style="min-height: 100px;
         - Cover: style="max-height: 100px;
         - Controls: style="max-height: 120px; max-width: 50px;
@@ -337,8 +449,12 @@ endforeach;
             </div>
             <!-- end row -->
         </div>
-        <span><a href="#">» Mehr Literatur und Medien finden...</a></span>
         <!-- end col-sm-12 -->
+        <div class="col-sm-12">
+            <div class="row">
+                <p><br><a href="#">» Mehr Literatur und Medien finden...</a></p>
+            </div>
+        </div>
 
         <!-- SEGEMENT Literatur und Medien finden in... -->
         <div class="col-sm-12">
@@ -348,13 +464,12 @@ endforeach;
         </div>
         <div class="col-sm-12">
             <div class="row">
-            <span><a href="#">ALLE KATALOGE</a> | <a href="#">CATALOGUE1</a> | <a href="#">CATALOGUE2</a> | <a href="#">CATALOGUE3</a></span>
+            <span><a href="#">ALLEN KATALOGE</a> | <a href="#">CATALOGUE1</a> | <a href="#">CATALOGUE2</a> | <a href="#">CATALOGUE3</a></span>
             </div>
         </div>
     </div>
     <!-- end id dialog -->
 </div>
 <!-- end id knowledgeCard -->
-<button class="kcopener"> Mehr Details</button>
 
 
