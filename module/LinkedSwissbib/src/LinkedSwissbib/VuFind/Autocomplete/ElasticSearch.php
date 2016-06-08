@@ -67,7 +67,7 @@ class ElasticSearch implements AutocompleteInterface{
                 break; //TODO: we ignore everything except person for now
             $id = $current['_source']['@id'];
 
-            if (!isset($current['_source']['dbp:birthDate']) && ($current['_source']['schema:birthDate']) && ($current['_source']['dbp:birthYear'])) {
+            if (!isset($current['_source']['dbp:birthDate']) && !isset($current['_source']['schema:birthDate']) && !isset($current['_source']['dbp:birthYear'])) {
                     $birthDate = "?";
                 } elseif (isset($current['_source']['schema:birthDate'])) {
                     $birthDate = $this->parseDate($current['_source']['schema:birthDate']);
@@ -77,24 +77,24 @@ class ElasticSearch implements AutocompleteInterface{
                     $birthDate = $current['_source']['dbp:birthYear'];
                 }
 
-            if (!isset($current['_source']['dbp:deathDate']) && ($current['_source']['schema:deathDate']) && ($current['_source']['dbp:deathYear'])) {
+            if (!isset($current['_source']['dbp:deathDate']) && !isset($current['_source']['schema:deathDate']) && !isset($current['_source']['dbp:deathYear'])) {
                 $deathDate = "?";
-            } elseif (isset($current['_source']['schema:deathhDate'])) {
+            } elseif (isset($current['_source']['schema:deathDate'])) {
                 $deathDate = $this->parseDate($current['_source']['schema:deathDate']);
             } elseif (isset($current['_source']['dbp:deathDate'])) {
-                $deathDate = $this->parseDate($current['_source']['dbp:deathhDate']);
+                $deathDate = $this->parseDate($current['_source']['dbp:deathDate']);
             } elseif (isset($current['_source']['dbp:deathYear'])) {
                 $deathDate = $current['_source']['dbp:deathYear'];
             }
 
-            if (!empty($birthDate) && ($deathDate)) {
+            if (!empty($birthDate) && !empty($deathDate)) {
                 $birthAndDeathDates = ' (' . $birthDate . ' - ' . $deathDate. ')';
             } elseif (!empty($birthDate) && empty($deathDate)) {
                 $birthAndDeathDates = ' (' . $birthDate . ' - ?)';
             } elseif (!empty($deathDate) && empty($birthDate)) {
             $birthAndDeathDates = ' (? - ' . $deathDate . ')';
              } else {
-                " ";
+                "?";
             }
 
             if(isset($current['_source']['foaf:firstName']) && isset($current['_source']['foaf:lastName']))
