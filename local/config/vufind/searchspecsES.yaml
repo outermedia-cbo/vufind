@@ -19,6 +19,8 @@ AuthorForId:
       operator:
         - and # should be default
 
+# AuthorByIdMulti : see /usr/local/vufind/httpd/module/LinkedSwissbib/src/LinkedSwissbib/Backend/Elasticsearch/ESQueryBuilder.php
+
 # bibliographicResource for Author
 BibliographicResourceForAuthor:
   UsedTypes:

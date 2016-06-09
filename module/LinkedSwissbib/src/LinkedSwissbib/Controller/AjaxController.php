@@ -43,6 +43,10 @@ class AjaxController extends VFAjaxController {
         return $response;
     }
 
+    protected function getAuthorMultiAjax() {
+        return $this->getAuthorAjax();
+    }
+
     private function refine($searchResults) {
         $results = array();
 

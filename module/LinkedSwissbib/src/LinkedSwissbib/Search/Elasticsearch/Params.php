@@ -90,12 +90,12 @@ class Params extends BaseParams
         } elseif (empty($handler)) {
             if ($request->get('method') == 'getAuthor') {
                 $handler = "AuthorForId";
+            } else if ($request->get('method') == 'getAuthorMulti') {
+                $handler = "AuthorByIdMulti";
             } else {
                 $handler = "AllFields";
             }
         }
-
-
 
         // Set the search:
         $this->setBasicSearch($lookfor, $handler);

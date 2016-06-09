@@ -83,6 +83,16 @@ class ESQueryBuilder implements ESQueryBuilderInterface
             $searchHandlerType = $this->getSearchHandler('allfields');
         }
 
+        if ($vuFindQuery->getHandler() == 'AuthorByIdMulti') {
+            $querystring = $vuFindQuery->getString();
+            $uris = explode(',',$querystring);
+            $getParams['body'] = '{"index":"testsb","type":"person"}'."\n".'{"query":{"filtered":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}}}'."\n";
+            $getParams['type'] = array("person");
+            $getParams['index'] = $searchHandlerType->getIndices();
+
+            return $getParams;
+        }
+
         $esQuery = new MultisearchQuery($vuFindQuery,$searchHandlerType->getSpec(), $this);
         $searchBody =  $esQuery->build();
 
