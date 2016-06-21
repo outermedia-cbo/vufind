@@ -138,7 +138,7 @@
                         var result = "";
                         for (var key in array) {
                             result += array[key]._source['dct:subject'] + ", ";
-                            result = result.replace('undefined, ','');
+                            result = result.replace('undefined, ', ' ');
                         }
                         var result = result.substring(0, result.length - 2);
                     }
@@ -153,6 +153,9 @@
                 }
                 return result;
             }
+
+
+
 
 
             $("#dialog").dialog({width: $(window).width() * 0.9 });
