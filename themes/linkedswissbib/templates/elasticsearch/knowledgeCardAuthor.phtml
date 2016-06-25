@@ -47,7 +47,7 @@
                 //check whether first character is a number or not
                 var letter = isNaN(date[0]);
 
-                //if the first charackter is a number
+                //if the first character is a number
                 if (letter == false) {
                     if (date.length >= 4) {
                         var kc_year = date.slice(0, 4);
@@ -113,23 +113,6 @@
                 return result;
                 //console.log(result);
             }
-
-/*            function getSubject (data) {
-                var array = data.bibliographicResource;
-
-                if (typeof array !== 'undefined') {
-                    if ($.isArray(array)) {
-                        var result = "";
-                        var fallbackResult = "";
-                        for (var key in array) {
-                            if (typeof array[key].de !== 'undefined') {
-                                result += array[key].de + ", ";
-                            } else if (typeof array[key].en !== 'undefined') {
-                                fallbackResult += array[key].en + ", ";
-                            }
-                        }
-
-            }*/
 
             function getSubjects (data) {
                 var array = data.bibliographicResource;
@@ -511,7 +494,7 @@
         </div>
         <div class="col-sm-12">
             <div class="row">
-            <span><a href="#">ALLEN KATALOGE</a> | <a href="#">CATALOGUE1</a> | <a href="#">CATALOGUE2</a> | <a href="#">CATALOGUE3</a></span>
+            <span><a href="#">ALLE KATALOGE</a> | <a href="#">CATALOGUE1</a> | <a href="#">CATALOGUE2</a> | <a href="#">CATALOGUE3</a></span>
             </div>
         </div>
     </div>
