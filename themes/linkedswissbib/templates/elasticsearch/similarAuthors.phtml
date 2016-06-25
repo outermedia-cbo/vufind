@@ -17,9 +17,16 @@
                     } else {
                         var kc_name =  'no content provided';
                     }
+
+                    //get thumbnail or dummy image
+                    var thumbnail = getValueIfAvailable (array[key]._source['dbp:thumbnail'], "../themes/linkedswissbib/images/personAvatar.png");
+
+                    //get person's id
+                    var person_id = array[key]._source['@id'];
+
                     // set <li>
                     result += '<li><a href="http://' + window.location.hostname +
-                    '/sbrd/Exploration/AuthorDetails?lookfor=' + '#' + '&type=AuthorForId"><figure><img src="../themes/linkedswissbib/images/FriedrichSchiller.jpg" alt=" '+ kc_name +' "><figcaption>' + kc_name + '</figcaption></figure></a></li>';
+                    '/sbrd/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="thumbnail" src=" '+ thumbnail +' " alt=" '+ kc_name +' "><figcaption>' + kc_name + '</figcaption></figure></a></li>';
                 }
             }
         } else {
@@ -33,10 +40,22 @@
         return result;
     }
 
+    function getValueIfAvailable (lookup, fallback) {
+        if (typeof lookup !== 'undefined') {
+            if ($.isArray(lookup)) {
+                return lookup[0];
+            } else {
+                return lookup;
+            }
+        } else {
+            return fallback;
+        }
+    }
+
     $.ajax({
         url: "http://193.5.58.96/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
         type: "POST",
-        data: {"lookfor": "http://data.swissbib.ch/person/825b0ab5-c490-38e8-af50-4ed444e87b44,http://data.swissbib.ch/person/5b590f17-2263-309f-bf3a-6c21e1970ad9,http://data.swissbib.ch/person/4ca6d8e1-694e-3fea-9cde-bc09a7b7f61c,http://data.swissbib.ch/resource/305111841"},
+        data: {"lookfor": "http://data.swissbib.ch/person/825b0ab5-c490-38e8-af50-4ed444e87b44,http://data.swissbib.ch/person/5b590f17-2263-309f-bf3a-6c21e1970ad9,http://data.swissbib.ch/person/4ca6d8e1-694e-3fea-9cde-bc09a7b7f61c,http://data.swissbib.ch/person/0bac9e1d-fb46-36db-80e5-a918ab485f6f,http://data.swissbib.ch/person/b0f9a499-7578-365d-b947-fb2f8c2ef042,http://data.swissbib.ch/resource/305111841"},
         success: function(result){
             // Zugriff auf JSON über "result"
 //            console.log(result);
