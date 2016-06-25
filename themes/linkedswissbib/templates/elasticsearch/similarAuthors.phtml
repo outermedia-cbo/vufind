@@ -1,0 +1,72 @@
+<script>
+    function getAuthors (result) {
+        var array = result.person;
+        if (typeof array !== 'undefined') {
+            if ($.isArray(array)) {
+                var result = "";
+                for (var key in array) {
+                    //get name
+                    var names = array[key]._source;
+
+                    if (('foaf:lastName' in names) && ('foaf:firstName') in names) {
+                        var kc_name = names['foaf:firstName'] + ' ' + names['foaf:lastName'];
+                    } else if ('foaf:lastName' in names) {
+                        var kc_name =  names['foaf:lastName'];
+                    } else if ('foaf:name' in names) {
+                        var kc_name =  names['foaf:name'];
+                    } else {
+                        var kc_name =  'no content provided';
+                    }
+                    // set <li>
+                    result += '<li><a href="http://' + window.location.hostname +
+                    '/sbrd/Exploration/AuthorDetails?lookfor=' + '#' + '&type=AuthorForId"><figure><img src="../themes/linkedswissbib/images/FriedrichSchiller.jpg" alt=" '+ kc_name +' "><figcaption>' + kc_name + '</figcaption></figure></a></li>';
+                }
+            }
+        } else {
+            var result = "no content provided";
+        }
+        if (!result) {
+            result = "no content provided";
+        } else {
+            result;
+        }
+        return result;
+    }
+
+    $.ajax({
+        url: "http://193.5.58.96/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+        type: "POST",
+        data: {"lookfor": "http://data.swissbib.ch/person/825b0ab5-c490-38e8-af50-4ed444e87b44,http://data.swissbib.ch/person/5b590f17-2263-309f-bf3a-6c21e1970ad9,http://data.swissbib.ch/person/4ca6d8e1-694e-3fea-9cde-bc09a7b7f61c,http://data.swissbib.ch/resource/305111841"},
+        success: function(result){
+            // Zugriff auf JSON über "result"
+//            console.log(result);
+//
+//            var person = result.person;
+//            console.log(person);
+//
+//            var bibliographicResource = result.bibliographicResource;
+//            console.log(bibliographicResource);
+
+            var sA_liTag = getAuthors(result);
+            console.log(sA_liTag);
+
+            $( ".sA_liTag" ).after(sA_liTag);
+
+        },
+        error: function(e) {console.log(e);}
+
+    });
+
+</script>
+<!-- SEGMENT Autoren mit ähnlichen Themen -->
+<div id="authorsWithSimilarTopics" class="results-top row">
+    <h2>Autoren mit ähnlichen Themen</h2>
+</div>
+<!-- end class results-top row -->
+<div class="row">
+<span id="list"></span>
+    <ul class="list-inline">
+        <span class="sA_liTag"></span>
+    </ul>
+</div>
+<!-- end class row -->
