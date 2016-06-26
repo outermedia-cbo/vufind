@@ -1,82 +1,213 @@
+<?
+$instances = array();
+$basePath = $this->basePath();
+
+$results = $this->results->getResults();
+foreach ($results as $singleResult):
+    if ($singleResult->isPerson()) {
+        $person_uniqueId = $singleResult->getUniqueID();
+    } else
+        $instances[] = $singleResult;
+endforeach;
+?>
+
 <script>
-    function getAuthors (result) {
-        var array = result.person;
-        if (typeof array !== 'undefined') {
-            if ($.isArray(array)) {
-                var result = "";
-                for (var key in array) {
-                    //get name
-                    var names = array[key]._source;
 
-                    if (('foaf:lastName' in names) && ('foaf:firstName') in names) {
-                        var kc_name = names['foaf:firstName'] + ' ' + names['foaf:lastName'];
-                    } else if ('foaf:lastName' in names) {
-                        var kc_name =  names['foaf:lastName'];
-                    } else if ('foaf:name' in names) {
-                        var kc_name =  names['foaf:name'];
-                    } else {
-                        var kc_name =  'no content provided';
+    $(function() {
+        function getAuthors(result) {
+            var array = result.person;
+            if (typeof array !== 'undefined') {
+                if ($.isArray(array)) {
+                    var result = "";
+                    for (var key in array) {
+                        //get name
+                        var names = array[key]._source;
+
+                        if (('foaf:lastName' in names) && ('foaf:firstName') in names) {
+                            var name = names['foaf:firstName'] + ' ' + names['foaf:lastName'];
+                        } else if ('foaf:lastName' in names) {
+                            var name = names['foaf:lastName'];
+                        } else if ('foaf:name' in names) {
+                            var name = names['foaf:name'];
+                        } else {
+                            var name = 'no content provided';
+                        }
+
+                        //get thumbnail or dummy image
+                        var thumbnail = getValueIfAvailable(array[key]._source['dbp:thumbnail'], "../themes/linkedswissbib/images/personAvatar.png");
+
+                        //get person's id
+                        var person_id = array[key]._source['@id'];
+
+                        // create <li>
+                        result += '<li><a href="http://' + window.location.hostname +
+                        '/sbrd/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="thumbnail" src=" ' + thumbnail + ' " alt=" ' + name + ' "><figcaption>' + name + '</figcaption></figure></a></li>';
                     }
+                }
+            } else {
+                var result = "no content provided";
+            }
+            if (!result) {
+                result = "no content provided";
+            } else {
+                result;
+            }
+            return result;
+        }
 
-                    //get thumbnail or dummy image
-                    var thumbnail = getValueIfAvailable (array[key]._source['dbp:thumbnail'], "../themes/linkedswissbib/images/personAvatar.png");
+        function getSubjects(result) {
+            var bibRes = result.bibliographicResource;
+            if (typeof bibRes !== 'undefined') {
+                if ($.isArray(bibRes)) {
+                    var subject = "";
+                    for (var key in bibRes) {
+                        subject += bibRes[key]._source['dct:subject'] + ", ";
+                        subject = subject.replace('undefined, ', ' ');
+                    }
+                    var subject = subject.substring(0, subject.length - 2);
+                }
+            } else {
+                var subject = "";
+            }
 
-                    //get person's id
-                    var person_id = array[key]._source['@id'];
+            if (!subject) {
+                subject = "";
+            } else {
+                subject;
+            }
+            return subject;
+        }
 
-                    // set <li>
-                    result += '<li><a href="http://' + window.location.hostname +
-                    '/sbrd/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="thumbnail" src=" '+ thumbnail +' " alt=" '+ kc_name +' "><figcaption>' + kc_name + '</figcaption></figure></a></li>';
+        //get IDs for POST
+        function getIds(result) {
+            // get IDs from bibliographicResource
+            var bibRes = result.bibliographicResource;
+            if (typeof bibRes !== 'undefined') {
+                if ($.isArray(bibRes)) {
+                    var id_bibRes = "";
+                    for (var key in bibRes) {
+                        id_bibRes += bibRes[key]._source['@id'] + ",";
+                    }
+                }
+            } else {
+                var id_bibRes = "";
+            }
+
+            // get IDs from bibliographicResource
+            bibRes = result.bibliographicResource;
+            if (typeof bibRes !== 'undefined') {
+                if ($.isArray(bibRes)) {
+                    var id_contributorFromBibRes = id_bibRes;
+                    for (var key in bibRes) {
+                        id_contributorFromBibRes += bibRes[key]._source['dct:contributor'] + ",";
+                    }
                 }
             }
-        } else {
-            var result = "no content provided";
-        }
-        if (!result) {
-            result = "no content provided";
-        } else {
-            result;
-        }
-        return result;
-    }
 
-    function getValueIfAvailable (lookup, fallback) {
-        if (typeof lookup !== 'undefined') {
-            if ($.isArray(lookup)) {
-                return lookup[0];
+            // get IDs from person
+            var person = result.person;
+            if (typeof person !== 'undefined') {
+                if ($.isArray(person)) {
+                    var id_person = id_contributorFromBibRes;
+                    for (var key in person) {
+                        id_person += person[key]._source['@id'] + ",";
+                    }
+                    var id_person = id_person.substring(0, id_person.length - 1);
+                }
             } else {
-                return lookup;
+                var id_person = "";
             }
-        } else {
-            return fallback;
+
+            if (!id_person) {
+                id_person = "";
+            } else {
+                id_person;
+            }
+            return id_person;
         }
-    }
 
-    $.ajax({
-        url: "http://193.5.58.96/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
-        type: "POST",
-        data: {"lookfor": "http://data.swissbib.ch/person/825b0ab5-c490-38e8-af50-4ed444e87b44,http://data.swissbib.ch/person/5b590f17-2263-309f-bf3a-6c21e1970ad9,http://data.swissbib.ch/person/4ca6d8e1-694e-3fea-9cde-bc09a7b7f61c,http://data.swissbib.ch/person/0bac9e1d-fb46-36db-80e5-a918ab485f6f,http://data.swissbib.ch/person/b0f9a499-7578-365d-b947-fb2f8c2ef042,http://data.swissbib.ch/resource/305111841"},
-        success: function(result){
-            // Zugriff auf JSON über "result"
-//            console.log(result);
-//
-//            var person = result.person;
-//            console.log(person);
-//
-//            var bibliographicResource = result.bibliographicResource;
-//            console.log(bibliographicResource);
+        //Here only used for thumbnails
+        function getValueIfAvailable(lookup, fallback) {
+            if (typeof lookup !== 'undefined') {
+                if ($.isArray(lookup)) {
+                    return lookup[0];
+                } else {
+                    return lookup;
+                }
+            } else {
+                return fallback;
+            }
+        }
 
-            var sA_liTag = getAuthors(result);
-            console.log(sA_liTag);
 
-            $( ".sA_liTag" ).after(sA_liTag);
+        /*    function getSubjects (result) {
+         var array = result.bibliographicResource;
+         if (typeof array !== 'undefined') {
+         if ($.isArray(array)) {
+         var result = "";
+         for (var key in array) {
+         result += array[key]._source['dct:subject'] + ", ";
+         result = result.replace('undefined, ', ' ');
+         }
+         var result = result.substring(0, result.length - 2);
+         }
+         } else {
+         var result = "";
+         }
 
-        },
-        error: function(e) {console.log(e);}
+         if (!result) {
+         result = "";
+         } else {
+         result;
+         }
+         return result;
+         }*/
 
+        var person_uniqueId = "<? echo $person_uniqueId?>";
+
+        $.getJSON('http://193.5.58.96/sbrd/Ajax/Json?lookfor=' + person_uniqueId + '&method=getAuthor&searcher=Elasticsearch', function(data) {
+            console.log(data);
+
+            var ids = getIds(data);
+            console.log(ids);
+
+
+            $.ajax({
+                url: "http://193.5.58.96/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                type: "POST",
+                data: {"lookfor": ids},
+                success: function (result) {
+                    // Zugriff auf JSON über "result"
+                    //            console.log(result);
+                    //
+                    //            var person = result.person;
+                    //            console.log(person);
+                    //
+                    //            var bibliographicResource = result.bibliographicResource;
+                    //            console.log(bibliographicResource);
+
+                    var sA_liTag = getAuthors(result);
+                    console.log(sA_liTag);
+
+                    var subjects = getSubjects(result);
+                    //console.log(subjects);
+
+                    var ids = getIds(result);
+                    console.log(ids);
+
+                    $(".sA_liTag").after(sA_liTag);
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        });
     });
 
 </script>
+
+
+
 <!-- SEGMENT Autoren mit ähnlichen Themen -->
 <div id="authorsWithSimilarTopics" class="results-top row">
     <h2>Autoren mit ähnlichen Themen</h2>
