@@ -86,7 +86,7 @@ class ESQueryBuilder implements ESQueryBuilderInterface
         if ($vuFindQuery->getHandler() == 'AuthorByIdMulti') {
             $querystring = $vuFindQuery->getString();
             $uris = explode(',',$querystring);
-            $getParams['body'] = '{"index":"testsb","type":"person"}'."\n".'{"query":{"filtered":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}}}'."\n".'{"index":"testsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}}}'."\n".'{"index":"testsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"dct:subject":["' . implode('","', $uris) . '"]}}}}}'."\n";
+            $getParams['body'] = '{"index":"testsb","type":"person"}'."\n".'{"query":{"filtered":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}},"size":100,"from":10}'."\n".'{"index":"testsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}},"size":100,"from":10}'."\n".'{"index":"testsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"dct:subject":["' . implode('","', $uris) . '"]}}}},"size":100,"from":10}'."\n";
             $getParams['type'] = array("person"); //TODO: Find out whether this line is necessary
             $getParams['index'] = $searchHandlerType->getIndices();
 
