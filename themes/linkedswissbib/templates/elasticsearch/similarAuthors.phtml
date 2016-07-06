@@ -13,8 +13,9 @@ endforeach;
 
 <script>
 
+    //TODO: Remove author from co-author list
     $(function() {
-        function getAuthors(result) {
+        function getCoAuthors(result) {
             var array = result.person;
             if (typeof array !== 'undefined') {
                 if ($.isArray(array)) {
@@ -33,7 +34,7 @@ endforeach;
                             var name = 'no content provided';
                         }
 
-                        //get thumbnail or dummy image
+                        //get thumbnail or dummy image TODO: CSS loads correctly only after reload --> Why?
                         var thumbnail = getValueIfAvailable(array[key]._source['dbp:thumbnail'], "../themes/linkedswissbib/images/personAvatar.png");
 
                         //get person's id
@@ -55,31 +56,96 @@ endforeach;
             return result;
         }
 
-        function getSubjects(result) {
+        //substring experiment - doesn't work...
+/*        function getBibliographicResourceWithSameTopics(result) {
+            var array = result.bibliographicResource;
+            if (typeof array !== 'undefined') {
+                if ($.isArray(array)) {
+                    var result = "";
+                    for (var key in array) {
+                        //check if substring (subjects) are contained in string
+                        //var string_subjects = string;
+                        //var string_subjects = string_subjects.split(",");
+                        var substring_subjects = array[key]._source['dct:subject'];
+                        if (typeof substring_subjects !== 'undefined'){
+
+                            //var substring_subjects = array[key]._source['dct:subject'];
+                            //var substring_subjects = substring_subjects.split(",");
+
+                            //(string_subjects.indexOf(substring_subjects) > -1)
+                            var title = substring_subjects['dct:title']
+                            var bibliographicResource_id = array[key]._source['@id'];
+                            var id_classic = bibliographicResource_id.slice(33);
+
+                            // create <li>
+                            result += '<li><a href="http://' + window.location.hostname +
+                            '/sbrd/Record/' + id_classic + '"><span>' + title +'</span></li>';
+                        }
+                    }
+                }
+            } else {
+                var result = "no content provided";
+            }
+            if (!result) {
+                result = "no content provided";
+            } else {
+                result;
+            }
+            return result;
+        }*/
+
+        function getBibliographicResourceWithSimilarTopics(result) {
+            var array = result.bibliographicResource;
+            if (typeof array !== 'undefined') {
+                if ($.isArray(array)) {
+                    var result = "";
+                    for (var key in array) {
+                        //get title
+                        var names = array[key]._source;
+                        var title = names['dct:title'];
+
+                        //get bibRes's id
+                        var bibliographicResource_id = array[key]._source['@id'];
+                        //extract ID to link to the Solr record
+                        var id_classic = bibliographicResource_id.slice(33);
+
+                        // create <li> that links to the Solr record
+                        result += '<li><a href="http://' + window.location.hostname +
+                        '/sbrd/Record/' + id_classic + '"><span>' + title +'</span></li>';
+                    }
+                }
+            } else {
+                var result = "no content provided";
+            }
+            if (!result) {
+                result = "no content provided";
+            } else {
+                result;
+            }
+            return result;
+        }
+
+        //Backup
+/*        function getSubjects(result) {
             var bibRes = result.bibliographicResource;
             if (typeof bibRes !== 'undefined') {
                 if ($.isArray(bibRes)) {
                     var subject = "";
                     for (var key in bibRes) {
-                        subject += bibRes[key]._source['dct:subject'] + ", ";
-                        subject = subject.replace('undefined, ', ' ');
+                        subject += bibRes[key]._source['dct:subject'] + ",";
+                        subject = subject.replace('undefined,','');
                     }
-                    var subject = subject.substring(0, subject.length - 2);
+                    var subject = subject.substring(0, subject.length - 1);
                 }
             } else {
                 var subject = "";
             }
 
-            if (!subject) {
-                subject = "";
-            } else {
-                subject;
-            }
             return subject;
-        }
+        }*/
 
         //get IDs for POST
-        function getIds(result) {
+        function getIdsBibRes(result) {
             // get IDs from bibliographicResource
             var bibRes = result.bibliographicResource;
             if (typeof bibRes !== 'undefined') {
@@ -88,27 +154,55 @@ endforeach;
                     for (var key in bibRes) {
                         id_bibRes += bibRes[key]._source['@id'] + ",";
                     }
+                    var id_bibRes = id_bibRes.substring(0, id_bibRes.length - 1);
                 }
             } else {
                 var id_bibRes = "";
             }
+            return id_bibRes;
+        }
 
+        function getIdsContributorFromBibRes(result) {
             // get IDs from bibliographicResource
-            bibRes = result.bibliographicResource;
+            var bibRes = result.bibliographicResource;
             if (typeof bibRes !== 'undefined') {
                 if ($.isArray(bibRes)) {
-                    var id_contributorFromBibRes = id_bibRes;
+                    var id_contributorFromBibRes = "";
                     for (var key in bibRes) {
                         id_contributorFromBibRes += bibRes[key]._source['dct:contributor'] + ",";
                     }
+                    var id_contributorFromBibRes = id_contributorFromBibRes.substring(0, id_contributorFromBibRes.length - 1);
                 }
+            } else {
+                var id_contributorFromBibRes = "";
             }
+            return id_contributorFromBibRes;
+        }
 
+        function getIdsSubject (result) {
+            // get IDs from subject
+            var bibRes = result.bibliographicResource;
+            if (typeof bibRes !== 'undefined') {
+                if ($.isArray(bibRes)) {
+                    var subject = "";
+                    for (var key in bibRes) {
+                        subject += bibRes[key]._source['dct:subject'] + ",";
+                        subject = subject.replace('undefined,','');
+                    }
+                    var subject = subject.substring(0, subject.length - 1);
+                }
+            } else {
+                var subject = "";
+            }
+            return subject;
+        }
+
+        function getIdsPerson (result) {
             // get IDs from person
             var person = result.person;
             if (typeof person !== 'undefined') {
                 if ($.isArray(person)) {
-                    var id_person = id_contributorFromBibRes;
+                    var id_person = "";
                     for (var key in person) {
                         id_person += person[key]._source['@id'] + ",";
                     }
@@ -116,12 +210,6 @@ endforeach;
                 }
             } else {
                 var id_person = "";
-            }
-
-            if (!id_person) {
-                id_person = "";
-            } else {
-                id_person;
             }
             return id_person;
         }
@@ -139,38 +227,23 @@ endforeach;
             }
         }
 
-
-        /*    function getSubjects (result) {
-         var array = result.bibliographicResource;
-         if (typeof array !== 'undefined') {
-         if ($.isArray(array)) {
-         var result = "";
-         for (var key in array) {
-         result += array[key]._source['dct:subject'] + ", ";
-         result = result.replace('undefined, ', ' ');
-         }
-         var result = result.substring(0, result.length - 2);
-         }
-         } else {
-         var result = "";
-         }
-
-         if (!result) {
-         result = "";
-         } else {
-         result;
-         }
-         return result;
-         }*/
-
         var person_uniqueId = "<? echo $person_uniqueId?>";
 
         $.getJSON('http://193.5.58.96/sbrd/Ajax/Json?lookfor=' + person_uniqueId + '&method=getAuthor&searcher=Elasticsearch', function(data) {
-            console.log(data);
+            //console.log(data);
 
-            var ids = getIds(data);
-            console.log(ids);
+            var idBibRes = getIdsBibRes(data);
+            //console.log(idBibRes);
+            var idContributorFromBibRes = getIdsContributorFromBibRes(data);
+            //console.log(idContributorFromBibRes);
+            var idSubject = getIdsSubject(data);
+            //console.log(idSubject);
+            var idPerson = getIdsPerson(data);
+            //console.log(idPerson);
 
+            //idPerson (main author) not included
+            var ids = idBibRes + ',' + idContributorFromBibRes + ',' + idSubject;
+            //console.log(ids);
 
             $.ajax({
                 url: "http://193.5.58.96/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
@@ -178,24 +251,51 @@ endforeach;
                 data: {"lookfor": ids},
                 success: function (result) {
                     // Zugriff auf JSON über "result"
-                    //            console.log(result);
-                    //
-                    //            var person = result.person;
-                    //            console.log(person);
-                    //
-                    //            var bibliographicResource = result.bibliographicResource;
-                    //            console.log(bibliographicResource);
+                    //console.log(result);
 
-                    var sA_liTag = getAuthors(result);
-                    console.log(sA_liTag);
+                   //Limited to 10 results (ES default)
+                    var sA_coauthors = getCoAuthors(result);
+                    //console.log(sA_coauthors);
 
-                    var subjects = getSubjects(result);
+                    var subjects = getIdsSubject (result);
                     //console.log(subjects);
 
-                    var ids = getIds(result);
-                    console.log(ids);
+                    $(".sA_coauthors").after(sA_coauthors);
 
-                    $(".sA_liTag").after(sA_liTag);
+                    $.ajax({
+                        url: "http://193.5.58.96/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                        type: "POST",
+                        data: {"lookfor": subjects},
+                        success: function (result) {
+                            // Zugriff auf JSON über "result"
+
+                            var sA_bibliographicResourcesWithSimilarTopics = getBibliographicResourceWithSimilarTopics (result);
+                            //(console.log(sA_bibliographicResourcesWithSimilarTopics);
+
+                            var idsContributorFromBibRes = getIdsContributorFromBibRes(result);
+
+                            $(".sA_bibliographicResourcesWithSimilarTopics").after(sA_bibliographicResourcesWithSimilarTopics);
+
+                            $.ajax({
+                                url: "http://193.5.58.96/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                                type: "POST",
+                                data: {"lookfor": idsContributorFromBibRes},
+                                success: function (result) {
+                                    // Zugriff auf JSON über "result"
+                                    var sA_coauthorsOfBibliographicResourcesWithSimilarTopics = getCoAuthors(result);
+                                    console.log(sA_coauthorsOfBibliographicResourcesWithSimilarTopics);
+
+                                    $(".sA_coauthorsOfBibliographicResourcesWithSimilarTopics").after(sA_coauthorsOfBibliographicResourcesWithSimilarTopics);
+                                },
+                                error: function (e) {
+                                    console.log(e);
+                                }
+                            });
+                        },
+                        error: function (e) {
+                            console.log(e);
+                        }
+                    });
                 },
                 error: function (e) {
                     console.log(e);
@@ -205,8 +305,31 @@ endforeach;
     });
 
 </script>
+<!-- SEGMENT Autoren und Beitragende gemeinsamer Werke -->
+<div id="authorsOfCommonWorks" class="results-top row">
+    <h2>Autoren und Beitragende gemeinsamer Werke</h2>
+</div>
+<!-- end class results-top row -->
+<div class="row">
+    <span id="list"></span>
+    <ul class="list-inline">
+        <span class="sA_coauthors"></span>
+    </ul>
+</div>
+<!-- end class row -->
 
-
+<!-- SEGMENT Werke mit ähnlichen Themen -->
+<div id="bibliographicResourcesWithSimilarTopics" class="results-top row">
+    <h2>Literatur und Medien mit ähnlichen Themen</h2>
+</div>
+<!-- end class results-top row -->
+<div class="row">
+    <span id="list"></span>
+    <ul class="list-inline">
+        <span class="sA_bibliographicResourcesWithSimilarTopics"></span>
+    </ul>
+</div>
+<!-- end class row -->
 
 <!-- SEGMENT Autoren mit ähnlichen Themen -->
 <div id="authorsWithSimilarTopics" class="results-top row">
@@ -216,7 +339,8 @@ endforeach;
 <div class="row">
 <span id="list"></span>
     <ul class="list-inline">
-        <span class="sA_liTag"></span>
+        <span class="sA_coauthorsOfBibliographicResourcesWithSimilarTopics"></span>
     </ul>
 </div>
 <!-- end class row -->
+

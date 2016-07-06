@@ -66,8 +66,10 @@
                                 <a href="#mediaType">Medientyp</a>&nbsp;|&nbsp;
                                 <a href="#worksOfContemporaries">Werke von Zeitgenossen</a>&nbsp;|&nbsp;
                                 <a href="#relatedTopics">Verwandte Themen</a>&nbsp;|&nbsp;
-                                <a href="#authorsWithSimilarTopics">Autoren mit ähnlichen Themen</a>&nbsp;|&nbsp;
                                 <a href="#authorsOfCommonWorks">Autoren und Beitragende gemeinsamer Werke</a>
+                                <a href="#bibliographicResourcesWithSimilarTopics">Literatur und Medien mit ähnlichen Themen</a>
+                                <a href="#authorsWithSimilarTopics">Autoren mit ähnlichen Themen</a>&nbsp;|&nbsp;
+
                             </div>
                             <!-- end class col-md-9 -->
                             <div class="col-md-3">
@@ -763,43 +765,6 @@
 
                         <!-- SEGMENT Autoren mit ähnlichen Themen -->
                         <?=$this->render("elasticsearch/similarAuthors.phtml")?>
-
-                        <!-- SEGMENT Autoren und Beitragende gemeinsamer Werke -->
-                        <div id="authorsOfCommonWorks" class="results-top row">
-                            <h2>Autoren und Beitragende gemeinsamer Werke</h2>
-                        </div>
-                        <!-- end class results-top row -->
-                        <div class="row">
-                            <ul class="list-inline">
-                                <li>
-                                    <a href="#">
-                                        <figure>
-                                            <img src="../themes/linkedswissbib/images/ThomasMann.jpg" alt="Thomas Mann">
-                                            <figcaption>Thomas Mann</figcaption>
-                                        </figure>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <figure>
-                                            <img src="../themes/linkedswissbib/images/FriedrichSchiller.jpg"
-                                                 alt="Friedrich Schiller">
-                                            <figcaption>Friedrich Schiller</figcaption>
-                                        </figure>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <figure>
-                                            <img src="../themes/linkedswissbib/images/ImmanuelKant.jpg"
-                                                 alt="Immanuel Kant">
-                                            <figcaption>Immanuel Kant</figcaption>
-                                        </figure>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- end class row -->
 
                     </div>
                     <!-- end class col-md-9 col-table-fix-md resultView bg-white -->
