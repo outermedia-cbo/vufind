@@ -13,8 +13,8 @@ endforeach;
 
 <script>
 
-    //TODO: Remove author from co-author list
     $(function() {
+        //persons only! no organisations!
         function getCoAuthors(result) {
             var array = result.person;
             if (typeof array !== 'undefined') {
@@ -23,26 +23,29 @@ endforeach;
                     for (var key in array) {
                         //get name
                         var names = array[key]._source;
+                        var person = names['rdf:type'];
 
-                        if (('foaf:lastName' in names) && ('foaf:firstName') in names) {
-                            var name = names['foaf:firstName'] + ' ' + names['foaf:lastName'];
-                        } else if ('foaf:lastName' in names) {
-                            var name = names['foaf:lastName'];
-                        } else if ('foaf:name' in names) {
-                            var name = names['foaf:name'];
-                        } else {
-                            var name = 'no content provided';
+                        if (person == 'http://xmlns.com/foaf/0.1/Person') {
+                            if (('foaf:lastName' in names) && ('foaf:firstName') in names) {
+                                var name = names['foaf:firstName'] + ' ' + names['foaf:lastName'];
+                            } else if ('foaf:lastName' in names) {
+                                var name = names['foaf:lastName'];
+                            } else if ('foaf:name' in names) {
+                                var name = names['foaf:name'];
+                            } else {
+                                var name = 'no content provided';
+                            }
+
+                            //get thumbnail or dummy image TODO: CSS loads correctly only after reload --> Why?
+                            var thumbnail = getValueIfAvailable(array[key]._source['dbp:thumbnail'], "../themes/linkedswissbib/images/personAvatar.png");
+
+                            //get person's id
+                            var person_id = array[key]._source['@id'];
+
+                            // create <li>
+                            result += '<li><a href="http://' + window.location.hostname +
+                            '/sbrd/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="thumbnail" src=" ' + thumbnail + ' " alt=" ' + name + ' "><figcaption>' + name + '</figcaption></figure></a></li>';
                         }
-
-                        //get thumbnail or dummy image TODO: CSS loads correctly only after reload --> Why?
-                        var thumbnail = getValueIfAvailable(array[key]._source['dbp:thumbnail'], "../themes/linkedswissbib/images/personAvatar.png");
-
-                        //get person's id
-                        var person_id = array[key]._source['@id'];
-
-                        // create <li>
-                        result += '<li><a href="http://' + window.location.hostname +
-                        '/sbrd/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="thumbnail" src=" ' + thumbnail + ' " alt=" ' + name + ' "><figcaption>' + name + '</figcaption></figure></a></li>';
                     }
                 }
             } else {
