@@ -164,7 +164,7 @@ class ElasticSearchRDF extends AbstractBase
 
     public function getNotableWork($lang = 'de')
     {
-        return $result = $this->getValueForProperty($lang, 'dbp:notableWork');
+        return $result = $this->getValueForProperty($lang, 'lsb:dbpNotableWorkAsLiteral');
     }
 
     public function getOccupation($lang = 'de')
