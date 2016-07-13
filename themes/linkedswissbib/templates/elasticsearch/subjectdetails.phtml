@@ -27,6 +27,21 @@
             $person_spouse = $singleResult->getSpouse();
             $person_source = $singleResult->getSource();
             $person_thumbnail = $singleResult->getThumbnail();
+            //GND Ontology: http://d-nb.info/standards/elementset/gnd
+/*            $subject_uniqueId = $singleResult->getUniqueID();
+            $subject_alternativeNames = $singleResult->getSubjectAlternativeNames(); //http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading --> more variants available!
+            $subject_definition = $singleResult->getSubjectDefinition(); //http://d-nb_info/standards/elementset/gnd#definition --> Erläuterungen
+            $subject_relatedTerms = $singleResult->getSubjectRelatedTerms(); //http://d-nb_info/standards/elementset/gnd#relatedTerm
+            $subject_broaderTerms = $singleResult->getSubjectBroaderTerms(); //http://d-nb_info/standards/elementset/gnd#broaderTermGeneral   http://d-nb.info/standards/elementset/gnd#broaderTermGeneric   http://d-nb_info/standards/elementset/gnd#broaderTermInstantial  http://d-nb_info/standards/elementset/gnd#broaderTermPartitive
+            $subject_narrowerTerms = $singleResult->getSubjectNarrowerTerms(); //http://d-nb.info/standards/elementset/gnd#narrowerTermGeneral  http://d-nb.info/standards/elementset/gnd#narrowerTermGeneric	http://d-nb.info/standards/elementset/gnd#narrowerTermInstantial  http://d-nb.info/standards/elementset/gnd#narrowerTermPartitive
+            $subject_ddc1 = $singleResult->getSubjectDDC1(); //http://d-nb.info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy1 --> DDC-Notation Related Dewey Decimal Classification with degree of determinacy 1
+            $subject_ddc2 = $singleResult->getSubjectDDC2(); //http://d-nb.info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy2 --> DDC-Notation Related Dewey Decimal Classification with degree of determinacy 2
+            $subject_ddc3 = $singleResult->getSubjectDDC3(); //http://d-nb.info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy3 --> DDC-Notation Related Dewey Decimal Classification with degree of determinacy 3
+            $subject_ddc4 = $singleResult->getSubjectDDC4(); //http://d-nb.info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy4 --> DDC-Notation Related Dewey Decimal Classification with degree of determinacy 4
+            $subject_externalLink = $singleResult->getSubjectExternalLink(); //skos:exactMatch, foaf:page
+            $subject_preferredName = $singleResult->getSubjectPreferredName(); //http://d-nb.info/standards/elementset/gnd#preferredNameForTheSubjectHeading --> more preferred names available!
+            $subject_gndSubjectCategory = $singleResult->getSubjectGndSubjectCategory(); //http://d-nb.info/standards/elementset/gnd#gndSubjectCategory --> GND Systematik
+            $subject_source = $singleResult->getSubjectSource(); // http://d-nb.info/gnd/4182672-3 --> Link zum GND-Datensatz*/
         } else
             $instances[] = $singleResult;
     endforeach;
@@ -62,14 +77,9 @@
                                     <h2 class="visible-print-block">Ihre Suche: <span>malaria, 4048 Treffer</span></h2>
                                 -->
                                 <b>Springe zu:&nbsp;</b>
-                                <a href="#works">Werke</a>&nbsp;|&nbsp;
-                                <a href="#mediaType">Medientyp</a>&nbsp;|&nbsp;
-                                <a href="#worksOfContemporaries">Werke von Zeitgenossen</a>&nbsp;|&nbsp;
-                                <a href="#relatedTopics">Verwandte Themen</a>&nbsp;|&nbsp;
-                                <a href="#authorsOfCommonWorks">Autoren und Beitragende gemeinsamer Werke</a>
-                                <a href="#bibliographicResourcesWithSimilarTopics">Literatur und Medien mit ähnlichen Themen</a>
-                                <a href="#authorsWithSimilarTopics">Autoren mit ähnlichen Themen</a>
-
+                                <a href="#works">Literatur und Medien</a>&nbsp;|&nbsp;
+                                <a href="#gallery">Galerie</a>&nbsp;|&nbsp;
+                                <a href="#relatedSubjects">Ähnliche Themen</a>&nbsp;|&nbsp;
                             </div>
                             <!-- end class col-md-9 -->
                             <div class="col-md-3">
@@ -122,21 +132,13 @@
                                         <?=$this->render("elasticsearch/knowledgeCardAuthor.phtml")?>
                                         </div>
                                     </div>
-                                    <!-- occupation -->
+                                    <!-- name variants -->
                                     <div class="meta">
-                                        <p><? echo $person_occupation ?></p>
+                                        <span><strong>Namensvarianten: </strong></span><span><? echo $person_birthDate . " " . $person_birthPlace ?></span><br>
                                     </div>
-                                    <!-- birthdate, birthplace -->
+                                    <!-- Themengebiet GND-Systematik -->
                                     <div class="meta">
-                                        <span><strong>Geboren: </strong></span><span><? echo $person_birthDate . " " . $person_birthPlace ?></span><br>
-                                    </div>
-                                    <!-- deathdate, deathplace -->
-                                    <div class="meta">
-                                        <span><strong>Gestorben: </strong></span><span><? echo $person_deathDate . " " . $person_deathPlace ?></span><br>
-                                    </div>
-                                    <!-- deathdate, deathplace -->
-                                    <div class="meta">
-                                        <span><strong>Nationalität: </strong></span><span><? echo $person_nationality ?></span><br><br>
+                                        <span><strong>Themengebiet (GND): </strong></span><span><? echo $person_deathDate . " " . $person_deathPlace ?></span><br><br>
                                     </div>
                                     <div id="accordion" class="panel-group" aria-multiselectable="true"
                                          role="tablist">
@@ -163,52 +165,38 @@
                                 <dl>
                                     <div class="row">
                                         <dt class="col-sm-2">
-                                        <p>Biografie:</p></dt>
+                                        <!-- description -->
+                                        <p>Erklärung:</p></dt>
                                         <dd class="col-sm-10"><p><? echo $person_biography ?></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
-                                        <p>Wichtigste Werke:</p></dt>
+                                        <!-- broader Terms -->
+                                        <p>Übergeordnete Themen:</p></dt>
                                         <dd class="col-sm-10"><p><? echo $person_notableWork ?></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
-                                        <p>Genre:</dt>
+                                        <!-- narrower Terms -->
+                                        <p>Untergeordnete Themen:</dt>
                                         <dd class="col-sm-10"><? echo $person_genre ?></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
-                                        <p>Bewegung, Zeit, Ära (Movement):</p></dt>
+                                        <p>Verwandte Themen:</p></dt>
                                         <dd class="col-sm-10"><p><? echo $person_movement ?></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
-                                        <p>Namens-<br>varianten:</p></dt>
+                                        <!-- Dewey Decimal Classification -->
+                                        <p>Dewey Decimal <br> Classification (Notation):</p></dt>
                                         <dd class="col-sm-10"><p><? echo $person_alternativeNames ?></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
-                                        <p>Pseudonyme:</p></dt>
-                                        <dd class="col-sm-10"><p><? echo $person_pseudonym ?></p></dd>
-                                    </div>
-                                    <div class="row">
-                                        <dt class="col-sm-2">
-                                        <p>In Beziehung stehend:</p></dt>
-                                        <dd class="col-sm-10">
-                                            <p>
-                                                <? echo
-                                                    $person_partner . " (Partner/s)<br>" .
-                                                    $person_spouse . " (Spouse/s)<br>" .
-                                                    $person_influenced . " (influenced)<br>" .
-                                                    $person_influencedBy . " (influencedBy)<br>"
-                                                ?>
-                                            </p>
-                                        </dd>
-                                    </div>
-                                    <div class="row">
-                                        <dt class="col-sm-2">
+                                        <!-- external Links und sources -->
                                         <p>Quellen:</p></dt>
-                                        <dd class="col-sm-10"><p><? echo $person_source ?></p></dd>
+                                        <dd class="col-sm-10"><p><? echo $person_pseudonym ?></p></dd>
                                     </div>
                                 </dl>
                             </div>
@@ -499,7 +487,7 @@
                         <!-- end class row -->
 
                         <!-- SEGMENT Werke von Zeitgenossen -->
-                        <div id="worksOfContemporaries" class="results-top row">
+                        <div id="gallery" class="results-top row">
                             <h2>Werke von Zeitgenossen</h2>
                         </div>
                         <!-- end class results-top row -->
@@ -764,6 +752,7 @@
                         <!-- end class row -->
 
                         <!-- SEGMENT Autoren mit ähnlichen Themen -->
+                        <!-- id="relatedSubjects" -->
                         <?=$this->render("elasticsearch/similarAuthors.phtml")?>
 
                     </div>
