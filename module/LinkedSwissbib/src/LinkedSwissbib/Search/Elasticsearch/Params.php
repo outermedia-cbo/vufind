@@ -92,6 +92,8 @@ class Params extends BaseParams
                 $handler = "AuthorForId";
             } else if ($request->get('method') == 'getAuthorMulti') {
                 $handler = "AuthorByIdMulti";
+            } else if ($request->get('method') == 'getSubjectMulti') {
+                $handler = "SubjectByIdMulti";
             } else {
                 $handler = "AllFields";
             }

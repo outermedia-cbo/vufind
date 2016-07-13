@@ -21,6 +21,8 @@ AuthorForId:
 
 # AuthorByIdMulti : see /usr/local/vufind/httpd/module/LinkedSwissbib/src/LinkedSwissbib/Backend/Elasticsearch/ESQueryBuilder.php
 
+# SubjectByIdMulti : see /usr/local/vufind/httpd/module/LinkedSwissbib/src/LinkedSwissbib/Backend/Elasticsearch/ESQueryBuilder.php
+
 # bibliographicResource for Author
 BibliographicResourceForAuthor:
   UsedTypes:
