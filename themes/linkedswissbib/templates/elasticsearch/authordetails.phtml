@@ -727,42 +727,6 @@
                         </div>
                         <!-- end row -->
 
-                        <!-- SEGMENT Verwandte Themen -->
-                        <div id="relatedTopics" class="results-top row">
-                            <h2>Verwandte Themen</h2>
-                        </div>
-                        <!-- end class results-top row -->
-                        <div class="row">
-                            <div id="main" class="hotag"></div>
-                            <!-- Link causes problems if placed at page's head -->
-                            <script src="../themes/linkedswissbib/js/jquery.hotag.js"></script>
-                            <script>
-                                var tags = [{"counts": 2, "tag": "Dies", "href": "#"},
-                                    {"counts": 1, "tag": "ist", "href": "#"},
-                                    {"counts": 1, "tag": "eine", "href": "#"},
-                                    {"counts": 5, "tag": "Tag Cloud", "href": "#"},
-                                    {"counts": 2, "tag": "und", "href": "#"},
-                                    {"counts": 1, "tag": "zeigt", "href": "#"},
-                                    {"counts": 2, "tag": "verwandte", "href": "#"},
-                                    {"counts": 5, "tag": "Themen", "href": "#"},
-                                    {"counts": 1, "tag": "das", "href": "#"},
-                                    {"counts": 2, "tag": "heisst", "href": "#"},
-                                    {"counts": 6, "tag": "Schlagworte", "href": "#"},
-                                    {"counts": 1, "tag": "welche", "href": "#"},
-                                    {"counts": 1, "tag": "mit", "href": "#"},
-                                    {"counts": 4, "tag": "der Person", "href": "#"},
-                                    {"counts": 1, "tag": "beziehungsweise", "href": "#"},
-                                    {"counts": 5, "tag": "deren Werke", "href": "#"},
-                                    {"counts": 3, "tag": "in Verbindung stehen", "href": "#"}
-                                ];
-                                $("#main").hotag({
-                                    tags: tags,
-                                    containerClass: 'hotag'
-                                });
-                            </script>
-                        </div>
-                        <!-- end class row -->
-
                         <!-- SEGMENT Autoren mit ähnlichen Themen -->
                         <?=$this->render("elasticsearch/similarAuthors.phtml")?>
 

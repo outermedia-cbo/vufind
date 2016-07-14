@@ -44,7 +44,7 @@ endforeach;
 
                             // create <li>
                             result += '<li><a href="http://' + window.location.hostname +
-                            '/sbrd/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="thumbnail" src=" ' + thumbnail + ' " alt=" ' + name + ' "><figcaption>' + name + '</a>';
+                            '/sbrd/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="thumbnail" src=" ' + thumbnail + ' " alt=" ' + name + ' "><figcaption>' + name + ' ' + '</a>';
                             result += '<span class="fa fa-info-circle fa-lg kcopener" authorId="' + person_id +'"></span></figcaption></figure></li>';
                         }
                     }
@@ -231,6 +231,28 @@ endforeach;
             }
         }
 
+        function getSubjectsPreferredNameArray (data) {
+            var array = data.DEFAULT;
+            if (typeof array !== 'undefined') {
+                if ($.isArray(array)) {
+                    var result = [];
+                    for (var key in array) {
+                        var tag = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading'][0]['@value'];
+                        result.push({counts: "2", tag: tag, href: "#"})
+                    }
+                }
+            } else {
+                var result = "no content provided";
+            }
+
+            if (!result) {
+                result = "no content provided";
+            } else {
+                result;
+            }
+            return result;
+        }
+
         var person_uniqueId = "<? echo $person_uniqueId?>";
 
         $.getJSON('http://193.5.58.96/sbrd/Ajax/Json?lookfor=' + person_uniqueId + '&method=getAuthor&searcher=Elasticsearch', function(data) {
@@ -281,13 +303,34 @@ endforeach;
                             $(".sA_bibliographicResourcesWithSimilarTopics").after(sA_bibliographicResourcesWithSimilarTopics);
 
                             $.ajax({
+                                url: "http://193.5.58.96/sbrd/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
+                                type: "POST",
+                                data: {"lookfor": subjects},
+                                success: function (result) {
+                                    // Zugriff auf JSON über "result"
+                                    //console.log(result);
+                                    var tags = getSubjectsPreferredNameArray(result);
+                                    console.log(tags);
+
+                                    $("#main").hotag({
+                                        tags: tags,
+                                        containerClass: 'hotag'
+                                    });
+                                },
+                                error: function (e) {
+                                    console.log(e);
+                                }
+                            });
+
+                            $.ajax({
                                 url: "http://193.5.58.96/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                                 type: "POST",
                                 data: {"lookfor": idsContributorFromBibRes},
                                 success: function (result) {
                                     // Zugriff auf JSON über "result"
+
                                     var sA_coauthorsOfBibliographicResourcesWithSimilarTopics = getCoAuthors(result);
-                                    console.log(sA_coauthorsOfBibliographicResourcesWithSimilarTopics);
+                                    //console.log(sA_coauthorsOfBibliographicResourcesWithSimilarTopics);
 
                                     $(".sA_coauthorsOfBibliographicResourcesWithSimilarTopics").after(sA_coauthorsOfBibliographicResourcesWithSimilarTopics);
                                 },
@@ -309,6 +352,21 @@ endforeach;
     });
 
 </script>
+
+<!-- SEGMENT Verwandte Themen -->
+<div id="relatedTopics" class="results-top row">
+    <h2>Verwandte Themen</h2>
+</div>
+<!-- end class results-top row -->
+<div class="row">
+    <div id="main" class="hotag"></div>
+    <!-- Link causes problems if placed at page's head -->
+    <script src="../themes/linkedswissbib/js/jquery.hotag.js"></script>
+
+</div>
+<!-- end class row -->
+
+
 <!-- SEGMENT Autoren und Beitragende gemeinsamer Werke -->
 <div id="authorsOfCommonWorks" class="results-top row">
     <h2>Autoren und Beitragende gemeinsamer Werke</h2>
