@@ -44,7 +44,8 @@ endforeach;
 
                             // create <li>
                             result += '<li><a href="http://' + window.location.hostname +
-                            '/sbrd/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="thumbnail" src=" ' + thumbnail + ' " alt=" ' + name + ' "><figcaption>' + name + '</figcaption></figure></a></li>';
+                            '/sbrd/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="thumbnail" src=" ' + thumbnail + ' " alt=" ' + name + ' "><figcaption>' + name + '</a>';
+                            result += '<span class="fa fa-info-circle fa-lg kcopener" authorId="' + person_id +'"></span></figcaption></figure></li>';
                         }
                     }
                 }
