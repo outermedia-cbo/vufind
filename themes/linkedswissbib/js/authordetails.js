@@ -36,12 +36,11 @@ $(document).ready(function() {
             var value = uri2name[uri];
 
             $.ajax({
-                method: "GET",
-                url: "http://" + window.location.hostname + "/sbrd/Ajax/Json?lookfor=" + uri +
-                    "&method=getAuthor&searcher=Elasticsearch"
-            })
-                .done(function (msg) {
-
+                url: "http://193.5.58.96/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                type: "POST",
+                data: {"lookfor": uri},
+                success: function (msg) {
+                    // Zugriff auf JSON über "msg"
                     var uri = msg.person[0]._source["@id"]; // can't use variable 'uri' from outside directly
                     var name = extractName(msg.person[0]);
                     uri2name[uri] = name;
@@ -49,7 +48,11 @@ $(document).ready(function() {
                         '/sbrd/Exploration/AuthorDetails?lookfor=' + uri + '&type=AuthorForId">' + name + '</a>';
                     link += '<span class="fa fa-info-circle fa-lg kcopener" authorId="' + uri +'"></span>';
                     replaceInAuthorUris(uri, link);
-                });
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
         }
     }
 
