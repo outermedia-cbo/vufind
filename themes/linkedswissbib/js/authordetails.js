@@ -44,6 +44,7 @@ $(document).ready(function() {
                     var uri = msg.person[0]._source["@id"]; // can't use variable 'uri' from outside directly
                     var name = extractName(msg.person[0]);
                     uri2name[uri] = name;
+                    //TODO: Remove link and icon for organisations
                     var link = '<a href="http://' + window.location.hostname +
                         '/sbrd/Exploration/AuthorDetails?lookfor=' + uri + '&type=AuthorForId">' + name + '</a>';
                     link += '<span class="fa fa-info-circle fa-lg kcopener" authorId="' + uri +'"></span>';
@@ -72,6 +73,8 @@ $(document).ready(function() {
             return source['foaf:lastName'];
         } else if ('foaf:name' in source) {
             return source['foaf:name'];
+        } else if ('rdf:type' != "http://xmlns.com/foaf/0.1/Person") {
+            return source['rdfs:label'];
         } else {
             return '';
         }
