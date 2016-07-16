@@ -231,20 +231,92 @@ endforeach;
             }
         }
 
-        function getSubjectsPreferredNameArray (data) {
+        function getSubjectsPreferredNameArray (data, subjects) {
             var array = data.DEFAULT;
             if (typeof array !== 'undefined') {
                 if ($.isArray(array)) {
                     var result = [];
                     for (var key in array) {
+                        var link = '<span class="fa fa-info-circle fa-lg kcopener"></span>';
                         var tag = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading'][0]['@value'];
-                        result.push({counts: "2", tag: tag, href: "#"})
+                        var id = array[key]._source['@id'];
+                        var count = subjects.indexOf(id);
+                        result.push({counts: count, tag: tag, href: "#"})
                     }
                 }
             } else {
                 var result = "no content provided";
             }
 
+            if (!result) {
+                result = "no content provided";
+            } else {
+                result;
+            }
+            return result;
+        }
+
+        //Carousel
+        function getCoverLink (array, key) {
+            //get isbn
+            var isbn10 = array[key]._source['bibo:isbn10'];
+            if (typeof isbn10 !== 'undefined') {
+                var url_start = 'https://resources.swissbib.ch/Cover/Show?isn=';
+                var url_end = '&size=large';
+                var link_cover = url_start + isbn10 + url_end;
+            } else {
+                var link_cover = "../themes/linkedswissbib/images/icon_no_image_available.gif";
+            }
+            return link_cover;
+        }
+
+        function getBibResLink (array, key) {
+            //get ID
+            var bibliographicResource_id = array[key]._source['@id'];
+            //extract ID to link to the Solr record
+            var id_classic = bibliographicResource_id.slice(33);
+            var url_start = 'http://' + window.location.hostname +
+                '/sbrd/Record/';
+            var link_bibRes = url_start + id_classic;
+            return link_bibRes;
+        }
+
+        //TODO: Find better fallback solution
+        //splits bibRes four carousel into four covers per carousel slider
+        function getItemForCarousel (array, keyStart, keyEnd){
+            var result = "";
+            var fallbackItem = "";
+            if (array.length >=keyEnd) {
+                for (var key = keyStart; key <= keyEnd; key++) {
+                    //get cover
+                    var link_cover = getCoverLink(array, key);
+                    //get link to holding
+                    var link_bibRes = getBibResLink (array, key);
+                    //get title
+                    var bibResTitle = array[key]._source['dct:title'];
+
+                    result += '<div class="col-sm-3"><a href="' + link_bibRes + '" class="hover-overlay" style="max-height: 200px;"><img title="'+ bibResTitle +'" src="' + link_cover + '" style="max-height: 200px;"><div class="content"><b>' + bibResTitle +'</b></div></a></div>';
+                }
+            } else {
+                fallbackItem = '<div class="col-sm-3"><a href="/Record/335357466" class="hover-overlay" style="max-height: 200px;"> <img title="Selfish : poems"src="https://resources.swissbib.ch/Cover/Show?isn=1555977081&size=large" style="max-height: 200px;"> <div class="content"></div></a>';
+                var result= fallbackItem;
+            }
+            return result;
+        }
+
+        //gets bibRes for items for slider in carousel
+        function getBibResForCarousel (data) {
+            var array = data.bibliographicResource;
+            if (typeof array !== 'undefined') {
+                if ($.isArray(array)) {
+                    var item0 = getItemForCarousel(array,0, 3);
+                    var item1 = getItemForCarousel(array,4, 7);
+                    var item2 = getItemForCarousel(array,8, 11);
+                }
+                result = [item0, item1, item2];
+            } else {
+                var result = "no content provided";
+            }
             if (!result) {
                 result = "no content provided";
             } else {
@@ -270,6 +342,16 @@ endforeach;
             //idPerson (main author) not included
             var ids = idBibRes + ',' + idContributorFromBibRes + ',' + idSubject;
             //console.log(ids);
+
+            var kc_bibRes = getBibResForCarousel(data);
+            //get items for carousel
+            var item0 = kc_bibRes[0];
+            var item1 = kc_bibRes[1];
+            var item2 = kc_bibRes[2];
+
+            $('.kc_item0').after(item0);
+            $('.kc_item1').after(item1);
+            $('.kc_item2').after(item2);
 
             $.ajax({
                 url: "http://193.5.58.96/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
@@ -309,7 +391,8 @@ endforeach;
                                 success: function (result) {
                                     // Zugriff auf JSON über "result"
                                     //console.log(result);
-                                    var tags = getSubjectsPreferredNameArray(result);
+
+                                    var tags = getSubjectsPreferredNameArray(result, subjects);
                                     console.log(tags);
 
                                     $("#main").hotag({
@@ -352,6 +435,56 @@ endforeach;
     });
 
 </script>
+<!-- SEGMENT Werke von Zeitgenossen -->
+<div id="worksOfContemporaries" class="results-top row">
+    <h2>Werke von Zeitgenossen</h2>
+</div>
+<!-- end class results-top row -->
+<div class="row">
+    <div data-ride="carousel" class="carousel slide" id="similar-items-carousel">
+
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li class="active" data-slide-to="0" data-target="#similar-items-carousel"></li>
+            <li data-slide-to="1" data-target="#similar-items-carousel"></li>
+            <li data-slide-to="2" data-target="#similar-items-carousel"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <div class="row">
+                    <div class="kc_item0"></div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="row">
+                    <div class="kc_item1"></div>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="row">
+                    <div class="kc_item2"></div>
+                </div>
+            </div>
+        </div>
+        <!-- end class carousel-inner -->
+        <!-- Controls -->
+        <a data-slide="prev" role="button" href="#similar-items-carousel"
+           class="left carousel-control">
+            <span class="fa fa-chevron-left glyphicon-chevron-left"></span>
+        </a>
+        <a data-slide="next" role="button" href="#similar-items-carousel"
+           class="right carousel-control">
+            <span class="fa fa-chevron-right glyphicon-chevron-right"></span>
+        </a>
+
+    </div>
+    <!-- end class carousel slide -->
+</div>
+<!-- end row -->
 
 <!-- SEGMENT Verwandte Themen -->
 <div id="relatedTopics" class="results-top row">
