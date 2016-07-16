@@ -161,16 +161,16 @@
                 return result;
             }
 
-
-
             $("#dialog").dialog({width: $(window).width() * 0.9 });
 
             $(document).on('click', '.kcopener', function() {
                 console.log("kcopener was clicked");
 
                 var authorId = $(this).attr("authorid");
+                var linkToAuthordetails = 'http://' + window.location.hostname +
+                '/sbrd/Exploration/AuthorDetails?lookfor=' + authorId + '&type=AuthorForId#works';
 
-                $.getJSON('http://193.5.58.96/sbrd/Ajax/Json?lookfor=' + authorId + '&method=getAuthor&searcher=Elasticsearch', function(data) {
+                $.getJSON('http://193.5.58.96/sbrd/Ajax/Json?lookfor=' + authorId + '&method=getAuthorMulti&searcher=Elasticsearch', function(data) {
 
                     //kc_birthDate
                     var birthDates = getDate(data,'dbp:birthDate', 'schema:birthDate', 'dbp:birthYear');
@@ -180,7 +180,6 @@
                     var deathDates = getDate(data,'dbp:deathDate', 'schema:deathDate', 'dbp:deathYear');
                     var kc_deathDate = birthDates[0];
                     var kc_deathYear = birthDates[1];
-
                     var kc_birthPlace = getValues(data, 'lsb:dbpBirthPlaceAsLiteral');
 
                     var kc_deathPlace = getValues(data, 'lsb:dbpDeathPlaceAsLiteral');
@@ -206,18 +205,17 @@
                         var kc_name =  'no content provided';
                     }
 
-
                     //Contents KnowledgeCard
-                    $('#ui-id-1').text(kc_name + ' (' + kc_birthYear + ' - ' + kc_deathYear + ')'); //Title/Widget-Header
-                    $('#kc_nationality').text(kc_nationality);
-                    //console.log(data); // console.log(data.person);
+                    $('#kc_authorid').attr('href', linkToAuthordetails);
                     $('#kc_birthDate').text(kc_birthDate);
                     $('#kc_birthPlace').text(kc_birthPlace);
                     $('#kc_deathDate').text(kc_deathDate);
                     $('#kc_deathPlace').text(kc_deathPlace);
+                    $('#kc_nationality').text(kc_nationality);
                     $('#kc_occupation').text(kc_occupation);
                     $('#kc_subject').text(kc_subject);
                     $('#kc_thumbnail').attr('src', kc_thumbnail);
+                    $('#ui-id-1').text(kc_name + ' (' + kc_birthYear + ' - ' + kc_deathYear + ')'); //Title/Widget-Header
 
                     $( "#dialog" ).dialog( "open" );
 
@@ -520,7 +518,7 @@
         <!-- end col-sm-12 -->
         <div class="col-sm-12">
             <div class="row">
-                <p><br><a href="#">» Mehr Literatur und Medien finden...</a></p>
+                <p><br><a id="kc_authorid" href="">» Mehr Literatur und Medien finden...</a></p>
             </div>
         </div>
 
