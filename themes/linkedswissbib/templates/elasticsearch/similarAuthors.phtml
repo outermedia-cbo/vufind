@@ -231,6 +231,18 @@ endforeach;
             }
         }
 
+        function occurrences(string, substring){
+            var n=0;
+            var pos=0;
+
+            while(true){
+                pos=string.indexOf(substring,pos);
+                if(pos!=-1){ n++; pos+=substring.length;}
+                else{break;}
+            }
+            return(n);
+        }
+
         function getSubjectsPreferredNameArray (data, subjects) {
             var array = data.DEFAULT;
             if (typeof array !== 'undefined') {
@@ -240,8 +252,11 @@ endforeach;
                         var link = '<span class="fa fa-info-circle fa-lg kcopener"></span>';
                         var tag = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading'][0]['@value'];
                         var id = array[key]._source['@id'];
-                        var count = subjects.indexOf(id);
-                        result.push({counts: count, tag: tag, href: "#"})
+                        var count = occurrences(subjects, id);
+                        //TODO: Exchange link (replace AuthorForId)
+                        //var link = 'http://' + window.location.hostname +
+                        //    '/sbrd/Exploration/AubjectDetails?lookfor=' + id + '&type=AuthorForId';
+                        result.push({counts: count, tag: tag, href: "#")
                     }
                 }
             } else {
