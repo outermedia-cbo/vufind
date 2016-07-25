@@ -63,8 +63,8 @@ class ElasticSearch implements AutocompleteInterface{
         foreach ($searchResults as $object) {
             $current = $object->getRawData();
             $type = $current['_type'];
-            if($type!= 'person')
-                break; //TODO: we ignore everything except person for now
+            if($type != 'person' && $type != 'DEFAULT')
+                continue; //TODO: we ignore everything except person and DEFAULT (i.e. subjects) for now
             $id = $current['_source']['@id'];
 
             if (!isset($current['_source']['dbp:birthDate']) && !isset($current['_source']['schema:birthDate']) && !isset($current['_source']['dbp:birthYear'])) {
@@ -75,7 +75,7 @@ class ElasticSearch implements AutocompleteInterface{
                     $birthDate = $this->parseDate($current['_source']['dbp:birthDate']);
                 } elseif (isset($current['_source']['dbp:birthYear'])) {
                     $birthDate = $current['_source']['dbp:birthYear'];
-                }
+            }
 
             if (!isset($current['_source']['dbp:deathDate']) && !isset($current['_source']['schema:deathDate']) && !isset($current['_source']['dbp:deathYear'])) {
                 $deathDate = "?";
@@ -92,9 +92,9 @@ class ElasticSearch implements AutocompleteInterface{
             } elseif (!empty($birthDate) && empty($deathDate)) {
                 $birthAndDeathDates = ' (' . $birthDate . ' - ?)';
             } elseif (!empty($deathDate) && empty($birthDate)) {
-            $birthAndDeathDates = ' (? - ' . $deathDate . ')';
-             } else {
-                "?";
+                $birthAndDeathDates = ' (? - ' . $deathDate . ')';
+            } else {
+                $birthAndDeathDates = "?";
             }
 
             if(isset($current['_source']['foaf:firstName']) && isset($current['_source']['foaf:lastName']))
@@ -102,9 +102,9 @@ class ElasticSearch implements AutocompleteInterface{
             elseif(isset($current['_source']['foaf:lastName']))
                 $displayname =  $current['_source']['foaf:lastName'] . $birthAndDeathDates;
             elseif(isset($current['_source']['foaf:name']))
-                $displayname = $current['_source']['foaf:name'] .  $birthAndDeathDates;
+                $displayname = $current['_source']['foaf:name'] . $birthAndDeathDates;
             else
-                break;
+                $displayname = "?";
 
             $results[] = array($id, $type, $displayname);
         }

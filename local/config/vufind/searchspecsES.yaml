@@ -60,6 +60,8 @@ AutocompleteAuthor:
         - and # should be default
 
 AutocompleteInstance:
+  Multisearch:
+    - AutocompleteSubject
   UsedTypes:
     - bibliographicResource
   UsedIndex:
@@ -74,6 +76,21 @@ AutocompleteInstance:
       operator:
         - and # should be default
 
+AutocompleteSubject:
+  UsedTypes:
+    - DEFAULT
+  UsedIndex:
+    - gnd
+  query:
+    multi_match:
+      fields:
+        #- http://d-nb_info/standards/elementset/gnd#preferredNameForTheConferenceOrEvent.@value
+        - http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading.@value
+        - @type
+      type:
+        - cross_fields
+      operator:
+        - and
 
 AllFields:
   UsedTypes:

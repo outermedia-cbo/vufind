@@ -950,6 +950,11 @@ class AjaxController extends AbstractBase
      */
     protected function getACSuggestionsAjax()
     {
+        // doesn't work
+        //$response = $this->getResponse();
+        //$response->getHeaders()->addHeaderLine( 'Content-Type', 'application/json' );
+        //$response->getHeaders()->addHeaderLine( 'Access-Control-Allow-Origin', '*' );
+
         $this->writeSession();  // avoid session write timing bug
         $query = $this->getRequest()->getQuery();
         $autocompleteManager = $this->getServiceLocator()
