@@ -11,6 +11,9 @@ $(document).ready(function() {
             highlight: true,
             minLength: 3
         }, {
+            templates: {
+                header: "Autoren"
+            },
             displayKey: function(data){
                     return data['val'][2];
             },
@@ -29,7 +32,42 @@ $(document).ready(function() {
                         if (json.status == 'OK' && json.data.length > 0) {
                             var datums = [];
                             for (var i=0;i<json.data.length;i++) {
-                                datums.push({val:json.data[i]});
+                                if (json.data[i][1] == 'person') {
+                                    datums.push({val:json.data[i]});
+                                }
+                            }
+                            cb(datums);
+                        } else {
+                            cb([]);
+                        }
+                    }
+                });
+            }
+        }, {
+            templates: {
+                header: "Themen"
+            },
+            displayKey: function(data) {
+                return data['val'][2];
+            },
+            source: function(query, cb) {
+                var searcher = extractClassParams('.autocomplete');
+                $.ajax({
+                    url: path + '/AJAX/JSON',
+                    data: {
+                        q:query,
+                        method:'getACSuggestions',
+                        searcher:searcher['searcher'],
+                        type:$('#searchForm_type').val()
+                    },
+                    dataType:'json',
+                    success: function(json) {
+                        if (json.status == 'OK' && json.data.length > 0) {
+                            var datums = [];
+                            for (var i=0;i<json.data.length;i++) {
+                                if (json.data[i][1] == 'DEFAULT') {
+                                    datums.push({val: json.data[i]});
+                                }
                             }
                             cb(datums);
                         } else {
