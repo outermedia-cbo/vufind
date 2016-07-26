@@ -79,9 +79,16 @@ $(document).ready(function() {
         }
     ).bind('typeahead:selected', function(obj, datum, name) {
 
-            baseurl = 'http://' + window.location.hostname + '/sbrd/';
-            authorDetail = 'Exploration/AuthorDetails?lookfor=' + datum['val'][0] + '&type=AuthorForId';
+            var baseurl = 'http://' + window.location.hostname + '/sbrd/';
 
-            window.location.href = baseurl + authorDetail;
+            var postfix;
+
+            if (datum['val'][1] == 'person') {
+                postfix = 'Exploration/AuthorDetails?lookfor=' + datum['val'][0] + '&type=AuthorForId';
+            } else {
+                postfix = 'Exploration/SubjectDetails?lookfor=' + datum['val'][0] + '&type=SubjectById';
+            }
+
+            window.location.href = baseurl + postfix;
         });
 });
