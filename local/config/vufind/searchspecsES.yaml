@@ -86,6 +86,7 @@ AutocompleteSubject:
       fields:
         #- http://d-nb_info/standards/elementset/gnd#preferredNameForTheConferenceOrEvent.@value
         - http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading.@value
+        - http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading.@value
         - @type
       type:
         - cross_fields

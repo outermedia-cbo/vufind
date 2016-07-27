@@ -111,7 +111,17 @@ class ElasticSearch implements AutocompleteInterface{
             }
 
             if ($type == 'DEFAULT') { // subject
-               $displayname = $current['_source']['http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading'][0]['@value'];
+                $displayname = $current['_source']['http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading'][0]['@value'];
+
+                if (array_key_exists('http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading', $current['_source'])) {
+                    $displayname .= ' (';
+                    $variants = [];
+                    foreach ($current['_source']['http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading'] as $el) {
+                        array_push($variants, $el['@value']);
+                    }
+                    $displayname .= implode('; ', $variants);
+                    $displayname .= ')';
+                }
             }
 
             $results[] = array($id, $type, $displayname);
