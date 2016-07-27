@@ -143,7 +143,24 @@
                     if ($.isArray(array)) {
                         var result = "";
                         for (var key in array) {
-                            result += array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading'][0]['@value'] + ", ";
+                            if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheConferenceOrEvent'] != 'undefined') {
+                                var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheConferenceOrEvent'][0]['@value'];
+                            } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheCorporateBody'] != "undefined") {
+                                var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheCorporateBody'][0]['@value'];
+                            } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheFamily'] != "undefined") {
+                                var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheFamily'][0]['@value'];
+                            } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForThePerson'] != "undefined") {
+                                var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForThePerson'][0]['@value'];
+                            } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName'] != "undefined") {
+                                var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName'][0]['@value'];
+                            } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading'] != "undefined") {
+                                var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading'][0]['@value'];
+                            } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheWork'] != "undefined") {
+                                var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheWork'][0]['@value'];
+                            } else {
+                                var literal = '';
+                            }
+                            result += literal + ", ";
                             result = result.replace('undefined, ', ' ');
                         }
                         var result = result.substring(0, result.length - 2);
