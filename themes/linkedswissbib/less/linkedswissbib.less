@@ -24,6 +24,7 @@ li {
   overflow: hidden;
   margin-bottom: 5px;
 }
+
 .thumbnail img {
   position: absolute;
   left: 50%;
@@ -35,7 +36,6 @@ li {
   -ms-transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
 }
-
 
 /* Tabs*/
 
@@ -57,11 +57,35 @@ li {
   margin-bottom: 0;
 }
 
-/* Dropdown*/
+/* Autocomplete*/
 .tt-dropdown-menu {
   right: 0px;
   width: 100%;
-  max-width: 653px;
+  max-width: 649px;
+  margin-top: -11px;
+}
+
+.tt-suggestion.tt-cursor {
+  background-color: #50bf9e;
+  color: #fff;
+}
+
+.tt-suggestion:last-child {
+  margin-bottom: -10px;
+}
+
+.autocomplete-header {
+  background-color: #0d785b !important;
+  color: #fff;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  display: block;
+  margin-bottom: -1px;
+  overflow: hidden;
+  padding: 6px 6px;
+  position: relative;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Tag Cloud */

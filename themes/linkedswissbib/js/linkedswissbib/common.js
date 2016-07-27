@@ -12,7 +12,7 @@ $(document).ready(function() {
             minLength: 3
         }, {
             templates: {
-                header: "Autoren"
+                header: '<h4 class="autocomplete-header">Autoren</h4>'
             },
             displayKey: function(data){
                     return data['val'][2];
@@ -45,7 +45,7 @@ $(document).ready(function() {
             }
         }, {
             templates: {
-                header: "Themen"
+                header: '<h4 class="autocomplete-header">Themen</h4>'
             },
             displayKey: function(data) {
                 return data['val'][2];
