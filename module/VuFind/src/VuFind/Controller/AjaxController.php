@@ -523,7 +523,7 @@ class AjaxController extends AbstractBase
             $response = $this->getResponse();
             $headers = $response->getHeaders();
             $headers->addHeaderLine(
-                'Content-type', 'application/javascript'
+                'Content-type', 'application/json'
             );
             $headers->addHeaderLine(
                 'Cache-Control', 'no-cache, must-revalidate'
