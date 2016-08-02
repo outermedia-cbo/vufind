@@ -43,20 +43,7 @@ class Solr extends VFAutocompleteSolr {
         $results = array();
         foreach ($searchResults as $object) {
             $current = $object->getRawData();
-            foreach ($this->displayField as $field) {
-                if (isset($current[$field])) {
-                    $bestMatch = $this->pickBestMatch(
-                        $current[$field], $query, $exact
-                    );
-                    if ($bestMatch) {
-                        $forbidden = array(':', '&', '?', '*', '[',']', '"', '/','\\',';','.','=');
-                        $bestMatch = str_replace($forbidden, " ", $bestMatch);
-
-                        $results[] = $bestMatch;
-                        break;
-                    }
-                }
-            }
+            array_push($results, array($current["id"], "BibRes", $current["title"][0]));
         }
         return $results;
     }
