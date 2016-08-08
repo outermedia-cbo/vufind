@@ -76,6 +76,39 @@ $(document).ready(function() {
                     }
                 });
             }
+        } , {
+            templates: {
+                header: '<h4 class="autocomplete-header">Werke</h4>'
+            },
+            displayKey: function(data) {
+                return data['val'][2];
+            },
+            source: function(query, cb) {
+                var searcher = extractClassParams('.autocomplete');
+                $.ajax({
+                    url: path + '/AJAX/JSON',
+                    data: {
+                        q:query,
+                        method:'getACSuggestions',
+                        searcher:'Solr',
+                        type:'Title'
+                    },
+                    dataType:'json',
+                    success: function(json) {
+                        if (json.status == 'OK' && json.data.length > 0) {
+                            var datums = [];
+                            for (var i=0;i<json.data.length;i++) {
+                                if (json.data[i][1] == 'BibRes') {
+                                    datums.push({val: json.data[i]});
+                                }
+                            }
+                            cb(datums);
+                        } else {
+                            cb([]);
+                        }
+                    }
+                });
+            }
         }
     ).bind('typeahead:selected', function(obj, datum, name) {
 
@@ -85,8 +118,10 @@ $(document).ready(function() {
 
             if (datum['val'][1] == 'person') {
                 postfix = 'Exploration/AuthorDetails?lookfor=' + datum['val'][0] + '&type=AuthorForId';
-            } else {
+            } else if (datum['val'][1] == 'DEFAULT') {
                 postfix = 'Exploration/SubjectDetails?lookfor=' + datum['val'][0] + '&type=SubjectById';
+            } else if (datum['val'][1] == 'BibRes') {
+                postfix = 'Record/' + datum['val'][0];
             }
 
             window.location.href = baseurl + postfix;
