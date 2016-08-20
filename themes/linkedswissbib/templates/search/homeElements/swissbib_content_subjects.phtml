@@ -1,0 +1,96 @@
+<?
+$basePath = $this->basePath();
+
+//Item 1
+$linkToSubjectDetails1 = $basePath . "/Exploration/subjectDetails?lookfor=http://d-nb.info/gnd/4076226-9&type=AuthorForId";
+$thumbnail1 = "http://commons.wikimedia.org/wiki/Special:FilePath/Sanzio_01_Plato_Aristotle.jpg";
+$subject1 = "Politische Philosophie";
+
+//Item 2
+$linkToSubjectDetails2 = $basePath . "/Exploration/subjectDetails?lookfor=http://d-nb.info/gnd/4038722-7&type=AuthorForId";
+$thumbnail2 = "http://en.wikipedia.org/wiki/Special:FilePath/Louis14-H.jpg";
+$subject2 = "Merkantilismus";
+
+//Item 3
+$linkToSubjectDetails3 = $basePath . "/Exploration/subjectDetails?lookfor=http://d-nb.info/gnd/4025825-7&type=AuthorForId";
+$thumbnail3 = "http://commons.wikimedia.org/wiki/Special:FilePath/Bee_on_topped_lavendar.jpg";
+$subject3 = "Biene";
+?>
+
+<div class="home-content-box">
+    <h2 class="lead">Themen</h2>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div data-ride="carousel" class="carousel slide" id="similar-items-carousel-home-subjects">
+
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li class="active" data-slide-to="0" data-target="#similar-items-carousel-home-subjects"></li>
+                <li data-slide-to="1" data-target="#similar-items-carousel-home-subjects"></li>
+                <li data-slide-to="2" data-target="#similar-items-carousel-home-subjects"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-4">
+                            <a href= "<? echo $linkToSubjectDetails1; ?>" class="hover-overlay" style="min-height: 150px;">
+                                <img title="<? echo $subject1; ?>"
+                                     src="<? echo $thumbnail1; ?>"
+                                     style="min-height: 150px;">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="content">
+                                <b><? echo $subject1; ?></b>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-4">
+                            <a href= "<? echo $linkToSubjectDetails2; ?>" class="hover-overlay" style="min-height: 150px;">
+                                <img title="<? echo $subject2; ?>"
+                                     src="<? echo $thumbnail2; ?>"
+                                     style="min-height: 150px;">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="content">
+                                <b><? echo $subject2; ?></b>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-4">
+                            <a href= "<? echo $linkToSubjectDetails3;  ?>" class="hover-overlay" style="min-height: 150px;">
+                                <img title="<? echo $subject3; ?>"
+                                     src="<? echo $thumbnail3?>"
+                                     style="min-height: 150px;">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="content">
+                                <b><? echo $subject3; ?></b>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <!-- end class carousel-inner -->
+        </div>
+        <!-- end class carousel slide -->
+    </div>
+    <!-- end row -->
+    <!--<a href="#" target="_blank" class="btn btn-link">Weiterlesen</a>-->
+</div>
