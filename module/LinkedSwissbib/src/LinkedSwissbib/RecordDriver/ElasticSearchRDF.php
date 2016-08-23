@@ -237,6 +237,8 @@ class ElasticSearchRDF extends AbstractBase
             return $this->parseDate($this->fields['_source']['dbp:birthDate']);
         } elseif (isset($this->fields['_source']['schema:birthDate'])) {
             return $this->parseDate($this->fields['_source']['schema:birthDate']);
+        } elseif (isset($this->fields['_source']['dbp:birthYear'])) {
+            return $this->parseDate($this->fields['_source']['dbp:birthYear']);
         } else {
             return "no content provided";
         }
@@ -248,6 +250,8 @@ class ElasticSearchRDF extends AbstractBase
             return $this->parseDate($this->fields['_source']['dbp:deathDate']);
         } elseif (isset($this->fields['_source']['schema:deathDate'])) {
             return $this->parseDate($this->fields['_source']['schema:deathDate']);
+        } elseif (isset($this->fields['_source']['dbp:deathYear'])) {
+            return $this->parseDate($this->fields['_source']['dbp:deathYear']);
         } else {
             return "no content provided";
         }
@@ -421,10 +425,6 @@ class ElasticSearchRDF extends AbstractBase
             return [];
         }
     }
-
-
-
-
 
 // TODO: gibt immer nur ein Element zurück, da return die Funktion sofort beendet
     public
