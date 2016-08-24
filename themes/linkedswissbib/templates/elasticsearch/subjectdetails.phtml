@@ -20,6 +20,7 @@
             $subject_narrowerTerms = $singleResult->getSubjectNarrowerTerms(); //http://d-nb.info/standards/elementset/gnd#narrowerTermGeneral  http://d-nb.info/standards/elementset/gnd#narrowerTermGeneric	http://d-nb.info/standards/elementset/gnd#narrowerTermInstantial  http://d-nb.info/standards/elementset/gnd#narrowerTermPartitive
             $subject_preferredName = $singleResult->getSubjectPreferredName();
             $subject_relatedTerms = $singleResult->getSubjectRelatedTerms(); //http://d-nb_info/standards/elementset/gnd#relatedTerm
+            $subject_thumbnail = $singleResult->getSubjectThumbnail(); //returns only dummy image
             $subject_uniqueId = $singleResult->getUniqueID();
         } else
             $instances[] = $singleResult;
@@ -29,13 +30,13 @@
         <ul class="breadcrumb hidden-print">
 
             <li>
-                <a href=" <?= $basePath ?>/Exploration/SubjectDetailsResponsive?lookfor=<? echo $subject_uniqueId ?>&amp;type=SubjectForId">Suche</a>
+                <a href=" <?= $basePath ?>/Exploration/SubjectDetails?lookfor=<? echo $subject_uniqueId ?>&amp;type=SubjectForId">Suche</a>
             </li>
             <!-- Example from swissbib classic
                 <a href="/Search/Results?lookfor=malaria&type=AllFields">Suche: malaria</a>
             -->
             <li class="active"><a
-                    href="<?= $basePath ?>/Exploration/AuthorDetailsResponsive?lookfor=<? echo $subject_uniqueId ?>&amp;type=Contributor"><? echo $subject_uniqueId ?></a>
+                    href="<?= $basePath ?>/Exploration/SubjectDetails?lookfor=<? echo $subject_uniqueId ?>&amp;type=SubjectForId"><? echo $subject_uniqueId ?></a>
             </li>
             <li class="active">Themenseite</li>
             <?
@@ -99,7 +100,7 @@
                             <div class="row">
                                 <div class="col-sm-2">
                                     <h2></h2>
-                                    <img class="img-responsive" src="<? echo $person_thumbnail ?>"
+                                    <img class="img-responsive" src="<? echo $subject_thumbnail ?>"
                                          alt="<? echo $person_thumbnail ?>">
                                 </div>
                                 <div class="col-sm-10">

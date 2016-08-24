@@ -515,6 +515,12 @@ class ElasticSearchRDF extends AbstractBase
         return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedTerm', '@id');
     }
 
+    //returns only dummy image
+    public function getSubjectThumbnail()
+    {
+        return $this->getValueIfAvailable('dbp:thumbnail', "../themes/linkedswissbib/images/icon_no_image_available.gif");
+    }
+
 
 
 
