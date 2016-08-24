@@ -67,6 +67,25 @@ class ElasticSearchRDF extends AbstractBase
         return $this->getValueFromArray($lang, $array);
     }
 
+/*    private function getNestedValueForProperty($lang, $lookup, $fallback = "no content provided")
+      {
+        $result = $this->getValueForProperty($lang, $lookup, $fallback);
+
+        if(is_array($result)) {
+            return $result['@value'];
+        }
+        return $result;
+    }*/
+
+    private function getNestedValueForProperty($lang, $lookup, $innerlookup = '@value', $fallback = "no content provided"){
+        $result = $this->getValueForProperty($lang, $lookup, $fallback);
+
+        if(is_array($result)) {
+            return $result[$innerlookup];
+        }
+        return $result;
+    }
+
     private function getValueFromArray($lang, $array)
     {
         $result = ""; $fallbackResult = "";
@@ -98,7 +117,7 @@ class ElasticSearchRDF extends AbstractBase
 
     private function parseDate($date){
         if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
-            return date("d.m.Y");
+            return date("d.m.Y", strtotime($date));
         } elseif (preg_match("/^[0-9]{4}$/", $date)) {
             return $date;
         }
@@ -282,6 +301,11 @@ class ElasticSearchRDF extends AbstractBase
         return $this->getDataType() == "person" ? true : false;
     }
 
+    public function isSubject()
+    {
+        return $this->getDataType() == "DEFAULT" ? true : false; //TODO: this could be problematic, if another entitytype uses DEFAULT as well.
+    }
+
     public function isInstance()
     {
         return $this->getDataType() == "bibliographicResource" ? true : false;
@@ -425,6 +449,74 @@ class ElasticSearchRDF extends AbstractBase
             return [];
         }
     }
+
+    public function getSubjectAlternativeNames($lang = '@value')
+    {
+        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading');
+    }
+
+    public function getSubjectBroaderTerms($lang = 'de')
+    {
+        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#broaderTermGeneral', '@id');
+    }
+
+    public function getSubjectDDC1($lang = 'de')
+    {
+        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy1', '@id');
+    }
+
+    public function getSubjectDDC2($lang = 'de')
+    {
+        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy2', '@id');
+    }
+
+    public function getSubjectDDC3($lang = 'de')
+    {
+        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy3', '@id');
+    }
+
+    public function getSubjectDDC4($lang = 'de')
+    {
+        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy4', '@id');
+    }
+
+    public function getSubjectDefinition($lang = 'de')
+    {
+        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#definition');
+    }
+
+    public function getSubjectExternalLinkSkos($lang = 'de')
+    {
+        return $result = $this->getNestedValueForProperty($lang, 'http://www_w3_org/2004/02/skos/core#exactMatch', '@id');
+    }
+
+    public function getSubjectExternalLinkFoafPage($lang = 'de')
+    {
+        return $result = $this->getNestedValueForProperty($lang, 'http://xmlns_com/foaf/0_1/page', '@id');
+    }
+
+    public function getSubjectGndSubjectCategory($lang = 'de')
+    {
+        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#gndSubjectCategory', '@id');
+    }
+
+    public function getSubjectNarrowerTerms($lang = 'de')
+    {
+        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb.info/standards/elementset/gnd#narrowerTermGeneral', '@id');
+    }
+
+    public function getSubjectPreferredName($lang = 'de')
+    {
+        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading');
+    }
+
+    public function getSubjectRelatedTerms($lang = 'de')
+    {
+        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedTerm', '@id');
+    }
+
+
+
 
 // TODO: gibt immer nur ein Element zurück, da return die Funktion sofort beendet
     public

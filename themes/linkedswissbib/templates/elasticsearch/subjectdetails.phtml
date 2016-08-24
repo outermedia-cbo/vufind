@@ -3,45 +3,24 @@
     <?
     $instances = array();
     $basePath = $this->basePath();
-
     $results = $this->results->getResults();
     foreach ($results as $singleResult):
-        if ($singleResult->isPerson()) {
-            $person_uniqueId = $singleResult->getUniqueID();
-            $person_alternativeNames = $singleResult->getAlternativeNames();
-            $person_biography = $singleResult->getBiography();
-            $person_birthDate = $singleResult->getBirthDate();
-            $person_birthPlace = $singleResult->getBirthPlace();
-            $person_deathDate = $singleResult->getDeathDate();
-            $person_deathPlace = $singleResult->getDeathPlace();
-            $person_genre = $singleResult->getGenre();
-            $person_influenced = $singleResult->getInfluenced();
-            $person_influencedBy = $singleResult->getInfluencedBy();
-            $person_movement = $singleResult->getMovement();
-            $person_nameAsLabel = $singleResult->getNameAsLabel();
-            $person_nationality = $singleResult->getNationality();
-            $person_notableWork = $singleResult->getNotableWork();
-            $person_occupation = $singleResult->getOccupation();
-            $person_partner = $singleResult->getPartner();
-            $person_pseudonym = $singleResult->getPseudonym();
-            $person_spouse = $singleResult->getSpouse();
-            $person_source = $singleResult->getSource();
-            $person_thumbnail = $singleResult->getThumbnail();
+        if ($singleResult->isSubject()) {
             //GND Ontology: http://d-nb.info/standards/elementset/gnd
-/*            $subject_uniqueId = $singleResult->getUniqueID();
             $subject_alternativeNames = $singleResult->getSubjectAlternativeNames(); //http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading --> more variants available!
-            $subject_definition = $singleResult->getSubjectDefinition(); //http://d-nb_info/standards/elementset/gnd#definition --> Erläuterungen
-            $subject_relatedTerms = $singleResult->getSubjectRelatedTerms(); //http://d-nb_info/standards/elementset/gnd#relatedTerm
             $subject_broaderTerms = $singleResult->getSubjectBroaderTerms(); //http://d-nb_info/standards/elementset/gnd#broaderTermGeneral   http://d-nb.info/standards/elementset/gnd#broaderTermGeneric   http://d-nb_info/standards/elementset/gnd#broaderTermInstantial  http://d-nb_info/standards/elementset/gnd#broaderTermPartitive
-            $subject_narrowerTerms = $singleResult->getSubjectNarrowerTerms(); //http://d-nb.info/standards/elementset/gnd#narrowerTermGeneral  http://d-nb.info/standards/elementset/gnd#narrowerTermGeneric	http://d-nb.info/standards/elementset/gnd#narrowerTermInstantial  http://d-nb.info/standards/elementset/gnd#narrowerTermPartitive
             $subject_ddc1 = $singleResult->getSubjectDDC1(); //http://d-nb.info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy1 --> DDC-Notation Related Dewey Decimal Classification with degree of determinacy 1
             $subject_ddc2 = $singleResult->getSubjectDDC2(); //http://d-nb.info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy2 --> DDC-Notation Related Dewey Decimal Classification with degree of determinacy 2
             $subject_ddc3 = $singleResult->getSubjectDDC3(); //http://d-nb.info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy3 --> DDC-Notation Related Dewey Decimal Classification with degree of determinacy 3
             $subject_ddc4 = $singleResult->getSubjectDDC4(); //http://d-nb.info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy4 --> DDC-Notation Related Dewey Decimal Classification with degree of determinacy 4
-            $subject_externalLink = $singleResult->getSubjectExternalLink(); //skos:exactMatch, foaf:page
-            $subject_preferredName = $singleResult->getSubjectPreferredName(); //http://d-nb.info/standards/elementset/gnd#preferredNameForTheSubjectHeading --> more preferred names available!
+            $subject_definition = $singleResult->getSubjectDefinition(); //http://d-nb_info/standards/elementset/gnd#definition --> Erläuterungen
+            $subject_externalLinkSkos = $singleResult->getSubjectExternalLinkSkos(); //skos:exactMatch, foaf:page
+            $subject_externalLinkFoafPage = $singleResult->getSubjectExternalLinkFoafPage(); //skos:exactMatch, foaf:pag
             $subject_gndSubjectCategory = $singleResult->getSubjectGndSubjectCategory(); //http://d-nb.info/standards/elementset/gnd#gndSubjectCategory --> GND Systematik
-            $subject_source = $singleResult->getSubjectSource(); // http://d-nb.info/gnd/4182672-3 --> Link zum GND-Datensatz*/
+            $subject_narrowerTerms = $singleResult->getSubjectNarrowerTerms(); //http://d-nb.info/standards/elementset/gnd#narrowerTermGeneral  http://d-nb.info/standards/elementset/gnd#narrowerTermGeneric	http://d-nb.info/standards/elementset/gnd#narrowerTermInstantial  http://d-nb.info/standards/elementset/gnd#narrowerTermPartitive
+            $subject_preferredName = $singleResult->getSubjectPreferredName();
+            $subject_relatedTerms = $singleResult->getSubjectRelatedTerms(); //http://d-nb_info/standards/elementset/gnd#relatedTerm
+            $subject_uniqueId = $singleResult->getUniqueID();
         } else
             $instances[] = $singleResult;
     endforeach;
@@ -50,15 +29,15 @@
         <ul class="breadcrumb hidden-print">
 
             <li>
-                <a href=" <?= $basePath ?>/Exploration/AuthorDetailsResponsive?lookfor=<? echo $person_uniqueId ?>&amp;type=Contributor">Suche</a>
+                <a href=" <?= $basePath ?>/Exploration/SubjectDetailsResponsive?lookfor=<? echo $subject_uniqueId ?>&amp;type=SubjectForId">Suche</a>
             </li>
             <!-- Example from swissbib classic
                 <a href="/Search/Results?lookfor=malaria&type=AllFields">Suche: malaria</a>
             -->
             <li class="active"><a
-                    href="<?= $basePath ?>/Exploration/AuthorDetailsResponsive?lookfor=<? echo $person_uniqueId ?>&amp;type=Contributor"><? echo $person_uniqueId ?></a>
+                    href="<?= $basePath ?>/Exploration/AuthorDetailsResponsive?lookfor=<? echo $subject_uniqueId ?>&amp;type=Contributor"><? echo $subject_uniqueId ?></a>
             </li>
-            <li class="active">Personenseite</li>
+            <li class="active">Themenseite</li>
             <?
 
             ?>
@@ -126,7 +105,7 @@
                                 <div class="col-sm-10">
                                     <div class="meta">
                                         <h2>
-                                            <? echo $person_nameAsLabel ?>
+                                            <? echo $subject_preferredName ?>
                                         </h2>
                                         <div class="knowledgeCard">
                                         <?=$this->render("elasticsearch/knowledgeCardAuthor.phtml")?>
@@ -134,11 +113,11 @@
                                     </div>
                                     <!-- name variants -->
                                     <div class="meta">
-                                        <span><strong>Namensvarianten: </strong></span><span><? echo $person_birthDate . " " . $person_birthPlace ?></span><br>
+                                        <span><strong>Namensvarianten: </strong></span><span><? echo $subject_alternativeNames ?></span><br>
                                     </div>
                                     <!-- Themengebiet GND-Systematik -->
                                     <div class="meta">
-                                        <span><strong>Themengebiet (GND): </strong></span><span><? echo $person_deathDate . " " . $person_deathPlace ?></span><br><br>
+                                        <span><strong>Themengebiet (GND): </strong></span><span><? echo $subject_gndSubjectCategory ?></span><br><br>
                                     </div>
                                     <div id="accordion" class="panel-group" aria-multiselectable="true"
                                          role="tablist">
@@ -147,7 +126,7 @@
                                                 <h3 class="panel-title">
                                                     <a aria-expanded="false" href="#collapse-details"
                                                        data-toggle="collapse">
-                                                        <span>Mehr Details zu <? echo $person_nameAsLabel ?></span>
+                                                        <span>Mehr Details zu <? echo $subject_preferredName ?></span>
                                                     </a>
                                                 </h3>
                                             </div>
@@ -166,37 +145,37 @@
                                     <div class="row">
                                         <dt class="col-sm-2">
                                         <!-- description -->
-                                        <p>Erklärung:</p></dt>
-                                        <dd class="col-sm-10"><p><? echo $person_biography ?></p></dd>
+                                        <p>Erläuterungen:</p></dt>
+                                        <dd class="col-sm-10"><p><? echo $subject_definition; ?></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
                                         <!-- broader Terms -->
                                         <p>Übergeordnete Themen:</p></dt>
-                                        <dd class="col-sm-10"><p><? echo $person_notableWork ?></p></dd>
+                                        <dd class="col-sm-10"><p><? echo $subject_broaderTerms ?></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
                                         <!-- narrower Terms -->
                                         <p>Untergeordnete Themen:</dt>
-                                        <dd class="col-sm-10"><? echo $person_genre ?></p></dd>
+                                        <dd class="col-sm-10"><? echo $subject_narrowerTerms ?></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
                                         <p>Verwandte Themen:</p></dt>
-                                        <dd class="col-sm-10"><p><? echo $person_movement ?></p></dd>
+                                        <dd class="col-sm-10"><p><? echo $subject_relatedTerms ?></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
                                         <!-- Dewey Decimal Classification -->
                                         <p>Dewey Decimal <br> Classification (Notation):</p></dt>
-                                        <dd class="col-sm-10"><p><? echo $person_alternativeNames ?></p></dd>
+                                        <dd class="col-sm-10"><p><? echo $subject_ddc1 . "<br>" . $subject_ddc2 . "<br>" . $subject_ddc3 . "<br>" . $subject_ddc4 ?></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
                                         <!-- external Links und sources -->
-                                        <p>Quellen:</p></dt>
-                                        <dd class="col-sm-10"><p><? echo $person_pseudonym ?></p></dd>
+                                        <p>Externe Links:</p></dt>
+                                        <dd class="col-sm-10"><p><? echo $subject_uniqueId . "<br>" . $subject_externalLinkSkos . "<br>" . $subject_externalLinkFoafPage ?></p></dd>
                                     </div>
                                 </dl>
                             </div>
