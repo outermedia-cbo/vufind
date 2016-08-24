@@ -35,13 +35,13 @@
         <ul class="breadcrumb hidden-print">
 
             <li>
-                <a href=" <?= $basePath ?>/Exploration/AuthorDetailsResponsive?lookfor=<? echo $person_uniqueId ?>&amp;type=AuthorForId">Suche</a>
+                <a href=" <?= $basePath ?>/Exploration/AuthorDetails?lookfor=<? echo $person_uniqueId ?>&amp;type=AuthorForId">Suche</a>
             </li>
             <!-- Example from swissbib classic
                 <a href="/Search/Results?lookfor=malaria&type=AllFields">Suche: malaria</a>
             -->
             <li class="active"><a
-                    href="<?= $basePath ?>/Exploration/AuthorDetailsResponsive?lookfor=<? echo $person_uniqueId ?>&amp;type=Contributor"><? echo $person_uniqueId ?></a>
+                    href="<?= $basePath ?>/Exploration/AuthorDetails?lookfor=<? echo $person_uniqueId ?>&amp;type=AuthorForId"><? echo $person_uniqueId ?></a>
             </li>
             <li class="active">Personenseite</li>
             <?
