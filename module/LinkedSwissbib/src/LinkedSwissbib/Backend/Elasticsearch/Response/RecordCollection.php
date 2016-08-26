@@ -23,6 +23,8 @@ class RecordCollection extends AbstractRecordCollection {
      */
     protected $response;
 
+    private $resultTotal = 0;
+
 
     /**
      * Constructor.
@@ -48,7 +50,12 @@ class RecordCollection extends AbstractRecordCollection {
      */
     public function getTotal()
     {
-        // TODO: Implement getTotal() method.
+        return $this->resultTotal;
+    }
+
+
+    public function setTotal($total) {
+        $this->resultTotal = $total;
     }
 
     /**

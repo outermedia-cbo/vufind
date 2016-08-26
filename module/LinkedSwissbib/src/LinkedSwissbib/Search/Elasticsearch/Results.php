@@ -63,6 +63,17 @@ class Results extends BaseResults
         // Construct record drivers for all the items in the response:
         //todo: by now we don't get any result
         $this->results = $collection->getRecords();
+        $this->resultTotal =  $collection->count(); // TODO: check if this returns the number of all records or only those of the current page
+    }
+
+    public function getMyLibrariesFacets() {
+
+    $list = array();
+
+    // TODO ; compare with module/Swissbib/src/Swissbib/VuFind/Search/Solr.Results.php
+
+    return $list;
+
     }
 
 
