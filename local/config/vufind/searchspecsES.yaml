@@ -128,7 +128,6 @@ AutocompleteSubject:
 AllFields:
   UsedTypes:
     - bibliographicResource
-    - document
   UsedIndex:
     - testsb
   query:
