@@ -28,7 +28,13 @@ class ElasticsearchController extends AbstractSearch
     public function searchAction ()
     {
         return parent::resultsAction();
+    }
 
+    public function resultsAction()
+    {
+        $query = $this->getRequest()->getQuery();
+        $query->set('type','Person');
+        return parent::resultsAction();
     }
 
     public function authorAction ()
@@ -53,6 +59,10 @@ class ElasticsearchController extends AbstractSearch
     {
         return parent::resultsAction();
 
+    }
+
+    public function homeAction() {
+        return parent::resultsAction();
     }
 
 
