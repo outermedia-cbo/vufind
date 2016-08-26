@@ -84,6 +84,9 @@ class RecordCollectionFactory implements RecordCollectionFactoryInterface {
                 }
             }
         }
+
+        // $collection->setTotal(0); // TODO
+
         return $collection;
     }
 }
