@@ -77,13 +77,21 @@ class RecordCollectionFactory implements RecordCollectionFactoryInterface {
         }
 
         $collection = new $this->collectionClass($responses);
+        $totalHits = 0;
         foreach ($responses['responses'] as $response) {
+            if (isset($response['hits']['total'])) {
+                $totalHits += $response['hits']['total'];
+            }
+
             if (isset($response['hits']['hits'])) {
                 foreach ($response['hits']['hits'] as $hit) {
                     $collection->add(call_user_func($this->recordFactory, $hit));
                 }
             }
         }
+
+        $collection->setTotal($totalHits);
+
         return $collection;
     }
 }
