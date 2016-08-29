@@ -91,7 +91,7 @@
     <? endforeach; ?>
   <? endif; ?>
   <?=$this->flashmessages()?>
-  <div class="hidden-print search-controls clearfix rowxxxxxxxxxxxxxxxxxxxxxxx">
+  <div class="hidden-print search-controls clearfix row">
     <div class="col-lg-6 col-md-7 col-sm-7">
         <?= $this->paginationControl($this->results->getPaginator(), 'Sliding', 'search/pagination.phtml', array('results' => $this->results, 'recordTotal' => $recordTotal, 'params' => $this->params, 'lookfor' => $this->lookfor)) ?>
     </div>
