@@ -9,25 +9,28 @@ $viewRecord = $this->record($this->driver);
 $thumbnail = $viewRecord->getThumbnail('small');
 $detailLink = $this->recordLink()->getUrl($record);
 //$titleStatement = $record->getTitleStatement(true);
-$titleStatement = '';
+$titleStatement = 'titleStatement';
 //$shortTitle = $record->getShortTitle();
-$shortTitle = '';
+$shortTitle = 'shortTitle';
 //$subtitle = $viewRecord->getSubtitle($titleStatement);
-$subtitle = '';
+$subtitle = 'subtitle';
 //$responsible = $viewRecord->getResponsible($titleStatement, $record);
 $responsible = 'responsible';
 //$edition = $record->getEdition();
-$edition = '';
+$edition = 'edition';
 //$summDate = $record->getHumanReadablePublicationDates();
-$summDate = '';
+$summDate = 'summDate';
 //$hostitems = $record->getHostItemEntry();
-$hostitems = '';
+$hostitems = array();
 //$journalTitle = $record->getContainerTitle();
 $journalTitle = '';
 //$groupID = $record->getGroup(true);
-$groupID = '';
-//$uniqueID = $record->getUniqueID();
-$uniqueID = '';
+$groupID = 'groupID';
+$uniqueID = $record->getUniqueID();
+//$uniqueID = 'uniqueID';
+$nameAsLabel = $this->driver->getNameAsLabel();
+
+
 $showFRBR = $this->configAccess()->Site->displayFrbr;
 $memorizeLink = $this->recordLink()->getActionUrl($this->driver, 'Save');
 $formats = $viewRecord->getFormatList();
@@ -51,8 +54,8 @@ $formats = $viewRecord->getFormatList();
   <div class="col-xs-10 col-sm-8 col-md-7">
     <div>
         <h2>
-            <a href="<?=$this->recordLink()->getUrl($this->driver)?>" class="title singleLinkForBulk" title="<?= $this->escapeHtml($shortTitle) ?>">
-                <?= $this->escapeHtml($shortTitle) ?>
+                <a href="/sbrd/Exploration/AuthorDetails?lookfor=<?echo $uniqueID?>&type=AuthorForId" class="title singleLinkForBulk" title="<?= $this->escapeHtml($nameAsLabel) ?>">
+                <?= $this->escapeHtml($nameAsLabel) ?>
             </a>
         </h2>
     </div>
