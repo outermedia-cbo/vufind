@@ -170,8 +170,27 @@ class ElasticSearchRDF extends AbstractBase
         return $this->getValueIfAvailable('dc:format');
     }
 
-    public
-    function getWorkTitle()
+    public function getFormats() {
+        return array('myformat (TODO: in ElasticSearchRDF.php)'); // TODO
+    }
+
+    public function displayHoldings() {
+        return null; // TODO
+    }
+
+    public function displayLinks() {
+        return null; // TODO
+    }
+
+    public function getInstitutions() {
+        return array('dummy'); // TODO
+    }
+
+    public function getOpenURL() {
+        return null; // TODO
+    }
+
+    public function getWorkTitle()
     {
         return $this->getValueIfAvailable('dct:title');
     }
