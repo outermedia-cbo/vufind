@@ -60,44 +60,6 @@ endforeach;
             return result;
         }
 
-        //substring experiment - doesn't work...
-/*        function getBibliographicResourceWithSameTopics(result) {
-            var array = result.bibliographicResource;
-            if (typeof array !== 'undefined') {
-                if ($.isArray(array)) {
-                    var result = "";
-                    for (var key in array) {
-                        //check if substring (subjects) are contained in string
-                        //var string_subjects = string;
-                        //var string_subjects = string_subjects.split(",");
-                        var substring_subjects = array[key]._source['dct:subject'];
-                        if (typeof substring_subjects !== 'undefined'){
-
-                            //var substring_subjects = array[key]._source['dct:subject'];
-                            //var substring_subjects = substring_subjects.split(",");
-
-                            //(string_subjects.indexOf(substring_subjects) > -1)
-                            var title = substring_subjects['dct:title']
-                            var bibliographicResource_id = array[key]._source['@id'];
-                            var id_classic = bibliographicResource_id.slice(33);
-
-                            // create <li>
-                            result += '<li><a href="http://' + window.location.hostname +
-                            '/sbrd/Record/' + id_classic + '"><span>' + title +'</span></li>';
-                        }
-                    }
-                }
-            } else {
-                var result = "no content provided";
-            }
-            if (!result) {
-                result = "no content provided";
-            } else {
-                result;
-            }
-            return result;
-        }*/
-
         function getBibliographicResourceWithSimilarTopics(result) {
             var array = result.bibliographicResource;
             if (typeof array !== 'undefined') {
@@ -128,25 +90,6 @@ endforeach;
             }
             return result;
         }
-
-        //Backup
-/*        function getSubjects(result) {
-            var bibRes = result.bibliographicResource;
-            if (typeof bibRes !== 'undefined') {
-                if ($.isArray(bibRes)) {
-                    var subject = "";
-                    for (var key in bibRes) {
-                        subject += bibRes[key]._source['dct:subject'] + ",";
-                        subject = subject.replace('undefined,','');
-                    }
-                    var subject = subject.substring(0, subject.length - 1);
-                }
-            } else {
-                var subject = "";
-            }
-
-            return subject;
-        }*/
 
         //get IDs for POST
         function getIdsBibRes(result) {
