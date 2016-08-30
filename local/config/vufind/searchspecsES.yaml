@@ -19,8 +19,8 @@ AuthorForId:
       operator:
         - and # should be default
 
-# subject for id
-SubjectForId:
+# subject by id
+SubjectById:
   Multisearch:
     - BibliographicResourceForSubject
   UsedTypes:

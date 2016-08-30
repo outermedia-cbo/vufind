@@ -30,13 +30,13 @@
         <ul class="breadcrumb hidden-print">
 
             <li>
-                <a href=" <?= $basePath ?>/Exploration/SubjectDetails?lookfor=<? echo $subject_uniqueId ?>&amp;type=SubjectForId">Suche</a>
+                <a href=" <?= $basePath ?>/Exploration/SubjectDetails?lookfor=<? echo $subject_uniqueId ?>&amp;type=SubjectById">Suche</a>
             </li>
             <!-- Example from swissbib classic
                 <a href="/Search/Results?lookfor=malaria&type=AllFields">Suche: malaria</a>
             -->
             <li class="active"><a
-                    href="<?= $basePath ?>/Exploration/SubjectDetails?lookfor=<? echo $subject_uniqueId ?>&amp;type=SubjectForId"><? echo $subject_uniqueId ?></a>
+                    href="<?= $basePath ?>/Exploration/SubjectDetails?lookfor=<? echo $subject_uniqueId ?>&amp;type=SubjectById"><? echo $subject_uniqueId ?></a>
             </li>
             <li class="active">Themenseite</li>
             <?
