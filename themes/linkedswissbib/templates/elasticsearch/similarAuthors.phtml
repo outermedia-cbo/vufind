@@ -273,11 +273,8 @@ endforeach;
 
         //Carousel
         function getCoverLink (array, key) {
+            var fallback = "../themes/linkedswissbib/images/icon_no_image_available.gif";
             //get isbn
-            console.log(array);
-            console.log(key);
-            //console.log(array[key];
-
             if ("bibo:isbn10" in array[key]._source) {
                 var isbn10 = array[key]._source['bibo:isbn10'];
                 if (typeof isbn10 !== 'undefined') {
@@ -285,12 +282,12 @@ endforeach;
                     var url_end = '&size=large';
                     var link_cover = url_start + isbn10 + url_end;
                 } else {
-                    var link_cover = "../themes/linkedswissbib/images/icon_no_image_available.gif";
+                    var link_cover = fallback;
                 }
-                return link_cover;
             } else {
-                return ""; // TODO: bild für kein-bild zurückgeben
+                var link_cover = fallback;
             }
+            return link_cover;
         }
 
 
@@ -311,7 +308,7 @@ endforeach;
             var result = "";
             var fallbackItem = "";
             if (array.length >= keyEnd) {
-                for (var key = keyStart; key < keyEnd; key++) {
+                for (var key = keyStart; key <= keyEnd; key++) {
                     //get cover
                     var link_cover = getCoverLink(array, key);
                     //get link to holding
@@ -333,9 +330,9 @@ endforeach;
             var array = data.bibliographicResource;
             if (typeof array !== 'undefined') {
                 if ($.isArray(array)) {
-                    var item0 = getItemForCarousel(array,0, 3);
-                    var item1 = getItemForCarousel(array,4, 7);
-                    var item2 = getItemForCarousel(array,8, 11);
+                    var item0 = getItemForCarousel(array,1, 4);
+                    var item1 = getItemForCarousel(array,5, 8);
+                    var item2 = getItemForCarousel(array,9, 12);
                 }
                 result = [item0, item1, item2];
             } else {
