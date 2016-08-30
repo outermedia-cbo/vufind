@@ -36,7 +36,8 @@ $(document).ready(function() {
             var value = uri2name[uri];
 
             $.ajax({
-                url: "http://193.5.58.96/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                url: "http://" + window.location.hostname +
+                "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
                 data: {"lookfor": uri},
                 success: function (msg) {
