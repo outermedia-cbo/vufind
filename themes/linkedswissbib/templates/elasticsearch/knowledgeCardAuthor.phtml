@@ -195,8 +195,8 @@
                     var kc_birthYear = birthDates[1];
 
                     var deathDates = getDate(data,'dbp:deathDate', 'schema:deathDate', 'dbp:deathYear');
-                    var kc_deathDate = birthDates[0];
-                    var kc_deathYear = birthDates[1];
+                    var kc_deathDate = deathDates[0];
+                    var kc_deathYear = deathDates[1];
                     var kc_birthPlace = getValues(data, 'lsb:dbpBirthPlaceAsLiteral');
 
                     var kc_deathPlace = getValues(data, 'lsb:dbpDeathPlaceAsLiteral');
