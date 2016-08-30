@@ -21,11 +21,14 @@ endforeach;
                 if ($.isArray(array)) {
                     var result = "";
                     for (var key in array) {
+                        //get id
+                        var person_id = array[key]._source['@id'];
+                        var person_uniqueId = "<? echo $person_uniqueId?>";
                         //get name
                         var names = array[key]._source;
                         var person = names['rdf:type'];
 
-                        if (person == 'http://xmlns.com/foaf/0.1/Person') {
+                        if ((person == 'http://xmlns.com/foaf/0.1/Person') && (person_id != person_uniqueId) ) {
                             if (('foaf:lastName' in names) && ('foaf:firstName') in names) {
                                 var name = names['foaf:firstName'] + ' ' + names['foaf:lastName'];
                             } else if ('foaf:lastName' in names) {
@@ -49,9 +52,8 @@ endforeach;
                         }
                     }
                 }
-            } else {
-                var result = "no content provided";
             }
+
             if (!result) {
                 result = "no content provided";
             } else {
@@ -80,9 +82,8 @@ endforeach;
                         '/sbrd/Record/' + id_classic + '"><span>' + title +'</span></li>';
                     }
                 }
-            } else {
-                var result = "no content provided";
             }
+
             if (!result) {
                 result = "no content provided";
             } else {
@@ -202,8 +203,6 @@ endforeach;
                         result.push({counts: count, tag: tag, href: link})
                     }
                 }
-            } else {
-                var result = "no content provided";
             }
 
             if (!result) {
@@ -224,15 +223,12 @@ endforeach;
                     var url_start = 'https://resources.swissbib.ch/Cover/Show?isn=';
                     var url_end = '&size=large';
                     var link_cover = url_start + isbn10 + url_end;
-                } else {
-                    var link_cover = fallback;
                 }
             } else {
                 var link_cover = fallback;
             }
             return link_cover;
         }
-
 
         function getBibResLink (array, key) {
             //get ID
@@ -278,9 +274,8 @@ endforeach;
                     var item2 = getItemForCarousel(array,9, 12);
                 }
                 result = [item0, item1, item2];
-            } else {
-                var result = "no content provided";
             }
+            
             if (!result) {
                 result = "no content provided";
             } else {
@@ -291,9 +286,13 @@ endforeach;
 
         var person_uniqueId = "<? echo $person_uniqueId?>";
 
-        $.getJSON('http://' + window.location.hostname +
-        '/sbrd/Ajax/Json?lookfor=' + person_uniqueId + '&method=getAuthor&searcher=Elasticsearch', function(data) {
-            //console.log(data);
+
+        $.ajax({
+            url: "http://" + window.location.hostname +
+            "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+            type: "POST",
+            data: {"lookfor": person_uniqueId},
+            success: function (data) {
 
             var idBibRes = getIdsBibRes(data);
             //console.log(idBibRes);
@@ -318,88 +317,92 @@ endforeach;
             $('.kc_item1').after(item1);
             $('.kc_item2').after(item2);
 
-            $.ajax({
-                url: "http://" + window.location.hostname +
-                "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
-                type: "POST",
-                data: {"lookfor": ids},
-                success: function (result) {
-                    // Zugriff auf JSON über "result"
-                    //console.log(result);
+                $.ajax({
+                    url: "http://" + window.location.hostname +
+                    "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                    type: "POST",
+                    data: {"lookfor": ids},
+                    success: function (result) {
+                        // Zugriff auf JSON über "result"
+                        //console.log(result);
 
-                   //Limited to 10 results (ES default)
-                    var sA_coauthors = getCoAuthors(result);
-                    //console.log(sA_coauthors);
+                       //Limited to 10 results (ES default)
+                        var sA_coauthors = getCoAuthors(result);
+                        //console.log(sA_coauthors);
 
-                    var subjects = getIdsSubject (result);
-                    //console.log(subjects);
+                        var subjects = getIdsSubject (result);
+                        //console.log(subjects);
 
-                    $(".sA_coauthors").after(sA_coauthors);
+                        $(".sA_coauthors").after(sA_coauthors);
 
-                    $.ajax({
-                        url: "http://" + window.location.hostname +
-                        "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
-                        type: "POST",
-                        data: {"lookfor": subjects},
-                        success: function (result) {
-                            // Zugriff auf JSON über "result"
+                        $.ajax({
+                            url: "http://" + window.location.hostname +
+                            "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                            type: "POST",
+                            data: {"lookfor": subjects},
+                            success: function (result) {
+                                // Zugriff auf JSON über "result"
 
-                            var sA_bibliographicResourcesWithSimilarTopics = getBibliographicResourceWithSimilarTopics (result);
-                            //(console.log(sA_bibliographicResourcesWithSimilarTopics);
+                                var sA_bibliographicResourcesWithSimilarTopics = getBibliographicResourceWithSimilarTopics (result);
+                                //(console.log(sA_bibliographicResourcesWithSimilarTopics);
 
-                            var idsContributorFromBibRes = getIdsContributorFromBibRes(result);
+                                var idsContributorFromBibRes = getIdsContributorFromBibRes(result);
 
-                            $(".sA_bibliographicResourcesWithSimilarTopics").after(sA_bibliographicResourcesWithSimilarTopics);
+                                $(".sA_bibliographicResourcesWithSimilarTopics").after(sA_bibliographicResourcesWithSimilarTopics);
 
-                            $.ajax({
-                                url: "http://" + window.location.hostname +
-                                "/sbrd/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
-                                type: "POST",
-                                data: {"lookfor": subjects},
-                                success: function (result) {
-                                    // Zugriff auf JSON über "result"
-                                    //console.log(result);
+                                $.ajax({
+                                    url: "http://" + window.location.hostname +
+                                    "/sbrd/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
+                                    type: "POST",
+                                    data: {"lookfor": subjects},
+                                    success: function (result) {
+                                        // Zugriff auf JSON über "result"
+                                        //console.log(result);
 
-                                    var tags = getSubjectsPreferredNameArray(result, subjects);
-                                    //console.log(tags);
+                                        var tags = getSubjectsPreferredNameArray(result, subjects);
+                                        //console.log(tags);
 
-                                    $("#main").hotag({
-                                        tags: tags,
-                                        containerClass: 'hotag'
-                                    });
-                                },
-                                error: function (e) {
-                                    console.log(e);
-                                }
-                            });
+                                        $("#main").hotag({
+                                            tags: tags,
+                                            containerClass: 'hotag'
+                                        });
+                                    },
+                                    error: function (e) {
+                                        console.log(e);
+                                    }
+                                });
 
-                            $.ajax({
-                                url: "http://" + window.location.hostname +
-                                "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
-                                type: "POST",
-                                data: {"lookfor": idsContributorFromBibRes},
-                                success: function (result) {
-                                    // Zugriff auf JSON über "result"
+                                $.ajax({
+                                    url: "http://" + window.location.hostname +
+                                    "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                                    type: "POST",
+                                    data: {"lookfor": idsContributorFromBibRes},
+                                    success: function (result) {
+                                        // Zugriff auf JSON über "result"
 
-                                    var sA_coauthorsOfBibliographicResourcesWithSimilarTopics = getCoAuthors(result);
-                                    //console.log(sA_coauthorsOfBibliographicResourcesWithSimilarTopics);
+                                        var sA_coauthorsOfBibliographicResourcesWithSimilarTopics = getCoAuthors(result);
+                                        //console.log(sA_coauthorsOfBibliographicResourcesWithSimilarTopics);
 
-                                    $(".sA_coauthorsOfBibliographicResourcesWithSimilarTopics").after(sA_coauthorsOfBibliographicResourcesWithSimilarTopics);
-                                },
-                                error: function (e) {
-                                    console.log(e);
-                                }
-                            });
-                        },
-                        error: function (e) {
-                            console.log(e);
-                        }
-                    });
-                },
-                error: function (e) {
-                    console.log(e);
-                }
-            });
+                                        $(".sA_coauthorsOfBibliographicResourcesWithSimilarTopics").after(sA_coauthorsOfBibliographicResourcesWithSimilarTopics);
+                                    },
+                                    error: function (e) {
+                                        console.log(e);
+                                    }
+                                });
+                            },
+                            error: function (e) {
+                                console.log(e);
+                            }
+                        });
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+            },
+            error: function (e) {
+                console.log(e);
+            }
         });
     });
 
