@@ -274,16 +274,25 @@ endforeach;
         //Carousel
         function getCoverLink (array, key) {
             //get isbn
-            var isbn10 = array[key]._source['bibo:isbn10'];
-            if (typeof isbn10 !== 'undefined') {
-                var url_start = 'https://resources.swissbib.ch/Cover/Show?isn=';
-                var url_end = '&size=large';
-                var link_cover = url_start + isbn10 + url_end;
+            console.log(array);
+            console.log(key);
+            //console.log(array[key];
+
+            if ("bibo:isbn10" in array[key]._source) {
+                var isbn10 = array[key]._source['bibo:isbn10'];
+                if (typeof isbn10 !== 'undefined') {
+                    var url_start = 'https://resources.swissbib.ch/Cover/Show?isn=';
+                    var url_end = '&size=large';
+                    var link_cover = url_start + isbn10 + url_end;
+                } else {
+                    var link_cover = "../themes/linkedswissbib/images/icon_no_image_available.gif";
+                }
+                return link_cover;
             } else {
-                var link_cover = "../themes/linkedswissbib/images/icon_no_image_available.gif";
+                return ""; // TODO: bild für kein-bild zurückgeben
             }
-            return link_cover;
         }
+
 
         function getBibResLink (array, key) {
             //get ID
@@ -301,8 +310,8 @@ endforeach;
         function getItemForCarousel (array, keyStart, keyEnd){
             var result = "";
             var fallbackItem = "";
-            if (array.length >=keyEnd) {
-                for (var key = keyStart; key <= keyEnd; key++) {
+            if (array.length >= keyEnd) {
+                for (var key = keyStart; key < keyEnd; key++) {
                     //get cover
                     var link_cover = getCoverLink(array, key);
                     //get link to holding
