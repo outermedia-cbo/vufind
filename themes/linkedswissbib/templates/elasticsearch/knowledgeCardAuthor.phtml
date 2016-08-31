@@ -187,8 +187,12 @@
                 var linkToAuthordetails = 'http://' + window.location.hostname +
                 '/sbrd/Exploration/AuthorDetails?lookfor=' + authorId + '&type=AuthorForId#works';
 
-                $.getJSON('http://193.5.58.96/sbrd/Ajax/Json?lookfor=' + authorId + '&method=getAuthorMulti&searcher=Elasticsearch', function(data) {
-
+                $.ajax({
+                    url: "http://" + window.location.hostname +
+                    "/sbrd/Ajax/Json?&method=getAuthorMulti&searcher=Elasticsearch",
+                    type: "POST",
+                    data: {"lookfor": authorId},
+                    success: function (data) {
                     //kc_birthDate
                     var birthDates = getDate(data,'dbp:birthDate', 'schema:birthDate', 'dbp:birthYear');
                     var kc_birthDate = birthDates[0];
@@ -236,21 +240,26 @@
 
                     $( "#dialog" ).dialog( "open" );
 
-                    $.ajax({
-                        url: "http://193.5.58.96/sbrd/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
-                        type: "POST",
-                        data: {"lookfor": kc_subject},
-                        success: function (result) {
-                            // Zugriff auf JSON über "result"
-                            //console.log(result);
-                            var kc_subject = getSubjectsPreferredName(result);
-                            console.log(kc_subject);
-                            $('#kc_subject').text(kc_subject);
-                        },
-                        error: function (e) {
-                            console.log(e);
-                        }
-                    });
+                        $.ajax({
+                            url: "http://" + window.location.hostname +
+                            "/sbrd/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
+                            type: "POST",
+                            data: {"lookfor": kc_subject},
+                            success: function (result) {
+                                // Zugriff auf JSON über "result"
+                                //console.log(result);
+                                var kc_subject = getSubjectsPreferredName(result);
+                                console.log(kc_subject);
+                                $('#kc_subject').text(kc_subject);
+                            },
+                            error: function (e) {
+                                console.log(e);
+                            }
+                        });
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
                 });
             });
         });
