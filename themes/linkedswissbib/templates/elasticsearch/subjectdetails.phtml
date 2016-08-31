@@ -1,5 +1,6 @@
 <div role="main" class="main">
     <script src="../themes/linkedswissbib/js/authordetails.js"></script>
+    <script src="../themes/linkedswissbib/js/getterdetails.js"></script>
     <?
     $instances = array();
     $basePath = $this->basePath();
@@ -26,6 +27,16 @@
             $instances[] = $singleResult;
     endforeach;
     ?>
+    <script>
+        var gndIds_subject_relatedTerms = "<? echo $subject_relatedTerms ?>";
+        writeSubjectNamesIntoHtmlId(gndIds_subject_relatedTerms, "#subject_relatedTerms");
+
+        var gndIds_subject_broaderTerms = "<? echo $subject_broaderTerms ?>";
+        writeSubjectNamesIntoHtmlId(gndIds_subject_broaderTerms, "#subject_broaderTerms");
+
+        var gndIds_subject_narrowerTerms = "<? echo $subject_narrowerTerms ?>";
+        writeSubjectNamesIntoHtmlId(gndIds_subject_narrowerTerms, "#subject_narrowerTerms");
+    </script>
     <div class="container container-table-fix-md breadcrumbWrapper">
         <ul class="breadcrumb hidden-print">
 
@@ -153,18 +164,18 @@
                                         <dt class="col-sm-2">
                                         <!-- broader Terms -->
                                         <p>Übergeordnete Themen:</p></dt>
-                                        <dd class="col-sm-10"><p><? echo $subject_broaderTerms ?></p></dd>
+                                        <dd class="col-sm-10"><p id="subject_broaderTerms"></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
                                         <!-- narrower Terms -->
-                                        <p>Untergeordnete Themen:</dt>
-                                        <dd class="col-sm-10"><? echo $subject_narrowerTerms ?></p></dd>
+                                        <p>Untergeordnete Themen:</p></dt>
+                                        <dd class="col-sm-10"><p id="subject_narrowerTerms"></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
                                         <p>Verwandte Themen:</p></dt>
-                                        <dd class="col-sm-10"><p><? echo $subject_relatedTerms ?></p></dd>
+                                        <dd class="col-sm-10"><p id="subject_relatedTerms"></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">

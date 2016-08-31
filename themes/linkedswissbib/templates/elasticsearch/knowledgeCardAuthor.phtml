@@ -1,3 +1,4 @@
+<script src="../themes/linkedswissbib/js/getterdetails.js"></script>
 <!-- Knowledge Card-->
 <div class="knowledgeCard">
     <script>
@@ -137,18 +138,23 @@
                 return result;
             }
 
-            function getSubjectsPreferredName (data) {
+            /*Funktion ausgelagert*/
+/*            function getSubjectsPreferredName (data) {
                 var array = data.DEFAULT;
                 if (typeof array !== 'undefined') {
                     if ($.isArray(array)) {
                         var result = "";
                         for (var key in array) {
-                            if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheConferenceOrEvent'] != 'undefined') {
+                            if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredName'] != 'undefined') {
+                                var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredName'][0]['@value'];
+                            } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheConferenceOrEvent'] != 'undefined') {
                                 var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheConferenceOrEvent'][0]['@value'];
                             } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheCorporateBody'] != "undefined") {
                                 var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheCorporateBody'][0]['@value'];
                             } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheFamily'] != "undefined") {
                                 var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheFamily'][0]['@value'];
+                            } else if (typeof array[key]._source['http://d-nb.info/standards/elementset/gnd#preferredNameEntityForThePerson'] != "undefined") {
+                                var literal = array[key]._source['http://d-nb.info/standards/elementset/gnd#preferredNameEntityForThePerson'][0]['@value'];
                             } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForThePerson'] != "undefined") {
                                 var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForThePerson'][0]['@value'];
                             } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName'] != "undefined") {
@@ -176,7 +182,7 @@
                     result;
                 }
                 return result;
-            }
+            }*/
 
             $("#dialog").dialog({width: $(window).width() * 0.9 });
 
