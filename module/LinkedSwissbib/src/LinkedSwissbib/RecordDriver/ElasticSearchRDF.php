@@ -316,6 +316,10 @@ class ElasticSearchRDF extends AbstractBase
         return $this->fields['_type'];
     }
 
+    public function getID()
+    {
+        return $this->fields['_id'];
+    }
     /* Currently no properties
     public function getAlternativeTitle()
     {
@@ -366,11 +370,17 @@ class ElasticSearchRDF extends AbstractBase
     public function getRdfType()
     {
         return $this->getValueIfAvailable('rdf:type');
+    }
 
-        //what does this do:
-        $rdfType = $this->fields['_source']['rdf:type'];
-        $rdfType = substr_replace($rdfType, " ", 0, 30);
-        return $rdfType;
+    public function getRdfTypeTrimmed()
+    {
+        $rdfType = $this->getValueIfAvailable('rdf:type');
+        return $this->getTrimmedString("http://purl.org/ontology/bibo/", $rdfType);
+    }
+
+    public function getTrimmedString($search, $subject)
+    {
+        return str_replace($search, "", $subject);
     }
 
     /* Currently on URIs available */

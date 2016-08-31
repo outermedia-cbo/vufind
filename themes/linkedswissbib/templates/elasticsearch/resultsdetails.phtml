@@ -94,8 +94,9 @@ endforeach;
             $author = $instance->getName();
             $coverImage = $instance->getCover();
             $edition = $instance->getEdition();
-            $format = $instance->getRdfType();
+            $format = $instance->getRdfTypeTrimmed();
             $holdingInstitution = "ETH Zürich - Bibliothek HDB";
+            $instance_uniqueId = $instance->getID();
             $linkToHoldings = "#";
             $linkToOtherEditions ="#";
             $numberOfInstitutions = "2 Bibliotheken";
@@ -124,7 +125,7 @@ endforeach;
                         <div class="col-xs-10 col-sm-8 col-md-7">
                             <div>
                                 <h2>
-                                    <a href="#" class="title singleLinkForBulk" title="<?echo $title ?>"><?echo $title ?></a>
+                                    <a href="<?= $basePath ?>/Record/<?echo $instance_uniqueId ?>" class="title singleLinkForBulk" title="<?echo $title ?>"><?echo $title ?></a>
                                 </h2>
                             </div>
                             <!-- Untertitel und Verfasserangabe -->
