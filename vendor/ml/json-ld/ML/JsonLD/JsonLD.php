@@ -196,7 +196,7 @@ class JsonLD
      * The options parameter might be passed as associative array or as
      * object.
      *
-     * @param array                    $input       The JSON-LD document to
+     * @param string|object|array      $input       The JSON-LD document to
      *                                              compact.
      * @param null|string|object|array $context     The context.
      * @param null|array|object        $options     Options to configure the
@@ -226,7 +226,7 @@ class JsonLD
      * @param array                    $input       The JSON-LD document to
      *                                              compact.
      * @param null|string|object|array $context     The context.
-     * @param null|array|object        $options     Options to configure the
+     * @param null|object              $options     Options to configure the
      *                                              compaction process.
      * @param bool                     $alwaysGraph If set to true, the resulting
      *                                              document will always explicitly
@@ -340,7 +340,7 @@ class JsonLD
         $input = self::expand($input, $options);
 
         $processor = new Processor($options);
-        $flattened = $processor->flatten($input, $options->graph);
+        $flattened = $processor->flatten($input);
 
         if (null === $context) {
             return $flattened;
@@ -483,7 +483,7 @@ class JsonLD
      * @param null|array|object   $options Options to configure the framing
      *                                     process.
      *
-     * @return mixed The framed JSON-LD document.
+     * @return object The framed JSON-LD document.
      *
      * @throws JsonLdException
      *
@@ -603,7 +603,7 @@ class JsonLD
                 } elseif (($options->{'base'} instanceof IRI) && $options->{'base'}->isAbsolute()) {
                     $result->base = clone $options->{'base'};
                 } else {
-                    throw \InvalidArgumentException('The "base" option must be set to null or an absolute IRI.');
+                    throw new \InvalidArgumentException('The "base" option must be set to null or an absolute IRI.');
                 }
             }
             if (property_exists($options, 'expandContext')) {

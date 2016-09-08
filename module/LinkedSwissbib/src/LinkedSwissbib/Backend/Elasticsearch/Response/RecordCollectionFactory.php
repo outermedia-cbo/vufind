@@ -4,7 +4,6 @@
  * @category linked-swissbib
  * @package  Backend_Eleasticsearch_Response
  * @author   Guenter Hipler <guenter.hipler@unibas.ch>
- * @author   Philipp Kuntschik <Philipp.Kuntschik@HTWChur.ch>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://linked.swissbib.ch  Main Page
  */
@@ -65,23 +64,20 @@ class RecordCollectionFactory implements RecordCollectionFactoryInterface {
      *
      * @return RecordCollectionInterface
      */
-    public function factory($responses)
+    public function factory($response)
     {
-        if (!is_array($responses)) {
+        if (!is_array($response)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Unexpected type of value: Expected array, got %s',
-                    gettype($responses)
+                    gettype($response)
                 )
             );
         }
-
-        $collection = new $this->collectionClass($responses);
-        foreach ($responses['responses'] as $response) {
-            if (isset($response['hits']['hits'])) {
-                foreach ($response['hits']['hits'] as $hit) {
-                    $collection->add(call_user_func($this->recordFactory, $hit));
-                }
+        $collection = new $this->collectionClass($response);
+        if (isset($response['hits']['hits'])) {
+            foreach ($response['hits']['hits'] as $hit) {
+                $collection->add(call_user_func($this->recordFactory, $hit));
             }
         }
         return $collection;

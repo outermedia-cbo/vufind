@@ -83,10 +83,10 @@ class Processor
     private $useNativeTypes;
 
     /**
-     * Use rdf:type instead of @type when converting from RDF
+     * Use rdf:type instead of \@type when converting from RDF
      *
      * If set to true, the JSON-LD processor will use the expanded rdf:type
-     * IRI as the property instead of @type when converting from RDF.
+     * IRI as the property instead of \@type when converting from RDF.
      *
      * @var bool
      */
@@ -174,8 +174,8 @@ class Processor
      *    print_r($document);
      *  </code>
      *
-     * @param string $input The JSON-LD document or a path or URL pointing
-     *                      to one.
+     * @param null|string|array|object $input The JSON-LD document or a path
+     *                                        or URL pointing to one.
      *
      * @return mixed The loaded JSON-LD document
      *
@@ -326,10 +326,10 @@ class Processor
     /**
      * Expands a JSON-LD document
      *
-     * @param mixed   $element    A JSON-LD element to be expanded.
-     * @param array   $activectx  The active context.
-     * @param string  $activeprty The active property.
-     * @param boolean $frame      True if a frame is being expanded, otherwise false.
+     * @param mixed       $element    A JSON-LD element to be expanded.
+     * @param array       $activectx  The active context.
+     * @param null|string $activeprty The active property.
+     * @param boolean     $frame      True if a frame is being expanded, otherwise false.
      *
      * @return mixed The expanded document.
      *
@@ -837,17 +837,17 @@ class Processor
      * Expands a JSON-LD IRI value (term, compact IRI, IRI) to an absolute
      * IRI and relabels blank nodes
      *
-     * @param mixed $value         The value to be expanded to an absolute IRI.
-     * @param array $activectx     The active context.
-     * @param bool  $relativeIri   Specifies whether $value should be treated as
-     *                             relative IRI against the base IRI or not.
-     * @param bool  $vocabRelative Specifies whether $value is relative to @vocab
-     *                             if set or not.
-     * @param object $localctx     If the IRI is being expanded as part of context
-     *                             processing, the current local context has to be
-     *                             passed as well.
-     * @param array  $path         A path of already processed terms to detect
-     *                             circular dependencies
+     * @param mixed       $value         The value to be expanded to an absolute IRI.
+     * @param array       $activectx     The active context.
+     * @param bool        $relativeIri   Specifies whether $value should be treated as
+     *                                   relative IRI against the base IRI or not.
+     * @param bool        $vocabRelative Specifies whether $value is relative to @vocab
+     *                                   if set or not.
+     * @param null|object $localctx      If the IRI is being expanded as part of context
+     *                                   processing, the current local context has to be
+     *                                   passed as well.
+     * @param array       $path          A path of already processed terms to detect
+     *                                   circular dependencies
      *
      * @return string The expanded IRI.
      */
@@ -940,10 +940,10 @@ class Processor
      * Attention: This method must be called with an expanded element,
      * otherwise it might not work.
      *
-     * @param mixed  $element    A JSON-LD element to be compacted.
-     * @param array  $activectx  The active context.
-     * @param array  $inversectx The inverse context.
-     * @param string $activeprty The active property.
+     * @param mixed       $element    A JSON-LD element to be compacted.
+     * @param array       $activectx  The active context.
+     * @param array       $inversectx The inverse context.
+     * @param null|string $activeprty The active property.
      *
      * @return mixed The compacted JSON-LD document.
      */
@@ -1212,8 +1212,6 @@ class Processor
      */
     private function compactIri($iri, $activectx, $inversectx, $value = null, $vocabRelative = false, $reverse = false)
     {
-        $result = null;
-
         if ((true === $vocabRelative) && array_key_exists($iri, $inversectx)) {
             if (null !== $value) {
                 $valueProfile = $this->getValueProfile($value, $inversectx);
@@ -1235,7 +1233,8 @@ class Processor
 
                     if (('@type' === $valueProfile['typeLang']) && ('@id' === $valueProfile['typeLangValue'])) {
                         array_push($typeOrLangValue, '@id', '@vocab', '@null');
-                    } elseif (('@type' === $valueProfile['typeLang']) && ('@vocab' === $valueProfile['typeLangValue'])) {
+                    } elseif (('@type' === $valueProfile['typeLang']) &&
+                              ('@vocab' === $valueProfile['typeLangValue'])) {
                         array_push($typeOrLangValue, '@vocab', '@id', '@null');
                     } else {
                         $typeOrLangValue = array($valueProfile['typeLangValue'], '@null');
@@ -1438,9 +1437,10 @@ class Processor
      * Queries the inverse context to find the term for a given query
      * path (= value profile)
      *
-     * @param array   $inversectxFrag The inverse context (or a subtree thereof)
-     * @param array   $path           The query corresponding to the value profile
-     * @param integer $level          The recursion depth.
+     * @param array    $inversectx The inverse context (or a subtree thereof)
+     * @param string[] $containers
+     * @param string[] $typeOrLangs
+     * @param string[] $typeOrLangValues
      *
      * @return null|string The best matching term or null if none was found.
      */
@@ -1474,10 +1474,10 @@ class Processor
      * If `$only` is set, only the value of that key of the array
      * above will be returned.
      *
-     * @param array  $activectx The active context.
-     * @param string $property  The property.
-     * @param string $only      If set, only a this element of the definition
-     *                          will be returned.
+     * @param array       $activectx The active context.
+     * @param string      $property  The property.
+     * @param null|string $only      If set, only this element of the
+     *                               definition will be returned.
      *
      * @return array|string|null Returns either the property's definition or
      *                           null if not found.
@@ -1594,7 +1594,8 @@ class Processor
                 if (property_exists($context, '@vocab')) {
                     if (null === $context->{'@vocab'}) {
                         unset($activectx['@vocab']);
-                    } elseif ((false === is_string($context->{'@vocab'})) || (false === strpos($context->{'@vocab'}, ':'))) {
+                    } elseif ((false === is_string($context->{'@vocab'})) ||
+                              (false === strpos($context->{'@vocab'}, ':'))) {
                         throw new JsonLdException(
                             JsonLdException::INVALID_VOCAB_MAPPING,
                             'The value of @vocab must be an absolute IRI or null.invalid vocab mapping, ',
@@ -1635,8 +1636,6 @@ class Processor
                     } else {
                         throw new JsonLdException(JsonLdException::INVALID_TERM_DEFINITION);
                     }
-
-                    $expanded = null;
 
                     if (property_exists($value, '@reverse')) {
                         if (property_exists($value, '@id')) {
@@ -1750,7 +1749,17 @@ class Processor
                     }
                 }
             } elseif (is_string($context)) {
-                $remoteContext = (string) $activectx['@base']->resolve($context);
+                $remoteContext = new IRI($context);
+                if ($remoteContext->isAbsolute()) {
+                    $remoteContext = (string) $remoteContext;
+                } else if (null == $activectx['@base']) {
+                    throw new JsonLdException(
+                        JsonLdException::INVALID_BASE_IRI,
+                        'Can not resolve the relative URL of the remote context as no base has been set: ' . $remoteContext
+                    );
+                } else {
+                    $remoteContext = (string) $activectx['@base']->resolve($context);
+                }
                 if (in_array($remoteContext, $remotectxs)) {
                     throw new JsonLdException(
                         JsonLdException::RECURSIVE_CONTEXT_INCLUSION,
@@ -1876,9 +1885,9 @@ class Processor
      * @param object|object[] $element     An expanded JSON-LD element to
      *                                     be put into the node map
      * @param string          $activegraph The graph currently being processed.
-     * @param string          $activeid    The node currently being processed.
-     * @param string          $activeprty  The property currently being processed.
-     * @param object          $list        The list object if a list is being
+     * @param null|string     $activeid    The node currently being processed.
+     * @param null|string     $activeprty  The property currently being processed.
+     * @param null|object     $list        The list object if a list is being
      *                                     processed.
      */
     private function generateNodeMap(
@@ -1917,7 +1926,13 @@ class Processor
         if (property_exists($element, '@value')) {
             // Handle value objects
             if (null === $list) {
-                $this->mergeIntoProperty($nodeMap->{'-' . $activegraph}->{'-' . $activeid}, $activeprty, $element, true, true);
+                $this->mergeIntoProperty(
+                    $nodeMap->{'-' . $activegraph}->{'-' . $activeid},
+                    $activeprty,
+                    $element,
+                    true,
+                    true
+                );
             } else {
                 $this->mergeIntoProperty($list, '@list', $element, true, false);
             }
@@ -1927,11 +1942,15 @@ class Processor
             $result->{'@list'} = array();
 
             $this->generateNodeMap($nodeMap, $element->{'@list'}, $activegraph, $activeid, $activeprty, $result);
-            $this->mergeIntoProperty($nodeMap->{'-' . $activegraph}->{'-' . $activeid}, $activeprty, $result, true, false);
+            $this->mergeIntoProperty(
+                $nodeMap->{'-' . $activegraph}->{'-' . $activeid},
+                $activeprty,
+                $result,
+                true,
+                false
+            );
         } else {
             // and node objects
-            $id = null;
-
             if (false === property_exists($element, '@id')) {
                 $id = $this->getBlankNodeId();
             } elseif (0 === strncmp($element->{'@id'}, '_:', 2)) {
@@ -2040,7 +2059,7 @@ class Processor
      * identifier (except null) will thus always return the same blank node
      * identifier.
      *
-     * @param string $id If available, existing blank node identifier.
+     * @param null|string $id If available, existing blank node identifier.
      *
      * @return string Returns a blank node identifier.
      */
@@ -2253,7 +2272,7 @@ class Processor
     {
         $graphs = new Object();
         $graphs->{JsonLD::DEFAULT_GRAPH} = new Object();
-        $graphs->{'@usages'} = new Object();
+        $usages = new Object();
 
         foreach ($quads as $quad) {
             $graphName = JsonLD::DEFAULT_GRAPH;
@@ -2313,14 +2332,15 @@ class Processor
                             'value' => $value);
                     // references to other nodes are stored globally (blank nodes could be shared across graphs)
                     } else {
-                        if (!isset($graphs->{'@usages'}->{$objectStr})) {
-                            $graphs->{'@usages'}->{$objectStr} = array();
+                        if (!isset($usages->{$objectStr})) {
+                            $usages->{$objectStr} = array();
                         }
 
                         // Make sure that the same triple isn't counted multiple times
+                        // TODO Making $usages->{$objectStr} a set would make this code simpler
                         $graphSubjectProperty = $graphName . '|' . $subject . '|' . $property;
-                        if (false === isset($graphs->{'@usages'}->{$objectStr}[$graphSubjectProperty])) {
-                            $graphs->{'@usages'}->{$objectStr}[$graphSubjectProperty] = array(
+                        if (false === isset($usages->{$objectStr}[$graphSubjectProperty])) {
+                            $usages->{$objectStr}[$graphSubjectProperty] = array(
                                 'graph' => $graphName,
                                 'node' => $node,
                                 'prop' => $property,
@@ -2332,7 +2352,7 @@ class Processor
         }
 
         // Transform linked lists to @list objects
-        $this->createListObjects($graphs);
+        $this->createListObjects($graphs, $usages);
 
         // Generate the resulting document starting with the default graph
         $document = array();
@@ -2345,10 +2365,11 @@ class Processor
             if (isset($graphs->{$id})) {
                 $node->{'@graph'} = array();
 
-                $graphNodes = $graphs->{$id};
-                ksort($nodes);
+                $graphNodes = get_object_vars($graphs->{$id});
+                ksort($graphNodes);
 
-                foreach ($graphNodes as $graphNode) {
+                foreach ($graphNodes as $graphNodeId => $graphNode) {
+                    // Only add the node when it has properties other than @id
                     if (count(get_object_vars($graphNode)) > 1) {
                         $node->{'@graph'}[] = $graphNode;
                     }
@@ -2367,8 +2388,9 @@ class Processor
      * Reconstruct @list arrays from linked list structures
      *
      * @param  Object $graphs The graph map
+     * @param  Object $usages The global node usage map
      */
-    private function createListObjects($graphs)
+    private function createListObjects($graphs, $usages)
     {
         foreach ($graphs as $graph) {
             if (false === isset($graph->{RdfConstants::RDF_NIL})) {
@@ -2388,7 +2410,7 @@ class Processor
                 $listNodes = array();
 
                 while ((RdfConstants::RDF_REST === $prop) &&
-                    (1 === count($graphs->{'@usages'}->{$node->{'@id'}})) &&
+                    (1 === count($usages->{$node->{'@id'}})) &&
                     property_exists($node, RdfConstants::RDF_FIRST) &&
                     property_exists($node, RdfConstants::RDF_REST) &&
                     (1 === count($node->{RdfConstants::RDF_FIRST})) &&
@@ -2403,7 +2425,7 @@ class Processor
                     $listNodes[] = $node->{'@id'};
 
 
-                    $u = reset($graphs->{'@usages'}->{$node->{'@id'}});
+                    $u = reset($usages->{$node->{'@id'}});
                     $node = $u['node'];
                     $prop = $u['prop'];
                     $head = $u['value'];
@@ -2443,8 +2465,8 @@ class Processor
     /**
      * Frames a JSON-LD document according a supplied frame
      *
-     * @param object $element A JSON-LD element to be framed.
-     * @param mixed  $frame   The frame.
+     * @param array|object $element A JSON-LD element to be framed.
+     * @param mixed        $frame   The frame.
      *
      * @return array $result The framed element in expanded form.
      *
@@ -2519,13 +2541,13 @@ class Processor
     /**
      * Checks whether a node matches a frame or not.
      *
-     * @param object $node    The node.
-     * @param object $frame   The frame.
-     * @param object $options The current framing options.
-     * @param object $nodeMap The node map.
-     * @param string $graph   The currently used graph.
-     * @param array  $parent  The parent to which matching results should be added.
-     * @param array  $path    The path of already processed nodes.
+     * @param object      $node    The node.
+     * @param null|object $frame   The frame.
+     * @param object      $options The current framing options.
+     * @param object      $nodeMap The node map.
+     * @param string      $graph   The currently used graph.
+     * @param array       $parent  The parent to which matching results should be added.
+     * @param array       $path    The path of already processed nodes.
      *
      * @return bool Returns true if the node matches the frame, otherwise false.
      */
@@ -2748,7 +2770,7 @@ class Processor
      * @param object $options The current framing options.
      * @param object $nodeMap The node map.
      * @param string $graph   The currently used graph.
-     * @param array  $result  The object to which the properties should be added.
+     * @param object $result  The object to which the properties should be added.
      * @param array  $path    The path of already processed nodes.
      */
     private function addMissingNodeProperties($node, $options, $nodeMap, $graph, &$result, $path)

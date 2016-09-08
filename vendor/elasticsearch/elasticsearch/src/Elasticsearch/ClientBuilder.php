@@ -3,6 +3,7 @@
 namespace Elasticsearch;
 
 use Elasticsearch\Common\Exceptions\InvalidArgumentException;
+use Elasticsearch\Common\Exceptions\RuntimeException;
 use Elasticsearch\ConnectionPool\AbstractConnectionPool;
 use Elasticsearch\ConnectionPool\Selectors\SelectorInterface;
 use Elasticsearch\ConnectionPool\StaticNoPingConnectionPool;
@@ -59,7 +60,9 @@ class ClientBuilder
     private $selector = '\Elasticsearch\ConnectionPool\Selectors\RoundRobinSelector';
 
     /** @var  array */
-    private $connectionPoolArgs = [];
+    private $connectionPoolArgs = [
+        'randomizeHosts' => true
+    ];
 
     /** @var array */
     private $hosts;
@@ -85,6 +88,39 @@ class ClientBuilder
     public static function create()
     {
         return new static();
+    }
+
+    /**
+     * Build a new client from the provided config.  Hash keys
+     * should correspond to the method name e.g. ['connectionPool']
+     * corresponds to setConnectionPool().
+     *
+     * Missing keys will use the default for that setting if applicable
+     *
+     * Unknown keys will throw an exception by default, but this can be silenced
+     * by setting `quiet` to true
+     *
+     * @param array $config hash of settings
+     * @param bool $quiet False if unknown settings throw exception, true to silently
+     *                    ignore unknown settings
+     * @throws Common\Exceptions\RuntimeException
+     * @return \Elasticsearch\Client
+     */
+    public static function fromConfig($config, $quiet = false) {
+        $builder = new self;
+        foreach ($config as $key => $value) {
+            $method = "set$key";
+            if (method_exists($builder, $method)) {
+                $builder->$method($value);
+                unset($config[$key]);
+            }
+        }
+
+        if ($quiet === false && count($config) > 0) {
+            $unknown = implode(array_keys($config));
+            throw new RuntimeException("Unknown parameters provided: $unknown");
+        }
+        return $builder->build();
     }
 
     /**
@@ -146,9 +182,7 @@ class ClientBuilder
     {
         $log       = new Logger('log');
         $handler   = new StreamHandler($path, $level);
-        $processor = new IntrospectionProcessor();
         $log->pushHandler($handler);
-        $log->pushProcessor($processor);
 
         return $log;
     }
@@ -170,7 +204,7 @@ class ClientBuilder
      * @throws \InvalidArgumentException
      * @return $this
      */
-    public function setConnectionPool($connectionPool, array $args = null)
+    public function setConnectionPool($connectionPool, array $args = [])
     {
         if (is_string($connectionPool)) {
             $this->connectionPool = $connectionPool;
@@ -397,7 +431,7 @@ class ClientBuilder
 
             $this->endpoint = function ($class) use ($transport, $serializer) {
                 $fullPath = '\\Elasticsearch\\Endpoints\\' . $class;
-                if ($class === 'Bulk' || $class === 'Msearch' || $class === 'MPercolate') {
+                if ($class === 'Bulk' || $class === 'MSearch' || $class === 'MPercolate') {
                     return new $fullPath($transport, $serializer);
                 } else {
                     return new $fullPath($transport);
@@ -405,7 +439,17 @@ class ClientBuilder
             };
         }
 
-        return new Client($this->transport, $this->endpoint);
+        return $this->instantiate($this->transport, $this->endpoint);
+    }
+
+    /**
+     * @param Transport $transport
+     * @param callable $endpoint
+     * @return Client
+     */
+    protected function instantiate(Transport $transport, callable $endpoint)
+    {
+        return new Client($transport, $endpoint);
     }
 
     private function buildLoggers()

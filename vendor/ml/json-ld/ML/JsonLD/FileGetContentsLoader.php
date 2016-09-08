@@ -32,7 +32,7 @@ class FileGetContentsLoader
     {
         // if input looks like a file, try to retrieve it
         $input = trim($url);
-        if (false == (isset($input[0]) && ("{" === $input[0]) || ("[" === $input[0]))) {
+        if (false === (isset($input[0]) && ("{" === $input[0]) || ("[" === $input[0]))) {
             $remoteDocument = new RemoteDocument($url);
 
             $streamContextOptions = array(
@@ -125,7 +125,7 @@ class FileGetContentsLoader
      * Parse HTTP Link headers
      *
      * @param array $values  An array of HTTP Link header values
-     * @param  IRI  $baseIRI The document's URL (used to expand relative URLs to absolutes)
+     * @param  IRI  $baseIri The document's URL (used to expand relative URLs to absolutes)
      *
      * @return array An array of parsed HTTP Link headers
      */

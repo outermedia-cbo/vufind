@@ -7,11 +7,13 @@ use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\Conflict409Exception;
 use Elasticsearch\Common\Exceptions\Forbidden403Exception;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
+use Elasticsearch\Common\Exceptions\RequestTimeout408Exception;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
 use FilesystemIterator;
 use GuzzleHttp\Ring\Future\FutureArrayInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use ReflectionClass;
 use Symfony\Component\Process\Exception\RuntimeException;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Parser;
@@ -37,6 +39,8 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
 
     /** @var  string */
     public static $esVersion;
+
+    private static $testCounter = 0;
 
     /**
      * @return mixed
@@ -103,21 +107,28 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
         $response = curl_exec($ch);
         curl_close($ch);
 
+        // TODO ewwww...
+        shell_exec('rm -rf /tmp/test_repo_create_1_loc');
+        shell_exec('rm -rf /tmp/test_repo_restore_1_loc');
+        shell_exec('rm -rf /tmp/test_cat_repo_1_loc');
+        shell_exec('rm -rf /tmp/test_cat_repo_2_loc');
+        shell_exec('rm -rf /tmp/test_cat_snapshots_1_loc');
+
         $this->waitForYellow();
     }
 
-    private function assertTruthy($value)
+    private function assertTruthy($value, $settings)
     {
-        echo "\n         |assertTruthy: ".json_encode($value)."\n";
+        echo "\n         |assertTruthy($settings): ".json_encode($value)."\n";
         ob_flush();
         if (isset($value) === false || $value === 0 || $value === false || $value === null || $value === '') {
             $this->fail("Value is not truthy: ".print_r($value, true));
         }
     }
 
-    private function assertFalsey($value)
+    private function assertFalsey($value, $settings)
     {
-        echo "\n         |assertFalsey: ".json_encode($value)."\n";
+        echo "\n         |assertFalsey($settings): ".json_encode($value)."\n";
         ob_flush();
         if (!(isset($value) === false || $value === 0 || $value === false || $value === null || $value === '')) {
             $this->fail("Value is not falsey: ".print_r($value, true));
@@ -166,7 +177,11 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
 
     public static function provider()
     {
+        // Dirty workaround for the path change in Core
         $path = dirname(__FILE__).'/../../../util/elasticsearch/rest-api-spec/test/';
+        if (file_exists($path) !== true) {
+            $path = dirname(__FILE__).'/../../../util/elasticsearch/rest-api-spec/src/main/resources/rest-api-spec/test';
+        }
 
         $files = array();
         $objects = new RecursiveIteratorIterator(
@@ -209,8 +224,12 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
         $files = func_get_args();
 
         foreach ($files as $testFile) {
-            echo "$testFile\n";
+            $counter = YamlRunnerTest::$testCounter;
+
+            echo "--------------------------------------------------------------------------\n";
+            echo "#$counter : $testFile\n";
             ob_flush();
+            YamlRunnerTest::$testCounter += 1;
 
             if ($this->skipTest($testFile) === true) {
                 $this->markTestSkipped('Skipped due to skip-list');
@@ -260,6 +279,9 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
                     }
                 }
                 $this->executeTestCase($doc['values'], $testFile, false);
+
+                echo "Success\n\n";
+                ob_flush();
             }
         }
     }
@@ -335,7 +357,7 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    private function replaceWithStash($values, $stash)
+    static function replaceWithStash($values, $stash)
     {
         if (count($stash) === 0) {
             return $values;
@@ -343,7 +365,7 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
 
         if (is_array($values) === true) {
             array_walk_recursive($values, function (&$item, $key) use ($stash) {
-                if (is_string($item) === true || is_numeric($item) === true) {
+                if (is_string($item) === true) {
                     if (array_key_exists($item, $stash) == true) {
                         $item = $stash[$item];
                     }
@@ -353,7 +375,7 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
 
                     // Have to make sure we don't convert empty objects ( {} ) into arrays
                     if (count($tItem) > 0) {
-                        $item = $this->replaceWithStash($item, $stash);
+                        $item = YamlRunnerTest::replaceWithStash($item, $stash);
                     }
                 }
 
@@ -361,10 +383,15 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
         } elseif (is_string($values) || is_numeric($values)) {
             if (array_key_exists($values, $stash) == true) {
                 $values = $stash[$values];
+            } else {
+                // Couldn't find the entire value, try a substring replace
+                foreach ($stash as $k => $v) {
+                    $values = str_replace($k, $v, $values);
+                }
             }
         } elseif (is_object($values) === true) {
             $values = json_decode(json_encode($values), true);
-            $values = $this->replaceWithStash($values, $stash);
+            $values = YamlRunnerTest::replaceWithStash($values, $stash);
         }
 
         return $values;
@@ -399,7 +426,9 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
                     echo "\n         |$method\n";
                     ob_flush();
 
-                    $hash = $this->replaceWithStash($hash, $stash);
+
+                    $hash = YamlRunnerTest::replaceWithStash($hash, $stash);
+
 
                     try {
                         echo "         |".json_encode($hash)."\n";
@@ -413,63 +442,12 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
                         if (isset($expectedError) === true) {
                             $this->fail("Expected Exception not thrown: $expectedError");
                         }
-                    } catch (Missing404Exception $exception) {
-                        if ($expectedError === 'missing') {
-                            $this->assertTrue(true);
-                        } else {
-                            $this->fail($exception->getMessage());
-                        }
-                        $response = json_decode($exception->getMessage(), true);
-                    } catch (Conflict409Exception $exception) {
-                        if ($expectedError === 'conflict') {
-                            $this->assertTrue(true);
-                        } else {
-                            $this->fail($exception->getMessage());
-                        }
-                        $response = json_decode($exception->getMessage(), true);
-                    } catch (Forbidden403Exception $exception) {
-                        if ($expectedError === 'forbidden') {
-                            $this->assertTrue(true);
-                        } else {
-                            $this->fail($exception->getMessage());
-                        }
-                        $response = json_decode($exception->getMessage(), true);
-                    } catch (BadRequest400Exception $exception) {
-                        if ($expectedError === 'request') {
-                            $this->assertTrue(true);
-                        } elseif (isset($expectedError) === true && preg_match("/$expectedError/", $exception->getMessage()) === 1) {
-                            $this->assertTrue(true);
-                        } else {
-                            $this->fail($exception->getMessage());
-                        }
-                        $response = json_decode($exception->getMessage(), true);
-                    } catch (ServerErrorResponseException $exception) {
-                        if ($expectedError === 'request') {
-                            $this->assertTrue(true);
-                        } elseif (isset($expectedError) === true && preg_match("/$expectedError/", $exception->getMessage()) === 1) {
-                            $this->assertTrue(true);
-                        } else {
-                            $this->fail($exception->getMessage());
-                        }
-                        $response = json_decode($exception->getMessage(), true);
-                    } catch (Elasticsearch\Common\Exceptions\RuntimeException $exception) {
-                        if ($expectedError === 'param') {
-                            $this->assertTrue(true);
-                        } elseif (isset($expectedError) === true && preg_match("/$expectedError/", $exception->getMessage()) === 1) {
-                            $this->assertTrue(true);
-                        } else {
-                            $this->fail($exception->getMessage());
-                        }
-                        $response = json_decode($exception->getMessage(), true);
                     } catch (\Exception $exception) {
                         if ($expectedError === null) {
                             $this->fail($exception->getMessage());
-                        } elseif (preg_match("/$expectedError/", $exception->getMessage()) === 1) {
-                            $this->assertTrue(true);
-                        } else {
-                            $this->fail($exception->getMessage());
                         }
-                        $response = json_decode($exception->getMessage(), true);
+
+                        $response = $this->handleCaughtException($exception, $expectedError);
                     }
                 } elseif ($operator === 'match') {
                     $expected = $this->getValue($settings, key($settings));
@@ -481,8 +459,8 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
                         $actual   = $this->getNestedVar($response, key($settings));
                     }
 
-                    $expected = $this->replaceWithStash($expected, $stash);
-                    $actual = $this->replaceWithStash($actual, $stash);
+                    $expected = YamlRunnerTest::replaceWithStash($expected, $stash);
+                    $actual = YamlRunnerTest::replaceWithStash($actual, $stash);
                     if ($actual != $expected) {
                         //Holy janky batman
                         if (is_array($actual) && count($actual) == 0) {
@@ -505,23 +483,28 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
                     echo "\n";
                 } elseif ($operator === "is_true") {
                     if (empty($settings) === true) {
-                        $response = $this->replaceWithStash($response, $stash);
-                        $this->assertTruthy($response);
+                        $response = YamlRunnerTest::replaceWithStash($response, $stash);
+                        $this->assertTruthy($response, $settings);
+
                     } else {
+                        $settings = YamlRunnerTest::replaceWithStash($settings, $stash);
+                        echo "settings after replace: ";
+                        print_r($settings);
+                        echo "\n";
                         $actual = $this->getNestedVar($response, $settings);
-                        $actual = $this->replaceWithStash($actual, $stash);
-                        $this->assertTruthy($actual);
+                        $actual = YamlRunnerTest::replaceWithStash($actual, $stash);
+                        $this->assertTruthy($actual, $settings);
                     }
 
                     echo "\n";
                 } elseif ($operator === "is_false") {
                     if (empty($settings) === true) {
-                        $response = $this->replaceWithStash($response, $stash);
-                        $this->assertFalsey($response);
+                        $response = YamlRunnerTest::replaceWithStash($response, $stash);
+                        $this->assertFalsey($response, $settings);
                     } else {
                         $actual = $this->getNestedVar($response, $settings);
-                        $actual = $this->replaceWithStash($actual, $stash);
-                        $this->assertFalsey($actual);
+                        $actual = YamlRunnerTest::replaceWithStash($actual, $stash);
+                        $this->assertFalsey($actual, $settings);
                     }
 
                     echo "\n";
@@ -592,11 +575,70 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    private function handleCaughtException(\Exception $exception, $expectedError) {
+        $reflect = new ReflectionClass($exception);
+        $caught = $reflect->getShortName();
+        $passed = false;
+
+
+        if ($caught === 'Missing404Exception' && $expectedError === 'missing') {
+            $passed = true;
+        } elseif ($caught === 'Conflict409Exception' && $expectedError === 'conflict') {
+            $passed = true;
+        } elseif ($caught === 'Missing404Exception' && $expectedError === 'missing') {
+            $passed = true;
+        } elseif ($caught === 'Forbidden403Exception' && $expectedError === 'forbidden') {
+            $passed = true;
+        } elseif ($caught === 'RequestTimeout408Exception' && $expectedError === 'request_timeout') {
+            $passed = true;
+        } elseif ($caught === 'BadRequest400Exception' && $expectedError === 'request') {
+            $passed = true;
+        } elseif ($caught === 'ServerErrorResponseException' && $expectedError === 'request') {
+            $passed = true;
+        } elseif ($caught === 'RuntimeException' && $expectedError === 'param') {
+            $passed = true;
+        } elseif ($caught === 'Missing404Exception' && $expectedError === 'missing') {
+            $passed = true;
+        }
+
+        if ($passed === false) {
+            if (YamlRunnerTest::checkExceptionRegex($expectedError, $exception)) {
+                $passed = true;
+            } elseif ($exception->getPrevious() !== null) { // try second level
+                if (YamlRunnerTest::checkExceptionRegex($expectedError, $exception->getPrevious())) {
+                    $passed = true;
+                }
+            }
+        }
+
+        if ($passed === true) {
+            $this->assertTrue(true);
+            return json_decode($exception->getMessage(), true);
+        }
+
+        //$this->fail("Tried to match exception, failed.  Exception: ".$exception->getMessage());
+        throw $exception;
+    }
+
+
+    private static function checkExceptionRegex($expectedError, \Exception $exception) {
+        return isset($expectedError) === true && preg_match("/$expectedError/", $exception->getMessage()) === 1;
+    }
+
     private function callMethod($method, $hash, $future)
     {
         $ret = array();
 
         $methodParts = explode(".", $method);
+
+        //Filter php keywords. Only php 7 wont require this patch
+        $keywordSubstitutionList = ['list' => 'show'];
+        $positions = array_flip($methodParts);
+        foreach ($keywordSubstitutionList as $keyword => $substitute) {
+            if (isset($positions[$keyword])) {
+                $methodParts[$positions[$keyword]] = $substitute;
+            }
+        }
 
         if (is_object($hash)) {
             $hash = json_decode(json_encode($hash), true);
@@ -613,8 +655,9 @@ class YamlRunnerTest extends \PHPUnit_Framework_TestCase
         }
 
         if (count($methodParts) > 1) {
-            $methodParts[1] = $this->snakeToCamel($methodParts[1]);
-            $ret = $this->client->$methodParts[0]()->$methodParts[1]($hash);
+            $methodName = $methodParts[0];
+            $methodArgs = $this->snakeToCamel($methodParts[1]);
+            $ret = $this->client->$methodName()->$methodArgs($hash);
         } else {
             $method = $this->snakeToCamel($method);
             $ret = $this->client->$method($hash);
@@ -724,12 +767,8 @@ EOF;
     {
         //all_path_options
         $skipList = array(
-            'indices.delete_mapping/all_path_options.yaml',
-            'indices.exists_type/10_basic.yaml',
-            'indices.get_mapping/10_basic.yaml',
-            'indices.create/10_basic.yaml',
-            'indices.get_alias/10_basic.yaml',
-            'cat.allocation/10_basic.yaml'      //regex breaks PHP
+            'cat.nodeattrs/10_basic.yaml',
+            'cat.repositories/10_basic.yaml'
         );
 
         foreach ($skipList as $skip) {

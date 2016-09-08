@@ -1,0 +1,2 @@
+funktionierender Aufruf
+https://develop.swissbib.ch/sbrd/Exploration/AuthorDetails?lookfor=http://data.swissbib.ch/person/01861fa0-78d4-308b-8b77-38fb5a6600f7&type=AuthorForId

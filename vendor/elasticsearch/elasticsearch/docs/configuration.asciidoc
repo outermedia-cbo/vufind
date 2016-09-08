@@ -10,7 +10,7 @@ We'll walk through all the configuration options and show sample code to replace
 === Host Configuration
 
 The most common configuration is telling the client about your cluster: how many nodes, their addresses and ports.  If
-not hosts are specified, the client will attempt to connect to `localhost:9200`.
+no hosts are specified, the client will attempt to connect to `localhost:9200`.
 
 This behavior can be changed by using the `setHosts()` method on `ClientBuilder`.  The method accepts an array of values,
 each entry corresponding to one node in your cluster.  The format of the host can vary, depending on your needs (ip vs
@@ -55,16 +55,66 @@ For details about HTTP Authorization and SSL encryption, please see link:_securi
 
 === Set retries
 
-By default, the client will retry `n` times, where `n = number of nodes` in your cluster.  If you would like to disable
-retries, or change the number, you can do so with the `setRetries()` method:
+By default, the client will retry `n` times, where `n = number of nodes` in your cluster.  A retry is only performed
+if the operation results in a "hard" exception: connection refusal, connection timeout, DNS lookup timeout, etc.  4xx and
+5xx errors are not considered retry'able events, since the node returns an operational response.
+
+If you would like to disable retries, or change the number, you can do so with the `setRetries()` method:
 
 [source,php]
-----
+----------------------------
 
 $client = ClientBuilder::create()
                     ->setRetries(2)
                     ->build();
+----------------------------
+
+When the client runs out of retries, it will throw the last exception that it received.  For example, if you have ten
+alive nodes, and `setRetries(5)`, the client will attempt to execute the command up to five times.  If all five nodes
+result in a connection timeout (for example), the client will throw an `OperationTimeoutException`.  Depending on the
+Connection Pool being used, these nodes may also be marked dead.
+
+To help in identification, exceptions that are thrown due to max retries will wrap a `MaxRetriesException`.  For example,
+you can catch a specific curl exception then check if it wraps a MaxRetriesException using `getPrevious()`:
+
+[source,php]
 ----
+$client = Elasticsearch\ClientBuilder::create()
+    ->setHosts(["localhost:1"])
+    ->setRetries(0)
+    ->build();
+
+try {
+    $client->search($searchParams);
+} catch (Elasticsearch\Common\Exceptions\Curl\CouldNotConnectToHost $e) {
+    $previous = $e->getPrevious();
+    if ($previous instanceof 'Elasticsearch\Common\Exceptions\MaxRetriesException') {
+        echo "Max retries!"
+    }
+}
+----------------------------
+
+Alternatively, all "hard" curl exceptions (`CouldNotConnectToHost`, `CouldNotResolveHostException`, `OperationTimeoutException`)
+extend the more general `TransportException`.  So you could instead catch the general `TransportException` and then
+check it's previous value:
+
+[source,php]
+----
+$client = Elasticsearch\ClientBuilder::create()
+    ->setHosts(["localhost:1"])
+    ->setRetries(0)
+    ->build();
+
+try {
+    $client->search($searchParams);
+} catch (Elasticsearch\Common\Exceptions\TransportException $e) {
+    $previous = $e->getPrevious();
+    if ($previous instanceof 'Elasticsearch\Common\Exceptions\MaxRetriesException') {
+        echo "Max retries!"
+    }
+}
+----------------------------
+
 
 [[enabling_logger]]
 === Enabling the Logger
@@ -311,6 +361,44 @@ Obviously, by doing this you take responsibility that all existing endpoints sti
 assume the responsibility of correctly wiring the Transport and Serializer into each endpoint.
 
 
+=== Building the client from a configuration hash
+
+To help ease automated building of the client, all configurations can be provided in a setting
+hash instead of calling the individual methods directly.  This functionality is exposed through
+the `ClientBuilder::FromConfig()` static method, which accepts an array of configurations
+and returns a fully built client.
+
+Array keys correspond to the method name, e.g. `retries` key corresponds to `setRetries()` method.
 
 
+[source,php]
+----
+$params = [
+    'hosts' => [
+        'localhost:9200'
+    ],
+    'retries' => 2,
+    'handler' => ClientBuilder::singleHandler()
+];
+$client = ClientBuilder::fromConfig($params);
+----
 
+
+Unknown parameters will throw an exception, to help the user find potential problems.
+If this behavior is not desired (e.g. you are using the hash for other purposes, and may have
+keys unrelated to the Elasticsearch client), you can set $quiet = true in fromConfig() to
+silence the exceptions.
+
+[source,php]
+----
+$params = [
+    'hosts' => [
+        'localhost:9200'
+    ],
+    'retries' => 2,
+    'imNotReal' => 5
+];
+
+// Set $quiet to true to ignore the unknown `imNotReal` key
+$client = ClientBuilder::fromConfig($params, true);
+----

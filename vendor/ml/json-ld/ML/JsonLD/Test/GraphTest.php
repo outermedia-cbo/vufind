@@ -9,10 +9,10 @@
 
 namespace ML\JsonLD\Test;
 
-use ML\JsonLD\JsonLD;
 use ML\JsonLD\Processor;
 use ML\JsonLD\Document;
 use ML\JsonLD\Graph;
+use ML\JsonLD\GraphInterface;
 use ML\JsonLD\Node;
 use ML\JsonLD\LanguageTaggedString;
 use ML\JsonLD\TypedValue;
@@ -28,7 +28,7 @@ class GraphTest extends \PHPUnit_Framework_TestCase
     /**
      * The graph instance being used throughout the tests.
      *
-     * @var Graph
+     * @var GraphInterface
      */
     protected $graph;
 

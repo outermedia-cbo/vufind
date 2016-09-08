@@ -5,7 +5,6 @@
  * @category linked-swissbib
  * @package  Backend_Eleasticsearch
  * @author   Guenter Hipler <guenter.hipler@unibas.ch>
- * @author   Philipp Kuntschik <Philipp.Kuntschik@HTWChur.ch>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://linked.swissbib.ch  Main Page
  */
@@ -13,11 +12,10 @@
 namespace LinkedSwissbib\Backend\Elasticsearch;
 
 
-use LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\MultisearchQuery;
-use LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\Query;
 use VuFindSearch\ParamBag;
 use VuFindSearch\Query\AbstractQuery;
 use VuFindSearch\Query\Query as VuFindQuery;
+use LinkedSwissbib\Backend\Elasticsearch\DSLBuilder\Query\Query;
 
 
 class ESQueryBuilder implements ESQueryBuilderInterface
@@ -76,6 +74,8 @@ class ESQueryBuilder implements ESQueryBuilderInterface
      */
     public function build(AbstractQuery $vuFindQuery)
     {
+
+
         /** @var SearchHandler $searchHandlerType */
         if ($vuFindQuery instanceof VuFindQuery) {
             $searchHandlerType = $this->getSearchHandler($vuFindQuery->getHandler());
@@ -83,33 +83,14 @@ class ESQueryBuilder implements ESQueryBuilderInterface
             $searchHandlerType = $this->getSearchHandler('allfields');
         }
 
-        if ($vuFindQuery->getHandler() == 'AuthorByIdMulti') {
-            $querystring = $vuFindQuery->getString();
-            $uris = explode(',',$querystring);
-            $getParams['body'] = '{"index":"testsb","type":"person"}'."\n".'{"query":{"filtered":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}}}'."\n".'{"index":"testsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n".'{"index":"testsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"dct:contributor":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n".'{"index":"testsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"dct:subject":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n";
-            $getParams['type'] = array("person"); //TODO: Find out whether this line is necessary
-            $getParams['index'] = $searchHandlerType->getIndices();
-
-            return $getParams;
-        }
-
-        if ($vuFindQuery->getHandler() == 'SubjectByIdMulti') {
-            $querystring = $vuFindQuery->getString();
-            $uris = explode(',',$querystring);
-            $getParams['body'] = '{"index":"gnd","type":"DEFAULT"}'."\n".'{"query":{"filtered":{"filter":{"in":{"_id":["' . implode('","', $uris) . '"]}}}}}'."\n";
-            //$getParams['body'] = '{"query":{"filtered":{"filter":{"in":{"_id":["' . implode('","', $uris) . '"]}}}}}'."\n";
-            $getParams['type'] = array("DEFAULT"); //TODO: Find out whether this line is necessary
-            $getParams['index'] = array("gnd");
-
-            return $getParams;
-        }
-
-        $esQuery = new MultisearchQuery($vuFindQuery,$searchHandlerType->getSpec(), $this);
+        $esQuery = new Query($vuFindQuery,$searchHandlerType->getSpec());
         $searchBody =  $esQuery->build();
 
-        $getParams['body'] = $searchBody;
-        $getParams['type'] = array("person", "DEFAULT");
-        $getParams['index'] = array("testsb", "gnd");
+        $getParams['body']['query'] = $searchBody;
+        $getParams['type'] = $searchHandlerType->getTypes();
+        //$getParams['index'] = $this->searchIndexes;
+        $getParams['index'] = $searchHandlerType->getIndices();
+
 
         return $getParams;
     }
@@ -142,7 +123,7 @@ class ESQueryBuilder implements ESQueryBuilderInterface
     /**
      * @return SearchHandler
      */
-    public function getSearchHandler($queryHandlerString)
+    protected function getSearchHandler($queryHandlerString)
     {
         return  array_key_exists(strtolower($queryHandlerString),$this->specs) ? $this->specs[strtolower($queryHandlerString)] :
             $this->specs['allfields'];

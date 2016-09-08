@@ -20,23 +20,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind2
+ * @category VuFind
  * @package  Http
  * @author   David Maus <maus@hab.de>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://github.com/dmj/vf2-HTTP
+ * @link     https://vufind.org/wiki/development
  */
-
 namespace VuFindHttp;
 
 /**
  * VuFind HTTP service.
  *
- * @category VuFind2
+ * @category VuFind
  * @package  Http
  * @author   David Maus <maus@hab.de>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     https://github.com/dmj/vf2-search-subsystem
+ * @link     https://vufind.org/wiki/development
  */
 class HttpService implements HttpServiceInterface
 {
@@ -78,8 +77,8 @@ class HttpService implements HttpServiceInterface
      *
      * @return void
      */
-    public function __construct (array $proxyConfig = array(),
-        array $defaults = array()
+    public function __construct(array $proxyConfig = [],
+        array $defaults = []
     ) {
         $this->proxyConfig = $proxyConfig;
         $this->defaults = $defaults;
@@ -95,15 +94,34 @@ class HttpService implements HttpServiceInterface
      *
      * @return \Zend\Http\Client
      */
-    public function proxify(\Zend\Http\Client $client, array $options = array())
+    public function proxify(\Zend\Http\Client $client, array $options = [])
     {
         if ($this->proxyConfig) {
             $host = $client->getUri()->getHost();
             if (!$this->isLocal($host)) {
-                $adapter = new \Zend\Http\Client\Adapter\Proxy();
-                $options = array_replace($this->proxyConfig, $options);
-                $adapter->setOptions($options);
-                $client->setAdapter($adapter);
+                $proxyType = isset($this->proxyConfig['proxy_type'])
+                    ? $this->proxyConfig['proxy_type'] : 'default';
+
+                if ($proxyType == 'socks5') {
+                    $adapter = new \Zend\Http\Client\Adapter\Curl();
+                    $host = $this->proxyConfig['proxy_host'];
+                    $port = $this->proxyConfig['proxy_port'];
+
+                    $adapter->setCurlOption(CURLOPT_FOLLOWLOCATION, true);
+                    $adapter->setCurlOption(CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+                    $adapter->setCurlOption(CURLOPT_PROXY, $host);
+
+                    if (isset($port) && ! empty($port)) {
+                        $adapter->setCurlOption(CURLOPT_PROXYPORT, $port);
+                    }
+
+                    $client->setAdapter($adapter);
+                } elseif ($proxyType == 'default') {
+                    $adapter = new \Zend\Http\Client\Adapter\Proxy();
+                    $options = array_replace($this->proxyConfig, $options);
+                    $adapter->setOptions($options);
+                    $client->setAdapter($adapter);
+                }
             }
         }
         return $client;
@@ -119,8 +137,8 @@ class HttpService implements HttpServiceInterface
      *
      * @return \Zend\Http\Response
      */
-    public function get($url, array $params = array(), $timeout = null,
-        array $headers = array()
+    public function get($url, array $params = [], $timeout = null,
+        array $headers = []
     ) {
         if ($params) {
             $query = $this->createQueryString($params);
@@ -150,14 +168,14 @@ class HttpService implements HttpServiceInterface
      * @return \Zend\Http\Response
      */
     public function post($url, $body = null, $type = 'application/octet-stream',
-        $timeout = null, array $headers = array()
+        $timeout = null, array $headers = []
     ) {
         $client
             = $this->createClient($url, \Zend\Http\Request::METHOD_POST, $timeout);
         $client->setRawBody($body);
         $client->setHeaders(
             array_merge(
-                array('Content-Type' => $type, 'Content-Length' => strlen($body)),
+                ['Content-Type' => $type, 'Content-Length' => strlen($body)],
                 $headers
             )
         );
@@ -173,7 +191,7 @@ class HttpService implements HttpServiceInterface
      *
      * @return \Zend\Http\Response
      */
-    public function postForm($url, array $params = array(), $timeout = null)
+    public function postForm($url, array $params = [], $timeout = null)
     {
         $body = $this->createQueryString($params);
         return $this->post($url, $body, \Zend\Http\Client::ENC_URLENCODED, $timeout);
@@ -216,7 +234,7 @@ class HttpService implements HttpServiceInterface
             $client->setUri($url);
         }
         if ($timeout) {
-            $client->setOptions(array('timeout' => $timeout));
+            $client->setOptions(['timeout' => $timeout]);
         }
         $this->proxify($client);
         return $client;
@@ -231,7 +249,7 @@ class HttpService implements HttpServiceInterface
      *
      * @return string
      */
-    protected function createQueryString(array $params = array())
+    protected function createQueryString(array $params = [])
     {
         if ($this->isAssocParams($params)) {
             return http_build_query($params);
