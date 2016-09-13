@@ -1,0 +1,195 @@
+<!-- start sidebar -->
+<div style="" class="sidebar col-md-3 col-table-fix-md hidden-print resultView">
+    <h4>Suche verfeinern</h4>
+    <!--
+      MyLibraries (swissbib jargon 'Favoriten' are implemented as Solr-QueryFacets
+      They are going to be merged with the usual Term-FacetList placed in the SideFacets component of VF2
+      Because we use institutions as additional facets beside 'Favoriten'  but 'Favoriten' are queried against the institution index in Solr too
+      I added an additional mylibrary index field which enables us to merge both groups in one list in the SideFacets Component
+      One alternative could be to map the field names on the level of the application (complicated configuration, error prone and complicated for
+      others to work with it. Another alternative to could be to use a separated template only for these facets (and to duplicate code) which isn't really nice also
+    -->
+    <!-- start filter Bibliotheksverbund -->
+    <ul class="list-group" id="side-panel-union">
+        <li class="list-group-item title" data-toggle="collapse" href="#side-collapse-union">
+            Bibliotheksverbund
+        </li>
+        <div id="side-collapse-union" class="collapse in">
+            <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22IDS%22"
+               class="list-group-item facetAND">
+                <span class="badge">2'759</span>Informationsverbund Deutschschweiz
+            </a>
+            <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22IDSBB%22"
+               class="list-group-item facetAND">
+                <span class="badge">1'591</span> IDS Basel Bern</a>
+            <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22NEBIS%22"
+               class="list-group-item facetAND">
+                <span class="badge">1'480</span>NEBIS</a>
+            <a id="more-narrowGroupHidden-union" class="list-group-item"
+               href="javascript:moreFacets('narrowGroupHidden-union')">mehr ...</a>
+            <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22RE81%22"
+               class="list-group-item facetAND narrowGroupHidden-union hidden">
+                <span class="badge">306</span>RERO Vaud
+            </a>
+            <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=union%3A%22IDSLU%22"
+               class="list-group-item facetAND narrowGroupHidden-union hidden">
+                <span class="badge">228</span>IDS Luzern
+            </a>
+            <a class="list-group-item narrowGroupHidden-union hidden"
+               href="javascript:lessFacets('narrowGroupHidden-union')">weniger ...</a>
+        </div>
+        <!-- end class collapse in -->
+    </ul>
+    <!-- end filter Bibliotheksverbund -->
+    <!-- end filter Verfasser/Beitreagende -->
+    <ul class="list-group" id="side-panel-navAuthor_full">
+        <li class="list-group-item title" data-toggle="collapse"
+            href="#side-collapse-navAuthor_full">
+            Verfasser/Beitragende
+        </li>
+        <div id="side-collapse-navAuthor_full" class="collapse in">
+            <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=navAuthor_full%3A%22Tanner%2C+Marcel%22"
+               class="list-group-item facetAND">
+                <span class="badge">121</span>Tanner, Marcel
+            </a>
+            <a id="more-narrowGroupHidden-navAuthor_full" class="list-group-item"
+               href="javascript:moreFacets('narrowGroupHidden-navAuthor_full')">mehr ...</a>
+            <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=navAuthor_full%3A%22Lengeler%2C+Christian%22"
+               class="list-group-item facetAND narrowGroupHidden-navAuthor_full hidden">
+                <span class="badge">44</span>Lengeler, Christian
+            </a>
+            <a class="list-group-item narrowGroupHidden-format hidden"
+               href="javascript:lessFacets('narrowGroupHidden-format')">weniger ...</a>
+        </div>
+        <!-- end class collapse in -->
+    </ul>
+    <!-- end filter Verfasser/Beitreagende -->
+    <!-- start filter Sprache -->
+    <ul class="list-group" id="side-panel-language">
+        <li class="list-group-item title" data-toggle="collapse" href="#side-collapse-language">
+            Sprache
+        </li>
+        <div id="side-collapse-language" class="collapse in">
+            <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=language%3A%22eng%22"
+               class="list-group-item facetAND">
+                <span class="badge">2'602</span>Englisch
+            </a>
+            <a id="more-narrowGroupHidden-language" class="list-group-item"
+               href="javascript:moreFacets('narrowGroupHidden-language')">mehr ...</a>
+            <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=language%3A%22dut%22"
+               class="list-group-item facetAND narrowGroupHidden-language hidden">
+                <span class="badge">20</span>Niederländisch
+            </a>
+            <a class="list-group-item narrowGroupHidden-language hidden"
+               href="javascript:lessFacets('narrowGroupHidden-language')">weniger ...</a>
+        </div>
+        <!-- end class collapse in -->
+    </ul>
+    <!-- end filter Sprache -->
+    <!-- start filter Thema -->
+    <ul class="list-group" id="side-panel-navSub_green">
+        <li class="list-group-item title" data-toggle="collapse" href="#side-collapse-navSub_green">
+            Thema
+        </li>
+        <div id="side-collapse-navSub_green" class="collapse in">
+            <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=navSub_green%3A%22Malaria%22"
+               class="list-group-item facetAND">
+                <span class="badge">344</span>Malaria
+            </a>
+            <a id="more-narrowGroupHidden-navSub_green" class="list-group-item"
+               href="javascript:moreFacets('narrowGroupHidden-navSub_green')">mehr ...</a>
+            <a href="<?= $basePath ?>/Search/Results?lookfor=malaria&amp;type=AllFields&amp;filter%5B%5D=navSub_green%3A%22Medizin%22"
+               class="list-group-item facetAND narrowGroupHidden-navSub_green hidden">
+                <span class="badge">47</span>Medizin</a>
+            <a class="list-group-item narrowGroupHidden-navSubform hidden"
+               href="javascript:lessFacets('narrowGroupHidden-navSubform')">weniger ...</a>
+        </div>
+        <!-- end class collapse in -->
+    </ul>
+    <!-- end filter Thema -->
+    <ul class="list-group" id="side-panel-publishDate">
+        <li class="list-group-item title" data-toggle="collapse" href="#side-collapse-publishDate">
+            Erscheinungsjahr
+        </li>
+        <div id="side-collapse-publishDate" class="collapse in">
+            <script type="text/javascript">
+                //&lt;!--
+                $(document).ready(function () {
+                    var fillTexts = function () {
+                        var v = publishDatedateSlider.getValue();
+                        $('#publishDatefrom').val(v[0]);
+                        $('#publishDateto').val(v[1]);
+                    };
+                    var publishDatedateSlider = $('#publishDatedateSlider')
+                        .slider({
+                            'min': 300,
+                            'max': 2017,
+                            'handle': "square",
+                            'tooltip': "hide",
+                            'value': [300, 2017]
+                        })
+                        .on('slide', fillTexts)
+                        .data('slider');
+                });
+                //--&gt;
+            </script>
+            <li class="list-group-item">
+                <form action="" name="publishDateFilter" id="publishDateFilter">
+                    <input name="lookfor" value="malaria" type="hidden">
+                    <input name="type" value="AllFields" type="hidden">
+                    <input name="daterange[]" value="publishDate" type="hidden">
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="publishDatefrom">
+                                Von:
+                            </label>
+                            <input maxlength="4" class="form-control" name="publishDatefrom"
+                                   id="publishDatefrom" value="" placeholder="300" type="text">
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="publishDateto">
+                                Bis:
+                            </label>
+                            <input maxlength="4" class="form-control" name="publishDateto"
+                                   id="publishDateto" value="" placeholder="2017" type="text">
+                        </div>
+                    </div>
+                    <div class="slider-container">
+                        <div id="" class="slider slider-horizontal">
+                            <div class="slider-track">
+                                <div style="left: 0px; width: 0%;" class="slider-track-low"></div>
+                                <div style="left: 0%; width: 100%;" class="slider-selection"></div>
+                                <div style="right: 0px; width: 0%;" class="slider-track-high"></div>
+                                <div tabindex="0" style="left: 0%;"
+                                     class="slider-handle min-slider-handle"></div>
+                                <div tabindex="0" style="left: 100%;"
+                                     class="slider-handle max-slider-handle"></div>
+                            </div>
+                            <div style="left: 50%; margin-left: -41.5px;"
+                                 class="tooltip tooltip-main top hide">
+                                <div class="tooltip-arrow"></div>
+                                <div class="tooltip-inner">300 : 2017</div>
+                            </div>
+                            <div style="left: 0%; margin-left: -20px;"
+                                 class="tooltip tooltip-min top hide">
+                                <div class="tooltip-arrow"></div>
+                                <div class="tooltip-inner">300</div>
+                            </div>
+                            <div style="left: 100%; margin-left: -24px;"
+                                 class="tooltip tooltip-max top hide">
+                                <div class="tooltip-arrow"></div>
+                                <div class="tooltip-inner">2017</div>
+                            </div>
+                        </div>
+                        <input value="300,2017" data-value="300,2017" style="display: none;"
+                               class="hidden" id="publishDatedateSlider" type="text">
+                    </div>
+                    <input class="btn btn-default" value="Suchen" type="submit">
+                </form>
+            </li>
+        </div>
+        <!-- end class collapse in -->
+    </ul>
+</div>
+<!-- end sidebar -->

@@ -67,17 +67,8 @@ class ElasticSearchRDF extends AbstractBase
         return $this->getValueFromArray($lang, $array);
     }
 
-/*    private function getNestedValueForProperty($lang, $lookup, $fallback = "no content provided")
-      {
-        $result = $this->getValueForProperty($lang, $lookup, $fallback);
-
-        if(is_array($result)) {
-            return $result['@value'];
-        }
-        return $result;
-    }*/
-
-    private function getNestedValueForProperty($lang, $lookup, $innerlookup = '@value', $fallback = "no content provided"){
+    private function getNestedValueForProperty($lang, $lookup, $innerlookup = '@value', $fallback = "no content provided")
+    {
         $result = $this->getValueForProperty($lang, $lookup, $fallback);
 
         if(is_array($result)) {
@@ -115,7 +106,8 @@ class ElasticSearchRDF extends AbstractBase
         }
     }
 
-    private function parseDate($date){
+    private function parseDate($date)
+    {
         if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
             return date("d.m.Y", strtotime($date));
         } elseif (preg_match("/^[0-9]{4}$/", $date)) {
@@ -241,7 +233,7 @@ class ElasticSearchRDF extends AbstractBase
         return $result = $this->getValueForProperty($lang, 'lsb:dbpBirthPlaceAsLiteral');
     }
 
-    public function getNameAsLabel()
+    public function getNameAsString()
     {
         if(isset($this->fields['_source']['foaf:firstName']) && isset($this->fields['_source']['foaf:lastName']))
             return $this->fields['_source']['foaf:firstName'] . " " . $this->fields['_source']['foaf:lastName'];
@@ -320,6 +312,7 @@ class ElasticSearchRDF extends AbstractBase
     {
         return $this->fields['_id'];
     }
+
     /* Currently no properties
     public function getAlternativeTitle()
     {
@@ -400,58 +393,9 @@ class ElasticSearchRDF extends AbstractBase
         }
     }
 
-    /* Currently only URIs available
-    public function getName()
-    {
-        $array = $this->fields['_source']['dct:contributor']['foaf:Person'];
-
-        if (isset($this->fields['_source']['dct:contributor']['foaf:Person']['foaf:firstName']) || isset($this->fields['_source']['dct:contributor']['foaf:Person']['foaf:lastName'])) {
-            foreach ($array as $key => $item) {
-                if ($key == 'foaf:firstName') {
-                    $firstName = $item . " ";
-                }
-            }
-            foreach ($array as $key => $item) {
-                if ($key == 'foaf:lastName') {
-                    $lastName = $item;
-                }
-            }
-            return $firstName . " " . $lastName;
-        } else {
-            for ($i = 0; $i <= count($array); $i++) {
-                foreach ($array[$i] as $key => $item1) {
-                    if ($key == 'foaf:firstName') {
-                        $name .= $item1 . " ";
-                    }
-                }
-                foreach ($array[$i] as $key => $item2) {
-                    if ($key == 'foaf:lastName') {
-                        $name .= $item2 . "; ";
-                    }
-                }
-            }
-        }
-        $name = rtrim($name, "; ");
-        return $name;
-    }
-    */
-
-    /*
-        public function getFirstName()
-        {
-            return $this->fields['_source']['foaf:firstName'];
-        }
-
-        public function getLastName()
-        {
-            return $this->fields['_source']['foaf:lastName'];
-        }*/
-
     /* independent from given language */
-
     public function getLanguage()
     {
-
         if (isset($this->fields['_source']['dct:language'])) {
             return is_array($this->fields['_source']['dct:language']) ? array_values($this->fields['_source']['dct:language']) :
                 [$this->fields['_source']['dct:language']];
@@ -465,7 +409,7 @@ class ElasticSearchRDF extends AbstractBase
         return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading');
     }
 
-    public function getSubjectBroaderTerms($lang = 'de')
+    public function getSubjectUriForBroaderTerms($lang = 'de')
     {
         return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#broaderTermGeneral', '@id');
     }
@@ -510,7 +454,7 @@ class ElasticSearchRDF extends AbstractBase
         return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#gndSubjectCategory', '@id');
     }
 
-    public function getSubjectNarrowerTerms($lang = 'de')
+    public function getSubjectUriForNarrowerTerms($lang = 'de')
     {
         return $result = $this->getNestedValueForProperty($lang, 'http://d-nb.info/standards/elementset/gnd#narrowerTermGeneral', '@id');
     }
@@ -520,19 +464,16 @@ class ElasticSearchRDF extends AbstractBase
         return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading');
     }
 
-    public function getSubjectRelatedTerms($lang = 'de')
+    public function getSubjectUriForRelatedTerms($lang = 'de')
     {
         return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedTerm', '@id');
     }
 
-    //returns only dummy image
+    //returns always dummy image
     public function getSubjectThumbnail()
     {
         return $this->getValueIfAvailable('dbp:thumbnail', "../themes/linkedswissbib/images/icon_no_image_available.gif");
     }
-
-
-
 
 // TODO: gibt immer nur ein Element zurück, da return die Funktion sofort beendet
     public

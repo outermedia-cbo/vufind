@@ -1,4 +1,4 @@
-<script src="../themes/linkedswissbib/js/getterdetails.js"></script>
+<script src="../themes/linkedswissbib/js/detailspages.js"></script>
 <!-- Knowledge Card-->
 <div class="knowledgeCard">
     <script>
@@ -18,23 +18,43 @@
                 }
             });
 
-            function getValueIfAvailable (lookup, fallback) {
-                if (typeof lookup !== 'undefined') {
-                    if ($.isArray(lookup)) {
-                        return lookup[0];
+            // get Values from array (comma separated output) --> knowledgeCardAuthor
+            function getPersonValuesAsString (data, property) {
+                var array = data.person[0]._source[property];
+                if (typeof array !== 'undefined') {
+                    if ($.isArray(array)) {
+                        var result = "";
+                        var fallbackResult = "";
+                        for (var key in array) {
+                            if (typeof array[key].de !== 'undefined') {
+                                result += array[key].de + ", ";
+                            } else if (typeof array[key].en !== 'undefined') {
+                                fallbackResult += array[key].en + ", ";
+                            }
+                        }
+                        var result = result.substring(0, result.length - 2);
+                        var fallbackResult = fallbackResult.substring(0, fallbackResult.length - 2);
                     } else {
-                        return lookup;
+                        if (typeof array.de !== 'undefined') {
+                            var result = array.de;
+                        } else if (typeof array.en !== 'undefined') {
+                            var fallbackResult = array.en;
+                        }
                     }
-                } else {
-                    return fallback;
                 }
+                if (!result) {
+                    if (!fallbackResult) {
+                        var result = 'no content provided';
+                    } else {
+                        var result = fallbackResult;
+                    }
+                }
+                return result;
             }
 
             // get Dates; source priority as follows: dbpDate, schemaDate, dbpYear)
             function getDate (data, dbpDate, schemaDate, dbpYear) {
-
                 var dates = data.person[0]._source;
-
                 if ((dbpDate in dates)) {
                     var date = dates[dbpDate];
                 } else if (schemaDate in dates) {
@@ -47,7 +67,6 @@
 
                 //check whether first character is a number or not
                 var letter = isNaN(date[0]);
-
                 //if the first character is a number
                 if (letter == false) {
                     if (date.length >= 4) {
@@ -75,120 +94,10 @@
                 //console.log(result);
             }
 
-            // get Values from array (comma separated output)
-            function getValues (data, property) {
-
-                var array = data.person[0]._source[property];
-
-                if (typeof array !== 'undefined') {
-                    if ($.isArray(array)) {
-                        var result = "";
-                        var fallbackResult = "";
-                        for (var key in array) {
-                            if (typeof array[key].de !== 'undefined') {
-                                result += array[key].de + ", ";
-                            } else if (typeof array[key].en !== 'undefined') {
-                                fallbackResult += array[key].en + ", ";
-                            }
-                        }
-                        var result = result.substring(0, result.length - 2);
-                        var fallbackResult = fallbackResult.substring(0, fallbackResult.length - 2);
-                    } else {
-                        if (typeof array.de !== 'undefined') {
-                            var result = array.de;
-                        } else if (typeof array.en !== 'undefined') {
-                            var fallbackResult = array.en;
-                        }
-                    }
-                } else {
-                    var result = 'no content provided';
-                }
-
-                if (!result) {
-                    if (fallbackResult) {
-                        var result = fallbackResult;
-                    } else {
-                        result = "no content provided";
-                    }
-                }
-                return result;
-                //console.log(result);
-            }
-
-            function getSubjects (data) {
-                var array = data.bibliographicResource;
-                if (typeof array !== 'undefined') {
-                    if ($.isArray(array)) {
-                        var result = "";
-                        for (var key in array) {
-                            result += array[key]._source['dct:subject'] + ",";
-                            result = result.replace('undefined, ',' ');
-                        }
-                        var result = result.substring(0, result.length - 1);
-                    }
-                } else {
-                    var result = "no content provided";
-                }
-
-                if (!result) {
-                    result = "no content provided";
-                } else {
-                    result;
-                }
-                return result;
-            }
-
-            /*Funktion ausgelagert*/
-/*            function getSubjectsPreferredName (data) {
-                var array = data.DEFAULT;
-                if (typeof array !== 'undefined') {
-                    if ($.isArray(array)) {
-                        var result = "";
-                        for (var key in array) {
-                            if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredName'] != 'undefined') {
-                                var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredName'][0]['@value'];
-                            } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheConferenceOrEvent'] != 'undefined') {
-                                var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheConferenceOrEvent'][0]['@value'];
-                            } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheCorporateBody'] != "undefined") {
-                                var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheCorporateBody'][0]['@value'];
-                            } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheFamily'] != "undefined") {
-                                var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheFamily'][0]['@value'];
-                            } else if (typeof array[key]._source['http://d-nb.info/standards/elementset/gnd#preferredNameEntityForThePerson'] != "undefined") {
-                                var literal = array[key]._source['http://d-nb.info/standards/elementset/gnd#preferredNameEntityForThePerson'][0]['@value'];
-                            } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForThePerson'] != "undefined") {
-                                var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForThePerson'][0]['@value'];
-                            } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName'] != "undefined") {
-                                var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName'][0]['@value'];
-                            } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading'] != "undefined") {
-                                var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading'][0]['@value'];
-                            } else if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheWork'] != "undefined") {
-                                var literal = array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredNameForTheWork'][0]['@value'];
-                            } else {
-                                var literal = '';
-                            }
-                            result += literal + ", ";
-                            result = result.replace('undefined, ', ' ');
-                        }
-                        var result = result.substring(0, result.length - 2);
-
-                    }
-                } else {
-                    var result = "no content provided";
-                }
-
-                if (!result) {
-                    result = "no content provided";
-                } else {
-                    result;
-                }
-                return result;
-            }*/
-
             $("#dialog").dialog({width: $(window).width() * 0.9 });
 
             $(document).on('click', '.kcopener', function() {
-                console.log("kcopener was clicked");
-
+                //console.log("kcopener was clicked");
                 var authorId = $(this).attr("authorid");
                 var linkToAuthordetails = 'http://' + window.location.hostname +
                 '/sbrd/Exploration/AuthorDetails?lookfor=' + authorId + '&type=AuthorForId#works';
@@ -203,34 +112,16 @@
                     var birthDates = getDate(data,'dbp:birthDate', 'schema:birthDate', 'dbp:birthYear');
                     var kc_birthDate = birthDates[0];
                     var kc_birthYear = birthDates[1];
-
                     var deathDates = getDate(data,'dbp:deathDate', 'schema:deathDate', 'dbp:deathYear');
                     var kc_deathDate = deathDates[0];
                     var kc_deathYear = deathDates[1];
-                    var kc_birthPlace = getValues(data, 'lsb:dbpBirthPlaceAsLiteral');
-
-                    var kc_deathPlace = getValues(data, 'lsb:dbpDeathPlaceAsLiteral');
-
-                    var kc_nationality = getValues(data, 'lsb:dbpNationalityAsLiteral');
-
-                    var kc_occupation = getValues(data, 'lsb:dbpOccupationAsLiteral');
-
-                    var kc_subject = getSubjects(data);
-
-                    var kc_thumbnail = getValueIfAvailable (data.person[0]._source['dbp:thumbnail'], "../themes/linkedswissbib/images/personAvatar.png");
-
-                    //kc_names
-                    var names = data.person[0]._source;
-
-                    if (('foaf:lastName' in names) && ('foaf:firstName') in names) {
-                        var kc_name = names['foaf:firstName'] + ' ' + names['foaf:lastName'];
-                    } else if ('foaf:lastName' in names) {
-                        var kc_name =  names['foaf:lastName'];
-                    } else if ('foaf:name' in names) {
-                        var kc_name =  names['foaf:name'];
-                    } else {
-                        var kc_name =  'no content provided';
-                    }
+                    var kc_birthPlace = getPersonValuesAsString(data, 'lsb:dbpBirthPlaceAsLiteral');
+                    var kc_deathPlace = getPersonValuesAsString(data, 'lsb:dbpDeathPlaceAsLiteral');
+                    var kc_nationality = getPersonValuesAsString(data, 'lsb:dbpNationalityAsLiteral');
+                    var kc_occupation = getPersonValuesAsString(data, 'lsb:dbpOccupationAsLiteral');
+                    var kc_subject = getIdsFromPropertyInBibliographicResourcesAsString(data, 'dct:subject');
+                    var kc_thumbnail = getPersonThumbnail (data);
+                    var kc_name = getPersonNameAsString (data, 0);
 
                     //Contents KnowledgeCard
                     $('#kc_authorid').attr('href', linkToAuthordetails);
@@ -240,28 +131,12 @@
                     $('#kc_deathPlace').text(kc_deathPlace);
                     $('#kc_nationality').text(kc_nationality);
                     $('#kc_occupation').text(kc_occupation);
-                    $('#kc_subject').text(kc_subject);
+                    writeSubjectNamesIntoHtmlId (kc_subject, '#kc_subject');
                     $('#kc_thumbnail').attr('src', kc_thumbnail);
                     $('#ui-id-1').text(kc_name + ' (' + kc_birthYear + ' - ' + kc_deathYear + ')'); //Title/Widget-Header
 
                     $( "#dialog" ).dialog( "open" );
 
-                        $.ajax({
-                            url: "http://" + window.location.hostname +
-                            "/sbrd/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
-                            type: "POST",
-                            data: {"lookfor": kc_subject},
-                            success: function (result) {
-                                // Zugriff auf JSON über "result"
-                                //console.log(result);
-                                var kc_subject = getSubjectsPreferredName(result);
-                                console.log(kc_subject);
-                                $('#kc_subject').text(kc_subject);
-                            },
-                            error: function (e) {
-                                console.log(e);
-                            }
-                        });
                     },
                     error: function (e) {
                         console.log(e);
