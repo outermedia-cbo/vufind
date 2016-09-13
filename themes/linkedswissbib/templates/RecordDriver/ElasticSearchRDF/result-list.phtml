@@ -29,9 +29,7 @@ $groupID = 'groupID';
 $uniqueID = $record->getUniqueID();
 //$uniqueID = 'uniqueID';
 
-//$nameAsLabel = $this->driver->getNameAsLabel();
-$nameAsLabel = 'nameAsLabel_see_file__result-list.phtml';
-
+$nameAsLabel = $this->driver->getNameAsString();
 
 $showFRBR = $this->configAccess()->Site->displayFrbr;
 $memorizeLink = $this->recordLink()->getActionUrl($this->driver, 'Save');
