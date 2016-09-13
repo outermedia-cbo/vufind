@@ -161,6 +161,24 @@ AllFields:
 #                - and # should be default
 
 
+Person:
+  UsedTypes:
+    - person
+  UsedIndex:
+    - testsb
+  query:
+    multi_match:
+      fields:
+        - foaf:name
+        - foaf:firstName
+        - foaf:lastName
+        - schema:alternateName
+        #- rdfs:label
+      type:
+        - cross_fields #should be default
+      operator:
+        - and # should be default
+
 
 Contributor:
   UsedTypes:
