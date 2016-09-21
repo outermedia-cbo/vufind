@@ -143,8 +143,8 @@ function getPersonAuthorsNameThumbnailIconAsString(data, person_uniqueId) {
                 if ((person == 'http://xmlns.com/foaf/0.1/Person') && (person_id != person_uniqueId) ) {
                     //get author's name as label
                     var name = getPersonNameAsString(data, key);
-                    //get thumbnail or dummy image TODO: CSS loads correctly only after reload --> Why?
-                    var thumbnail = getPersonThumbnail(data);
+                    //get thumbnail or dummy image
+                    var thumbnail = getPersonThumbnail(data, key);
                     //get person's id
                     var person_id = array[key]._source['@id'];
                     // create <li> including ican and name as link to author's details page
@@ -176,8 +176,8 @@ function getPersonNameAsString(array, key) {
 }
 
 // --> knowledgeCardAuthor
-function getPersonThumbnail (data) {
-    var result = data.person[0]._source['dbp:thumbnail'];
+function getPersonThumbnail (data, key) {
+    var result = data.person[key]._source['dbp:thumbnail'];
     var fallback = "../themes/linkedswissbib/images/personAvatar.png";
     if (typeof result !== 'undefined') {
         if ($.isArray(result)) {
