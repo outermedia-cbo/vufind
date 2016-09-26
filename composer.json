@@ -44,6 +44,23 @@
                     "classmap": ["/"]
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "linked-swissbib/adapterES",
+                "version": "dev-master",
+                "source": {
+                    "url": "https://github.com/linked-swissbib/adapterElasticsearch.git",
+                    "type": "git",
+                    "reference": "master"
+                },
+                "autoload": {
+                    "psr-0" : {
+                        "ElasticsearchAdapter" : "src"
+                    }
+                }
+            }
         }
     ],
     "require": {
@@ -66,10 +83,14 @@
         "zf-commons/zfc-rbac": "2.5.2",
         "easyrdf/easyrdf" : "~0.9.0",
         "ml/json-ld"  : "~1.0",
-        "elasticsearch/elasticsearch": "~2.0"
+        "elasticsearch/elasticsearch": "~2.0",
+        "linked-swissbib/adapterES": "dev-master",
+        "ongr/elasticsearch-dsl": "2.1.0"
+
     },
     "require-dev": {
         "behat/mink": "1.6.*",
-        "behat/mink-zombie-driver": "*"
+        "behat/mink-zombie-driver": "*",
+        "phpunit/phpunit": "5.5.*"
     }
 }

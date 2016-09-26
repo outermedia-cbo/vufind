@@ -12,15 +12,23 @@
 namespace LinkedSwissbib\Backend\Elasticsearch;
 
 
+use ElasticsearchAdapter\UserQuery\UserQuery;
 use VuFindSearch\Backend\AbstractBackend;
 use VuFindSearch\ParamBag;
 use VuFindSearch\Query\AbstractQuery;
+use VuFindSearch\Query\Query;
 use VuFindSearch\Response\RecordCollectionFactoryInterface;
 
-use LinkedSwissbib\Backend\Elasticsearch\ESParamBag;
+use ElasticsearchAdapter\UserQuery\ESParamBag;
 use VuFindSearch\Response\RecordCollectionInterface;
 use VuFindSearch\Backend\Exception\BackendException;
-use LinkedSwissbib\esQuery;
+use ElasticsearchAdapter\ESQueryBuilder;
+
+use ElasticsearchAdapter\Adapter as ESAdapter;
+use ElasticsearchAdapter\Connector;
+
+
+
 
 class Backend extends AbstractBackend
 {
@@ -29,11 +37,11 @@ class Backend extends AbstractBackend
     /**
      * @var ESQueryBuilder
      */
-    protected $queryBuilder;
+    protected  $queryBuilder;
 
 
     /**
-     * @var \LinkedSwissbib\Backend\Elasticsearch\Connector
+     * @var Connector
      */
     protected $connector;
 
@@ -85,23 +93,31 @@ class Backend extends AbstractBackend
                            ParamBag $params = null
     )
     {
-        if (isset($params) && !$params instanceof ESParamBag )
-        {
-            throw new \Exception ("invalid ParamBag type for ElasticSearch target");
-        }
 
-        //Todo;
-        //at the moment I'm not sure how to use the ParamBag and QueryBuilder Type
-        //are we going to do it in the same way as it is done in SOLR (where Param bag creates the list of key-value parameters for the
-        //HTTP-Get query or is the QueryBuilder type responsible for the creation of the ES DSL specific structure
-        //which is at the end a PHP array
-        $params = $params ?: new ESParamBag();
+
+        $esParams = new ESParamBag();
+        $esParams->exchangeArray($params->getArrayCopy());
+
+
+
+        if (!$query instanceof Query)
+            throw new \Exception("actually only single Queries are supported");
+
 
         //$params->set('rows', $limit);
         //$params->set('start', $offset);
 
-        $this->getQueryBuilder()->setParams($params);
-        $esDSLParams = $this->getQueryBuilder()->build($query);
+        $esUserQuery = new UserQuery();
+        $esUserQuery->setHandler($query->getHandler());
+        $esUserQuery->setString($query->getString());
+        $esUserQuery->setOperator($query->getOperator());
+
+        $esAdapter = new ESAdapter($this->connector, $this->getQueryBuilder());
+        $esAdapter->search($esUserQuery,$offset,$limit);
+
+
+        $this->getQueryBuilder()->setParams($esParams);
+        $esDSLParams = $this->getQueryBuilder()->build($esUserQuery);
 
 
 

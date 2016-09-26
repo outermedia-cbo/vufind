@@ -11,11 +11,14 @@
 namespace LinkedSwissbib\Search\Factory;
 
 
-use LinkedSwissbib\Backend\Elasticsearch\ESQueryBuilder;
+//use LinkedSwissbib\Backend\Elasticsearch\ESQueryBuilder;
+use ElasticsearchAdapter\ESQueryBuilder;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use LinkedSwissbib\Backend\Elasticsearch\Backend;
-use LinkedSwissbib\Backend\Elasticsearch\Connector;
+//use LinkedSwissbib\Backend\Elasticsearch\Connector;
+use ElasticsearchAdapter\Connector;
+
 use LinkedSwissbib\Backend\Elasticsearch\Response\RecordCollectionFactory;
 
 class ElasticSearchBackendFactory implements FactoryInterface
@@ -94,7 +97,8 @@ class ElasticSearchBackendFactory implements FactoryInterface
             new Connector($zendConfig->LinkedIndex->toArray()) :  new Connector($this->defaultESIndex);
 
         if ($this->serviceLocator->has('VuFind\Http')) {
-            $connector->setProxy($this->serviceLocator->get('VuFind\Http'));
+            //do we want this Proxy??
+            //$connector->setProxy($this->serviceLocator->get('VuFind\Http'));
         }
         return $connector;
     }
