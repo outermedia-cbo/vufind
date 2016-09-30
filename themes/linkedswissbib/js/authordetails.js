@@ -45,11 +45,16 @@ $(document).ready(function() {
                     var uri = msg.person[0]._source["@id"]; // can't use variable 'uri' from outside directly
                     var name = extractName(msg.person[0]);
                     uri2name[uri] = name;
-                    //TODO: Remove link and icon for organisations
-                    var link = '<a href="http://' + window.location.hostname +
-                        '/sbrd/Exploration/AuthorDetails?lookfor=' + uri + '&type=AuthorForId">' + name + '</a>';
-                    link += '<span class="fa fa-info-circle fa-lg kcopener" authorId="' + uri +'"></span>';
-                    replaceInAuthorUris(uri, link);
+
+                    var fullNameString;
+                    if (isAuthorUriRealPerson(uri)) {
+                        fullNameString = '<a href="http://' + window.location.hostname +
+                            '/sbrd/Exploration/AuthorDetails?lookfor=' + uri + '&type=AuthorForId">' + name + '</a>';
+                        fullNameString += '<span class="fa fa-info-circle fa-lg kcopener" authorId="' + uri +'"></span>';
+                    } else {
+                        fullNameString = name;
+                    }
+                    replaceInAuthorUris(uri, fullNameString);
                 },
                 error: function (e) {
                     console.log(e);
@@ -63,6 +68,15 @@ $(document).ready(function() {
         $( ".authoruris" ).each(function() {
             this.innerHTML = this.innerHTML.replace(new RegExp($.ui.autocomplete.escapeRegex(theOld), 'g'), theNew); // http://stackoverflow.com/a/13157996
         });
+    }
+
+    function isAuthorUriRealPerson(uri) {
+        var substring = "http://data.swissbib.ch/organisation/";
+        return !(isStringContainingSubstring(uri, substring));
+    }
+
+    function isStringContainingSubstring(string, substring) {
+        return (string.indexOf(substring) !== -1); // http://stackoverflow.com/a/1789952
     }
 
     function extractName(json) {
