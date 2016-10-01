@@ -52,7 +52,7 @@ function getBibResLink (array, key) {
 function getItemForCarousel (array, keyStart, keyEnd){
     var result = "";
     var fallbackItem = "";
-    if (array.length >= keyEnd) {
+    if (array.length > keyEnd) {
         for (var key = keyStart; key <= keyEnd; key++) {
             //get cover
             var link_cover = getCoverLink(array, key);
