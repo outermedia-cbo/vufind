@@ -130,6 +130,7 @@
                     $('#kc_deathDate').text(kc_deathDate);
                     $('#kc_deathPlace').text(kc_deathPlace);
                     $('#kc_nationality').text(kc_nationality);
+                    $('.kc_name').text(kc_name);
                     $('#kc_occupation').text(kc_occupation);
                     writeSubjectNamesIntoHtmlId (kc_subject, '#kc_subject');
                     writeBibliographicResourceIntoHtmlClass(data, '.kc_works');
@@ -184,14 +185,14 @@
         <div class="col-sm-12">
             <div class="row">
                 <div class="kc_works"></div>
-                <p><br><a id="kc_authorid" href="">» Mehr Literatur und Medien finden...</a></p>
+                <p><br><a id="kc_authorid" href="">» Mehr Literatur und Medien von <span class="kc_name"></span></a></p>
             </div>
         </div>
 
         <!-- SEGEMENT Literatur und Medien finden in... -->
         <div class="col-sm-12">
             <div class="row">
-            <h2>Literatur und Medien finden in...</h2>
+            <h2>Literatur und Medien von finden in...</h2>
             </div>
         </div>
         <div class="col-sm-12">
