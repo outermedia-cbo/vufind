@@ -242,9 +242,9 @@ function writeBibliographicResourcesIntoCarouselHtmlClasses (data, htmlId0, html
     var item0 = bibRes[0];
     var item1 = bibRes[1];
     var item2 = bibRes[2];
-    $(htmlId0).after(item0);
-    $(htmlId1).after(item1);
-    $(htmlId2).after(item2);
+    $(htmlId0).append(item0);
+    $(htmlId1).append(item1);
+    $(htmlId2).append(item2);
 }
 
 //List of Titles of bibliographic Resources and links to instance --> authordetails
@@ -252,22 +252,26 @@ function writeBibliographicResourceIntoHtmlClass(data, htmlClass) {
     var array = data.bibliographicResource;
     if (typeof array !== 'undefined') {
         if ($.isArray(array)) {
+           //show only 10 or less results
+            if (array.length <11 ) {
+                var maxLength = array.length;
+            } else {
+                var maxLength = 10;
+            }
             var result = "";
-            //show only 10 results
-            for (var key=0; key < 10; key++) {
+            for (var key=0; key < maxLength; key++) {
                 //get title
-                var names = array[key]._source;
-                var title = names['dct:title'];
+                var title = array[key]._source['dct:title'];
                 var link_bibRes = getBibResLink(array, key);
                 // create <li> that links to the Solr record
-                result += '<li><a href="' + link_bibRes + '"><span>' + title +'</span></li>';
+                result += '<a href="' + link_bibRes + '"><i class="fa fa-arrow-right"></i> ' + title +'</br>';
             }
         }
     }
     if (!result) {
         result = 'no content provided';
     }
-    $(htmlClass).after(result);
+    $(htmlClass).html(result);
 }
 
 // Write ((add) literals and other elements into html classes --> authordetails
