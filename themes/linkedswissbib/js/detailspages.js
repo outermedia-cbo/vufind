@@ -317,10 +317,14 @@ function writeSubjectNamesIntoTagCloud (gndIdsAsString, htmlId) {
         data: {"lookfor": gndIdsAsString},
         success: function (data) {
             var tags = getTagCloudContentAsArray(data, gndIdsAsString);
-            $(htmlId).hotag({
-                tags: tags,
-                containerClass: 'hotag'
-            });
+            if (tags == "no content provided") {
+                $(htmlId).text(tags);
+            } else {
+                $(htmlId).hotag({
+                    tags: tags,
+                    containerClass: 'hotag'
+                });
+            }
         },
         error: function (e) {
             console.log(e);
