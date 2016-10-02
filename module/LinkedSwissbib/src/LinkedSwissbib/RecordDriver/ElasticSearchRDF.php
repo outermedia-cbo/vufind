@@ -406,7 +406,49 @@ class ElasticSearchRDF extends AbstractBase
             $link_cover = $url_start . $isbn10 . $url_end;
             return $link_cover;
         } elseif (isset($this->fields['_source']['rdf:type']) && $this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Article") {
-            return "../themes/linkedswissbib/images/icon_article.png";
+            return "../themes/linkedswissbib/images/mediaicons/5_Artikel.png";
+        } elseif (isset($this->fields['_source']['rdf:type']) && $this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Book") {
+            return "../themes/linkedswissbib/images/mediaicons/7_Buch.png";
+        } elseif (isset($this->fields['_source']['rdf:type']) && $this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Manuscript") {
+            return "../themes/linkedswissbib/images/mediaicons/28_Handschrift.png";
+        } elseif (isset($this->fields['_source']['rdf:type']) && $this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Periodical") {
+            return "../themes/linkedswissbib/images/mediaicons/9_Zeitschrift.png";
+        } elseif (isset($this->fields['_source']['rdf:type']) && $this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Series") {
+            return "../themes/linkedswissbib/images/mediaicons/7_Buch.png";
+        } elseif (isset($this->fields['_source']['rdf:type']) && $this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Thesis") {
+            return "../themes/linkedswissbib/images/mediaicons/7_Buch.png";
+        } elseif (isset($this->fields['_source']['rdf:type']) && $this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Website") {
+            return "../themes/linkedswissbib/images/mediaicons/25_Online_Ressourcen.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1023") {
+            return "../themes/linkedswissbib/images/mediaicons/19_Film.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1020") {
+            return "../themes/linkedswissbib/images/mediaicons/1_Dummy_Buch.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1021") {
+            return "../themes/linkedswissbib/images/mediaicons/24_Objekt_Spiel.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1014") {
+            return "../themes/linkedswissbib/images/mediaicons/23_Bildmaterial.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1007") {
+            return "../themes/linkedswissbib/images/mediaicons/26_Software_auf_Datentraeger.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1002") {
+            return "../themes/linkedswissbib/images/mediaicons/21_Kartenmaterial.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1011") {
+            return "../themes/linkedswissbib/images/mediaicons/13_Musik.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1010") {
+            return "../themes/linkedswissbib/images/mediaicons/17_Notenmaterial.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1006") {
+            return "../themes/linkedswissbib/images/mediaicons/21_Kartenmaterial.png";
+        } elseif (isset($this->fields['_source']['rdau:P60050']) && $this->fields['_source']['rdau:P60050'] == "http://rdvocab.info/termList/RDAMediaType/1007") {
+            return "../themes/linkedswissbib/images/mediaicons/23_Bildmaterial.png";
+        } elseif (isset($this->fields['_source']['rdau:P60050']) && $this->fields['_source']['rdau:P60050'] == "http://rdvocab.info/termList/RDAMediaType/1002") {
+            return "../themes/linkedswissbib/images/mediaicons/27_Microfilm.png";
+        } elseif (isset($this->fields['_source']['rdau:P60050']) && $this->fields['_source']['rdau:P60050'] == "http://rdvocab.info/termList/RDAMediaType/1003") {
+            return "../themes/linkedswissbib/images/mediaicons/26_Software_auf_Datentraeger.png";
+        } elseif (isset($this->fields['_source']['rdau:P60050']) && $this->fields['_source']['rdau:P60050'] == "http://rdvocab.info/termList/RDAMediaType/1001") {
+            return "../themes/linkedswissbib/images/mediaicons/13_Musik.png";
+        } elseif (isset($this->fields['_source']['rdau:P60050']) && $this->fields['_source']['rdau:P60050'] == "http://rdvocab.info/termList/RDAMediaType/1005") {
+            return "../themes/linkedswissbib/images/mediaicons/19_Film.png";
+        } elseif (isset($this->fields['_source']['rdau:P60050']) && $this->fields['_source']['rdau:P60050'] == "http://rdvocab.info/termList/RDAMediaType/1008") {
+            return "../themes/linkedswissbib/images/mediaicons/18_Film_online.png";
         } else {
             return "../themes/linkedswissbib/images/icon_no_image_available.gif";
         }
