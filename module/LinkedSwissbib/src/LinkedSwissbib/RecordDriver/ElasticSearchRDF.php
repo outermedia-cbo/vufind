@@ -116,6 +116,21 @@ class ElasticSearchRDF extends AbstractBase
         return "could not parse date!";
     }
 
+    private function addHtmlToExternalLinks ($stringWithCommaSeparatedUrls)
+    {
+        $array = explode(',', $stringWithCommaSeparatedUrls);
+        foreach ($array as $link) {
+            if (strpos($link, 'no content provided') === false) {
+                $result .= '<a target="_blank" href="' . $link . '"><i class="fa fa-external-link"></i> ' . $link . '</a></br>';
+            }
+        }
+        if (!empty($result)) {
+            return $result;
+        } else {
+            return 'no content provided';
+        }
+    }
+
     public function getUniqueID()
     {
         return $this->getValueIfAvailable('@id');
@@ -297,9 +312,12 @@ class ElasticSearchRDF extends AbstractBase
         return $this->getValueIfAvailable('dbp:thumbnail', "../themes/linkedswissbib/images/personAvatar.png");
     }
 
-    public function getSource()
+    public function getPersonExternalLinks()
     {
-        return $this->getValueIfAvailable('owl:sameAs');
+        $owl = $this->getValueIfAvailable('owl:sameAs');
+        $schema = $this->getValueIfAvailable('schema:sameAs');
+        $links = $owl . ", " . $schema;
+        return $this->addHtmlToExternalLinks ($links);
     }
 
     public function getName()
@@ -475,24 +493,14 @@ class ElasticSearchRDF extends AbstractBase
         return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#broaderTermGeneral', '@id');
     }
 
-    public function getSubjectDDC1($lang = 'de')
+    public function getSubjectDDC($lang = 'de')
     {
-        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy1', '@id');
-    }
-
-    public function getSubjectDDC2($lang = 'de')
-    {
-        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy2', '@id');
-    }
-
-    public function getSubjectDDC3($lang = 'de')
-    {
-        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy3', '@id');
-    }
-
-    public function getSubjectDDC4($lang = 'de')
-    {
-        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy4', '@id');
+        $ddc1 = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy1', '@id');
+        $ddc2 = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy2', '@id');
+        $ddc3 = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy3', '@id');
+        $ddc4 = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy4', '@id');
+        $links = $ddc1 . ', ' .  $ddc2 . ', ' . $ddc3 . ', ' . $ddc4;
+        return $this->addHtmlToExternalLinks ($links);
     }
 
     public function getSubjectDefinition($lang = 'de')
@@ -500,14 +508,12 @@ class ElasticSearchRDF extends AbstractBase
         return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#definition');
     }
 
-    public function getSubjectExternalLinkSkos($lang = 'de')
-    {
-        return $result = $this->getNestedValueForProperty($lang, 'http://www_w3_org/2004/02/skos/core#exactMatch', '@id');
-    }
-
-    public function getSubjectExternalLinkFoafPage($lang = 'de')
-    {
-        return $result = $this->getNestedValueForProperty($lang, 'http://xmlns_com/foaf/0_1/page', '@id');
+    public function getSubjectExternalLinks ($lang = 'de') {
+        $gnd =  $this->getValueIfAvailable('@id');
+        $skos = $this->getNestedValueForProperty($lang, 'http://www_w3_org/2004/02/skos/core#exactMatch', '@id');
+        $foaf = $this->getNestedValueForProperty($lang, 'http://xmlns_com/foaf/0_1/page', '@id');
+        $links = $gnd . ', ' .  $skos . ', ' . $foaf;
+        return $this->addHtmlToExternalLinks ($links);
     }
 
     public function getSubjectGndSubjectCategory($lang = 'de')

@@ -15,6 +15,7 @@
             $person_birthPlace = $singleResult->getBirthPlace();
             $person_deathDate = $singleResult->getDeathDate();
             $person_deathPlace = $singleResult->getDeathPlace();
+            $person_externalLinks = $singleResult->getPersonExternalLinks();
             $person_genre = $singleResult->getGenre();
             $person_influenced = $singleResult->getInfluenced();
             $person_influencedBy = $singleResult->getInfluencedBy();
@@ -26,7 +27,6 @@
             $person_partner = $singleResult->getPartner();
             $person_pseudonym = $singleResult->getPseudonym();
             $person_spouse = $singleResult->getSpouse();
-            $person_source = $singleResult->getSource();
             $person_thumbnail = $singleResult->getThumbnail();
         } else
             $instances[] = $singleResult;
@@ -207,8 +207,8 @@
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
-                                        <p>Quellen:</p></dt>
-                                        <dd class="col-sm-10"><p><? echo $person_source ?></p></dd>
+                                        <p>Externe Websites:</p></dt>
+                                        <dd class="col-sm-10"><p><? echo $person_externalLinks ?></p></dd>
                                     </div>
                                 </dl>
                             </div>
