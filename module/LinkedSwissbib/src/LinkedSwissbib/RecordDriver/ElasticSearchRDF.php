@@ -518,7 +518,8 @@ class ElasticSearchRDF extends AbstractBase
 
     public function getSubjectGndSubjectCategory($lang = 'de')
     {
-        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#gndSubjectCategory', '@id');
+        $links = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#gndSubjectCategory', '@id');
+        return $this->addHtmlToExternalLinks ($links);
     }
 
     public function getSubjectUriForNarrowerTerms($lang = 'de')
