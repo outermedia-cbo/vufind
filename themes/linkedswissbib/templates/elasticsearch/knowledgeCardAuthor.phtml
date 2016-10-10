@@ -3,7 +3,7 @@
 <div class="knowledgeCard">
     <script>
         $(function() {
-            $( "#dialog" ).dialog({
+            $( "#dialogAuthor, #dialogSubject" ).dialog({
                 autoOpen: false,
                 modal: true,
                 responsive: true,
@@ -94,11 +94,11 @@
                 //console.log(result);
             }
 
-            $("#dialog").dialog({width: $(window).width() * 0.9 });
+            $("#dialogAuthor, #dialogSubject").dialog({width: $(window).width() * 0.9 });
 
-            $(document).on('click', '.kcopener', function() {
+            $(document).on('click', '.kcopenerAuthor', function() {
                 //console.log("kcopener was clicked");
-                var authorId = $(this).attr("authorid");
+                var authorId = $(this).attr("authorid")
                 var linkToAuthordetails = 'http://' + window.location.hostname +
                 '/sbrd/Exploration/AuthorDetails?lookfor=' + authorId + '&type=AuthorForId#works';
 
@@ -132,13 +132,54 @@
                     $('#kc_nationality').text(kc_nationality);
                     $('.kc_name').text(kc_name);
                     $('#kc_occupation').text(kc_occupation);
-                    writeSubjectNamesIntoHtmlId (kc_subject, '#kc_subject');
+                    writeSubjectNamesIntoHtmlId (kc_subject, '#kc_subject', "withoutKnowledgeCard");
                     writeBibliographicResourceIntoHtmlClass(data, '.kc_works');
                     $('#kc_thumbnail').attr('src', kc_thumbnail);
                     $('#ui-id-1').text(kc_name + ' (' + kc_birthYear + ' - ' + kc_deathYear + ')'); //Title/Widget-Header
 
-                    $( "#dialog" ).dialog( "open" );
+                    $( "#dialogAuthor" ).dialog( "open" );
 
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+            });
+
+            $(document).on('click', '.kcopenerSubject', function() {
+                //console.log("kcopener was clicked");
+                var subjectId = $(this).attr("subjectid");
+                var linkToSubjectdetails = 'http://' + window.location.hostname +
+                    '/sbrd/Exploration/SubjectDetails?lookfor=' + subjectId + '&type=SubjectById#works';
+
+                $.ajax({
+                    url: "http://" + window.location.hostname +
+                    "/sbrd/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
+                    type: "POST",
+                    data: {"lookfor": subjectId },
+                    success: function (data) {
+                        console.log(data);
+                        var kc_subjectPreferredName = getSubjectPreferredName (data.DEFAULT, 0);
+                        $('.kc_subjectPreferredName').text(kc_subjectPreferredName);
+                        $('#ui-id-2').text(kc_subjectPreferredName); //Title/Widget-Header
+                        writeBibliographicResourceIntoHtmlClass(data, '.kc_works');
+                        $('#kc_subjectid').attr('href', linkToSubjectdetails);
+                        $('#kc_alternativeNames').text('no content provided');
+                        $( "#dialogSubject" ).dialog( "open" );
+
+                        $.ajax({
+                            url: "http://" + window.location.hostname +
+                            "/sbrd/Ajax/Json?&method=getAuthorMulti&searcher=Elasticsearch",
+                            type: "POST",
+                            data: {"lookfor": subjectId },
+                            success: function (data) {
+                                console.log(data);
+                                writeBibliographicResourceIntoHtmlClass(data, '.kc_works');
+                            },
+                            error: function (e) {
+                                console.log(e);
+                            }
+                        });
                     },
                     error: function (e) {
                         console.log(e);
@@ -148,7 +189,7 @@
         });
 
     </script>
-    <div id="dialog" title="">
+    <div id="dialogAuthor" title="">
         <!-- SEGEMENT Header -->
         <div class="row">
             <div class="col-sm-3 col-md-2">
@@ -201,7 +242,29 @@
             </div>
         </div>
     </div>
-    <!-- end id dialog -->
+    <!-- end id dialogAuthor -->
+
+    <div id="dialogSubject" title="">
+        <!-- SEGEMENT Header -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="meta">
+                    <span><strong>Namensvarianten: </strong></span><span id="kc_alternativeNames"></span><br>
+                </div>
+            </div>
+        </div>
+        <!-- SEGMENT Literatur und Medien -->
+        <div id="worksWithSubject">
+            <h2>Literatur und Medien</h2>
+        </div>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="kc_works"></div>
+                <p><br><a id="kc_subjectid" href="">» Mehr Literatur und Medien zum Thema <span class="kc_subjectPreferredName"></span></a></p>
+            </div>
+        </div>
+    </div>
+    <!-- end id dialogSubject -->
 </div>
 <!-- end id knowledgeCard -->
 

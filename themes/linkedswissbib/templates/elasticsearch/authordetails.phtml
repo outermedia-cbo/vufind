@@ -32,6 +32,9 @@
             $instances[] = $singleResult;
     endforeach;
     ?>
+    <div class="knowledgeCard">
+        <?=$this->render("elasticsearch/knowledgeCardAuthor.phtml")?>
+    </div>
     <div class="container container-table-fix-md breadcrumbWrapper">
         <ul class="breadcrumb hidden-print">
 
@@ -118,9 +121,6 @@
                                         <h2>
                                             <? echo $person_nameAsString ?>
                                         </h2>
-                                        <div class="knowledgeCard">
-                                        <?=$this->render("elasticsearch/knowledgeCardAuthor.phtml")?>
-                                        </div>
                                     </div>
                                     <!-- occupation -->
                                     <div class="meta">

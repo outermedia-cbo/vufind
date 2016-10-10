@@ -150,7 +150,7 @@ function getPersonAuthorsNameThumbnailIconAsString(data, person_uniqueId) {
                     // create <li> including ican and name as link to author's details page
                     result += '<li><a href="http://' + window.location.hostname +
                     '/sbrd/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="thumbnail" src=" ' + thumbnail + ' " alt=" ' + name + ' "><figcaption>' + name + ' ' + '</a>';
-                    result += '<span class="fa fa-info-circle fa-lg kcopener" authorId="' + person_id +'"></span></figcaption></figure></li>';
+                    result += '<span class="fa fa-info-circle fa-lg kcopenerAuthor" authorId="' + person_id +'"></span></figcaption></figure></li>';
                 }
             }
         }
@@ -217,15 +217,25 @@ function getSubjectPreferredName (array, key) {
 }
 
 //get literals for gnd ids as a string
-function getSubjectPreferredNamesAsString (data) {
+function getSubjectPreferredNamesAsString (data, knowledgeCardStatement) {
     var array = data.DEFAULT;
     if (typeof array !== 'undefined') {
         if ($.isArray(array)) {
             var result = "";
             for (var key in array) {
+                var id = array[key]._source['@id'];
                 var literal = getSubjectPreferredName(array, key);
-                result += literal + ", ";
-                result = result.replace('undefined, ', ' ');
+                if (knowledgeCardStatement == 'withKnowledgeCard') {
+                    result += '<a href="http://' + window.location.hostname +
+                    '/sbrd/Exploration/SubjectDetails?lookfor=' + id + '&type=SubjectById">' + literal + '</a> <span class="fa fa-info-circle fa-lg kcopenerSubject" subjectId="' + id +'"></span>, ';
+                    result = result.replace('undefined, ', ' ');
+                } else {
+                    result += '<a href="http://' + window.location.hostname +
+                    '/sbrd/Exploration/SubjectDetails?lookfor=' + id + '&type=SubjectById">' + literal + ', ';
+                    result = result.replace('undefined, ', ' ');
+                }
+
+
             }
             var result = result.substring(0, result.length - 2);
         }
@@ -292,15 +302,15 @@ function writePersonAuthorsNameThumbnailIconIntoHtmlClass (personIdsAsString, ht
 }
 
 // Write literals of gnd ids into html Id --> knowledgeCardAuthor, subjectdetails
-function writeSubjectNamesIntoHtmlId (gndIdsAsString, htmlId) {
+function writeSubjectNamesIntoHtmlId (gndIdsAsString, htmlId, knowledgeCardStatement) {
     $.ajax({
         url: "http://" + window.location.hostname +
         "/sbrd/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
         type: "POST",
         data: {"lookfor": gndIdsAsString},
         success: function (result) {
-            var preferredNamesAsString = getSubjectPreferredNamesAsString(result);
-            $(htmlId).text(preferredNamesAsString);
+            var preferredNamesAsString = getSubjectPreferredNamesAsString(result, knowledgeCardStatement);
+            $(htmlId).html(preferredNamesAsString);
         },
         error: function (e) {
             console.log(e);

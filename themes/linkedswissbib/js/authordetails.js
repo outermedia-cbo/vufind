@@ -50,7 +50,7 @@ $(document).ready(function() {
                     if (isAuthorUriRealPerson(uri)) {
                         fullNameString = '<a href="http://' + window.location.hostname +
                             '/sbrd/Exploration/AuthorDetails?lookfor=' + uri + '&type=AuthorForId">' + name + '</a>';
-                        fullNameString += '<span class="fa fa-info-circle fa-lg kcopener" authorId="' + uri +'"></span>';
+                        fullNameString += '<span class="fa fa-info-circle fa-lg kcopenerAuthor" authorId="' + uri +'"></span>';
                     } else {
                         fullNameString = name;
                     }
