@@ -21,7 +21,6 @@ class ElasticsearchController extends AbstractSearch
     public function __construct()
     {
         $this->searchClassId = 'Elasticsearch';
-        $this->searchClassId = 'Solr';
         parent::__construct();
     }
 
