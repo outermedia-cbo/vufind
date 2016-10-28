@@ -30,8 +30,8 @@ $uniqueID = $record->getUniqueID();
 //$uniqueID = 'uniqueID';
 
 $nameAsLabel = $this->driver->getNameAsString();
-$birthDate = $this->driver->getBirthDate();
-$deathDate = $this->driver->getBirthDate();
+$birthDate = $this->driver->getBirthYear();
+$deathDate = $this->driver->getDeathYear();
 
 $showFRBR = $this->configAccess()->Site->displayFrbr;
 $memorizeLink = $this->recordLink()->getActionUrl($this->driver, 'Save');

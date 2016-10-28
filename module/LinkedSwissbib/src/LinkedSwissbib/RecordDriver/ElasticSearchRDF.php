@@ -116,6 +116,16 @@ class ElasticSearchRDF extends AbstractBase
         return "could not parse date!";
     }
 
+    private function parseYear($date)
+    {
+        if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
+            return date("Y", strtotime($date));
+        } elseif (preg_match("/^[0-9]{4}$/", $date)) {
+            return $date;
+        }
+        return "could not parse date!";
+    }
+
     private function addHtmlToExternalLinks ($stringWithCommaSeparatedUrls)
     {
         $array = explode(',', $stringWithCommaSeparatedUrls);
@@ -289,6 +299,19 @@ class ElasticSearchRDF extends AbstractBase
         }
     }
 
+    public function getBirthYear()
+    {
+        if (isset($this->fields['_source']['dbp:birthDate'])) {
+            return $this->parseYear($this->fields['_source']['dbp:birthDate']);
+        } elseif (isset($this->fields['_source']['schema:birthDate'])) {
+            return $this->parseYear($this->fields['_source']['schema:birthDate']);
+        } elseif (isset($this->fields['_source']['dbp:birthYear'])) {
+            return $this->parseYear($this->fields['_source']['dbp:birthYear']);
+        } else {
+            return "no content provided";
+        }
+    }
+
     public function getDeathDate()
     {
         if (isset($this->fields['_source']['dbp:deathDate'])) {
@@ -297,6 +320,19 @@ class ElasticSearchRDF extends AbstractBase
             return $this->parseDate($this->fields['_source']['schema:deathDate']);
         } elseif (isset($this->fields['_source']['dbp:deathYear'])) {
             return $this->parseDate($this->fields['_source']['dbp:deathYear']);
+        } else {
+            return "no content provided";
+        }
+    }
+
+    public function getDeathYear()
+    {
+        if (isset($this->fields['_source']['dbp:deathDate'])) {
+            return $this->parseYear($this->fields['_source']['dbp:deathDate']);
+        } elseif (isset($this->fields['_source']['schema:deathDate'])) {
+            return $this->parseYear($this->fields['_source']['schema:deathDate']);
+        } elseif (isset($this->fields['_source']['dbp:deathYear'])) {
+            return $this->parseYear($this->fields['_source']['dbp:deathYear']);
         } else {
             return "no content provided";
         }
