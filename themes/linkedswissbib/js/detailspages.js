@@ -190,6 +190,34 @@ function getPersonThumbnail (data, key) {
     }
 }
 
+function getSubjectLiteral (array, key) {
+    if (typeof array[key] != 'undefined') {
+        var result = array[key]['@value'];
+    } else {
+        var result = '';
+    }
+    return result;
+}
+
+function writeSubjectLiteralsAsStringIntoHtmlId (data, gndUri, htmlId) {
+    var array = data.DEFAULT[0]._source[gndUri];
+    console.log(array);
+    if (typeof array !== 'undefined') {
+        if ($.isArray(array)) {
+            var result = "";
+            for (var key in array) {
+                var literal = getSubjectLiteral(array, key);
+                    result += literal + ', ';
+            }
+            var result = result.substring(0, result.length - 2);
+        }
+    }
+    if (!result) {
+        result = "no content provided";
+    }
+    $(htmlId).text(result);
+}
+
 //get literal from object in array (single value)
 function getSubjectPreferredName (array, key) {
     if (typeof array[key]._source['http://d-nb_info/standards/elementset/gnd#preferredName'] != 'undefined') {

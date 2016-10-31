@@ -162,9 +162,11 @@
                         var kc_subjectPreferredName = getSubjectPreferredName (data.DEFAULT, 0);
                         $('.kc_subjectPreferredName').text(kc_subjectPreferredName);
                         $('#ui-id-2').text(kc_subjectPreferredName); //Title/Widget-Header
-                        writeBibliographicResourceIntoHtmlClass(data, '.kc_works');
                         $('#kc_subjectid').attr('href', linkToSubjectdetails);
-                        $('#kc_alternativeNames').text('no content provided');
+                        // get subject's alternative names
+                        writeSubjectLiteralsAsStringIntoHtmlId (data, 'http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading', '#kc_subjectAlternativeNames');
+                        // get subject's definition
+                        writeSubjectLiteralsAsStringIntoHtmlId (data, 'http://d-nb_info/standards/elementset/gnd#definition', '#kc_subjectDefinition');
                         $( "#dialogSubject" ).dialog( "open" );
 
                         $.ajax({
@@ -237,7 +239,12 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="meta">
-                    <span><strong>Namensvarianten: </strong></span><span id="kc_alternativeNames"></span><br>
+                    <span><strong>Namensvarianten: </strong></span><span id="kc_subjectAlternativeNames"></span><br>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="meta">
+                    <span><strong>Erläuterungen: </strong></span><span id="kc_subjectDefinition"></span><br>
                 </div>
             </div>
         </div>
