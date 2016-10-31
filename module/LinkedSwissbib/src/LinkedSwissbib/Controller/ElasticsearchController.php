@@ -24,12 +24,6 @@ class ElasticsearchController extends AbstractSearch
         parent::__construct();
     }
 
-
-    public function searchAction ()
-    {
-        return parent::resultsAction();
-    }
-
     public function resultsAction()
     {
         $query = $this->getRequest()->getQuery();

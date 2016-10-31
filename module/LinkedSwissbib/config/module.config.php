@@ -94,7 +94,6 @@ $config = [
 
 // Define static routes -- Controller/Action strings
 $staticRoutes = [
-    'Exploration/Search',
     'Elasticsearch/Results',
     'Sparql/Results',
     'Exploration/AuthorDetails',
