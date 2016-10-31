@@ -97,7 +97,6 @@ $staticRoutes = [
     'Exploration/Search',
     'Elasticsearch/Results',
     'Sparql/Results',
-    'Exploration/Author',
     'Exploration/AuthorDetails',
     'Exploration/SubjectDetails',
     'Ajax/Json',
