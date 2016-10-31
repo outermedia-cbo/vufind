@@ -48,6 +48,11 @@
             <li class="active">Themenseite: <? echo $subject_preferredName ?></li>
         </ul>
     </div>
+    <?
+    if (($subject_preferredName == "no content provided") || ($subject_preferredName == '') ) {
+    ?><h3><? echo "Oje, hier scheinen keine verlinkten Daten vorhanden zu sein!";?></h3>
+    </br><button class="btn btn-primary" onclick="goBack()">Zurück</button>
+    <? } else { ?>
     <!-- end class container container-table-fix-md breadcrumbWrapper -->
     <div class="container container-table-fix-md">
         <div class="row row-table-fix-md table-sidebar">
@@ -262,6 +267,7 @@
         </div>
         <!-- end class row row-table-fix-md table-sidebar -->
     </div>
+    <? } ?>
     <!-- container container-table-fix-md -->
     <div id="bottom-puffer"></div>
 </div>

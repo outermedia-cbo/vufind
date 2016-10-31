@@ -47,6 +47,11 @@
             <li class="active">Personenseite: <? echo $person_nameAsString ?></li>
         </ul>
     </div>
+    <?
+    if (($person_nameAsString == "no content provided") || ($person_nameAsString == '')) {
+    ?><h3><? echo "Oje, hier scheinen keine verlinkten Daten vorhanden zu sein!";?></h3>
+    </br><button class="btn btn-primary" onclick="goBack()">Zurück</button>
+    <? } else { ?>
     <!-- end class container container-table-fix-md breadcrumbWrapper -->
     <div class="container container-table-fix-md">
         <div class="row row-table-fix-md table-sidebar">
@@ -288,6 +293,7 @@
         <!-- end class row row-table-fix-md table-sidebar -->
     </div>
     <!-- container container-table-fix-md -->
+    <? } ?>
     <div id="bottom-puffer"></div>
 </div>
 <!-- end class main -->

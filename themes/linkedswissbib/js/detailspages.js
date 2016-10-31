@@ -1,3 +1,8 @@
+//go back function, returns to previous page
+function goBack() {
+    window.history.back();
+}
+
 //extract Ids form type BibliographicResources --> used as search (lookfor) parameters in ajax call
 function getIdsFromPropertyInBibliographicResourcesAsString (data, property) {
     var array = data.bibliographicResource;
