@@ -12,6 +12,39 @@ $(document).ready(function() {
             minLength: 3
         }, {
             templates: {
+                header: '<h4 class="autocomplete-header">Werke</h4>'
+            },
+            displayKey: function(data) {
+                return data['val'][2];
+            },
+            source: function(query, cb) {
+                var searcher = extractClassParams('.autocomplete');
+                $.ajax({
+                    url: path + '/AJAX/JSON',
+                    data: {
+                        q:query,
+                        method:'getACSuggestions',
+                        searcher:'Solr',
+                        type:'Title'
+                    },
+                    dataType:'json',
+                    success: function(json) {
+                        if (json.status == 'OK' && json.data.length > 0) {
+                            var datums = [];
+                            for (var i=0;i<json.data.length;i++) {
+                                if (json.data[i][1] == 'BibRes') {
+                                    datums.push({val: json.data[i]});
+                                }
+                            }
+                            cb(datums);
+                        } else {
+                            cb([]);
+                        }
+                    }
+                });
+            }
+        } , {
+            templates: {
                 header: '<h4 class="autocomplete-header">Autoren</h4>'
             },
             displayKey: function(data){
@@ -76,40 +109,7 @@ $(document).ready(function() {
                     }
                 });
             }
-        } , {
-            templates: {
-                header: '<h4 class="autocomplete-header">Werke</h4>'
-            },
-            displayKey: function(data) {
-                return data['val'][2];
-            },
-            source: function(query, cb) {
-                var searcher = extractClassParams('.autocomplete');
-                $.ajax({
-                    url: path + '/AJAX/JSON',
-                    data: {
-                        q:query,
-                        method:'getACSuggestions',
-                        searcher:'Solr',
-                        type:'Title'
-                    },
-                    dataType:'json',
-                    success: function(json) {
-                        if (json.status == 'OK' && json.data.length > 0) {
-                            var datums = [];
-                            for (var i=0;i<json.data.length;i++) {
-                                if (json.data[i][1] == 'BibRes') {
-                                    datums.push({val: json.data[i]});
-                                }
-                            }
-                            cb(datums);
-                        } else {
-                            cb([]);
-                        }
-                    }
-                });
-            }
-        }
+        } 
     ).bind('typeahead:selected', function(obj, datum, name) {
 
             var baseurl = 'http://' + window.location.hostname + '/sbrd/';
