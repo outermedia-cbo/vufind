@@ -99,9 +99,10 @@
             $(document).on('click', '.kcopenerAuthor', function() {
                 //console.log("kcopener was clicked");
                 var authorId = $(this).attr("authorid")
-                var linkToAuthordetails = 'http://' + window.location.hostname +
+                var linkToAuthordetailsWorks = 'http://' + window.location.hostname +
                 '/sbrd/Exploration/AuthorDetails?lookfor=' + authorId + '&type=AuthorForId#works';
-
+                var linkToAuthordetails = 'http://' + window.location.hostname +
+                    '/sbrd/Exploration/AuthorDetails?lookfor=' + authorId + '&type=AuthorForId';
                 $.ajax({
                     url: "http://" + window.location.hostname +
                     "/sbrd/Ajax/Json?&method=getAuthorMulti&searcher=Elasticsearch",
@@ -124,7 +125,8 @@
                     var kc_name = getPersonNameAsString (data, 0);
 
                     //Contents KnowledgeCard
-                    $('#kc_authorid').attr('href', linkToAuthordetails);
+                    $('#kc_authorid').attr('href', linkToAuthordetailsWorks);
+                    $('#kc_link').attr('href', linkToAuthordetails);
                     $('#kc_birthDate').text(kc_birthDate);
                     $('#kc_birthPlace').text(kc_birthPlace);
                     $('#kc_deathDate').text(kc_deathDate);
@@ -149,9 +151,10 @@
             $(document).on('click', '.kcopenerSubject', function() {
                 //console.log("kcopener was clicked");
                 var subjectId = $(this).attr("subjectid");
-                var linkToSubjectdetails = 'http://' + window.location.hostname +
+                var linkToSubjectdetailsWorks = 'http://' + window.location.hostname +
                     '/sbrd/Exploration/SubjectDetails?lookfor=' + subjectId + '&type=SubjectById#works';
-
+                var linkToSubjectdetails = 'http://' + window.location.hostname +
+                    '/sbrd/Exploration/SubjectDetails?lookfor=' + subjectId + '&type=SubjectById';
                 $.ajax({
                     url: "http://" + window.location.hostname +
                     "/sbrd/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
@@ -162,7 +165,8 @@
                         var kc_subjectPreferredName = getSubjectPreferredName (data.DEFAULT, 0);
                         $('.kc_subjectPreferredName').text(kc_subjectPreferredName);
                         $('#ui-id-2').text(kc_subjectPreferredName); //Title/Widget-Header
-                        $('#kc_subjectid').attr('href', linkToSubjectdetails);
+                        $('#kc_subjectid').attr('href', linkToSubjectdetailsWorks);
+                        $('#kc_link').attr('href', linkToSubjectdetails);
                         // get subject's alternative names
                         writeSubjectLiteralsAsStringIntoHtmlId (data, 'http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading', '#kc_subjectAlternativeNames');
                         // get subject's definition
@@ -230,6 +234,9 @@
                 <div class="kc_works"></div>
                 <a  id="kc_authorid" class="btn btn-link" href="">» Mehr Literatur und Medien von <span class="kc_name"></span></a>
             </div>
+            <div class="row">
+                <a  id="kc_link" class="btn btn-link" style="float:right;" href="">» Mehr Details zu <span class="kc_name"></span></a>
+            </div>
         </div>
     </div>
     <!-- end id dialogAuthor -->
@@ -259,6 +266,9 @@
             <div class="row">
                 <div class="kc_works"></div>
                 <a id="kc_subjectid" class="btn btn-link" href="">» Mehr Literatur und Medien zum Thema <span class="kc_subjectPreferredName"></span></a>
+            </div>
+            <div class="row">
+                <a  id="kc_link" class="btn btn-link" style="float:right;" href="">» Mehr Details zu <span class="kc_subjectPreferredName"></span></a>
             </div>
         </div>
     </div>
