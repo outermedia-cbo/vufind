@@ -44,7 +44,7 @@ class Params extends \VuFind\Search\Base\Params
      *
      * @var int
      */
-    protected $limit = 7;
+    //protected $limit = 7;
 
     /**
      * Facet result limit

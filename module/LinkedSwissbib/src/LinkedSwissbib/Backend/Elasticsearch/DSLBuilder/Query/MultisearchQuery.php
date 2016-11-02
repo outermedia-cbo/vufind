@@ -66,6 +66,6 @@ class MultisearchQuery extends Query
     }
 
     private function buildBody($array){
-        return "\n" . '{"query":' . json_encode($array) . ', "size": 7}';
+        return "\n" . '{"query":' . json_encode($array) . '}';
     }
 }
