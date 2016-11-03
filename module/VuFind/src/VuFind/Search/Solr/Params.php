@@ -40,13 +40,6 @@ use VuFindSearch\ParamBag;
 class Params extends \VuFind\Search\Base\Params
 {
     /**
-     * Result limit (overwrite base class)
-     *
-     * @var int
-     */
-    //protected $limit = 7;
-
-    /**
      * Facet result limit
      *
      * @var int
