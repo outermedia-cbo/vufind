@@ -46,7 +46,7 @@ class ElasticSearchRDF extends AbstractBase
         throw new \Exception(__FUNCTION__ . ' currently not supported');
     }
 
-    private function getValueIfAvailable($lookup, $fallback = "no content provided")
+    private function getValueIfAvailable($lookup, $fallback = "Keine Inhalte vorhanden")
     {
         if (isset($this->fields['_source'][$lookup]))
             $result = $this->fields['_source'][$lookup];
@@ -59,7 +59,7 @@ class ElasticSearchRDF extends AbstractBase
         return preg_replace(['/</','/>/'], ['&lt;','&gt;'],$result);
     }
 
-    private function getValueForProperty($lang, $lookup, $fallback = "no content provided")
+    private function getValueForProperty($lang, $lookup, $fallback = "Keine Inhalte vorhanden")
     {
         if(!isset($this->fields['_source'][$lookup]))
             return $fallback;
@@ -67,7 +67,7 @@ class ElasticSearchRDF extends AbstractBase
         return $this->getValueFromArray($lang, $array);
     }
 
-    private function getNestedValueForProperty($lang, $lookup, $innerlookup = '@value', $fallback = "no content provided")
+    private function getNestedValueForProperty($lang, $lookup, $innerlookup = '@value', $fallback = "Keine Inhalte vorhanden")
     {
         $result = $this->getValueForProperty($lang, $lookup, $fallback);
 
@@ -99,7 +99,7 @@ class ElasticSearchRDF extends AbstractBase
                 if (!empty($fallbackResult)) {
                     $result = $fallbackResult;
                 } else {
-                    return "no content provided";
+                    return "Keine Inhalte vorhanden";
                 }
             }
             return implode(self::ARRAY_SEPARATOR, $result);
@@ -130,14 +130,14 @@ class ElasticSearchRDF extends AbstractBase
     {
         $array = explode(',', $stringWithCommaSeparatedUrls);
         foreach ($array as $link) {
-            if (strpos($link, 'no content provided') === false) {
+            if (strpos($link, 'Keine Inhalte vorhanden') === false) {
                 $result .= '<a target="_blank" href="' . $link . '"><i class="fa fa-external-link"></i> ' . $link . '</a></br>';
             }
         }
         if (!empty($result)) {
             return $result;
         } else {
-            return 'no content provided';
+            return 'Keine Inhalte vorhanden';
         }
     }
 
@@ -295,7 +295,7 @@ class ElasticSearchRDF extends AbstractBase
         } elseif (isset($this->fields['_source']['dbp:birthYear'])) {
             return $this->parseDate($this->fields['_source']['dbp:birthYear']);
         } else {
-            return "no content provided";
+            return "Keine Inhalte vorhanden";
         }
     }
 
@@ -308,7 +308,7 @@ class ElasticSearchRDF extends AbstractBase
         } elseif (isset($this->fields['_source']['dbp:birthYear'])) {
             return $this->parseYear($this->fields['_source']['dbp:birthYear']);
         } else {
-            return "no content provided";
+            return "Keine Inhalte vorhanden";
         }
     }
 
@@ -321,7 +321,7 @@ class ElasticSearchRDF extends AbstractBase
         } elseif (isset($this->fields['_source']['dbp:deathYear'])) {
             return $this->parseDate($this->fields['_source']['dbp:deathYear']);
         } else {
-            return "no content provided";
+            return "Keine Inhalte vorhanden";
         }
     }
 
@@ -334,7 +334,7 @@ class ElasticSearchRDF extends AbstractBase
         } elseif (isset($this->fields['_source']['dbp:deathYear'])) {
             return $this->parseYear($this->fields['_source']['dbp:deathYear']);
         } else {
-            return "no content provided";
+            return "Keine Inhalte vorhanden";
         }
     }
 

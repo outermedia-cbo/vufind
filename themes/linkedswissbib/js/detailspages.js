@@ -89,7 +89,7 @@ function getBibResForCarousel (data) {
         var result = [item0, item1, item2];
     }
     if (!result) {
-        result = 'no content provided';
+        result = 'Keine Inhalte vorhanden';
     }
     return result;
 }
@@ -125,7 +125,7 @@ function getTagCloudContentAsArray (data, gndIdsAsString) {
         }
     }
     if (!result) {
-        result = "no content provided";
+        result = "Keine Inhalte vorhanden";
     }
     return result;
 }
@@ -161,7 +161,7 @@ function getPersonAuthorsNameThumbnailIconAsString(data, person_uniqueId) {
         }
     }
     if (!result) {
-        result = "no content provided";
+        result = "Keine Inhalte vorhanden";
     }
     return result;
 }
@@ -176,7 +176,7 @@ function getPersonNameAsString(array, key) {
     } else if ('foaf:name' in array) {
         return array['foaf:name'];
     } else {
-        return 'no content available';
+        return 'Keine Inhalte vorhanden';
     }
 }
 
@@ -218,7 +218,7 @@ function writeSubjectLiteralsAsStringIntoHtmlId (data, gndUri, htmlId) {
         }
     }
     if (!result) {
-        result = "no content provided";
+        result = "Keine Inhalte vorhanden";
     }
     $(htmlId).text(result);
 }
@@ -274,7 +274,7 @@ function getSubjectPreferredNamesAsString (data, knowledgeCardStatement) {
         }
     }
     if (!result) {
-        result = "no content provided";
+        result = "Keine Inhalte vorhanden";
     }
     return result;
 }
@@ -312,7 +312,7 @@ function writeBibliographicResourceIntoHtmlClass(data, htmlClass) {
         }
     }
     if (!result) {
-        result = 'no content provided';
+        result = 'Keine Inhalte vorhanden';
     }
     $(htmlClass).html(result);
 }
@@ -360,7 +360,7 @@ function writeSubjectNamesIntoTagCloud (gndIdsAsString, htmlId) {
         data: {"lookfor": gndIdsAsString},
         success: function (data) {
             var tags = getTagCloudContentAsArray(data, gndIdsAsString);
-            if (tags == "no content provided") {
+            if (tags == "Keine Inhalte vorhanden") {
                 $(htmlId).text(tags);
             } else {
                 $(htmlId).hotag({

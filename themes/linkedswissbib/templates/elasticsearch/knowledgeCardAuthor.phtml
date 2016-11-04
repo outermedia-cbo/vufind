@@ -44,7 +44,7 @@
                 }
                 if (!result) {
                     if (!fallbackResult) {
-                        var result = 'no content provided';
+                        var result = 'Keine Inhalte vorhanden';
                     } else {
                         var result = fallbackResult;
                     }
@@ -62,7 +62,7 @@
                 } else if (dbpYear in dates) {
                     var date =  dates[dbpYear];
                 } else {
-                    var date =  'no content provided';
+                    var date =  'Keine Inhalte vorhanden';
                 }
 
                 //check whether first character is a number or not
@@ -83,12 +83,12 @@
                     } else if (date.length == 4) {
                         var kc_date = date;
                     } else {
-                        var kc_date = 'no content provided';
+                        var kc_date = 'Keine Inhalte vorhanden';
                     }
                 // if the first character is not a number
                 } else {
-                    var kc_date = 'no content provided';
-                    var kc_year = 'no content provided';
+                    var kc_date = 'Keine Inhalte vorhanden';
+                    var kc_year = 'Keine Inhalte vorhanden';
                 }
                 return [kc_date, kc_year];
                 //console.log(result);
