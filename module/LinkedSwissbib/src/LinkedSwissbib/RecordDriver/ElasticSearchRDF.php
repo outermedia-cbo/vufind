@@ -386,28 +386,6 @@ class ElasticSearchRDF extends AbstractBase
         return $this->fields['_id'];
     }
 
-    /* Currently no properties
-    public function getAlternativeTitle()
-    {
-        $array = $this->fields['_source']['dct:alternative'];
-
-        if (!isset($array)) {
-            return "No content";
-        } elseif (!is_array($array)) {
-            return $array;
-        } elseif (count($array)===1) {
-            $result = reset($array);
-            return $result;
-        } else {
-            foreach ($array as $outerarray => $innerarray) {
-                $result .= $innerarray . ", ";
-            }
-            $result = rtrim($result, ", ");
-            return $result;
-        }
-    }
-    */
-
     public function getRdf($rdfType = 'turtle')
     {
 
@@ -420,18 +398,6 @@ class ElasticSearchRDF extends AbstractBase
         }
 
     }
-
-    /* Currently no properties
-    public function getOriginalLanguage()
-    {
-        $result = $this->fields['_source']['dbp:originalLanguage'];
-        if(!isset($result)){
-            return "No content";
-        } else {
-            return $result;
-        }
-    }
-    */
 
     public function getRdfType()
     {
