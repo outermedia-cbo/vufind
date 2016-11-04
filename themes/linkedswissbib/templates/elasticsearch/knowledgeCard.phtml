@@ -18,7 +18,7 @@
                 }
             });
 
-            // get Values from array (comma separated output) --> knowledgeCardAuthor
+            // get Values from array (comma separated output)
             function getPersonValuesAsString (data, property) {
                 var array = data.person[0]._source[property];
                 if (typeof array !== 'undefined') {

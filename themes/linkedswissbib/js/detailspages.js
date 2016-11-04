@@ -166,7 +166,7 @@ function getPersonAuthorsNameThumbnailIconAsString(data, person_uniqueId) {
     return result;
 }
 
-//Similar in extractName in authordetails.js!!! --> knowledgeCardAuthor
+//Similar in extractName in authordetails.js!!! --> knowledgeCard
 function getPersonNameAsString(array, key) {
     var  array = array.person[key]._source;
     if (('foaf:lastName' in array) && ('foaf:firstName') in array) {
@@ -180,7 +180,7 @@ function getPersonNameAsString(array, key) {
     }
 }
 
-// --> knowledgeCardAuthor
+// --> knowledgeCard
 function getPersonThumbnail (data, key) {
     var result = data.person[key]._source['dbp:thumbnail'];
     var fallback = "../themes/linkedswissbib/images/personAvatar.png";
@@ -334,7 +334,7 @@ function writePersonAuthorsNameThumbnailIconIntoHtmlClass (personIdsAsString, ht
     })
 }
 
-// Write literals of gnd ids into html Id --> knowledgeCardAuthor, subjectdetails
+// Write literals of gnd ids into html Id --> knowledgeCard, subjectdetails
 function writeSubjectNamesIntoHtmlId (gndIdsAsString, htmlId, knowledgeCardStatement) {
     $.ajax({
         url: "http://" + window.location.hostname +
