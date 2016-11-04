@@ -13,6 +13,7 @@
             <li class="alert alert-danger">Testsystem!!!</li>
           <? endif; ?>
 
+          <? if (!$displayTestSystem): ?>
           <? $cart = $this->cart();
           if ($cart->isActive()): ?>
             <li id="cartSummary">
@@ -82,6 +83,7 @@
                 <? endforeach; ?>
               </ul>
             </li>
+          <? endif; ?>
           <? endif; ?>
         </ul>
       </div>
