@@ -206,7 +206,6 @@ function getSubjectLiteral (array, key) {
 
 function writeSubjectLiteralsAsStringIntoHtmlId (data, gndUri, htmlId) {
     var array = data.DEFAULT[0]._source[gndUri];
-    console.log(array);
     if (typeof array !== 'undefined') {
         if ($.isArray(array)) {
             var result = "";

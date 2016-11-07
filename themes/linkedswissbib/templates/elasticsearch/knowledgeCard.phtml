@@ -161,7 +161,6 @@
                     type: "POST",
                     data: {"lookfor": subjectId },
                     success: function (data) {
-                        console.log(data);
                         var kc_subjectPreferredName = getSubjectPreferredName (data.DEFAULT, 0);
                         $('.kc_subjectPreferredName').text(kc_subjectPreferredName);
                         $('#ui-id-2').text(kc_subjectPreferredName); //Title/Widget-Header
@@ -179,7 +178,6 @@
                             type: "POST",
                             data: {"lookfor": subjectId },
                             success: function (data) {
-                                console.log(data);
                                 writeBibliographicResourceIntoHtmlClass(data, '.kc_works');
                             },
                             error: function (e) {
