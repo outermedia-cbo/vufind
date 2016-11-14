@@ -31,7 +31,7 @@ $(document).ready(function() {
                     success: function(json) {
                         if (json.status == 'OK' && json.data.length > 0) {
                             var datums = [];
-                            for (var i=0;i< 7;i++) {
+                            for (var i=0;i< 5;i++) {
                                 if (json.data[i][1] == 'BibRes') {
                                     datums.push({val: json.data[i]});
                                 }
@@ -64,9 +64,11 @@ $(document).ready(function() {
                     success: function(json) {
                         if (json.status == 'OK' && json.data.length > 0) {
                             var datums = [];
-                            for (var i=0;i< 7;i++) {
+                            for (var i=0;i < json.data.length;i++) {
                                 if (json.data[i][1] == 'person') {
-                                    datums.push({val:json.data[i]});
+                                    if (datums.length < 5 ) {
+                                        datums.push({val: json.data[i]});
+                                    }
                                 }
                             }
                             cb(datums);
@@ -97,9 +99,11 @@ $(document).ready(function() {
                     success: function(json) {
                         if (json.status == 'OK' && json.data.length > 0) {
                             var datums = [];
-                            for (var i=0;i< 7;i++) {
+                            for (var i=0;i< json.data.length ;i++) {
                                 if (json.data[i][1] == 'DEFAULT') {
-                                    datums.push({val: json.data[i]});
+                                    if (datums.length < 5 ) {
+                                        datums.push({val: json.data[i]});
+                                    }
                                 }
                             }
                             cb(datums);
