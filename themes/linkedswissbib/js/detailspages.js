@@ -3,6 +3,11 @@ function goBack() {
     window.history.back();
 }
 
+//function that writes person's and subject's name in to html code --> authordetails, subjectdetails
+function writeLabelIntoHtml (labelAsString) {
+    $('.labelAsString').html(labelAsString);
+}
+
 //extract Ids form type BibliographicResources --> used as search (lookfor) parameters in ajax call
 function getIdsFromPropertyInBibliographicResourcesAsString (data, property) {
     var array = data.bibliographicResource;
@@ -375,7 +380,7 @@ function writeSubjectNamesIntoTagCloud (gndIdsAsString, htmlId) {
 }
 
 // Write contents of person with unique Id into file --> authordetails
-function writeAuthordetailsModuleContentIntoHtml (person_uniqueId) {
+function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAsString) {
     //get IDs from type bibliographicResources: ids of resources, ids contributors of resources, ids subjects of resources
     $.ajax({
         url: "http://" + window.location.hostname +
@@ -388,6 +393,7 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId) {
             var idSubject = getIdsFromPropertyInBibliographicResourcesAsString(data, 'dct:subject');
             writePersonAuthorsNameThumbnailIconIntoHtmlClass (idContributorFromBibRes, ".ad_authorsOfCommonWorks", person_uniqueId);
             writeSubjectNamesIntoTagCloud(idSubject, "#ad_tagCloudSubjectsOfWorks");
+            writeLabelIntoHtml (person_nameAsString);
 
             $.ajax({
                 url: "http://" + window.location.hostname +
@@ -425,7 +431,7 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId) {
 }
 
 // Write contents of gnd subject with unique Id into file --> subjectdetails
-function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId) {
+function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_preferredNameAsString) {
     //get IDs from type bibliographicResources: ids of resources, ids contributors of resources, ids subjects of resources
     $.ajax({
         url: "http://" + window.location.hostname +
@@ -437,6 +443,7 @@ function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId) {
             var idContributorFromBibRes = getIdsFromPropertyInBibliographicResourcesAsString(data, 'dct:contributor');
             var idSubject = getIdsFromPropertyInBibliographicResourcesAsString(data, 'dct:subject');
             writePersonAuthorsNameThumbnailIconIntoHtmlClass (idContributorFromBibRes, ".sd_authorsOfWorksWithSubject", subject_uniqueId);
+            writeLabelIntoHtml (subject_preferredNameAsString);
 
             $.ajax({
                 url: "http://" + window.location.hostname +
