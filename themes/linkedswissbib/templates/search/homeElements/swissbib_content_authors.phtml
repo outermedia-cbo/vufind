@@ -18,7 +18,20 @@ $linkToAuthorDetails3 = $basePath . "/Exploration/AuthorDetails?lookfor=http://d
 $thumbnail3 = "http://commons.wikimedia.org/wiki/Special:FilePath/Lily_Braun.jpg";
 $author3 = "Lily Braun";
 $year3 = "(1865 - 1916)";
+
+//Item 4
+$linkToAuthorDetails4 = $basePath . "/Exploration/AuthorDetails?lookfor=http://data.swissbib.ch/person/0bac9e1d-fb46-36db-80e5-a918ab485f6f&type=AuthorForId";
+$thumbnail4 = "http://commons.wikimedia.org/wiki/Special:FilePath/Lily_Braun.jpg";
+$author4 = "Lily Braun";
+$year4 = "(1865 - 1916)";
+
+//Item 5
+$linkToAuthorDetails5 = $basePath . "/Exploration/AuthorDetails?lookfor=http://data.swissbib.ch/person/0bac9e1d-fb46-36db-80e5-a918ab485f6f&type=AuthorForId";
+$thumbnail5 = "http://commons.wikimedia.org/wiki/Special:FilePath/Lily_Braun.jpg";
+$author5 = "Lily Braun";
+$year5 = "(1865 - 1916)";
 ?>
+
 
 <div class="home-content-box">
     <h2 class="lead">AutorInnen</h2>
@@ -26,11 +39,15 @@ $year3 = "(1865 - 1916)";
         <div data-ride="carousel" class="carousel slide" id="similar-items-carousel-home-authors">
 
             <!-- Indicators -->
+            <div class="row">
             <ol class="carousel-indicators">
                 <li class="active" data-slide-to="0" data-target="#similar-items-carousel-home-authors"></li>
                 <li data-slide-to="1" data-target="#similar-items-carousel-home-authors"></li>
                 <li data-slide-to="2" data-target="#similar-items-carousel-home-authors"></li>
+                <li data-slide-to="3" data-target="#similar-items-carousel-home-authors"></li>
+                <li data-slide-to="4" data-target="#similar-items-carousel-home-authors"></li>
             </ol>
+            </div>
 
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
@@ -38,10 +55,9 @@ $year3 = "(1865 - 1916)";
                     <div class="row">
                         <div class="col-sm-1"></div>
                         <div class="col-sm-4">
-                            <a href= "<? echo $linkToAuthorDetails1; ?>" class="hover-overlay" style="min-height: 150px;">
+                            <a href= "<? echo $linkToAuthorDetails1; ?>" class="hover-overlay">
                                 <img title="<? echo $author1; ?>"
-                                     src="<? echo $thumbnail1; ?>"
-                                     style="min-height: 150px;">
+                                     src="<? echo $thumbnail1; ?>">
                         </div>
                         <div class="col-sm-6">
                             <div class="content">
@@ -57,10 +73,9 @@ $year3 = "(1865 - 1916)";
                     <div class="row">
                         <div class="col-sm-1"></div>
                         <div class="col-sm-4">
-                            <a href= "<? echo $linkToAuthorDetails2; ?>" class="hover-overlay" style="min-height: 150px;">
+                            <a href= "<? echo $linkToAuthorDetails2; ?>" class="hover-overlay">
                                 <img title="<? echo $author2; ?>"
-                                     src="<? echo $thumbnail2; ?>"
-                                     style="min-height: 150px;">
+                                     src="<? echo $thumbnail2; ?>">
                         </div>
                         <div class="col-sm-6">
                             <div class="content">
@@ -76,15 +91,50 @@ $year3 = "(1865 - 1916)";
                     <div class="row">
                         <div class="col-sm-1"></div>
                         <div class="col-sm-4">
-                            <a href= "<? echo $linkToAuthorDetails3;  ?>" class="hover-overlay" style="min-height: 150px;">
+                            <a href= "<? echo $linkToAuthorDetails3;  ?>" class="hover-overlay">
                                 <img title="<? echo $author3; ?>"
-                                     src="<? echo $thumbnail3?>"
-                                     style="min-height: 150px;">
+                                     src="<? echo $thumbnail3?>">
                         </div>
                         <div class="col-sm-6">
                             <div class="content">
                                 <b><? echo $author3; ?></b>
                                 <br><? echo $year3; ?>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-4">
+                            <a href= "<? echo $linkToAuthorDetails4;  ?>" class="hover-overlay">
+                                <img title="<? echo $author4; ?>"
+                                     src="<? echo $thumbnail4?>">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="content">
+                                <b><? echo $author4; ?></b>
+                                <br><? echo $year4; ?>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-4">
+                            <a href= "<? echo $linkToAuthorDetails5;  ?>" class="hover-overlay">
+                                <img title="<? echo $author5; ?>"
+                                     src="<? echo $thumbnail5?>">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="content">
+                                <b><? echo $author5; ?></b>
+                                <br><? echo $year5; ?>
                             </div>
                         </div>
                         </a>
