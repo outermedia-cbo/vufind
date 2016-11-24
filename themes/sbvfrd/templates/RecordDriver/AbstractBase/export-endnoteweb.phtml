@@ -1,8 +1,8 @@
 <?
 // A driver-specific template may pass in format overrides; check for these before going to the driver itself:
-$formats = isset($this->overrideFormats) ? $this->overrideFormats : $this->driver->tryMethod('getFormats');
-if (is_array($formats)) {
-    foreach ($formats as $format) {
+$formats = isset($this->overrideFormats) ? $this->overrideFormats : $this->driver->tryMethod('getFormatsOpenUrl');
+if (is_array($formats) && !empty($formats)) {
+    foreach (preg_grep('/^[^X]/', $formats) as $format) {
         switch (strtolower($format)) {
             case "book";
                 $format = "BOOK";
@@ -34,6 +34,19 @@ if (is_array($series)) {
 }
 
 $journalTitle = $this->driver->tryMethod('getContainerTitle');
+
+if (empty($journalTitle)) {
+    $hostItems = $this->driver->tryMethod('getHostItemEntry');
+    if (!empty($hostItems)) {
+        foreach ($hostItems as $hostItem) {
+            echo "JF - {$hostItem['title']},\n";
+            if (!empty($hostItem['related'])) {
+                echo "VO - {$hostItem['related']},\n";
+            }
+        }
+    }
+}
+
 if (!empty($journalTitle)) {
     echo "JF  - $journalTitle\n";
     $volume = $this->driver->tryMethod('getContainerVolume');
@@ -54,15 +67,21 @@ if (!empty($journalTitle)) {
     }
 }
 
-$author = $this->driver->tryMethod('getPrimaryAuthor');
-if (!empty($author)) {
-    echo "A1  - $author\n";
-}
-
-$secondaryAuthors = $this->driver->tryMethod('getSecondaryAuthors');
-if (is_array($secondaryAuthors)) {
-    foreach ($secondaryAuthors as $current) {
-        echo "A2  - $current\n";
+$authors = $this->driver->tryMethod('getDeduplicatedAuthors');
+if (is_array($authors)) {
+    if (!empty($authors['main'])) {
+        reset($authors['main']);
+        echo "A1  - " . key($authors['main']) . "\n";
+    }
+    if (!empty($authors['corporate'])) {
+        reset($authors['corporate']);
+        echo "A1  - " . key($authors['corporate']) . "\n";
+    }
+    if (is_array($authors['secondary']) && !empty($authors['secondary'])) {
+        reset($authors['secondary']);
+        foreach ($authors['secondary'] as $current => $currentVal) {
+            echo "A2  - $current\n";
+        }
     }
 }
 

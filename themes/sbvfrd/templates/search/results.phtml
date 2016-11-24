@@ -24,16 +24,27 @@
   );
 
   // Set up breadcrumbs:
+  $type = (isset($_GET['type']) ? $_GET['type'] : '');
+  $originalSort = (isset($_GET['originalSort']) ? $_GET['originalSort'] : '');
   if (isset($this->overrideTitle)) {
     $this->layout()->breadcrumbs .= '<li class="active">' . $this->escapeHtml($this->overrideTitle) . '</li>';
-  } else {
-    $this->layout()->breadcrumbs .= '<li class="active">' . $this->transEsc('Search') . ': ' . $this->escapeHtml($this->lookfor) . '</li>';
+  }
+  else {
+    $getFieldName = ('FRBR' === $type ? 'name' : 'lookfor');
+    if ('FRBR' === $type){
+      $this->layout()->breadcrumbs .= '<li class="active">' .
+          $this->searchMemory()->getLastSearchLink($this->transEsc('Search'), '', '</li> ' . '<li class="active">' . sprintf($this->transEsc('search_breadcrumb_frbr'), $this->escapeHtml($this->lookfor)) . '</li>');
+    }
+    else {
+      $this->layout()->breadcrumbs .= '<li class="active">' .
+          $this->searchMemory()->getLastSearchLink($this->transEsc('Search') . ': ' . $this->escapeHtml($this->lookfor), '', '</li> ');
+    }
   }
 
-  // Disable cart if appropriate:
-  if (!$this->params->getOptions()->supportsCart()) {
-    $this->hideCartControls = true;
-  }
+  // Enable cart if appropriate:
+  $this->showCartControls = $this->params->getOptions()->supportsCart() && $this->cart()->isActive();
+  // Enable bulk options if appropriate:
+  $this->showBulkOptions = $this->params->getOptions()->supportsCart() && $this->showBulkOptions;
 
   // Load Javascript dependencies into header:
   $this->headScript()->appendFile("check_item_statuses.js");
@@ -71,7 +82,7 @@
               <ul class="dropdown-menu" role="export-menu">
                 <? foreach ($exportFormats as $format): ?>
                   <li class="<?=$this->export()->getVisibilityClassName($format)?>">
-                    <a <? if ($this->export()->needsRedirect($format)): ?>target="<?=$this->escapeHtmlAttr($format)?>Main" <? endif; ?>href="<?=$this->export()->getBulkUrl($this, $format, array());?>"><?= $this->transEsc('Export to') ?> <?= $this->escapeHtml($format) ?></a>
+                    <a <? if ($this->export()->needsRedirect($format)): ?>target="<?=$this->escapeHtmlAttr($format)?>Main" <? endif; ?>href="<?=$this->export()->getBulkUrl($this, $format, array());?>"><?= $this->transEsc('Export to') ?> <?= $this->transEsc($this->export()->getLabelForFormat($format)) ?></a>
                   </li>
                 <? endforeach; ?>
               </ul>

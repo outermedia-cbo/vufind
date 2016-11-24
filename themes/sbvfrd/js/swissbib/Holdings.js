@@ -1,3 +1,5 @@
+'use strict';
+
 swissbib.Holdings = {
 
 
@@ -30,7 +32,6 @@ swissbib.Holdings = {
    * @param  {Event}    event
    */
   onInstitutionClick: function (idRecord, event) {
-    //console.log(idRecord, 'clicked');
     var isLoaded = !!$.data(event.target, 'loaded'),
         dataParts, groupCode, institutionCode;
 
@@ -79,7 +80,6 @@ swissbib.Holdings = {
     if (status === 'error') {
       $('#holdings-institution-' + groupCode + '-' + institutionCode).html('Request failed. Information is currently not available');
     }
-//		console.log('Table for institution was loaded');
   },
 
 
@@ -93,10 +93,6 @@ swissbib.Holdings = {
     loaderBox.css({
       display: 'inline-block'
     });
-    loaderBox.find('.spinner').sprite({
-      fps: 10,
-      no_of_frames: 12
-    }).spStart();
   },
 
 
@@ -111,7 +107,7 @@ swissbib.Holdings = {
     width = width || 650;
     height = height || 760;
 
-    window.open(url, 'eodpopup', 'height=' + height + ',width=' + width).focus();
+    window.open(url, 'eodpopup', 'scrollbars,height=' + height + ',width=' + width).focus();
   },
 
 
@@ -144,20 +140,8 @@ swissbib.Holdings = {
     // Clear content
     popup.html('');
 
-//    var dialog = popup.dialog({
-//      height: "auto",
-//      width: "auto",
-//      minHeight: 500
-//    });
-
-//    popup.mask("Loading...");
-//
-//    dialog.load(contentUrl, function (responseText, responseStatus, response) {
-//      that.setupItemsPopup(dialog);
-//    });
-
-    Lightbox.changeContent('Loading...');
-    Lightbox.getByUrl(contentUrl);
+    popup.html('Loading... :)');
+    VuFind.lightbox.ajax({ url: contentUrl });
   },
 
 

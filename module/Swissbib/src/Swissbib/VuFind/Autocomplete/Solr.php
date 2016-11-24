@@ -1,15 +1,12 @@
 <?php
- 
- /**
- * [...description of the type ...]
+/**
+ * Solr
  *
  * PHP version 5
  *
  * Copyright (C) project swissbib, University Library Basel, Switzerland
  * http://www.swissbib.org  / http://www.swissbib.ch / http://www.ub.unibas.ch
  *
- * Date: 12/10/13
- * Time: 11:20 AM
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
  * as published by the Free Software Foundation.
@@ -23,30 +20,60 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category swissbib_VuFind2
- * @package  [...package name...]
- * @author   Guenter Hipler  <guenter.hipler@unibas.ch>
+ * @category Swissbib_VuFind2
+ * @package  VuFind_Autocomplete
+ * @author   Guenter Hipler <guenter.hipler@unibas.ch>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://www.swissbib.org
+ * @link     http://vufind.org/wiki/vufind2:developer_manual Wiki
  */
-
-
 namespace Swissbib\VuFind\Autocomplete;
 
 use VuFind\Autocomplete\Solr as VFAutocompleteSolr;
 
-class Solr extends VFAutocompleteSolr {
-
-
+/**
+ * Solr
+ *
+ * @category Swissbib_VuFind2
+ * @package  VuFind_Auth
+ * @author   Guenter Hipler <guenter.hipler@unibas.ch>
+ * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
+ * @link     http://vufind.org/wiki/vufind2:developer_manual Wiki
+ */
+class Solr extends VFAutocompleteSolr
+{
+    /**
+     * GetSuggestionsFromSearch
+     *
+     * @param array  $searchResults SearchResults
+     * @param String $query         Query
+     * @param String $exact         Exact
+     *
+     * @return array
+     */
     protected function getSuggestionsFromSearch($searchResults, $query, $exact)
     {
-        $results = array();
+        $results = [];
+
         foreach ($searchResults as $object) {
             $current = $object->getRawData();
-            array_push($results, array($current["id"], "BibRes", $current["title"][0]));
+            foreach ($this->displayField as $field) {
+                if (isset($current[$field])) {
+                    $bestMatch = $this->pickBestMatch(
+                        $current[$field], $query, $exact
+                    );
+                    if ($bestMatch) {
+                        $forbidden = [
+                            ':', '&', '?', '*', '[',']', '"', '/','\\',';','.','='
+                        ];
+                        $bestMatch = str_replace($forbidden, " ", $bestMatch);
+
+                        $results[] = $bestMatch;
+                        break;
+                    }
+                }
+            }
         }
+
         return $results;
     }
-
-
-} 
+}

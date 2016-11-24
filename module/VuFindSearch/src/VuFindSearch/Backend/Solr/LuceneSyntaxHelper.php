@@ -20,26 +20,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind2
+ * @category VuFind
  * @package  Search
  * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
  * @author   David Maus <maus@hab.de>
  * @author   Demian Katz <demian.katz@villanova.edu>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org
+ * @link     https://vufind.org
  */
 namespace VuFindSearch\Backend\Solr;
 
 /**
  * Lucene query syntax helper class.
  *
- * @category VuFind2
+ * @category VuFind
  * @package  Search
  * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
  * @author   David Maus <maus@hab.de>
  * @author   Demian Katz <demian.katz@villanova.edu>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org
+ * @link     https://vufind.org
  */
 class LuceneSyntaxHelper
 {
@@ -447,9 +447,10 @@ class LuceneSyntaxHelper
      */
     protected function normalizeColons($input)
     {
+        $lookahead = self::$insideQuotes;
         $input = preg_replace('/:+/', ':', $input);
-        $input = preg_replace('/(\:[:\s]+|[:\s]+:)/', ' ', $input);
-        return $input == ':' ? '' : $input;
+        $input = preg_replace('/(\:[:\s]+|[:\s]+:)' . $lookahead . '/', ' ', $input);
+        return trim($input, ':');
     }
     /**
      * Prepare input to be used in a SOLR query.

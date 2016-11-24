@@ -18,7 +18,7 @@
   $responsible = $viewRecord->getResponsible($titleStatement, $record);
   $edition = $record->getEdition();
   $summDate= $record->getHumanReadablePublicationDates();
-  $hostitems = $record->getHostItemEntry();
+  $hostItems = $record->getHostItemEntry();
   $groupID = $record->getGroup(true);
   $uniqueID = $record->getUniqueID();
   $showFRBR = $this->configAccess()->Site->displayFrbr;
@@ -44,11 +44,7 @@
     </div>
     <div class="col-sm-2 hidden-xs left no-gutter hidden-print">
         <a href="<?=$this->recordLink()->getUrl($record)?>" class="title img-responsive">
-        <? if (!($thumbnail === false)): ?>
             <img class="recordcover" src="<?= $thumbnail ?>" />
-        <? else: ?>
-            <div class="thumbico <?= $viewRecord->getThumbnailPlaceholder() ?>"></div>
-        <? endif; ?>
         </a>
     </div>
     <div class="col-sm-6 col-xs-10 middle">
@@ -70,10 +66,10 @@
 
     <!-- Zeitschriftentitel, Erscheinungsjahr -->
     <div class="meta">
-        <? if (!empty($hostitems)): ?>
-            <? foreach ($hostitems as $hostitem): ?>
+        <? if (!empty($hostItems)): ?>
+            <? foreach ($hostItems as $hostItem): ?>
                 <span class="hidden-xs label"><strong><?= $this->transEsc('note_773') ?>:</strong></span>
-                <? $text = array_key_exists('related', $hostitem) ? $hostitem['title'] . ', ' . $hostitem['related'] : $hostitem['title'] ?>
+                <? $text = array_key_exists('related', $hostItem) ? $hostItem['title'] . ', ' . $hostItem['related'] : $hostItem['title'] ?>
                 <span><?= $this->escapeHtml($text) ?></span><br />
             <? endforeach; ?>
         <? endif; ?>
@@ -133,7 +129,7 @@
     <? endif; ?>
 
         <?
-        $openUrl = $this->driver->openURLActive('record') ? $this->driver->getOpenURL() : false;
+        $openUrl = method_exists ( $this->driver , 'openURLActive' ) && $this->driver->openURLActive('record') ? $this->driver->getOpenURL() : false;
         // Account for replace_other_urls setting
         $urls = ($openUrl && $this->driver->replaceURLsWithOpenURL()) ? array() : $this->record($this->driver)->getLinkDetails();
         ?>
