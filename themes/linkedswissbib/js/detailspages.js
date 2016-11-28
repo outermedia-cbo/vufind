@@ -74,7 +74,7 @@ function getItemForCarousel (array, keyStart, keyEnd){
             result += '<div class="col-sm-3"><a href="' + link_bibRes + '" class="hover-overlay" style="max-height: 200px;"><img title="'+ bibResTitle +'" src="' + link_cover + '" style="max-height: 200px;"><div class="content"><b>' + bibResTitle +'</b></div></a></div>';
         }
     } else {
-        fallbackItem = '<div class="col-sm-3"><a href="/Record/335357466" class="hover-overlay" style="max-height: 200px;"> <img title="Selfish : poems"src="https://resources.swissbib.ch/Cover/Show?isn=1555977081&size=large" style="max-height: 200px;"> <div class="content"></div></a>';
+        fallbackItem = '<span class="hover-overlay" style="min-height: 200px;">Keine Inhalte vorhanden</span>';
         var result= fallbackItem;
     }
     return result;
@@ -417,7 +417,7 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAs
                 data: {"lookfor": idContributorFromBibRes},
                 success: function (data) {
                     //works of authors of common works
-                    writeBibliographicResourcesIntoCarouselHtmlClasses (data, ".ad_item0", ".ad_item1", ".ad_item2");
+                    writeBibliographicResourcesIntoCarouselHtmlClasses (data, ".item0", ".item1", ".item2");
                 },
                 error: function (e) {
                     console.log(e);
@@ -451,7 +451,7 @@ function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_pre
                 type: "POST",
                 data: {"lookfor": idSubject},
                 success: function (data) {
-                    writeBibliographicResourcesIntoCarouselHtmlClasses (data, ".sd_item0", ".sd_item1", ".sd_item2");
+                    writeBibliographicResourcesIntoCarouselHtmlClasses (data, ".item0", ".item1", ".item2");
                 },
                 error: function (e) {
                     console.log(e);

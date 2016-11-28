@@ -2,45 +2,5 @@
     <h2>B&uuml;cher &amp; Co. von <span class="labelAsString"></span>s Co-AutorInnen</h2>
 </div>
 <div class="row">
-    <div data-ride="carousel" class="carousel slide" id="similar-items-carousel">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-            <li class="active" data-slide-to="0" data-target="#similar-items-carousel"></li>
-            <li data-slide-to="1" data-target="#similar-items-carousel"></li>
-            <li data-slide-to="2" data-target="#similar-items-carousel"></li>
-        </ol>
-
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner">
-            <div class="item active">
-                <div class="row">
-                    <div class="ad_item0"></div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="row">
-                    <div class="ad_item1"></div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="row">
-                    <div class="ad_item2"></div>
-                </div>
-            </div>
-        </div>
-        <!-- end class carousel-inner -->
-        <!-- Controls -->
-        <a data-slide="prev" role="button" href="#similar-items-carousel"
-           class="left carousel-control">
-            <span class="fa fa-chevron-left glyphicon-chevron-left"></span>
-        </a>
-        <a data-slide="next" role="button" href="#similar-items-carousel"
-           class="right carousel-control">
-            <span class="fa fa-chevron-right glyphicon-chevron-right"></span>
-        </a>
-
-    </div>
-    <!-- end class carousel slide -->
+    <?=$this->render("elasticsearch/dp_carousel.phtml")?>
 </div>
