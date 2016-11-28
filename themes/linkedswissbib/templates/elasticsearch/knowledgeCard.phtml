@@ -126,7 +126,7 @@
 
                     //Contents KnowledgeCard
                     $('#kc_authorid').attr('href', linkToAuthordetailsWorks);
-                    $('#kc_link').attr('href', linkToAuthordetails);
+                    $('#kc_personLink').attr('href', linkToAuthordetails);
                     $('#kc_birthDate').text(kc_birthDate);
                     $('#kc_birthPlace').text(kc_birthPlace);
                     $('#kc_deathDate').text(kc_deathDate);
@@ -165,7 +165,8 @@
                         $('.kc_subjectPreferredName').text(kc_subjectPreferredName);
                         $('#ui-id-2').text(kc_subjectPreferredName); //Title/Widget-Header
                         $('#kc_subjectid').attr('href', linkToSubjectdetailsWorks);
-                        $('#kc_link').attr('href', linkToSubjectdetails);
+                        $('#kc_subjectLink').attr('href', linkToSubjectdetails);
+
                         // get subject's alternative names
                         writeSubjectLiteralsAsStringIntoHtmlId (data, 'http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading', '#kc_subjectAlternativeNames');
                         // get subject's definition
@@ -233,7 +234,7 @@
                 <a  id="kc_authorid" class="btn btn-link" href="">» Mehr B&uuml;cher &amp; Co. von <span class="kc_name labelAsString"></span></a>
             </div>
             <div class="row">
-                <a  id="kc_link" class="btn btn-link" style="float:right;" href="">» Zur Personenseite von <span class="kc_name"></span></a>
+                <a  id="kc_personLink" class="btn btn-link" style="float:right;" href="">» Zur Personenseite von <span class="kc_name"></span></a>
             </div>
         </div>
     </div>
@@ -266,7 +267,7 @@
                 <a id="kc_subjectid" class="btn btn-link" href="">» Mehr B&uuml;cher &amp; Co. zum Thema <span class="kc_subjectPreferredName labelAsString"></span></a>
             </div>
             <div class="row">
-                <a  id="kc_link" class="btn btn-link" style="float:right;" href="">» Zur Themenseite von <span class="kc_subjectPreferredName"></span></a>
+                <a  id="kc_subjectLink" class="btn btn-link" style="float:right;" href="">» Zur Themenseite von <span class="kc_subjectPreferredName"></span></a>
             </div>
         </div>
     </div>
