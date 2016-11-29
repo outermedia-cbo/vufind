@@ -90,7 +90,7 @@ AutocompleteAuthor:
       type:
         - cross_fields #should be default
       operator:
-        - and # should be default
+        - or # should be default
 
 AutocompleteInstance:
   Multisearch:
@@ -178,4 +178,4 @@ Person:
       type:
         - cross_fields #should be default
       operator:
-        - and # should be default
+        - or # should be default
