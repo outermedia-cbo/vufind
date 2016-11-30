@@ -24,7 +24,9 @@ $config = [
             'exploration'   => 'LinkedSwissbib\Controller\ElasticsearchController',
             'elasticsearch' => 'LinkedSwissbib\Controller\ElasticsearchController',
             'inference'     => 'LinkedSwissbib\Controller\SparqlController',
-            'ajax'          => 'LinkedSwissbib\Controller\AjaxController'
+            'ajax'          => 'LinkedSwissbib\Controller\AjaxController',
+            'search'        => 'LinkedSwissbib\Controller\SearchController'
+
 
         ]
     ],
@@ -34,6 +36,10 @@ $config = [
             'LinkedSwissbib\SearchParamsPluginManager' => 'LinkedSwissbib\Service\Factory::getSearchParamsPluginManager',
             'LinkedSwissbib\SearchResultsPluginManager' => 'LinkedSwissbib\Service\Factory::getSearchResultsPluginManager',
             'LinkedSwissbib\RecordDriverPluginManager' => 'LinkedSwissbib\Service\Factory::getRecordDriverPluginManager',
+            'VuFind\SearchOptionsPluginManager'        => 'LinkedSwissbib\Service\Factory::getSearchOptionsPluginManager',
+            'VuFind\SearchParamsPluginManager'         => 'LinkedSwissbib\Service\Factory::getSearchParamsPluginManager',
+            'VuFind\SearchResultsPluginManager'        => 'LinkedSwissbib\Service\Factory::getSearchResultsPluginManager',
+
 
         ]
 

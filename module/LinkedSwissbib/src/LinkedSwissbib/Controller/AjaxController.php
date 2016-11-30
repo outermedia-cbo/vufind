@@ -12,7 +12,7 @@ class AjaxController extends VFAjaxController {
      *
      */
     protected function getAjax() {
-        $this->writeSession();
+        $this->disableSessionWrites();
 
         $manager = $this->getServiceLocator()->get('LinkedSwissbib\SearchResultsPluginManager');
 
