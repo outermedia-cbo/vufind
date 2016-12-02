@@ -125,7 +125,7 @@ function getTagCloudContentAsArray (data, gndIdsAsString) {
                 var count = getOccurrences(gndIdsAsString, id);
                 var link = 'http://' + window.location.hostname +
                     '/sbrd/Exploration/SubjectDetails?lookfor=' + id + '&type=SubjectById';
-                result.push({counts: count, tag: tag, href: link})
+                result.push({counts: count, tag: tag, id: id, href: link})
             }
         }
     }
