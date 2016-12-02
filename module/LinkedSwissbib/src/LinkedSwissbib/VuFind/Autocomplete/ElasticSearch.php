@@ -52,7 +52,7 @@ class ElasticSearch implements AutocompleteInterface{
 
     private function parseDate($date){
         if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
-            return date("Y");
+            return date("Y", strtotime($date));
         } elseif (preg_match("/^[0-9]{4}$/", $date)) {
             return $date;
         }
@@ -77,7 +77,7 @@ class ElasticSearch implements AutocompleteInterface{
                     } elseif (isset($current['_source']['dbp:birthDate'])) {
                         $birthDate = $this->parseDate($current['_source']['dbp:birthDate']);
                     } elseif (isset($current['_source']['dbp:birthYear'])) {
-                        $birthDate = $current['_source']['dbp:birthYear'];
+                        $birthDate = $this->parseDate($current['_source']['dbp:birthYear']);
                 }
 
                 if (!isset($current['_source']['dbp:deathDate']) && !isset($current['_source']['schema:deathDate']) && !isset($current['_source']['dbp:deathYear'])) {
@@ -87,7 +87,7 @@ class ElasticSearch implements AutocompleteInterface{
                 } elseif (isset($current['_source']['dbp:deathDate'])) {
                     $deathDate = $this->parseDate($current['_source']['dbp:deathDate']);
                 } elseif (isset($current['_source']['dbp:deathYear'])) {
-                    $deathDate = $current['_source']['dbp:deathYear'];
+                    $deathDate = $this->parseDate($current['_source']['dbp:deathYear']);
                 }
 
                 if (!empty($birthDate) && !empty($deathDate)) {
