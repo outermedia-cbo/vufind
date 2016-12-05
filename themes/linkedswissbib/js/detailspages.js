@@ -22,7 +22,7 @@ function getIdsFromPropertyInBibliographicResourcesAsString (data, property) {
         }
     }
     if (!result) {
-        result = '';
+        result = "Keine Inhalte vorhanden";
     }
     return result;
 }
