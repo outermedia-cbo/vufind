@@ -43,5 +43,15 @@ use Swissbib\VuFind\Search\Solr\Results as SwissbibSolrResults;
 class Results extends SwissbibSolrResults
 {
 
+    /**
+     * Constructor
+     * only as example, now you can do what you want
+     * @param \VuFind\Search\Base\Params $params Object representing user search
+     * parameters.
+     */
+    public function __construct(Params $params)
+    {
+        parent::__construct($params);
+    }
 
 }

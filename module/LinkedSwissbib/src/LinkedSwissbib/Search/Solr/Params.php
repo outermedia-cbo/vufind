@@ -41,6 +41,13 @@ use Swissbib\VuFind\Search\Solr\Params as SwissbibSolrParams;
 class Params extends SwissbibSolrParams
 {
 
+    //now you can do what you want
+
+    public function __construct($options, \VuFind\Config\PluginManager $configLoader)
+    {
+        //only as example
+        parent::__construct($options,$configLoader);
+    }
 
 
 }

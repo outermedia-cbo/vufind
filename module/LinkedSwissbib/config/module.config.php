@@ -12,7 +12,7 @@
  */
 
 
-namespace Swissbib\Module\Config;
+namespace LinkedSwissbib\Module\Config;
 
 
 $config = [
@@ -56,15 +56,16 @@ $config = [
             'autocomplete' => [
                 'factories' => [
                     'esac' => 'LinkedSwissbib\VuFind\Autocomplete\Factory::getElasticSearch',
+                    'solr' =>  'LinkedSwissbib\VuFind\Autocomplete\Factory::getSolr',
                 ],
             ],
-            'recorddriver' => array(
+            'recorddriver' => [
                 'abstract_factories' => ['LinkedSwissbib\RecordDriver\PluginFactory'],
-                'factories' => array(
+                'factories' => [
                     'elasticsearchRecordDriver' => 'LinkedSwissbib\RecordDriver\Factory::getElasticSearchRdfRecordDriver',
 
-                )
-            )
+                ]
+            ]
 
         ]
     ],
@@ -83,8 +84,29 @@ $config = [
             ],
             'search_results' => [
                 'abstract_factories' => array('LinkedSwissbib\Search\Results\PluginFactory'),
+            ],
+
+            'search_backend' => [
+                'factories' => [
+                    'ElasticSearch' => 'LinkedSwissbib\Search\Factory\ElasticSearchBackendFactory',
+                ]
+            ],
+            'autocomplete' => [
+                'factories' => [
+                    'esac' => 'LinkedSwissbib\VuFind\Autocomplete\Factory::getElasticSearch',
+                    'solr' =>  'LinkedSwissbib\VuFind\Autocomplete\Factory::getSolr',
+                ],
+            ],
+            'recorddriver' => [
+                'abstract_factories' => ['LinkedSwissbib\RecordDriver\PluginFactory'],
+                'factories' => [
+                    'elasticsearchRecordDriver' => 'LinkedSwissbib\RecordDriver\Factory::getElasticSearchRdfRecordDriver',
+
+                ]
             ]
-        ],
+
+
+        ]
     ]
 
 

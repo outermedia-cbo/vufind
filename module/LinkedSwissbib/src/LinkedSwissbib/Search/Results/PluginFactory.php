@@ -21,6 +21,18 @@ class PluginFactory extends SwissbibPluginFactory
 {
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+
+        parent::__construct();
+    }
+
+
+
+
+    /**
      * CanCreateServiceWithName
      *
      * @param ServiceLocatorInterface $serviceLocator ServiceLocatorInterface

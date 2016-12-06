@@ -40,28 +40,16 @@ use Swissbib\VuFind\Search\Solr\Options as SwissbibSolrOptions;
  */
 class Options extends SwissbibSolrOptions
 {
-    /**
-     * Set default limit
-     *
-     * @param Integer $limit Limit
-     *
-     * @return void
-     */
-    public function setDefaultLimit($limit)
-    {
-        $this->defaultLimit = intval($limit);
-    }
+
 
     /**
-     * SetDefaultSort
-     *
-     * @param String $defaultSort DefaultSort
-     *
-     * @return void
+     * Constructor
+     * only as example - now you can do what you want
+     * @param \VuFind\Config\PluginManager $configLoader Config loader
      */
-    public function setDefaultSort($defaultSort)
+    public function __construct(\VuFind\Config\PluginManager $configLoader)
     {
-        $this->defaultSort = $defaultSort;
+        parent::__construct($configLoader);
     }
 
 }
