@@ -32,7 +32,7 @@ class Factory
         $config = $sm->get('Config');
         return new $className(
             new \Zend\ServiceManager\Config(
-                $config['vufind']['plugin_managers'][$configKey]
+                $config['swissbib']['plugin_managers'][$configKey]
             )
         );
     }

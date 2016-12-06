@@ -39,6 +39,8 @@ $config = [
             'VuFind\SearchOptionsPluginManager'        => 'LinkedSwissbib\Service\Factory::getSearchOptionsPluginManager',
             'VuFind\SearchParamsPluginManager'         => 'LinkedSwissbib\Service\Factory::getSearchParamsPluginManager',
             'VuFind\SearchResultsPluginManager'        => 'LinkedSwissbib\Service\Factory::getSearchResultsPluginManager',
+            'Swissbib\ExtendedSolrFactoryHelper'       => 'LinkedSwissbib\Search\Helper\Factory::getExtendedSolrFactoryHelper',
+
 
 
         ]
@@ -56,22 +58,13 @@ $config = [
                     'esac' => 'LinkedSwissbib\VuFind\Autocomplete\Factory::getElasticSearch',
                 ],
             ],
-            'search_options' => [
-                'abstract_factories' => ['LinkedSwissbib\Search\Options\PluginFactory'],
-            ],
-            'search_params' => [
-                'abstract_factories' => ['LinkedSwissbib\Search\Params\PluginFactory'],
-            ],
-            'search_results' => [
-                'abstract_factories' => ['LinkedSwissbib\Search\Results\PluginFactory'],
-            ],
             'recorddriver' => array(
                 'abstract_factories' => ['LinkedSwissbib\RecordDriver\PluginFactory'],
                 'factories' => array(
                     'elasticsearchRecordDriver' => 'LinkedSwissbib\RecordDriver\Factory::getElasticSearchRdfRecordDriver',
 
                 )
-            ),
+            )
 
         ]
     ],
@@ -82,13 +75,13 @@ $config = [
         //vufind_search_options seems to be deprecated now search_options
         //look it up (we need it for saved searches
         'plugin_managers' => [
-            'vufind_search_options' => [
+            'search_options' => [
                 'abstract_factories' => array('LinkedSwissbib\Search\Options\PluginFactory'),
             ],
-            'vufind_search_params' => [
+            'search_params' => [
                 'abstract_factories' => array('LinkedSwissbib\Search\Params\PluginFactory'),
             ],
-            'vufind_search_results' => [
+            'search_results' => [
                 'abstract_factories' => array('LinkedSwissbib\Search\Results\PluginFactory'),
             ]
         ],

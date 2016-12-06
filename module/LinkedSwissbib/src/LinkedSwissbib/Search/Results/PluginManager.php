@@ -11,10 +11,14 @@
 
 namespace LinkedSwissbib\Search\Results;
 
+use Swissbib\VuFind\Search\Results\PluginManager as SwissbibResultsPluginManager;
 use Zend\ServiceManager\ConfigInterface;
 
-class PluginManager extends \VuFind\Search\Results\PluginManager
+
+
+class PluginManager extends SwissbibResultsPluginManager
 {
+
     /**
      * Constructor
      *
@@ -29,15 +33,5 @@ class PluginManager extends \VuFind\Search\Results\PluginManager
         parent::__construct($configuration);
     }
 
-    /**
-     * Return the name of the base class or interface that plug-ins must conform
-     * to.
-     *
-     * @return string
-     */
-    protected function getExpectedInterface()
-    {
-        return 'VuFind\Search\Base\Results';
-    }
 
 }

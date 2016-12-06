@@ -14,7 +14,7 @@ namespace LinkedSwissbib\Search\Options;
 use Zend\ServiceManager\ConfigInterface;
 
 
-class PluginManager extends \VuFind\ServiceManager\AbstractPluginManager
+class PluginManager extends \VuFind\Search\Options\PluginManager
 {    /**
  * Constructor
  *
