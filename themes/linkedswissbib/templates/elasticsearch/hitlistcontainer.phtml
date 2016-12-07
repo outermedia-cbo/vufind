@@ -1,0 +1,18 @@
+<div class="hidden-print search-controls clearfix row">
+    <div class="col-lg-6 col-md-7 col-sm-7">
+        <?= $this->paginationControl($this->results->getPaginator(), 'Sliding', 'search/pagination.phtml', array('results' => $this->results, 'recordTotal' => $this->recordTotal, 'params' => $this->params, 'lookfor' => $this->lookfor)) ?>
+    </div>
+
+    <div class="col-lg-6 col-md-5 col-sm-5 text-right">
+        <?= $this->render('elasticsearch/hitlistcontrol.phtml') ?>
+    </div>
+</div>
+<!-- end class hidden-print search-controls clearfix row -->
+<?= $this->render($this->hitlisttarget['file']); ?>
+<!-- end class pagination-container hidden-print -->
+<div class="hidden-print search-controls clearfix row">
+    <div class="col-lg-6 col-md-7 col-sm-7">
+        <?= $this->paginationControl($this->results->getPaginator(), 'Sliding', 'search/pagination.phtml', array('results' => $this->results, 'recordTotal' => $this->recordTotal, 'params' => $this->params, 'lookfor' => $this->lookfor, 'hideHits' => true)) ?>
+    </div>
+</div>
+<!-- end class pagination-container hidden-print -->
