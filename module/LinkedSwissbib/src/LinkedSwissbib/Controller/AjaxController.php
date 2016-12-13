@@ -11,7 +11,7 @@ class AjaxController extends VFAjaxController {
     /**
      *
      */
-    protected function getAuthorAjax() {
+    protected function getAjax() {
         $this->writeSession();
 
         $manager = $this->getServiceLocator()->get('LinkedSwissbib\SearchResultsPluginManager');
@@ -44,11 +44,11 @@ class AjaxController extends VFAjaxController {
     }
 
     protected function getAuthorMultiAjax() {
-        return $this->getAuthorAjax();
+        return $this->getAjax();
     }
 
     protected function getSubjectMultiAjax() {
-        return $this->getAuthorAjax();
+        return $this->getAjax();
     }
 
     private function refine($searchResults) {

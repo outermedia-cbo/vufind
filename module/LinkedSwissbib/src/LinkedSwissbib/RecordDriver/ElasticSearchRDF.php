@@ -46,7 +46,7 @@ class ElasticSearchRDF extends AbstractBase
         throw new \Exception(__FUNCTION__ . ' currently not supported');
     }
 
-    private function getValueIfAvailable($lookup, $fallback = "no content provided")
+    private function getValueIfAvailable($lookup, $fallback = "Keine Inhalte vorhanden")
     {
         if (isset($this->fields['_source'][$lookup]))
             $result = $this->fields['_source'][$lookup];
@@ -59,7 +59,7 @@ class ElasticSearchRDF extends AbstractBase
         return preg_replace(['/</','/>/'], ['&lt;','&gt;'],$result);
     }
 
-    private function getValueForProperty($lang, $lookup, $fallback = "no content provided")
+    private function getValueForProperty($lang, $lookup, $fallback = "Keine Inhalte vorhanden")
     {
         if(!isset($this->fields['_source'][$lookup]))
             return $fallback;
@@ -67,7 +67,7 @@ class ElasticSearchRDF extends AbstractBase
         return $this->getValueFromArray($lang, $array);
     }
 
-    private function getNestedValueForProperty($lang, $lookup, $innerlookup = '@value', $fallback = "no content provided")
+    private function getNestedValueForProperty($lang, $lookup, $innerlookup = '@value', $fallback = "Keine Inhalte vorhanden")
     {
         $result = $this->getValueForProperty($lang, $lookup, $fallback);
 
@@ -99,7 +99,7 @@ class ElasticSearchRDF extends AbstractBase
                 if (!empty($fallbackResult)) {
                     $result = $fallbackResult;
                 } else {
-                    return "no content provided";
+                    return "Keine Inhalte vorhanden";
                 }
             }
             return implode(self::ARRAY_SEPARATOR, $result);
@@ -114,6 +114,31 @@ class ElasticSearchRDF extends AbstractBase
             return $date;
         }
         return "could not parse date!";
+    }
+
+    private function parseYear($date)
+    {
+        if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
+            return date("Y", strtotime($date));
+        } elseif (preg_match("/^[0-9]{4}$/", $date)) {
+            return $date;
+        }
+        return "could not parse date!";
+    }
+
+    private function addHtmlToExternalLinks ($stringWithCommaSeparatedUrls)
+    {
+        $array = explode(',', $stringWithCommaSeparatedUrls);
+        foreach ($array as $link) {
+            if (strpos($link, 'Keine Inhalte vorhanden') === false) {
+                $result .= '<a target="_blank" href="' . $link . '"><i class="fa fa-external-link"></i> ' . $link . '</a></br>';
+            }
+        }
+        if (!empty($result)) {
+            return $result;
+        } else {
+            return 'Keine Inhalte vorhanden';
+        }
     }
 
     public function getUniqueID()
@@ -270,7 +295,20 @@ class ElasticSearchRDF extends AbstractBase
         } elseif (isset($this->fields['_source']['dbp:birthYear'])) {
             return $this->parseDate($this->fields['_source']['dbp:birthYear']);
         } else {
-            return "no content provided";
+            return "Keine Inhalte vorhanden";
+        }
+    }
+
+    public function getBirthYear()
+    {
+        if (isset($this->fields['_source']['dbp:birthDate'])) {
+            return $this->parseYear($this->fields['_source']['dbp:birthDate']);
+        } elseif (isset($this->fields['_source']['schema:birthDate'])) {
+            return $this->parseYear($this->fields['_source']['schema:birthDate']);
+        } elseif (isset($this->fields['_source']['dbp:birthYear'])) {
+            return $this->parseYear($this->fields['_source']['dbp:birthYear']);
+        } else {
+            return "Keine Inhalte vorhanden";
         }
     }
 
@@ -283,7 +321,20 @@ class ElasticSearchRDF extends AbstractBase
         } elseif (isset($this->fields['_source']['dbp:deathYear'])) {
             return $this->parseDate($this->fields['_source']['dbp:deathYear']);
         } else {
-            return "no content provided";
+            return "Keine Inhalte vorhanden";
+        }
+    }
+
+    public function getDeathYear()
+    {
+        if (isset($this->fields['_source']['dbp:deathDate'])) {
+            return $this->parseYear($this->fields['_source']['dbp:deathDate']);
+        } elseif (isset($this->fields['_source']['schema:deathDate'])) {
+            return $this->parseYear($this->fields['_source']['schema:deathDate']);
+        } elseif (isset($this->fields['_source']['dbp:deathYear'])) {
+            return $this->parseYear($this->fields['_source']['dbp:deathYear']);
+        } else {
+            return "Keine Inhalte vorhanden";
         }
     }
 
@@ -297,9 +348,12 @@ class ElasticSearchRDF extends AbstractBase
         return $this->getValueIfAvailable('dbp:thumbnail', "../themes/linkedswissbib/images/personAvatar.png");
     }
 
-    public function getSource()
+    public function getPersonExternalLinks()
     {
-        return $this->getValueIfAvailable('owl:sameAs');
+        $owl = $this->getValueIfAvailable('owl:sameAs');
+        $schema = $this->getValueIfAvailable('schema:sameAs');
+        $links = $owl . ", " . $schema;
+        return $this->addHtmlToExternalLinks ($links);
     }
 
     public function getName()
@@ -332,28 +386,6 @@ class ElasticSearchRDF extends AbstractBase
         return $this->fields['_id'];
     }
 
-    /* Currently no properties
-    public function getAlternativeTitle()
-    {
-        $array = $this->fields['_source']['dct:alternative'];
-
-        if (!isset($array)) {
-            return "No content";
-        } elseif (!is_array($array)) {
-            return $array;
-        } elseif (count($array)===1) {
-            $result = reset($array);
-            return $result;
-        } else {
-            foreach ($array as $outerarray => $innerarray) {
-                $result .= $innerarray . ", ";
-            }
-            $result = rtrim($result, ", ");
-            return $result;
-        }
-    }
-    */
-
     public function getRdf($rdfType = 'turtle')
     {
 
@@ -366,18 +398,6 @@ class ElasticSearchRDF extends AbstractBase
         }
 
     }
-
-    /* Currently no properties
-    public function getOriginalLanguage()
-    {
-        $result = $this->fields['_source']['dbp:originalLanguage'];
-        if(!isset($result)){
-            return "No content";
-        } else {
-            return $result;
-        }
-    }
-    */
 
     public function getRdfType()
     {
@@ -406,7 +426,49 @@ class ElasticSearchRDF extends AbstractBase
             $link_cover = $url_start . $isbn10 . $url_end;
             return $link_cover;
         } elseif (isset($this->fields['_source']['rdf:type']) && $this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Article") {
-            return "../themes/linkedswissbib/images/icon_article.png";
+            return "../themes/linkedswissbib/images/mediaicons/5_Artikel.png";
+        } elseif (isset($this->fields['_source']['rdf:type']) && $this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Book") {
+            return "../themes/linkedswissbib/images/mediaicons/7_Buch.png";
+        } elseif (isset($this->fields['_source']['rdf:type']) && $this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Manuscript") {
+            return "../themes/linkedswissbib/images/mediaicons/28_Handschrift.png";
+        } elseif (isset($this->fields['_source']['rdf:type']) && $this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Periodical") {
+            return "../themes/linkedswissbib/images/mediaicons/9_Zeitschrift.png";
+        } elseif (isset($this->fields['_source']['rdf:type']) && $this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Series") {
+            return "../themes/linkedswissbib/images/mediaicons/7_Buch.png";
+        } elseif (isset($this->fields['_source']['rdf:type']) && $this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Thesis") {
+            return "../themes/linkedswissbib/images/mediaicons/7_Buch.png";
+        } elseif (isset($this->fields['_source']['rdf:type']) && $this->fields['_source']['rdf:type'] == "http://purl.org/ontology/bibo/Website") {
+            return "../themes/linkedswissbib/images/mediaicons/25_Online_Ressourcen.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1023") {
+            return "../themes/linkedswissbib/images/mediaicons/19_Film.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1020") {
+            return "../themes/linkedswissbib/images/mediaicons/1_Dummy_Buch.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1021") {
+            return "../themes/linkedswissbib/images/mediaicons/24_Objekt_Spiel.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1014") {
+            return "../themes/linkedswissbib/images/mediaicons/23_Bildmaterial.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1007") {
+            return "../themes/linkedswissbib/images/mediaicons/26_Software_auf_Datentraeger.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1002") {
+            return "../themes/linkedswissbib/images/mediaicons/21_Kartenmaterial.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1011") {
+            return "../themes/linkedswissbib/images/mediaicons/13_Musik.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1010") {
+            return "../themes/linkedswissbib/images/mediaicons/17_Notenmaterial.png";
+        } elseif (isset($this->fields['_source']['rdau:P60049']) && $this->fields['_source']['rdau:P60049'] == "http://rdvocab.info/termList/RDAContentType/1006") {
+            return "../themes/linkedswissbib/images/mediaicons/21_Kartenmaterial.png";
+        } elseif (isset($this->fields['_source']['rdau:P60050']) && $this->fields['_source']['rdau:P60050'] == "http://rdvocab.info/termList/RDAMediaType/1007") {
+            return "../themes/linkedswissbib/images/mediaicons/23_Bildmaterial.png";
+        } elseif (isset($this->fields['_source']['rdau:P60050']) && $this->fields['_source']['rdau:P60050'] == "http://rdvocab.info/termList/RDAMediaType/1002") {
+            return "../themes/linkedswissbib/images/mediaicons/27_Microfilm.png";
+        } elseif (isset($this->fields['_source']['rdau:P60050']) && $this->fields['_source']['rdau:P60050'] == "http://rdvocab.info/termList/RDAMediaType/1003") {
+            return "../themes/linkedswissbib/images/mediaicons/26_Software_auf_Datentraeger.png";
+        } elseif (isset($this->fields['_source']['rdau:P60050']) && $this->fields['_source']['rdau:P60050'] == "http://rdvocab.info/termList/RDAMediaType/1001") {
+            return "../themes/linkedswissbib/images/mediaicons/13_Musik.png";
+        } elseif (isset($this->fields['_source']['rdau:P60050']) && $this->fields['_source']['rdau:P60050'] == "http://rdvocab.info/termList/RDAMediaType/1005") {
+            return "../themes/linkedswissbib/images/mediaicons/19_Film.png";
+        } elseif (isset($this->fields['_source']['rdau:P60050']) && $this->fields['_source']['rdau:P60050'] == "http://rdvocab.info/termList/RDAMediaType/1008") {
+            return "../themes/linkedswissbib/images/mediaicons/18_Film_online.png";
         } else {
             return "../themes/linkedswissbib/images/icon_no_image_available.gif";
         }
@@ -433,24 +495,14 @@ class ElasticSearchRDF extends AbstractBase
         return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#broaderTermGeneral', '@id');
     }
 
-    public function getSubjectDDC1($lang = 'de')
+    public function getSubjectDDC($lang = 'de')
     {
-        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy1', '@id');
-    }
-
-    public function getSubjectDDC2($lang = 'de')
-    {
-        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy2', '@id');
-    }
-
-    public function getSubjectDDC3($lang = 'de')
-    {
-        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy3', '@id');
-    }
-
-    public function getSubjectDDC4($lang = 'de')
-    {
-        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy4', '@id');
+        $ddc1 = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy1', '@id');
+        $ddc2 = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy2', '@id');
+        $ddc3 = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy3', '@id');
+        $ddc4 = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy4', '@id');
+        $links = $ddc1 . ', ' .  $ddc2 . ', ' . $ddc3 . ', ' . $ddc4;
+        return $this->addHtmlToExternalLinks ($links);
     }
 
     public function getSubjectDefinition($lang = 'de')
@@ -458,19 +510,18 @@ class ElasticSearchRDF extends AbstractBase
         return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#definition');
     }
 
-    public function getSubjectExternalLinkSkos($lang = 'de')
-    {
-        return $result = $this->getNestedValueForProperty($lang, 'http://www_w3_org/2004/02/skos/core#exactMatch', '@id');
-    }
-
-    public function getSubjectExternalLinkFoafPage($lang = 'de')
-    {
-        return $result = $this->getNestedValueForProperty($lang, 'http://xmlns_com/foaf/0_1/page', '@id');
+    public function getSubjectExternalLinks ($lang = 'de') {
+        $gnd =  $this->getValueIfAvailable('@id');
+        $skos = $this->getNestedValueForProperty($lang, 'http://www_w3_org/2004/02/skos/core#exactMatch', '@id');
+        $foaf = $this->getNestedValueForProperty($lang, 'http://xmlns_com/foaf/0_1/page', '@id');
+        $links = $gnd . ', ' .  $skos . ', ' . $foaf;
+        return $this->addHtmlToExternalLinks ($links);
     }
 
     public function getSubjectGndSubjectCategory($lang = 'de')
     {
-        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#gndSubjectCategory', '@id');
+        $links = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#gndSubjectCategory', '@id');
+        return $this->addHtmlToExternalLinks ($links);
     }
 
     public function getSubjectUriForNarrowerTerms($lang = 'de')

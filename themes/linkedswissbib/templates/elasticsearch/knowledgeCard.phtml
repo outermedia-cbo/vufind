@@ -1,0 +1,278 @@
+<script src="../themes/linkedswissbib/js/detailspages.js"></script>
+<!-- Knowledge Card-->
+<div class="knowledgeCard">
+    <script>
+        $(function() {
+            $( "#dialogAuthor, #dialogSubject" ).dialog({
+                autoOpen: false,
+                modal: true,
+                responsive: true,
+                height: 'auto',
+                show: {
+                    effect: "show",
+                    duration: 1000
+                },
+                hide: {
+                    effect: "hide",
+                    duration: 1000
+                }
+            });
+
+            // get Values from array (comma separated output)
+            function getPersonValuesAsString (data, property) {
+                var array = data.person[0]._source[property];
+                if (typeof array !== 'undefined') {
+                    if ($.isArray(array)) {
+                        var result = "";
+                        var fallbackResult = "";
+                        for (var key in array) {
+                            if (typeof array[key].de !== 'undefined') {
+                                result += array[key].de + ", ";
+                            } else if (typeof array[key].en !== 'undefined') {
+                                fallbackResult += array[key].en + ", ";
+                            }
+                        }
+                        var result = result.substring(0, result.length - 2);
+                        var fallbackResult = fallbackResult.substring(0, fallbackResult.length - 2);
+                    } else {
+                        if (typeof array.de !== 'undefined') {
+                            var result = array.de;
+                        } else if (typeof array.en !== 'undefined') {
+                            var fallbackResult = array.en;
+                        }
+                    }
+                }
+                if (!result) {
+                    if (!fallbackResult) {
+                        var result = 'Keine Inhalte vorhanden';
+                    } else {
+                        var result = fallbackResult;
+                    }
+                }
+                return result;
+            }
+
+            // get Dates; source priority as follows: dbpDate, schemaDate, dbpYear)
+            function getDate (data, dbpDate, schemaDate, dbpYear) {
+                var dates = data.person[0]._source;
+                if ((dbpDate in dates)) {
+                    var date = dates[dbpDate];
+                } else if (schemaDate in dates) {
+                    var date =  dates[schemaDate];
+                } else if (dbpYear in dates) {
+                    var date =  dates[dbpYear];
+                } else {
+                    var date =  'Keine Inhalte vorhanden';
+                }
+
+                //check whether first character is a number or not
+                var letter = isNaN(date[0]);
+                //if the first character is a number
+                if (letter == false) {
+                    if (date.length >= 4) {
+                        var kc_year = date.slice(0, 4);
+                        //console.log(result);
+                    } else {
+                        var kc_year = kc_date;
+                    }
+
+                    if (date.length > 4) {
+                        var kc_date = date.replace(/(\d{4})-(\d{1,2})-(\d{1,2})/, function(match,y,m,d) {
+                            return d + '.' + m + '.' + y;
+                        });
+                    } else if (date.length == 4) {
+                        var kc_date = date;
+                    } else {
+                        var kc_date = 'Keine Inhalte vorhanden';
+                    }
+                // if the first character is not a number
+                } else {
+                    var kc_date = 'Keine Inhalte vorhanden';
+                    var kc_year = 'Keine Inhalte vorhanden';
+                }
+                return [kc_date, kc_year];
+                //console.log(result);
+            }
+
+            $("#dialogAuthor, #dialogSubject").dialog({width: $(window).width() * 0.9 });
+
+            $(document).on('click', '.kcopenerAuthor', function() {
+                //console.log("kcopener was clicked");
+                var authorId = $(this).attr("authorid")
+                var linkToAuthordetailsWorks = 'http://' + window.location.hostname +
+                '/sbrd/Exploration/AuthorDetails?lookfor=' + authorId + '&type=AuthorForId#works';
+                var linkToAuthordetails = 'http://' + window.location.hostname +
+                    '/sbrd/Exploration/AuthorDetails?lookfor=' + authorId + '&type=AuthorForId';
+                $.ajax({
+                    url: "http://" + window.location.hostname +
+                    "/sbrd/Ajax/Json?&method=getAuthorMulti&searcher=Elasticsearch",
+                    type: "POST",
+                    data: {"lookfor": authorId},
+                    success: function (data) {
+                    //kc_birthDate
+                    var birthDates = getDate(data,'dbp:birthDate', 'schema:birthDate', 'dbp:birthYear');
+                    var kc_birthDate = birthDates[0];
+                    var kc_birthYear = birthDates[1];
+                    var deathDates = getDate(data,'dbp:deathDate', 'schema:deathDate', 'dbp:deathYear');
+                    var kc_deathDate = deathDates[0];
+                    var kc_deathYear = deathDates[1];
+                    var kc_birthPlace = getPersonValuesAsString(data, 'lsb:dbpBirthPlaceAsLiteral');
+                    var kc_deathPlace = getPersonValuesAsString(data, 'lsb:dbpDeathPlaceAsLiteral');
+                    var kc_nationality = getPersonValuesAsString(data, 'lsb:dbpNationalityAsLiteral');
+                    var kc_occupation = getPersonValuesAsString(data, 'lsb:dbpOccupationAsLiteral');
+                    var kc_subject = getIdsFromPropertyInBibliographicResourcesAsString(data, 'dct:subject');
+                    var kc_thumbnail = getPersonThumbnail (data, 0);
+                    var kc_name = getPersonNameAsString (data, 0);
+
+                    //Contents KnowledgeCard
+                    $('#kc_authorid').attr('href', linkToAuthordetailsWorks);
+                    $('#kc_personLink').attr('href', linkToAuthordetails);
+                    $('#kc_birthDate').text(kc_birthDate);
+                    $('#kc_birthPlace').text(kc_birthPlace);
+                    $('#kc_deathDate').text(kc_deathDate);
+                    $('#kc_deathPlace').text(kc_deathPlace);
+                    $('#kc_nationality').text(kc_nationality);
+                    $('.kc_name').text(kc_name);
+                    $('#kc_occupation').text(kc_occupation);
+                    writeSubjectNamesIntoHtmlId (kc_subject, '#kc_subject', "withoutKnowledgeCard");
+                    writeBibliographicResourceIntoHtmlClass(data, '.kc_works');
+                    $('#kc_thumbnail').attr('src', kc_thumbnail);
+                    $('#ui-id-1').text(kc_name + ' (' + kc_birthYear + ' - ' + kc_deathYear + ')'); //Title/Widget-Header
+
+                    $( "#dialogAuthor" ).dialog( "open" );
+
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+            });
+
+            $(document).on('click', '.kcopenerSubject', function() {
+                //console.log("kcopener was clicked");
+                var subjectId = $(this).attr("subjectid");
+                var linkToSubjectdetailsWorks = 'http://' + window.location.hostname +
+                    '/sbrd/Exploration/SubjectDetails?lookfor=' + subjectId + '&type=SubjectById#works';
+                var linkToSubjectdetails = 'http://' + window.location.hostname +
+                    '/sbrd/Exploration/SubjectDetails?lookfor=' + subjectId + '&type=SubjectById';
+                $.ajax({
+                    url: "http://" + window.location.hostname +
+                    "/sbrd/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
+                    type: "POST",
+                    data: {"lookfor": subjectId },
+                    success: function (data) {
+                        var kc_subjectPreferredName = getSubjectPreferredName (data.DEFAULT, 0);
+                        $('.kc_subjectPreferredName').text(kc_subjectPreferredName);
+                        $('#ui-id-2').text(kc_subjectPreferredName); //Title/Widget-Header
+                        $('#kc_subjectid').attr('href', linkToSubjectdetailsWorks);
+                        $('#kc_subjectLink').attr('href', linkToSubjectdetails);
+
+                        // get subject's alternative names
+                        writeSubjectLiteralsAsStringIntoHtmlId (data, 'http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading', '#kc_subjectAlternativeNames');
+                        // get subject's definition
+                        writeSubjectLiteralsAsStringIntoHtmlId (data, 'http://d-nb_info/standards/elementset/gnd#definition', '#kc_subjectDefinition');
+                        $( "#dialogSubject" ).dialog( "open" );
+
+                        $.ajax({
+                            url: "http://" + window.location.hostname +
+                            "/sbrd/Ajax/Json?&method=getAuthorMulti&searcher=Elasticsearch",
+                            type: "POST",
+                            data: {"lookfor": subjectId },
+                            success: function (data) {
+                                writeBibliographicResourceIntoHtmlClass(data, '.kc_works');
+                            },
+                            error: function (e) {
+                                console.log(e);
+                            }
+                        });
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+            });
+        });
+
+    </script>
+    <div id="dialogAuthor" title="">
+        <!-- SEGEMENT Header -->
+        <div class="row">
+            <div class="col-sm-3 col-md-2">
+                <img class="img-responsive" id="kc_thumbnail" src= "" alt="kc_thumbnail">
+            </div>
+            <div class="col-sm-9">
+                <!-- occupation -->
+                <div class="meta">
+                    <span><strong>Beruf/Tätigkeit: </strong></span><span id="kc_occupation"></span><br>
+                </div>
+                <!-- birthdate, birthplace -->
+                <div class="meta">
+                    <span><strong>Geboren: </strong></span><span id="kc_birthDate"></span>, <span id="kc_birthPlace"></span><br>
+                </div>
+                <!-- deathdate, deathplace -->
+                <div class="meta">
+                    <span><strong>Gestorben: </strong></span><span id="kc_deathDate"></span>, <span id="kc_deathPlace"><br>
+                </div>
+                <!-- deathdate, deathplace -->
+                <div class="meta">
+                    <span><strong>Nationalität: </strong></span><span id="kc_nationality"></span><br><br>
+                </div>
+                <!-- subject -->
+                <div class="meta">
+                    <span><strong>Mit <span class="kc_name"></span> verwandte Themen: </strong></span><span id="kc_subject"></span><br><br>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEGMENT Literatur und Medien -->
+        <div id="worksOfAuthor">
+            <h2>B&uuml;cher &amp; Co. von <span class="kc_name labelAsString"></span></h2>
+        </div>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="kc_works"></div>
+                <a  id="kc_authorid" class="btn btn-link" href="">» Mehr B&uuml;cher &amp; Co. von <span class="kc_name labelAsString"></span></a>
+            </div>
+            <div class="row">
+                <a  id="kc_personLink" class="btn btn-link" style="float:right;" href="">» Zur Personenseite von <span class="kc_name"></span></a>
+            </div>
+        </div>
+    </div>
+    <!-- end id dialogAuthor -->
+
+    <div id="dialogSubject" title="">
+        <!-- SEGEMENT Header -->
+        <div class="row">
+            <div class="col-sm-3 col-md-2">
+                <img class="img-responsive" id="kc_thumbnail" src= "../themes/linkedswissbib/images/icon_no_image_available.gif" alt="kc_thumbnail">
+            </div>
+            <div class="col-sm-9">
+                <!-- alternative names -->
+                <div class="meta">
+                    <span><strong>Namensvarianten: </strong></span><span id="kc_subjectAlternativeNames"></span><br>
+                </div>
+                <!-- definition -->
+                <div class="meta">
+                    <span><strong>Erläuterungen: </strong></span><span id="kc_subjectDefinition"></span><br>
+                </div>
+            </div>
+        </div>
+        <!-- SEGMENT Literatur und Medien -->
+        <div id="worksWithSubject">
+            <h2>B&uuml;cher &amp; Co. zum Thema <span class="kc_subjectPreferredName labelAsString"></span></h2>
+        </div>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="kc_works"></div>
+                <a id="kc_subjectid" class="btn btn-link" href="">» Mehr B&uuml;cher &amp; Co. zum Thema <span class="kc_subjectPreferredName labelAsString"></span></a>
+            </div>
+            <div class="row">
+                <a  id="kc_subjectLink" class="btn btn-link" style="float:right;" href="">» Zur Themenseite von <span class="kc_subjectPreferredName"></span></a>
+            </div>
+        </div>
+    </div>
+    <!-- end id dialogSubject -->
+</div>
+<!-- end id knowledgeCard -->
+
+

@@ -6,27 +6,36 @@
     $coverImage1 = "https://resources.swissbib.ch/Cover/Show?isn=1908836679&amp;size=large";
     $title1 = "Until you make the shore";
     $author1 = "Conaway, Cameron";
-    $year1 = "2014";
 
     //Item 2
     $linkToInstance2 = $basePath . "/Record/327412496";
     $coverImage2 = "https://resources.swissbib.ch/Cover/Show?isn=1938160460&amp;size=large";
     $title2 = "Copia: poems";
     $author2 = "Meitner, Erika";
-    $year2 = "2014";
 
     //Item 3
     $linkToInstance3 = $basePath . "/Record/335357466";
     $coverImage3 = "https://resources.swissbib.ch/Cover/Show?isn=1555977081&amp;size=large";
     $title3 = "Selfish: poems";
     $author3 = "Goldbarth, Albert";
-    $year3 = "2015";
+
+    //Item 4
+    $linkToInstance4 = $basePath . "/Record/337891826";
+    $coverImage4 = "https://resources.swissbib.ch/Cover/Show?isn=3257230451&size=medium";
+    $title4 = "Der Besuch der alten Dame";
+    $author4 = "Friedrich Dürrenmatt";
+
+    //Item 5
+    $linkToInstance5 = $basePath . "/Record/32497695X";
+    $coverImage5 = "https://resources.swissbib.ch/Cover/Show?isn=1617290394&size=medium";
+    $title5 = "Linked data: structured data on the Web";
+    $author5 = " David Wood ... [et al.]";
+
 ?>
 
 <div class="home-content-box">
-    <h2 class="lead">Literatur und Medien</h2>
-    <div class="row">&nbsp;</div>
-    <div class="row">
+    <h2 class="lead">B&uuml;cher &amp; Co.</h2>
+    <div class="lead">
         <div data-ride="carousel" class="carousel slide" id="similar-items-carousel-home-works">
 
             <!-- Indicators -->
@@ -34,6 +43,8 @@
                 <li class="active" data-slide-to="0" data-target="#similar-items-carousel-home-works"></li>
                 <li data-slide-to="1" data-target="#similar-items-carousel-home-works"></li>
                 <li data-slide-to="2" data-target="#similar-items-carousel-home-works"></li>
+                <li data-slide-to="3" data-target="#similar-items-carousel-home-works"></li>
+                <li data-slide-to="4" data-target="#similar-items-carousel-home-works"></li>
             </ol>
 
             <!-- Wrapper for slides -->
@@ -42,16 +53,14 @@
                     <div class="row">
                         <div class="col-sm-1"></div>
                         <div class="col-sm-4">
-                            <a href= "<? echo $linkToInstance1; ?>" class="hover-overlay" style="min-height: 150px;">
+                            <a href= "<? echo $linkToInstance1; ?>" class="hover-overlay">
                                 <img title="<? echo $title1; ?>"
-                                     src="<? echo $coverImage1; ?>"
-                                     style="min-height: 150px;">
+                                     src="<? echo $coverImage1; ?>">
                         </div>
                             <div class="col-sm-6">
                                 <div class="content">
                                     <b><? echo $title1; ?></b>
                                     <br>von: <? echo $author1; ?>
-                                    <br>Veröffentlicht: <? echo $year1; ?>
                                 </div>
                             </div>
                             </a>
@@ -62,16 +71,14 @@
                     <div class="row">
                         <div class="col-sm-1"></div>
                         <div class="col-sm-4">
-                            <a href= "<? echo $linkToInstance2; ?>" class="hover-overlay" style="min-height: 150px;">
+                            <a href= "<? echo $linkToInstance2; ?>" class="hover-overlay">
                                 <img title="<? echo $title2; ?>"
-                                     src="<? echo $coverImage2?>"
-                                     style="min-height: 150px;">
+                                     src="<? echo $coverImage2?>">
                         </div>
                         <div class="col-sm-6">
                             <div class="content">
                                 <b><? echo $title2; ?></b>
                                 <br>von: <? echo $author2; ?>
-                                <br>Veröffentlicht: <? echo $year2; ?>
                             </div>
                         </div>
                         </a>
@@ -82,16 +89,50 @@
                     <div class="row">
                         <div class="col-sm-1"></div>
                         <div class="col-sm-4">
-                            <a href= "<? echo $linkToInstance3; ?>" class="hover-overlay" style="min-height: 150px;">
+                            <a href= "<? echo $linkToInstance3; ?>" class="hover-overlay">
                                 <img title="<? echo $title3; ?>"
-                                     src="<? echo $coverImage3?>"
-                                     style="min-height: 150px;">
+                                     src="<? echo $coverImage3?>">
                         </div>
                         <div class="col-sm-6">
                             <div class="content">
                                 <b><? echo $title3; ?></b>
                                 <br>von: <? echo $author3; ?>
-                                <br>Veröffentlicht: <? echo $year3; ?>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-4">
+                            <a href= "<? echo $linkToInstance4; ?>" class="hover-overlay">
+                                <img title="<? echo $title4; ?>"
+                                     src="<? echo $coverImage4?>">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="content">
+                                <b><? echo $title4; ?></b>
+                                <br>von: <? echo $author4; ?>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-4">
+                            <a href= "<? echo $linkToInstance5; ?>" class="hover-overlay">
+                                <img title="<? echo $title5; ?>"
+                                     src="<? echo $coverImage5?>">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="content">
+                                <b><? echo $title5; ?></b>
+                                <br>von: <? echo $author5; ?>
                             </div>
                         </div>
                         </a>

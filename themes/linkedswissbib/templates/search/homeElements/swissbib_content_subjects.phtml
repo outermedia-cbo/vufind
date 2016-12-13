@@ -15,12 +15,22 @@ $subject2 = "Merkantilismus";
 $linkToSubjectDetails3 = $basePath . "/Exploration/subjectDetails?lookfor=http://d-nb.info/gnd/4025825-7&type=SubjectById";
 $thumbnail3 = "http://commons.wikimedia.org/wiki/Special:FilePath/Bee_on_topped_lavendar.jpg";
 $subject3 = "Biene";
+
+//Item 4
+$linkToSubjectDetails4 = $basePath . "/Exploration/subjectDetails?lookfor=http://d-nb.info/gnd/4004770-2&type=SubjectById";
+$thumbnail4 = "https://upload.wikimedia.org/wikipedia/commons/6/6b/Erkheim_-_Marktstr_Nr_7_v_O.JPG";
+$subject4 = "Bauernhof";
+
+//Item 5
+$linkToSubjectDetails5 = $basePath . "/Exploration/subjectDetails?lookfor=http://d-nb.info/gnd/4129489-0&type=SubjectById";
+$thumbnail5 = "https://upload.wikimedia.org/wikipedia/commons/3/3d/Industriepflanzen_Meyer_1888.jpg";
+$subject5 = "Industriepflanzen";
+
 ?>
 
 <div class="home-content-box">
     <h2 class="lead">Themen</h2>
-    <div class="row">&nbsp;</div>
-    <div class="row">
+    <div class="lead">
         <div data-ride="carousel" class="carousel slide" id="similar-items-carousel-home-subjects">
 
             <!-- Indicators -->
@@ -28,6 +38,8 @@ $subject3 = "Biene";
                 <li class="active" data-slide-to="0" data-target="#similar-items-carousel-home-subjects"></li>
                 <li data-slide-to="1" data-target="#similar-items-carousel-home-subjects"></li>
                 <li data-slide-to="2" data-target="#similar-items-carousel-home-subjects"></li>
+                <li data-slide-to="3" data-target="#similar-items-carousel-home-subjects"></li>
+                <li data-slide-to="4" data-target="#similar-items-carousel-home-subjects"></li>
             </ol>
 
             <!-- Wrapper for slides -->
@@ -36,10 +48,9 @@ $subject3 = "Biene";
                     <div class="row">
                         <div class="col-sm-1"></div>
                         <div class="col-sm-4">
-                            <a href= "<? echo $linkToSubjectDetails1; ?>" class="hover-overlay" style="min-height: 150px;">
+                            <a href= "<? echo $linkToSubjectDetails1; ?>" class="hover-overlay">
                                 <img title="<? echo $subject1; ?>"
-                                     src="<? echo $thumbnail1; ?>"
-                                     style="min-height: 150px;">
+                                     src="<? echo $thumbnail1; ?>">
                         </div>
                         <div class="col-sm-6">
                             <div class="content">
@@ -54,10 +65,9 @@ $subject3 = "Biene";
                     <div class="row">
                         <div class="col-sm-1"></div>
                         <div class="col-sm-4">
-                            <a href= "<? echo $linkToSubjectDetails2; ?>" class="hover-overlay" style="min-height: 150px;">
+                            <a href= "<? echo $linkToSubjectDetails2; ?>" class="hover-overlay">
                                 <img title="<? echo $subject2; ?>"
-                                     src="<? echo $thumbnail2; ?>"
-                                     style="min-height: 150px;">
+                                     src="<? echo $thumbnail2; ?>">
                         </div>
                         <div class="col-sm-6">
                             <div class="content">
@@ -72,14 +82,47 @@ $subject3 = "Biene";
                     <div class="row">
                         <div class="col-sm-1"></div>
                         <div class="col-sm-4">
-                            <a href= "<? echo $linkToSubjectDetails3;  ?>" class="hover-overlay" style="min-height: 150px;">
+                            <a href= "<? echo $linkToSubjectDetails3;  ?>" class="hover-overlay">
                                 <img title="<? echo $subject3; ?>"
-                                     src="<? echo $thumbnail3?>"
-                                     style="min-height: 150px;">
+                                     src="<? echo $thumbnail3?>">
                         </div>
                         <div class="col-sm-6">
                             <div class="content">
                                 <b><? echo $subject3; ?></b>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-4">
+                            <a href= "<? echo $linkToSubjectDetails4;  ?>" class="hover-overlay">
+                                <img title="<? echo $subject4; ?>"
+                                     src="<? echo $thumbnail4?>">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="content">
+                                <b><? echo $subject4; ?></b>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-4">
+                            <a href= "<? echo $linkToSubjectDetails5;  ?>" class="hover-overlay">
+                                <img title="<? echo $subject5; ?>"
+                                     src="<? echo $thumbnail5?>">
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="content">
+                                <b><? echo $subject5; ?></b>
                             </div>
                         </div>
                         </a>

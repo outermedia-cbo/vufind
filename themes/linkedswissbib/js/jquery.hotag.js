@@ -4,6 +4,8 @@
  *
  * Copyright (c) 2014 
  * Licensed under the MIT license.
+ *
+ * Adjustments were made to enable the display of knowledgeCards for linked.swissbib
  */
 
 +function ($) {
@@ -21,6 +23,8 @@
   Hotag.DEFAULTS = {
     tags: [],
     keyOfName: 'tag',
+    //added to fetch Id for knowledge card
+    keyOfId: 'id',
     keyOfCounts: 'counts',
     keyOfHref: 'href',
     containerClass: 'hotag-container',
@@ -55,7 +59,8 @@
           'title': this.options.keyOfCounts + ': ' + tag[this.options.keyOfCounts]
         })
         .css('font-size', utils.calPoints.call(this, tag[this.options.keyOfCounts], m) + '%')
-      $target.append(' ').append($tag)
+        //append('<span class="fa fa-info-circle fa-lg kcopenerAuthor" style="padding:3px;" authorId="' + tag +'"></span>') was added for linked.swisbib to display knowledge card
+      $target.append(' ').append($tag).append('<span class="fa fa-info-circle fa-lg kcopenerSubject" style="padding:3px;" subjectId="' + tag[this.options.keyOfId] +'"></span>')
     }
     return this
   }

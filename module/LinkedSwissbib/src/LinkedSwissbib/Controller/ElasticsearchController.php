@@ -24,29 +24,11 @@ class ElasticsearchController extends AbstractSearch
         parent::__construct();
     }
 
-
-    public function searchAction ()
-    {
-        return parent::resultsAction();
-    }
-
     public function resultsAction()
     {
         $query = $this->getRequest()->getQuery();
         $query->set('type','Person');
         return parent::resultsAction();
-    }
-
-    public function authorAction ()
-    {
-        return parent::resultsAction();
-
-    }
-
-    public function workAction ()
-    {
-        return parent::resultsAction();
-
     }
 
     public function AuthorDetailsAction ()

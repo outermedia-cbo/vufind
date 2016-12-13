@@ -1,28 +1,3 @@
-<?
-// Set page title.
-$this->headTitle($this->translate('Search Home'));
-
-//$this->layout()->searchbox = true;
-
-// Set default value if necessary:
-if (!isset($this->searchClassId)) {
-	$this->searchClassId = 'Elasticsearch';
-}
-
-// Load search actions and settings (if any):
-$options = $this->searchOptions($this->searchClassId);
-$basicSearch = $options->getSearchAction();
-$advSearch = $options->getAdvancedSearchAction();
-
-$this->layout()->breadcrumbs = false;
-
-if (!isset($this->layout()->searchbox)) {
-	$this->layout()->searchbox = $this->render('search/searchbox.phtml');
-}
-?>
-
-<div role="main" class="main">
-
-This is a placeholder in home.phtml.<br>
-
-</div>
+<!-- Home content for tabs that search in Elasticsearch (ES Controller) -->
+<!-- Loads content from search/home.phtml which is the content that is displayed for tabs that search in Solr (Solr Controller) -->
+<?=$this->render("search/home.phtml")?>

@@ -102,21 +102,33 @@ li {
 	}
 }
 
+
+/* Modules detailspages*/
+span.labelAsString {
+  font-size: inherit;
+}
+
 /* Carousel*/
+.ui-dialog { z-index: 1000 !important ;}
+
 #similar-items-carousel-home-works .carousel-indicators, #similar-items-carousel-home-authors .carousel-indicators, #similar-items-carousel-home-subjects .carousel-indicators {
-    margin-bottom: -45px !important;
+  margin-bottom: -20% !important;
+  margin-top:20px;
+  left: 22.5%;
+  width: 120%;
   }
 
 #similar-items-carousel-home-works .carousel-indicators li, #similar-items-carousel-home-authors .carousel-indicators li, #similar-items-carousel-home-subjects .carousel-indicators li {
   background-color: rgba(0, 0, 0, 0) !important;
   border: 1px solid #0d785b !important;
-  border-radius: 10px !important;
+  border-radius: 20px !important;
   cursor: pointer !important;
   display: inline-block !important;
-  height: 20px !important;
+  height: 30px !important;
   margin: 1px !important;
+  margin-right: 20px !important;
   text-indent: -999px !important;
-  width: 20px !important;
+  width: 30px !important;
 }
 
 #similar-items-carousel-home-works .carousel-indicators .active, #similar-items-carousel-home-authors .carousel-indicators .active, #similar-items-carousel-home-subjects .carousel-indicators .active {
@@ -131,13 +143,20 @@ li {
   display: inline !important;
 }
 
-#similar-items-carousel-home-works .hover-overlay, #similar-items-carousel-home-authors .hover-overlay, #similar-items-carousel-home-subjects .hover-overlay {
+#similar-items-carousel-home-works .hover-overlay > img, #similar-items-carousel-home-authors .hover-overlay > img, #similar-items-carousel-home-subjects .hover-overlay > img {
   display: inline !important;
   margin: auto !important;
-  min-height: 300px !important;
-  min-width: 150px !important;
+  min-height: 150px !important;
+  max-height: 150px !important;
+  max-width: 120px !important;
   position: relative !important;
   text-align: left !important;
+}
+
+#similar-items-carousel-home-works .col-sm-4, #similar-items-carousel-home-authors .col-sm-4, #similar-items-carousel-home-subjects .col-sm-4  {
+  margin-left: 15px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /* KnowledgeCard*/
@@ -176,8 +195,16 @@ li {
   padding: 0 4em;
 }
 
-.kcopener {
+.kcopenerAuthor .kcopenerSubject {
   cursor: pointer;
+}
+
+.fa-info-circle {
+  color: #0d785b;
+}
+
+.fa-info-circle:hover {
+  color: #50bf9e;
 }
 
 /* Knowledge Card - altered and added classes */
@@ -209,6 +236,32 @@ li {
 .ui-dialog .ui-dialog-buttonpane button { margin: .5em .4em .5em 0; cursor: pointer; }
 .ui-dialog .ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
 .ui-draggable .ui-dialog-titlebar { cursor: move; }
+.ui-button {
+  -moz-user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857;
+  margin-bottom: 0;
+  padding: 6px 12px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  background-color: #0d785b;
+  color: #fff;
+}
+.ui-button:hover, .ui-button:focus, .ui-button.focus, .ui-button:active, .ui-button.active, .open > .dropdown-toggle.btn-primary {
+  background-color: #50bf9e;
+  border-color: #50bf9e;
+  color: #fff;
+}
+.ui-button:active, .ui-button.active, .open > .dropdown-toggle.btn-primary {
+  background-image: none;
+}
 
 /* Corners */
 .ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl { -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; -khtml-border-top-left-radius: 4px; border-top-left-radius: 4px; }

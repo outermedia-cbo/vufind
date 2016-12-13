@@ -10,13 +10,9 @@
             //GND Ontology: http://d-nb.info/standards/elementset/gnd
             $subject_alternativeNames = $singleResult->getSubjectAlternativeNames(); //http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading --> more variants available!
             $subject_uriForBroaderTerms = $singleResult->getSubjectUriForBroaderTerms(); //http://d-nb_info/standards/elementset/gnd#broaderTermGeneral   http://d-nb.info/standards/elementset/gnd#broaderTermGeneric   http://d-nb_info/standards/elementset/gnd#broaderTermInstantial  http://d-nb_info/standards/elementset/gnd#broaderTermPartitive
-            $subject_ddc1 = $singleResult->getSubjectDDC1(); //http://d-nb.info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy1 --> DDC-Notation Related Dewey Decimal Classification with degree of determinacy 1
-            $subject_ddc2 = $singleResult->getSubjectDDC2(); //http://d-nb.info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy2 --> DDC-Notation Related Dewey Decimal Classification with degree of determinacy 2
-            $subject_ddc3 = $singleResult->getSubjectDDC3(); //http://d-nb.info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy3 --> DDC-Notation Related Dewey Decimal Classification with degree of determinacy 3
-            $subject_ddc4 = $singleResult->getSubjectDDC4(); //http://d-nb.info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy4 --> DDC-Notation Related Dewey Decimal Classification with degree of determinacy 4
+            $subject_ddc = $singleResult->getSubjectDDC(); //http://d-nb.info/standards/elementset/gnd#relatedDdcWithDegreeOfDeterminacy1/2/3/4 --> DDC-Notation Related Dewey Decimal Classification with degree of determinacy 1/2/3/4
             $subject_definition = $singleResult->getSubjectDefinition(); //http://d-nb_info/standards/elementset/gnd#definition --> Erläuterungen
-            $subject_externalLinkSkos = $singleResult->getSubjectExternalLinkSkos(); //skos:exactMatch, foaf:page
-            $subject_externalLinkFoafPage = $singleResult->getSubjectExternalLinkFoafPage(); //skos:exactMatch, foaf:pag
+            $subject_externalLinks = $singleResult->getSubjectExternalLinks();
             $subject_gndSubjectCategory = $singleResult->getSubjectGndSubjectCategory(); //http://d-nb.info/standards/elementset/gnd#gndSubjectCategory --> GND Systematik
             $subject_uriForNarrowerTerms = $singleResult->getSubjectUriForNarrowerTerms(); //http://d-nb.info/standards/elementset/gnd#narrowerTermGeneral  http://d-nb.info/standards/elementset/gnd#narrowerTermGeneric	http://d-nb.info/standards/elementset/gnd#narrowerTermInstantial  http://d-nb.info/standards/elementset/gnd#narrowerTermPartitive
             $subject_preferredName = $singleResult->getSubjectPreferredName();
@@ -27,15 +23,18 @@
             $instances[] = $singleResult;
     endforeach;
     ?>
+    <div class="knowledgeCard">
+        <?=$this->render("elasticsearch/knowledgeCard.phtml")?>
+    </div>
     <script>
         var gndIds_subject_relatedTerms = "<? echo $subject_uriForRelatedTerms ?>";
-        writeSubjectNamesIntoHtmlId(gndIds_subject_relatedTerms, "#subject_relatedTerms");
+        writeSubjectNamesIntoHtmlId(gndIds_subject_relatedTerms, "#subject_relatedTerms", "withKnowledgeCard");
 
         var gndIds_subject_broaderTerms = "<? echo $subject_uriForBroaderTerms ?>";
-        writeSubjectNamesIntoHtmlId(gndIds_subject_broaderTerms, "#subject_broaderTerms");
+        writeSubjectNamesIntoHtmlId(gndIds_subject_broaderTerms, "#subject_broaderTerms", "withKnowledgeCard");
 
         var gndIds_subject_narrowerTerms = "<? echo $subject_uriForNarrowerTerms ?>";
-        writeSubjectNamesIntoHtmlId(gndIds_subject_narrowerTerms, "#subject_narrowerTerms");
+        writeSubjectNamesIntoHtmlId(gndIds_subject_narrowerTerms, "#subject_narrowerTerms", "withKnowledgeCard");
     </script>
     <div class="container container-table-fix-md breadcrumbWrapper">
         <ul class="breadcrumb hidden-print">
@@ -46,15 +45,14 @@
             <!-- Example from swissbib classic
                 <a href="/Search/Results?lookfor=malaria&type=AllFields">Suche: malaria</a>
             -->
-            <li class="active"><a
-                    href="<?= $basePath ?>/Exploration/SubjectDetails?lookfor=<? echo $subject_uniqueId ?>&amp;type=SubjectById"><? echo $subject_uniqueId ?></a>
-            </li>
-            <li class="active">Themenseite</li>
-            <?
-
-            ?>
+            <li class="active">Themenseite: <? echo $subject_preferredName ?></li>
         </ul>
     </div>
+    <?
+    if (($subject_preferredName == "Keine Inhalte vorhanden") || ($subject_preferredName == '') ) {
+    ?><h3><? echo "Oje, hier scheinen keine verlinkten Daten vorhanden zu sein!";?></h3>
+    </br><button class="btn btn-primary" onclick="goBack()">Zurück</button>
+    <? } else { ?>
     <!-- end class container container-table-fix-md breadcrumbWrapper -->
     <div class="container container-table-fix-md">
         <div class="row row-table-fix-md table-sidebar">
@@ -62,51 +60,18 @@
                 <div class="row bg-grey">
                     <div class="col-md-9 col-table-fix-md resultView bg-white">
                         <div class="results-top row">
-                            <div class="col-md-9">
+                            <div class="col-md-12">
                                 <!-- search results incl. icon
                                     <h1><i class="fa fa-search"></i> <span>Suchergebnisse</span></h1>
                                     <h2 class="visible-print-block">Ihre Suche: <span>malaria, 4048 Treffer</span></h2>
                                 -->
                                 <b>Springe zu:&nbsp;</b>
-                                <a href="#works">Literatur und Medien</a>&nbsp;|&nbsp;
-                                <a href="#mediaType">Medientyp</a>&nbsp;|&nbsp;
-                                <a href="#authorsOfWorksWithSubject">Autoren und Beitragende von Literatur und Medien mit diesem Thema</a>&nbsp;|&nbsp;
-                                <a href="#worksWithSimilarSubjects">Literatur und Medien von Autoren mit ähnlichen Werken</a>&nbsp;|&nbsp;
-                                <a href="#worksOfAuthorsWithWorksWithSubject">Literatur und Medien von Autoren mit ähnlichen Themen</a>&nbsp;|&nbsp;
+                                <a href="#works">B&uuml;cher &amp; Co. zum Thema <? echo $subject_preferredName ?></a>&nbsp;|&nbsp;
+                                <a href="#authorsOfWorksWithSubject">AutorInnen von B&uuml;chern &amp; Co. mit dem Thema <? echo $subject_preferredName ?></a>&nbsp;|&nbsp;
+                                <a href="#worksWithSimilarSubjects">B&uuml;cher &amp; Co. mit ähnlichen Themen</a>&nbsp;|&nbsp;
+                                <a href="#worksOfAuthorsWithWorksWithSubject">B&uuml;cher &amp; Co. von AutorInnen, die u.a. zum Thema <? echo $subject_preferredName ?> veröffentlichen</a>&nbsp;|&nbsp;
                             </div>
-                            <!-- end class col-md-9 -->
-                            <div class="col-md-3">
-                                <!-- icons export, save etc. -->
-                                <div class="searchtools">
-                                    <div class="searchtools hidden-print">
-                                        <!-- #TODO: Replace static links -->
-                                        <a href="<?= $basePath ?>?lookfor=malaria&amp;type=AllFields&amp;view=rss"
-                                           title="Neue Einträge zu dieser Suche per Feed gemeldet bekommen"><i
-                                                class="fa fa-rss"></i></a>
-                                        <a href="<?= $basePath ?>/Search/Email" id="mailSearch29097239" title="Per E-Mail versenden"><i
-                                                class="fa fa-envelope"></i></a>
-                                        <a href="<?= $basePath ?>/MyResearch/SaveSearch?save=29097239" title="Suche speichern"><i
-                                                class="fa fa-plus-square"></i></a>
-                                        <!-- Styling & Funktionstests -->
-                                        <a class="export-toggle dropdown-toggle hidden-xs hidden-sm"
-                                           data-toggle="dropdown" href="<?= $basePath ?>/Record//Export" title=" Exportieren"><i
-                                                class="fa fa-share"></i></a>
-                                        <ul class="dropdown-menu" role="export-menu">
-                                            <li class="visible-md visible-lg">
-                                                <a href="<?= $basePath ?>/doExport?f=EndNote">Exportieren
-                                                    nach EndNote</a>
-                                            </li>
-                                            <li class="visible-md visible-lg">
-                                                <a href="<?= $basePath ?>/Cart/doExport?f=BibTeX">Exportieren
-                                                    nach BibTeX</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <!-- end class searchtools hidden-print -->
-                                </div>
-                                <!-- end class searchtools -->
-                            </div>
-                            <!-- end class col-md-3 -->
+                            <!-- end class col-md-12 -->
                         </div>
                         <!-- end class results-top row -->
                         <div class="container-fluid">
@@ -121,9 +86,6 @@
                                         <h2>
                                             <? echo $subject_preferredName ?>
                                         </h2>
-                                        <div class="knowledgeCard">
-                                        <?=$this->render("elasticsearch/knowledgeCardAuthor.phtml")?>
-                                        </div>
                                     </div>
                                     <!-- name variants -->
                                     <div class="meta">
@@ -183,13 +145,13 @@
                                         <dt class="col-sm-2">
                                         <!-- Dewey Decimal Classification -->
                                         <p>Dewey Decimal <br> Classification (Notation):</p></dt>
-                                        <dd class="col-sm-10"><p><? echo $subject_ddc1 . "<br>" . $subject_ddc2 . "<br>" . $subject_ddc3 . "<br>" . $subject_ddc4 ?></p></dd>
+                                        <dd class="col-sm-10"><p><? echo $subject_ddc ?> (Website zurzeit offline)</p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
                                         <!-- external Links und sources -->
-                                        <p>Externe Links:</p></dt>
-                                        <dd class="col-sm-10"><p><? echo $subject_uniqueId . "<br>" . $subject_externalLinkSkos . "<br>" . $subject_externalLinkFoafPage ?></p></dd>
+                                        <p>Externe Websites:</p></dt>
+                                        <dd class="col-sm-10"><p><? echo $subject_externalLinks ?></p></dd>
                                     </div>
                                 </dl>
                             </div>
@@ -199,64 +161,12 @@
                         <!-- SEGMENT Werke -->
                         <?=$this->render("elasticsearch/resultsdetails.phtml")?>
 
-                        <!-- SEGMENT Medientyp -->
-                        <div id="mediaType" class="results-top row">
-                            <h2>Medientypen</h2>
-                        </div>
-                        <!-- end class results-top row -->
-                        <div class="row">
-                            <ul class="list-inline">
-                                <li>
-                                    <a href="#">
-                                        <figure>
-                                            <img class="img-responsive"
-                                                 src="../themes/linkedswissbib/images/icon_hoerbuch.jpg" alt="Hörbuch">
-                                            <figcaption>Hörbuch / Tonaufnahme (5'601)<br></figcaption>
-                                        </figure>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <figure>
-                                            <img src="../themes/linkedswissbib/images/icon_noten.jpg" alt="Noten">
-                                            <figcaption>Noten (Partitur) (650)<br></figcaption>
-                                        </figure>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <figure>
-                                            <img src="../themes/linkedswissbib/images/icon_eBook.jpg" alt="eBook">
-                                            <figcaption>eBook (1'256)<br></figcaption>
-                                        </figure>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <figure>
-                                            <img src="../themes/linkedswissbib/images/icon_buch.jpg" alt="Buch">
-                                            <figcaption>gedrucktes Buch (34'455)<br></figcaption>
-                                        </figure>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <figure style="vertical-align: top;">
-                                            <img style="vertical-align: top;"
-                                                 src="../themes/linkedswissbib/images/icon_video.jpg" alt="video">
-                                            <figcaption>Film / Video (4'756)<br></figcaption>
-                                        </figure>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- end class row -->
-
                         <!-- SEGMENT Autoren mit ähnlichen Themen -->
                         <!-- id="relatedSubjects" -->
                         <script>
                             var subject_uniqueId = "<? echo $subject_uniqueId?>";
-                            writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId);
+                            var subject_preferredNameAsString = "<? echo $subject_preferredName ?>";
+                            writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_preferredNameAsString);
                         </script>
                         <?=$this->render("elasticsearch/sd_moduleGalleryAuthorsOfWorksWithSubjects.phtml")?>
                         <?=$this->render("elasticsearch/sd_moduleCarouselWorksWithSimilarSubjects.phtml")?>
@@ -272,6 +182,7 @@
         </div>
         <!-- end class row row-table-fix-md table-sidebar -->
     </div>
+    <? } ?>
     <!-- container container-table-fix-md -->
     <div id="bottom-puffer"></div>
 </div>

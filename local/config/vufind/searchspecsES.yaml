@@ -84,12 +84,13 @@ AutocompleteAuthor:
         - foaf:name
         - foaf:firstName
         - foaf:lastName
+        - dbp:pseudonym
         - schema:alternateName
         #- rdfs:label
       type:
         - cross_fields #should be default
       operator:
-        - and # should be default
+        - or # should be default
 
 AutocompleteInstance:
   Multisearch:
@@ -160,7 +161,6 @@ AllFields:
 #              operator:
 #                - and # should be default
 
-
 Person:
   UsedTypes:
     - person
@@ -172,67 +172,10 @@ Person:
         - foaf:name
         - foaf:firstName
         - foaf:lastName
+        - dbp:pseudonym
         - schema:alternateName
         #- rdfs:label
       type:
         - cross_fields #should be default
       operator:
-        - and # should be default
-
-
-Contributor:
-  UsedTypes:
-    - person
-  UsedIndex:
-    - testsb
-  query:
-    #todo think about a mechanism to reference already defined queries
-#    nested:
-#      path:
-#        - dct:BibliographicResource.dc:contributor
-#      query:
-      multi_match:
-        fields:
-          - @id
-        type:
-          - cross_fields #should be default
-        operator:
-          - and # should be default
-
-Resources:
-  UsedTypes:
-    - bibliographicResource
-  UsedIndex:
-    - testsb
-  query:
-    #todo think about a mechanism to reference already defined queries
-#    nested:
-#      path:
-#        - dct:BibliographicResource.dc:contributor
-#      query:
-      multi_match:
-        fields:
-          - dct:contributor
-        type:
-          - cross_fields #should be default
-        operator:
-          - and # should be default
-
-Work:
-  UsedTypes:
-    - work
-  UsedIndex:
-    - testsb
-  query:
-    #todo think about a mechanism to reference already defined queries
-#    nested:
-#      path:
-#        - dct:BibliographicResource.dc:contributor
-#      query:
-      multi_match:
-        fields:
-          - @id
-        type:
-          - cross_fields #should be default
-        operator:
-          - and # should be default
+        - or # should be default
