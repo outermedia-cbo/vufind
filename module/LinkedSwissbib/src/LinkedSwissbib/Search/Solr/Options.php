@@ -52,32 +52,6 @@ class Options extends SwissbibSolrOptions
         parent::__construct($configLoader);
     }
 
-    /**
-     * Retrieve the last sort option used.
-     *
-     * @return string
-     */
-    public function getLastSort()
-    {
-        //we have to analyze how sessions are actually processed by VuFind
-        //$session = $this->getSession();
-        return null;
-        //return isset($session->lastSort) ? $session->lastSort : null;
-    }
-
-
-    /**
-     * Retrieve the last limit option used.
-     *
-     * @return string
-     */
-    public function getLastLimit()
-    {
-        return null;
-        //$session = $this->getSession();
-        //return isset($session->lastLimit) ? $session->lastLimit : null;
-    }
-
 
 
 }
