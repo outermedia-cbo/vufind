@@ -29,9 +29,7 @@ $title = $instance->getTitle();
 $year = $instance->getYear();
 {
 ?>
-<!-- start result list form-->
-<form class="form-inline" method="post" name="bulkActionForm" action="/Cart/Home">
-    <div id="#" class="row result clearfix">
+    <div id="result<?=$i++ ?>" class="row result clearfix">
         <div class="col-xs-11 gutter-1">
             <!--
             <input value="330861492" class="hiddenId" type="hidden">
@@ -128,8 +126,6 @@ $year = $instance->getYear();
         <!-- end class col-xs-11 gutter-1 -->
     </div>
     <!-- end class row result clearfix -->
-</form>
-<!-- end result list form-->
 <?
 }
 endforeach;
