@@ -49,7 +49,7 @@ function getBibResLink (array, key) {
     //get ID
     var bibliographicResource_id = array[key]._source['@id'];
     //extract ID to link to the Solr record
-    var id_classic = bibliographicResource_id.slice(33);
+    var id_classic = bibliographicResource_id.slice(46);
     var url_start = 'http://' + window.location.hostname +
         '/sbrd/Record/';
     var link_bibRes = url_start + id_classic;
