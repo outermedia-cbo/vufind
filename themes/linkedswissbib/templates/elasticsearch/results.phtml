@@ -59,7 +59,7 @@ $exportFormats = array('EndNote', 'BibTeX');
 /* href="<?=$this->url('cart-doexport')?>?f=<?=$format?>"*/
 ?>
 
-<div class="<?=$this->layoutClass('mainbody')?>">
+<div class="<?=$this->layoutClass('mainbody')?> resultView">
     <? if ( $this->recordTotal > 0 ): ?>
         <div class="results-top row">
             <div class="col-md-9">
