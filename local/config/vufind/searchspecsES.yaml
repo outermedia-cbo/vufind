@@ -84,7 +84,10 @@ AutocompleteAuthor:
         - foaf:name
         - foaf:firstName
         - foaf:lastName
-        - dbp:pseudonym
+        - dbp:pseudonym.de
+        - dbp:pseudonym.en
+        - dbp:pseudonym.fr
+        - dbp:pseudonym.it
         - schema:alternateName
         #- rdfs:label
       type:
@@ -172,7 +175,10 @@ Person:
         - foaf:name
         - foaf:firstName
         - foaf:lastName
-        - dbp:pseudonym
+        - dbp:pseudonym.de
+        - dbp:pseudonym.en
+        - dbp:pseudonym.fr
+        - dbp:pseudonym.it
         - schema:alternateName
         #- rdfs:label
       type:
