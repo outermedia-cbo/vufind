@@ -19,8 +19,11 @@ $(document).ready(function() {
             },
             source: function(query, cb) {
                 var searcher = extractClassParams('.autocomplete');
+                //todo we have to throw away this stupid /sbrd and the global path variable in
+                //layout.phtml line 25 (theme linked swissbib
                 $.ajax({
-                    url: path + '/AJAX/JSON',
+
+                    url: '/sbrd' + '/AJAX/JSON',
                     data: {
                         q:query,
                         method:'getACSuggestions',
