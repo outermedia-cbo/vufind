@@ -43,7 +43,7 @@ $formats = $viewRecord->getFormatList();
   <input type="hidden" value="<?=$this->escapeHtmlAttr($this->driver->getResourceSource())?>" class="hiddenSource" />
 
   <div class="hidden-xs col-sm-3 col-md-2 no-gutter hidden-print">
-    <a href="<?=$this->recordLink()->getUrl($this->driver)?>" class="img-responsive">
+    <a href="/sbrd/Exploration/AuthorDetails?lookfor=<?echo $uniqueID?>&type=AuthorForId" class="img-responsive">
       <? if ( !($thumbnail === false) ):  ?>
         <img alt="<?= $this->escapeHtml($nameAsLabel) ?>" class="recordcover" src="<?= $thumbnail ?>"/>
       <? else: ?>
