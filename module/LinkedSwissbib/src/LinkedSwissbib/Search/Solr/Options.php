@@ -50,6 +50,11 @@ class Options extends SwissbibSolrOptions
     public function __construct(\VuFind\Config\PluginManager $configLoader)
     {
         parent::__construct($configLoader);
+
+        //hardcoded at the moment for swissbib
+        //todo actually we do not provide an additional searches.ini for linked
+        //either specialized ini or additional seperated ini - file
+        $this->autocompleteEnabled = true;
     }
 
 
