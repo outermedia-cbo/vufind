@@ -3,6 +3,7 @@
  */
 
 
+/*
 $(document).ready(function() {
 
     // Search autocomplete
@@ -134,3 +135,5 @@ $(document).ready(function() {
             window.location.href = baseurl + postfix;
         });
 });
+
+*/
