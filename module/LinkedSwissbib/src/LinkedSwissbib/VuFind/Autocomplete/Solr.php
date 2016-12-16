@@ -59,6 +59,8 @@ class Solr extends SwissbibAutocompleteSolr {
      */
     public function getSuggestions($query)
     {
+        $results = [];
+
         if (!is_object($this->searchObject)) {
             throw new \Exception('Please set configuration first.');
         }
