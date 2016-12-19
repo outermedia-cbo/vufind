@@ -7,7 +7,10 @@ return array(
     ),
 
     'js'      => array(
-        'linkedswissbib/common.js',
+        'jquery/ui/jquery-ui.min.js',
+        'linkedswissbib/typeahead.js',
+        'linkedswissbib/common.js'
+
     ),
 
 );
