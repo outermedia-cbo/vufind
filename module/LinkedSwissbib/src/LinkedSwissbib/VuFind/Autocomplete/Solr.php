@@ -33,7 +33,7 @@
 
 namespace LinkedSwissbib\VuFind\Autocomplete;
 
-use Swissbib\Vufind\Autocomplete\Solr as SwissbibAutocompleteSolr;
+use Swissbib\VuFind\Autocomplete\Solr as SwissbibAutocompleteSolr;
 
 class Solr extends SwissbibAutocompleteSolr {
 
@@ -59,6 +59,8 @@ class Solr extends SwissbibAutocompleteSolr {
      */
     public function getSuggestions($query)
     {
+        $results = [];
+
         if (!is_object($this->searchObject)) {
             throw new \Exception('Please set configuration first.');
         }

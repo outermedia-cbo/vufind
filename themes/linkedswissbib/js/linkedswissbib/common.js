@@ -1,7 +1,10 @@
-/**
- * Created by thomas on 04.04.16.
- */
+$.getScript('../themes/linkedswissbib/js/jquery-ui.min.noautocomplete.js', function() { // http://stackoverflow.com/a/18261253
+    //script is loaded and executed put your dependent JS here
+});
 
+$.getScript('../themes/linkedswissbib/js/typeahead.bundle.min.js', function() { // http://stackoverflow.com/a/18261253
+    //script is loaded and executed put your dependent JS here
+});
 
 $(document).ready(function() {
 

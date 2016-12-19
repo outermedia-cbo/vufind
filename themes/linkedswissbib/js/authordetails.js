@@ -63,10 +63,14 @@ $(document).ready(function() {
         }
     }
 
+    function escapeRegex(theString) {
+        return theString.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&"); // http://stackoverflow.com/a/13157996
+    }
+
     function replaceInAuthorUris(theOld, theNew) {
 
         $( ".authoruris" ).each(function() {
-            this.innerHTML = this.innerHTML.replace(new RegExp($.ui.autocomplete.escapeRegex(theOld), 'g'), theNew); // http://stackoverflow.com/a/13157996
+            this.innerHTML = this.innerHTML.replace(new RegExp(escapeRegex(theOld), 'g'), theNew);
         });
     }
 

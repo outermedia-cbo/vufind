@@ -128,10 +128,11 @@ class ElasticSearchRDF extends AbstractBase
 
     private function addHtmlToExternalLinks ($stringWithCommaSeparatedUrls)
     {
+        $result = '';
         $array = explode(',', $stringWithCommaSeparatedUrls);
         foreach ($array as $link) {
             if (strpos($link, 'Keine Inhalte vorhanden') === false) {
-                $result .= '<a target="_blank" href="' . $link . '"><i class="fa fa-external-link"></i> ' . $link . '</a></br>';
+                $result = '<a target="_blank" href="' . $link . '"><i class="fa fa-external-link"></i> ' . $link . '</a></br>';
             }
         }
         if (!empty($result)) {
