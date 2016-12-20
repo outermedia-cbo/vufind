@@ -48,12 +48,13 @@ function getCoverLink (array, key) {
 function getBibResLink (array, key) {
     //get ID
     var bibliographicResource_id = array[key]._source['@id'];
-    //extract ID to link to the Solr record
-    var id_classic = bibliographicResource_id.slice(33);
-    var url_start = 'http://' + window.location.hostname +
-        '/Record/';
-    var link_bibRes = url_start + id_classic;
-    return link_bibRes;
+    //we have something like this
+    //data.swissbib.ch/Record/[recordId]
+    //and we are looking for the recordId
+    var url = /[^\/]+$/;
+    var result = bibliographicResource_id.match(url);
+    return 'http://' + window.location.hostname + '/Record/' + result;
+
 }
 
 //Helper function for carousel
