@@ -100,12 +100,12 @@
                 //console.log("kcopener was clicked");
                 var authorId = $(this).attr("authorid")
                 var linkToAuthordetailsWorks = 'http://' + window.location.hostname +
-                '/sbrd/Exploration/AuthorDetails?lookfor=' + authorId + '&type=AuthorForId#works';
+                '/Exploration/AuthorDetails?lookfor=' + authorId + '&type=AuthorForId#works';
                 var linkToAuthordetails = 'http://' + window.location.hostname +
-                    '/sbrd/Exploration/AuthorDetails?lookfor=' + authorId + '&type=AuthorForId';
+                    '/Exploration/AuthorDetails?lookfor=' + authorId + '&type=AuthorForId';
                 $.ajax({
                     url: "http://" + window.location.hostname +
-                    "/sbrd/Ajax/Json?&method=getAuthorMulti&searcher=Elasticsearch",
+                    "/Ajax/Json?&method=getAuthorMulti&searcher=Elasticsearch",
                     type: "POST",
                     data: {"lookfor": authorId},
                     success: function (data) {
@@ -152,12 +152,12 @@
                 //console.log("kcopener was clicked");
                 var subjectId = $(this).attr("subjectid");
                 var linkToSubjectdetailsWorks = 'http://' + window.location.hostname +
-                    '/sbrd/Exploration/SubjectDetails?lookfor=' + subjectId + '&type=SubjectById#works';
+                    '/Exploration/SubjectDetails?lookfor=' + subjectId + '&type=SubjectById#works';
                 var linkToSubjectdetails = 'http://' + window.location.hostname +
-                    '/sbrd/Exploration/SubjectDetails?lookfor=' + subjectId + '&type=SubjectById';
+                    '/Exploration/SubjectDetails?lookfor=' + subjectId + '&type=SubjectById';
                 $.ajax({
                     url: "http://" + window.location.hostname +
-                    "/sbrd/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
+                    "/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
                     type: "POST",
                     data: {"lookfor": subjectId },
                     success: function (data) {
@@ -174,7 +174,7 @@
 
                         $.ajax({
                             url: "http://" + window.location.hostname +
-                            "/sbrd/Ajax/Json?&method=getAuthorMulti&searcher=Elasticsearch",
+                            "/Ajax/Json?&method=getAuthorMulti&searcher=Elasticsearch",
                             type: "POST",
                             data: {"lookfor": subjectId },
                             success: function (data) {

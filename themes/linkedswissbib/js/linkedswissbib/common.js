@@ -26,7 +26,7 @@ $(document).ready(function() {
                 //layout.phtml line 25 (theme linked swissbib
                 $.ajax({
 
-                    url: '/sbrd' + '/AJAX/JSON',
+                    url: '/AJAX/JSON',
                     data: {
                         q:query,
                         method:'getACSuggestions',
@@ -122,7 +122,8 @@ $(document).ready(function() {
         } 
     ).bind('typeahead:selected', function(obj, datum, name) {
 
-            var baseurl = 'http://' + window.location.hostname + '/sbrd/';
+            //var baseurl = 'http://' + window.location.hostname + '/sbrd/';
+            var baseurl = 'http://' + window.location.hostname;
 
             var postfix;
 

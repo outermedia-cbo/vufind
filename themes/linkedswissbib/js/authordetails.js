@@ -37,7 +37,7 @@ $(document).ready(function() {
 
             $.ajax({
                 url: "http://" + window.location.hostname +
-                "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
                 data: {"lookfor": uri},
                 success: function (msg) {
@@ -49,7 +49,7 @@ $(document).ready(function() {
                     var fullNameString;
                     if (isAuthorUriRealPerson(uri)) {
                         fullNameString = '<a href="http://' + window.location.hostname +
-                            '/sbrd/Exploration/AuthorDetails?lookfor=' + uri + '&type=AuthorForId">' + name + '</a>';
+                            '/Exploration/AuthorDetails?lookfor=' + uri + '&type=AuthorForId">' + name + '</a>';
                         fullNameString += '<span class="fa fa-info-circle fa-lg kcopenerAuthor" authorId="' + uri +'"></span>';
                     } else {
                         fullNameString = name;
