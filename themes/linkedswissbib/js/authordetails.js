@@ -42,8 +42,15 @@ $(document).ready(function() {
                 data: {"lookfor": uri},
                 success: function (msg) {
                     // Zugriff auf JSON über "msg"
-                    var uri = msg.person[0]._source["@id"]; // can't use variable 'uri' from outside directly
-                    var name = extractName(msg.person[0]);
+
+                    if (msg.hasOwnProperty('organisation')) {
+                        var uri = msg.organisation[0]._source["@id"]; // can't use variable 'uri' from outside directly
+                        var name = extractName(msg.organisation[0]);
+
+                    } else {
+                        var uri = msg.person[0]._source["@id"]; // can't use variable 'uri' from outside directly
+                        var name = extractName(msg.person[0]);
+                    }
                     uri2name[uri] = name;
 
                     var fullNameString;
