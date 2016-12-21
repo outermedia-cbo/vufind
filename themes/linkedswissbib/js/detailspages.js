@@ -171,15 +171,27 @@ function getPersonAuthorsNameThumbnailIconAsString(data, person_uniqueId) {
     return result;
 }
 
+//Duplicated code: same function in authordetails.js
+function checkForArrays (property) {
+    if ($.isArray(property)) {
+        return property[0];
+    } else {
+        return property;
+    }
+}
+
 //Similar in extractName in authordetails.js!!! --> knowledgeCard
 function getPersonNameAsString(array, key) {
     var  array = array.person[key]._source;
     if (('foaf:lastName' in array) && ('foaf:firstName') in array) {
-        return array['foaf:firstName'] + ' ' + array['foaf:lastName'];
+        //not ideal solution since it matches first and last name that do not actually belong together
+        var firstName = checkForArrays(array['foaf:firstName']);
+        var lastName = checkForArrays(array['foaf:lastName']);
+        return firstName + ' ' + lastName;
     } else if ('foaf:lastName' in array) {
-        return array['foaf:lastName'];
+        return checkForArrays(array['foaf:lastName']);
     } else if ('foaf:name' in array) {
-        return array['foaf:name'];
+        return checkForArrays(array['foaf:name']);
     } else {
         return 'Keine Inhalte vorhanden';
     }

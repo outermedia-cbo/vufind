@@ -279,11 +279,16 @@ class ElasticSearchRDF extends AbstractBase
 
     public function getNameAsString()
     {
-        if(isset($this->fields['_source']['foaf:firstName']) && isset($this->fields['_source']['foaf:lastName']))
-            return $this->fields['_source']['foaf:firstName'] . " " . $this->fields['_source']['foaf:lastName'];
-        elseif(isset($this->fields['_source']['foaf:lastName']))
-            return $this->fields['_source']['foaf:lastName'];
-        return $this->getValueIfAvailable('foaf:name');
+        //not ideal solution since it matches first and last name that do not actually belong together
+        if(isset($this->fields['_source']['foaf:firstName']) && isset($this->fields['_source']['foaf:lastName'])){
+            $firstName = is_array($this->fields['_source']['foaf:firstName']) ? $this->fields['_source']['foaf:firstName'][0] : $this->fields['_source']['foaf:firstName'];
+            $lastName = is_array($this->fields['_source']['foaf:lastName']) ? $this->fields['_source']['foaf:lastName'][0] : $this->fields['_source']['foaf:lastName'];
+            return $firstName . " " . $lastName;
+        } elseif(isset($this->fields['_source']['foaf:lastName'])) {
+            return is_array($this->fields['_source']['foaf:lastName']) ? $this->fields['_source']['foaf:lastName'][0] : $this->fields['_source']['foaf:lastName'];
+        } else {
+            return $this->getValueIfAvailable('foaf:name');
+        }
     }
 
     public function getBirthDate()
