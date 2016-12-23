@@ -13,7 +13,7 @@ $(document).ready(function() {
                 return data['val'][2];
             },
             source: function(query, cb) {
-                var searcher = extractClassParams('.autocomplete');
+                var searcher = extractClassParams('.twitterautocomplete');
                 //todo we have to throw away this stupid /sbrd and the global path variable in
                 //layout.phtml line 25 (theme linked swissbib
                 $.ajax({
@@ -49,7 +49,7 @@ $(document).ready(function() {
                     return data['val'][2];
             },
             source: function(query, cb) {
-                var searcher = extractClassParams('.autocomplete');
+                var searcher = extractClassParams('.twitterautocomplete');
                 $.ajax({
                     url: path + '/AJAX/JSON',
                     data: {
@@ -84,7 +84,7 @@ $(document).ready(function() {
                 return data['val'][2];
             },
             source: function(query, cb) {
-                var searcher = extractClassParams('.autocomplete');
+                var searcher = extractClassParams('.twitterautocomplete');
                 $.ajax({
                     url: path + '/AJAX/JSON',
                     data: {
