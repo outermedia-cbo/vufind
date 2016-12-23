@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     // Search autocomplete
-    $('.autocomplete').typeahead(
+    $('.twitterautocomplete').typeahead(
         {
             highlight: true,
             minLength: 3
