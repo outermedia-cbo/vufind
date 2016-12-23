@@ -8,10 +8,9 @@ return array(
 
     'js'      => array(
         'jquery/ui/jquery-ui.min.js',
-        'linkedswissbib/typeahead.js',
         'linkedswissbib/common.js',
-        'linkedswissbib/js/jquery-ui.min.noautocomplete.js',
-        'linkedswissbib/js/typeahead.bundle.min.js'
+        '../themes/linkedswissbib/js/jquery-ui.min.noautocomplete.js',
+        '../themes/linkedswissbib/js/typeahead.bundle.custom.js'
     ),
 
 );
