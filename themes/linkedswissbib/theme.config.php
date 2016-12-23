@@ -10,7 +10,7 @@ return array(
         'jquery/ui/jquery-ui.min.js',
         'linkedswissbib/common.js',
         '../themes/linkedswissbib/js/jquery-ui.min.noautocomplete.js',
-        '../themes/linkedswissbib/js/typeahead.bundle.custom.js'
+        '../themes/linkedswissbib/js/typeahead.js'
     ),
 
 );
