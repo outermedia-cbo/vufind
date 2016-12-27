@@ -127,6 +127,6 @@ $(document).ready(function() {
                 postfix = 'Record/' + datum['val'][0];
             }
 
-            window.location.href = baseurl + postfix;
+            window.location.href = baseurl + "/" + postfix;
         });
 });
