@@ -99,7 +99,8 @@ class ESQueryBuilder implements ESQueryBuilderInterface
             $getParams['body'] = '{"index":"gnd","type":"DEFAULT"}'."\n".'{"query":{"filtered":{"filter":{"in":{"_id":["' . implode('","', $uris) . '"]}}}}}'."\n";
             //$getParams['body'] = '{"query":{"filtered":{"filter":{"in":{"_id":["' . implode('","', $uris) . '"]}}}}}'."\n";
             $getParams['type'] = array("DEFAULT"); //TODO: Find out whether this line is necessary
-            $getParams['index'] = array("gnd");
+            //$getParams['index'] = array("gnd");
+            $getParams['index'] = array("testsb");
 
             return $getParams;
         }
@@ -109,7 +110,7 @@ class ESQueryBuilder implements ESQueryBuilderInterface
 
         $getParams['body'] = $searchBody;
         $getParams['type'] = array("person", "DEFAULT");
-        $getParams['index'] = array("testsb", "gnd");
+        $getParams['index'] = array("testsb");
 
         return $getParams;
     }

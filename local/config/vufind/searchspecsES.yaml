@@ -9,15 +9,13 @@ AuthorForId:
   UsedTypes:
     - person
   UsedIndex:
-    - testsb
+    - lsb
   query:
     multi_match:
       fields:
         - @id
-      type:
-        - cross_fields #should be default
-      operator:
-        - and # should be default
+      type: cross_fields
+      operator: and
 
 # subject by id
 SubjectById:
@@ -26,15 +24,13 @@ SubjectById:
   UsedTypes:
     - DEFAULT
   UsedIndex:
-    - gnd
+    - lsb
   query:
     multi_match:
       fields:
         - @id
-      type:
-        - cross_fields #should be default
-      operator:
-        - and # should be default
+      type: cross_fields
+      operator: and
 
 # AuthorByIdMulti : see /usr/local/vufind/httpd/module/LinkedSwissbib/src/LinkedSwissbib/Backend/Elasticsearch/ESQueryBuilder.php
 
@@ -45,30 +41,26 @@ BibliographicResourceForAuthor:
   UsedTypes:
     - bibliographicResource
   UsedIndex:
-    - testsb
+    - lsb
   query:
     multi_match:
       fields:
         - dct:contributor
-      type:
-        - cross_fields #should be default
-      operator:
-        - and # should be default
+      type: cross_fields
+      operator: and
 
 # bibliographicResource for Subject
 BibliographicResourceForSubject:
   UsedTypes:
     - bibliographicResource
   UsedIndex:
-    - testsb
+    - lsb
   query:
     multi_match:
       fields:
         - dct:subject
-      type:
-        - cross_fields #should be default
-      operator:
-        - and # should be default
+      type: cross_fields
+      operator: and
 
 
 AutocompleteAuthor:
@@ -77,7 +69,7 @@ AutocompleteAuthor:
   UsedTypes:
     - person
   UsedIndex:
-    - testsb
+    - lsb
   query:
     multi_match:
       fields:
@@ -87,10 +79,8 @@ AutocompleteAuthor:
         - dbp:pseudonym
         - schema:alternateName
         #- rdfs:label
-      type:
-        - cross_fields #should be default
-      operator:
-        - and # should be default
+      type: cross_fields
+      operator: and
 
 AutocompleteInstance:
   Multisearch:
@@ -98,47 +88,41 @@ AutocompleteInstance:
   UsedTypes:
     - bibliographicResource
   UsedIndex:
-    - testsb
+    - lsb
   query:
     multi_match:
       fields:
         - dct:title
         - dct:contributor
-      type:
-        - cross_fields #should be default
-      operator:
-        - and # should be default
+      type: cross_fields
+      operator: and
 
 AutocompleteSubject:
   UsedTypes:
     - DEFAULT
   UsedIndex:
-    - gnd
+    - lsb
   query:
     multi_match:
       fields:
-        #- http://d-nb_info/standards/elementset/gnd#preferredNameForTheConferenceOrEvent.@value
-        - http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading.@value
-        - http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading.@value
+        #- http://d-nb_info/standards/elementset/lsb#preferredNameForTheConferenceOrEvent.@value
+        - http://d-nb_info/standards/elementset/lsb#preferredNameForTheSubjectHeading.@value
+        - http://d-nb_info/standards/elementset/lsb#variantNameForTheSubjectHeading.@value
         - @type
-      type:
-        - cross_fields
-      operator:
-        - and
+      type: cross_fields
+      operator: and
 
 AllFields:
   UsedTypes:
     - bibliographicResource
   UsedIndex:
-    - testsb
+    - lsb
   query:
     bool:
       should:
         multi_match:
-          type:
-            - cross_fields #should be default
-          operator:
-            - and #should be default
+          type: cross_fields
+          operator: and
           fields:
             - dct:title
             - rdau:publicationStatement
@@ -165,7 +149,7 @@ Person:
   UsedTypes:
     - person
   UsedIndex:
-    - testsb
+    - lsb
   query:
     multi_match:
       fields:
@@ -175,7 +159,5 @@ Person:
         - dbp:pseudonym
         - schema:alternateName
         #- rdfs:label
-      type:
-        - cross_fields #should be default
-      operator:
-        - and # should be default
+      type: cross_fields
+      operator: and
