@@ -343,6 +343,24 @@ class ElasticSearchRDF extends AbstractBase
         }
     }
 
+    public function getBirthAndDeathYear($birthYear, $deathYear)
+    {
+        $fallback = "Keine Inhalte vorhanden";
+        $birthYear = $this->getBirthYear();
+        $deathYear = $this->getDeathYear();
+        if (($birthYear != $fallback) && ($deathYear != $fallback)) {
+            return ' (' . $birthYear . ' - ' . $deathYear. ')';
+        } elseif (($birthYear != $fallback) && ($deathYear = $fallback)) {
+            return ' (' . $birthYear . ' - ?)';
+        } elseif (($birthYear = $fallback) && ($deathYear != $fallback)) {
+            return ' (? ' . $deathYear . ')';
+        } elseif (($birthYear = $fallback) && ($deathYear = $fallback)) {
+            return '';
+        } else {
+            return '';
+        }
+    }
+
     public function getAlternativeNames()
     {
         return $this->getValueIfAvailable('schema:alternateName');

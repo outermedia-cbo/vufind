@@ -10,8 +10,7 @@ $thumbnail = $viewRecord->getThumbnail('small');
 $uniqueID = $record->getUniqueID();
 
 $nameAsLabel = $this->driver->getNameAsString();
-$birthDate = $this->driver->getBirthYear();
-$deathDate = $this->driver->getDeathYear();
+$birthAndDeathDate = $this->driver->getBirthAndDeathYear();
 
 ?>
 <div class="<?=$this->driver->supportsAjaxStatus()?'ajaxItem ':''?>col-xs-11 gutter-1">
@@ -40,8 +39,8 @@ $deathDate = $this->driver->getDeathYear();
 
     <!-- Birth and and death date -->
     <div class="meta">
-       <? if (isset($birthDate)): ?>
-        <span id="subtitle"><?= $this->escapeHtml($birthDate . " - " .  $deathDate) ?></span><br />
+       <? if (isset($birthAndDeathDate)): ?>
+        <span id="subtitle"><?= $this->escapeHtml($birthAndDeathDate) ?></span><br />
        <? endif; ?>
     </div>
 

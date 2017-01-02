@@ -94,6 +94,21 @@
                 //console.log(result);
             }
 
+            function combineDates (birthDate, deathDate) {
+                var fallback = 'Keine Inhalte vorhanden';
+                if ((birthDate !== fallback) && (deathDate !== fallback)) {
+                    return ' (' + birthDate + ' - ' + deathDate + ')';
+                } else if ((birthDate !== fallback) && (deathDate == fallback)) {
+                    return ' (' + birthDate + ' - ?)';
+                } else if ((birthDate !== fallback) && (deathDate == fallback)) {
+                    return ' (? - ' + deathDate + ')';
+                } else if ((birthDate == '') && (deathDate == fallback)) {
+                    return '';
+                } else {
+                    return '';
+                }
+            }
+
             $("#dialogAuthor, #dialogSubject").dialog({width: $(window).width() * 0.9 });
 
             $(document).on('click', '.kcopenerAuthor', function() {
@@ -116,6 +131,7 @@
                     var deathDates = getDate(data,'dbp:deathDate', 'schema:deathDate', 'dbp:deathYear');
                     var kc_deathDate = deathDates[0];
                     var kc_deathYear = deathDates[1];
+                    var kc_birthAndDeathYear = combineDates (kc_birthYear, kc_deathYear);
                     var kc_birthPlace = getPersonValuesAsString(data, 'lsb:dbpBirthPlaceAsLiteral');
                     var kc_deathPlace = getPersonValuesAsString(data, 'lsb:dbpDeathPlaceAsLiteral');
                     var kc_nationality = getPersonValuesAsString(data, 'lsb:dbpNationalityAsLiteral');
@@ -137,7 +153,7 @@
                     writeSubjectNamesIntoHtmlId (kc_subject, '#kc_subject', "withoutKnowledgeCard");
                     writeBibliographicResourceIntoHtmlClass(data, '.kc_works');
                     $('#kc_thumbnail').attr('src', kc_thumbnail);
-                    $('#ui-id-1').text(kc_name + ' (' + kc_birthYear + ' - ' + kc_deathYear + ')'); //Title/Widget-Header
+                    $('#ui-id-1').text(kc_name + kc_birthAndDeathYear); //Title/Widget-Header
 
                     $( "#dialogAuthor" ).dialog( "open" );
 
