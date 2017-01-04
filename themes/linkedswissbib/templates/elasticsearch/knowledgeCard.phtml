@@ -44,7 +44,7 @@
                 }
                 if (!result) {
                     if (!fallbackResult) {
-                        var result = 'Keine Inhalte vorhanden';
+                        var result = 'Nicht bekannt';
                     } else {
                         var result = fallbackResult;
                     }
@@ -62,7 +62,7 @@
                 } else if (dbpYear in dates) {
                     var date =  dates[dbpYear];
                 } else {
-                    var date =  'Keine Inhalte vorhanden';
+                    var date =  'Nicht bekannt';
                 }
 
                 //check whether first character is a number or not
@@ -83,19 +83,19 @@
                     } else if (date.length == 4) {
                         var kc_date = date;
                     } else {
-                        var kc_date = 'Keine Inhalte vorhanden';
+                        var kc_date = 'Nicht bekannt';
                     }
                 // if the first character is not a number
                 } else {
-                    var kc_date = 'Keine Inhalte vorhanden';
-                    var kc_year = 'Keine Inhalte vorhanden';
+                    var kc_date = 'Nicht bekannt';
+                    var kc_year = 'Nicht bekannt';
                 }
                 return [kc_date, kc_year];
                 //console.log(result);
             }
 
             function combineDates (birthDate, deathDate) {
-                var fallback = 'Keine Inhalte vorhanden';
+                var fallback = 'Nicht bekannt';
                 if ((birthDate !== fallback) && (deathDate !== fallback)) {
                     return ' (' + birthDate + ' - ' + deathDate + ')';
                 } else if ((birthDate !== fallback) && (deathDate == fallback)) {

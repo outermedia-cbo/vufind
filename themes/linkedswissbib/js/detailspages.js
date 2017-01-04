@@ -22,7 +22,7 @@ function getIdsFromPropertyInBibliographicResourcesAsString (data, property) {
         }
     }
     if (!result) {
-        result = "Keine Inhalte vorhanden";
+        result = "Nicht bekannt";
     }
     return result;
 }
@@ -74,7 +74,7 @@ function getItemForCarousel (array, keyStart, keyEnd){
             result += '<div class="col-sm-3"><a href="' + link_bibRes + '" class="hover-overlay" style="max-height: 200px;"><img title="'+ bibResTitle +'" src="' + link_cover + '" style="max-height: 200px;"><div class="content"><b>' + bibResTitle +'</b></div></a></div>';
         }
     } else {
-        fallbackItem = '<span class="hover-overlay" style="min-height: 200px;">Keine Inhalte vorhanden</span>';
+        fallbackItem = '<span class="hover-overlay" style="min-height: 200px;">Nicht bekannt</span>';
         var result= fallbackItem;
     }
     return result;
@@ -94,7 +94,7 @@ function getBibResForCarousel (data) {
         var result = [item0, item1, item2];
     }
     if (!result) {
-        result = 'Keine Inhalte vorhanden';
+        result = 'Nicht bekannt';
     }
     return result;
 }
@@ -130,7 +130,7 @@ function getTagCloudContentAsArray (data, gndIdsAsString) {
         }
     }
     if (!result) {
-        result = "Keine Inhalte vorhanden";
+        result = "Nicht bekannt";
     }
     return result;
 }
@@ -166,7 +166,7 @@ function getPersonAuthorsNameThumbnailIconAsString(data, person_uniqueId) {
         }
     }
     if (!result) {
-        result = "Keine Inhalte vorhanden";
+        result = "Nicht bekannt";
     }
     return result;
 }
@@ -193,7 +193,7 @@ function getPersonNameAsString(array, key) {
     } else if ('foaf:name' in array) {
         return checkForArrays(array['foaf:name']);
     } else {
-        return 'Keine Inhalte vorhanden';
+        return 'Nicht bekannt';
     }
 }
 
@@ -234,7 +234,7 @@ function writeSubjectLiteralsAsStringIntoHtmlId (data, gndUri, htmlId) {
         }
     }
     if (!result) {
-        result = "Keine Inhalte vorhanden";
+        result = "Nicht bekannt";
     }
     $(htmlId).text(result);
 }
@@ -290,7 +290,7 @@ function getSubjectPreferredNamesAsString (data, knowledgeCardStatement) {
         }
     }
     if (!result) {
-        result = "Keine Inhalte vorhanden";
+        result = "Nicht bekannt";
     }
     return result;
 }
@@ -328,7 +328,7 @@ function writeBibliographicResourceIntoHtmlClass(data, htmlClass) {
         }
     }
     if (!result) {
-        result = 'Keine Inhalte vorhanden';
+        result = 'Nicht bekannt';
     }
     $(htmlClass).html(result);
 }
@@ -376,7 +376,7 @@ function writeSubjectNamesIntoTagCloud (gndIdsAsString, htmlId) {
         data: {"lookfor": gndIdsAsString},
         success: function (data) {
             var tags = getTagCloudContentAsArray(data, gndIdsAsString);
-            if (tags == "Keine Inhalte vorhanden") {
+            if (tags == "Nicht bekannt") {
                 $(htmlId).text(tags);
             } else {
                 $(htmlId).hotag({

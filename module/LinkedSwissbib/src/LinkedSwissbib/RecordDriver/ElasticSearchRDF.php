@@ -46,7 +46,7 @@ class ElasticSearchRDF extends AbstractBase
         throw new \Exception(__FUNCTION__ . ' currently not supported');
     }
 
-    private function getValueIfAvailable($lookup, $fallback = "Keine Inhalte vorhanden")
+    private function getValueIfAvailable($lookup, $fallback = "Nicht bekannt")
     {
         if (isset($this->fields['_source'][$lookup]))
             $result = $this->fields['_source'][$lookup];
@@ -59,7 +59,7 @@ class ElasticSearchRDF extends AbstractBase
         return preg_replace(['/</','/>/'], ['&lt;','&gt;'],$result);
     }
 
-    private function getValueForProperty($lang, $lookup, $fallback = "Keine Inhalte vorhanden")
+    private function getValueForProperty($lang, $lookup, $fallback = "Nicht bekannt")
     {
         if(!isset($this->fields['_source'][$lookup]))
             return $fallback;
@@ -67,7 +67,7 @@ class ElasticSearchRDF extends AbstractBase
         return $this->getValueFromArray($lang, $array);
     }
 
-    private function getNestedValueForProperty($lang, $lookup, $innerlookup = '@value', $fallback = "Keine Inhalte vorhanden")
+    private function getNestedValueForProperty($lang, $lookup, $innerlookup = '@value', $fallback = "Nicht bekannt")
     {
         $result = $this->getValueForProperty($lang, $lookup, $fallback);
 
@@ -99,7 +99,7 @@ class ElasticSearchRDF extends AbstractBase
                 if (!empty($fallbackResult)) {
                     $result = $fallbackResult;
                 } else {
-                    return "Keine Inhalte vorhanden";
+                    return "Nicht bekannt";
                 }
             }
             return implode(self::ARRAY_SEPARATOR, $result);
@@ -130,14 +130,14 @@ class ElasticSearchRDF extends AbstractBase
     {
         $array = explode(',', $stringWithCommaSeparatedUrls);
         foreach ($array as $link) {
-            if (strpos($link, 'Keine Inhalte vorhanden') === false) {
+            if (strpos($link, 'Nicht bekannt') === false) {
                 $result .= '<a target="_blank" href="' . $link . '"><i class="fa fa-external-link"></i> ' . $link . '</a></br>';
             }
         }
         if (!empty($result)) {
             return $result;
         } else {
-            return 'Keine Inhalte vorhanden';
+            return 'Nicht bekannt';
         }
     }
 
@@ -300,7 +300,7 @@ class ElasticSearchRDF extends AbstractBase
         } elseif (isset($this->fields['_source']['dbp:birthYear'])) {
             return $this->parseDate($this->fields['_source']['dbp:birthYear']);
         } else {
-            return "Keine Inhalte vorhanden";
+            return "Nicht bekannt";
         }
     }
 
@@ -313,7 +313,7 @@ class ElasticSearchRDF extends AbstractBase
         } elseif (isset($this->fields['_source']['dbp:birthYear'])) {
             return $this->parseYear($this->fields['_source']['dbp:birthYear']);
         } else {
-            return "Keine Inhalte vorhanden";
+            return "Nicht bekannt";
         }
     }
 
@@ -326,7 +326,7 @@ class ElasticSearchRDF extends AbstractBase
         } elseif (isset($this->fields['_source']['dbp:deathYear'])) {
             return $this->parseDate($this->fields['_source']['dbp:deathYear']);
         } else {
-            return "Keine Inhalte vorhanden";
+            return "Nicht bekannt";
         }
     }
 
@@ -339,13 +339,13 @@ class ElasticSearchRDF extends AbstractBase
         } elseif (isset($this->fields['_source']['dbp:deathYear'])) {
             return $this->parseYear($this->fields['_source']['dbp:deathYear']);
         } else {
-            return "Keine Inhalte vorhanden";
+            return "Nicht bekannt";
         }
     }
 
     public function getBirthAndDeathYear($birthYear, $deathYear)
     {
-        $fallback = "Keine Inhalte vorhanden";
+        $fallback = "Nicht bekannt";
         $birthYear = $this->getBirthYear();
         $deathYear = $this->getDeathYear();
         if (($birthYear != $fallback) && ($deathYear != $fallback)) {
