@@ -91,11 +91,7 @@
                                     <!-- name variants -->
                                     <div class="meta">
                                         <span><strong>Namensvarianten: </strong></span><span><? echo $subject_alternativeNames ?></span><br>
-                                    </div>
-                                    <!-- Themengebiet GND-Systematik -->
-                                    <div class="meta">
-                                        <span><strong>Themengebiet (GND): </strong></span><span><? echo $subject_gndSubjectCategory ?></span><br><br>
-                                    </div>
+                                    </div><br>
                                     <div id="accordion" class="panel-group" aria-multiselectable="true"
                                          role="tablist">
                                         <div id="holdings-details" class="panel panel-default">
@@ -147,6 +143,12 @@
                                         <!-- Dewey Decimal Classification -->
                                         <p>Dewey Decimal <br> Classification (Notation):</p></dt>
                                         <dd class="col-sm-10"><p><? echo $subject_ddc ?> (Website zurzeit offline)</p></dd>
+                                    </div>
+                                    <div class="row">
+                                        <dt class="col-sm-2">
+                                        <!-- Themengebiet GND-Systematik -->
+                                        <p>Themengebiet (GND):</p></dt>
+                                        <dd class="col-sm-10"><p><? echo $subject_gndSubjectCategory ?></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
