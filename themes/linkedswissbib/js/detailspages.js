@@ -323,7 +323,7 @@ function writeBibliographicResourceIntoHtmlClass(data, htmlClass) {
                 var title = array[key]._source['dct:title'];
                 var link_bibRes = getBibResLink(array, key);
                 // create <li> that links to the Solr record
-                result += '<a href="' + link_bibRes + '"><i class="fa fa-arrow-right"></i> ' + title +'</br>';
+                result += '<li style="margin-bottom: 5px;"><i class="fa-li fa fa-long-arrow-right"></i><a title="' + title +'" href="' + link_bibRes + '"> ' + title +'</a></li>';
             }
         }
     }
