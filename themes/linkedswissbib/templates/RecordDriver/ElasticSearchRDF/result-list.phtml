@@ -11,8 +11,10 @@ $uniqueID = $record->getUniqueID();
 
 $nameAsLabel = $this->driver->getNameAsString();
 $birthAndDeathDate = $this->driver->getBirthAndDeathYear();
-
 ?>
+<div class="knowledgeCard">
+    <?=$this->render("elasticsearch/knowledgeCard.phtml")?>
+</div>
 <div class="<?=$this->driver->supportsAjaxStatus()?'ajaxItem ':''?>col-xs-11 gutter-1">
   <input type="hidden" value="<?=$this->escapeHtmlAttr($this->driver->getUniqueID())?>" class="hiddenId" />
   <input type="hidden" value="<?=$this->escapeHtmlAttr($this->driver->getResourceSource())?>" class="hiddenSource" />
@@ -31,9 +33,10 @@ $birthAndDeathDate = $this->driver->getBirthAndDeathYear();
   <div class="col-xs-10 col-sm-8 col-md-7">
     <div>
         <h2>
-            <a href="/sbrd/Exploration/AuthorDetails?lookfor=<?echo $uniqueID?>&type=AuthorForId" class="title singleLinkForBulk" title="<?= $this->escapeHtml($nameAsLabel) ?>">
-                <?= $this->escapeHtml($nameAsLabel) ?>
-            </a>
+            <a href="/sbrd/Exploration/AuthorDetails?lookfor=<?echo $uniqueID?>&type=AuthorForId" style="display:inline;" class="title singleLinkForBulk" title="<?= $this->escapeHtml($nameAsLabel) ?>">
+                <?= $this->escapeHtml($nameAsLabel) ?></a>
+                <span class="fa fa-info-circle fa-lg kcopenerAuthor"  style="display:inline;" authorId="<? echo $uniqueID ?>"></span>
+
         </h2>
     </div>
 
