@@ -247,9 +247,14 @@ class ElasticSearchRDF extends AbstractBase
         return $result = $this->getValueForProperty($lang, 'lsb:dbpDeathPlaceAsLiteral');
     }
 
-    public function getGenre($lang = 'de')
+    public function getGenreAsLiteral($lang = 'de')
     {
         return $result = $this->getValueForProperty($lang, 'lsb:dbpGenreAsLiteral');
+    }
+
+    public function getGenreAsUri()
+    {
+        return $this->getValueIfAvailable('dbp:genre');
     }
 
     public function getInfluenced($lang = 'de')
@@ -262,9 +267,14 @@ class ElasticSearchRDF extends AbstractBase
         return $result = $this->getValueForProperty($lang, 'lsb:dbpInfluencedBy');
     }
 
-    public function getMovement($lang = 'de')
+    public function getMovementAsLiteral($lang = 'de')
     {
         return $result = $this->getValueForProperty($lang, 'lsb:dbpMovementAsLiteral');
+    }
+
+    public function getMovementAsUri()
+    {
+        return $this->getValueIfAvailable('dbp:movement');
     }
 
     public function getBiography($lang = 'de')

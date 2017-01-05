@@ -392,7 +392,7 @@ function writeSubjectNamesIntoTagCloud (gndIdsAsString, htmlId) {
 }
 
 // Write contents of person with unique Id into file --> authordetails
-function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAsString) {
+function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAsString, person_genreAsUri, person_movementAsUri) {
     //get IDs from type bibliographicResources: ids of resources, ids contributors of resources, ids subjects of resources
     $.ajax({
         url: "http://" + window.location.hostname +
@@ -414,8 +414,35 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAs
                 data: {"lookfor": idSubject},
                 success: function (data) {
                     var idsContributorFromBibRes = getIdsFromPropertyInBibliographicResourcesAsString(data, 'dct:contributor');
-                    writePersonAuthorsNameThumbnailIconIntoHtmlClass (idsContributorFromBibRes, ".ad_authorsOfWorksWithSimilarSubjects", person_uniqueId);
                     writeBibliographicResourceIntoHtmlClass(data, ".ad_worksWithSimilarSubjects");
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+
+            $.ajax({
+                url: "http://" + window.location.hostname +
+                "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                type: "POST",
+                data: {"lookfor": person_genreAsUri},
+                success: function (data) {
+                    //works of authors with same genres
+                    writePersonAuthorsNameThumbnailIconIntoHtmlClass (person_genreAsUri, ".ad_authorsWithSameGenres", person_uniqueId);
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+
+            $.ajax({
+                url: "http://" + window.location.hostname +
+                "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                type: "POST",
+                data: {"lookfor": person_movementAsUri},
+                success: function (data) {
+                    //works of authors with same genres
+                    writePersonAuthorsNameThumbnailIconIntoHtmlClass (person_movementAsUri, ".ad_authorsWithSameMovement", person_uniqueId);
                 },
                 error: function (e) {
                     console.log(e);
@@ -476,7 +503,7 @@ function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_pre
                 type: "POST",
                 data: {"lookfor": gndIds_subject_broaderTerms},
                 success: function (data) {
-                    console.log(data);
+                    //console.log(data);
                     //works with broader subjects
                     writeBibliographicResourceIntoHtmlClass(data, ".sd_worksWithBroaderSubjects");
                 },
@@ -491,7 +518,7 @@ function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_pre
                 type: "POST",
                 data: {"lookfor": gndIds_subject_narrowerTerms},
                 success: function (data) {
-                    console.log(data);
+                    //console.log(data);
                     //works with narrower subjects
                     writeBibliographicResourceIntoHtmlClass(data, ".sd_worksWithNarrowerSubjects");
                 },
