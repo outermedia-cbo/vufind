@@ -67,10 +67,11 @@
                                     <h2 class="visible-print-block">Ihre Suche: <span>malaria, 4048 Treffer</span></h2>
                                 -->
                                 <b>Springe zu:&nbsp;</b>
-                                <a href="#works">B&uuml;cher &amp; Co. zum Thema <? echo $subject_preferredName ?></a>&nbsp;|&nbsp;
-                                <a href="#authorsOfWorksWithSubject">AutorInnen von B&uuml;chern &amp; Co. mit dem Thema <? echo $subject_preferredName ?></a>&nbsp;|&nbsp;
+                                <a href="#works">B&uuml;cher &amp; Co.</a>&nbsp;|&nbsp;
+                                <a href="#authorsOfWorksWithSubject">AutorInnen zum Thema <? echo $subject_preferredName ?></a>&nbsp;|&nbsp;
                                 <a href="#worksWithSimilarSubjects">B&uuml;cher &amp; Co. mit ähnlichen Themen</a>&nbsp;|&nbsp;
-                                <a href="#worksOfAuthorsWithWorksWithSubject">B&uuml;cher &amp; Co. von AutorInnen, die u.a. zum Thema <? echo $subject_preferredName ?> veröffentlichen</a>&nbsp;|&nbsp;
+                                <a href="#worksWithBroaderSubjects">B&uuml;cher &amp; Co. zu übergeordneten Themen</a>&nbsp;|&nbsp;
+                                <a href="#worksWithNarrowerSubjects">B&uuml;cher &amp; Co. zu untergeordneten Themen</a>&nbsp;|&nbsp;
                             </div>
                             <!-- end class col-md-12 -->
                         </div>
@@ -169,11 +170,14 @@
                         <script>
                             var subject_uniqueId = "<? echo $subject_uniqueId?>";
                             var subject_preferredNameAsString = "<? echo $subject_preferredName ?>";
-                            writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_preferredNameAsString);
+                            var gndIds_subject_broaderTerms = "<? echo $subject_uriForBroaderTerms ?>";
+                            var gndIds_subject_narrowerTerms = "<? echo $subject_uriForNarrowerTerms ?>";
+                            writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_preferredNameAsString, gndIds_subject_broaderTerms, gndIds_subject_narrowerTerms);
                         </script>
                         <?=$this->render("elasticsearch/sd_moduleGalleryAuthorsOfWorksWithSubjects.phtml")?>
                         <?=$this->render("elasticsearch/sd_moduleCarouselWorksWithSimilarSubjects.phtml")?>
-                        <?=$this->render("elasticsearch/sd_moduleListWorksOfAuthorsWithWorksWithSubject.phtml")?>
+                        <?=$this->render("elasticsearch/sd_moduleListWorksWithBroaderSubjects.phtml")?>
+                        <?=$this->render("elasticsearch/sd_moduleListWorksWithNarrowerSubjects.phtml")?>
                     </div>
                     <!-- end class col-md-9 col-table-fix-md resultView bg-white -->
                     <!-- sidebar -->

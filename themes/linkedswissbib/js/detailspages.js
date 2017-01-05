@@ -443,7 +443,7 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAs
 }
 
 // Write contents of gnd subject with unique Id into file --> subjectdetails
-function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_preferredNameAsString) {
+function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_preferredNameAsString, gndIds_subject_broaderTerms, gndIds_subject_narrowerTerms) {
     //get IDs from type bibliographicResources: ids of resources, ids contributors of resources, ids subjects of resources
     $.ajax({
         url: "http://" + window.location.hostname +
@@ -474,11 +474,26 @@ function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_pre
                 url: "http://" + window.location.hostname +
                 "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
-                data: {"lookfor": idContributorFromBibRes},
+                data: {"lookfor": gndIds_subject_broaderTerms},
                 success: function (data) {
                     console.log(data);
-                    //works of co-authors of work with main subject
-                    writeBibliographicResourceIntoHtmlClass(data, ".sd_worksOfAuthorsWithWorksWithSubject");
+                    //works with broader subjects
+                    writeBibliographicResourceIntoHtmlClass(data, ".sd_worksWithBroaderSubjects");
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+
+            $.ajax({
+                url: "http://" + window.location.hostname +
+                "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                type: "POST",
+                data: {"lookfor": gndIds_subject_narrowerTerms},
+                success: function (data) {
+                    console.log(data);
+                    //works with narrower subjects
+                    writeBibliographicResourceIntoHtmlClass(data, ".sd_worksWithNarrowerSubjects");
                 },
                 error: function (e) {
                     console.log(e);
