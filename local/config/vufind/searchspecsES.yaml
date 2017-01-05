@@ -181,6 +181,8 @@ Person:
         - dbp:pseudonym.it
         - schema:alternateName
         #- rdfs:label
+        # "dbp:thumbnail^5" boosts results that contain query string by factor 5; does not work currently since only whole words can be queried because the index does not contain partial words
+        #- dbp:thumbnail^5
       type:
         - cross_fields #should be default
       operator:
