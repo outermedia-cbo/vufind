@@ -61,23 +61,6 @@
             <div class="col-md-12 col-table-fix-md dirty-hack-column">
                 <div class="row bg-grey">
                     <div class="col-md-9 col-table-fix-md resultView bg-white">
-                        <div class="results-top row">
-                            <div class="col-md-12">
-                                <!-- search results incl. icon
-                                    <h1><i class="fa fa-search"></i> <span>Suchergebnisse</span></h1>
-                                    <h2 class="visible-print-block">Ihre Suche: <span>malaria, 4048 Treffer</span></h2>
-                                -->
-                                <b>Springe zu:&nbsp;</b>
-                                <a href="#works">B&uuml;cher &amp; Co.</a>&nbsp;|&nbsp;
-                                <a href="#authorsOfCommonWorks">Co-AutorInnen von <? echo $person_nameAsString ?></a>&nbsp;|&nbsp;
-                                <a href="#worksOfAuthorsOfCommonWorks">B&uuml;cher &amp; Co. von Co-AutorInnen</a>&nbsp;|&nbsp;
-                                <a href="#authorsWithSameGenres">AutorInnen mit gleichen Genres</a>&nbsp;|&nbsp;
-                                <a href="#authorsWithSameMovement">AutorInnen der gleichen Bewegung/Epoche</a>&nbsp;|&nbsp;
-                                <a href="#subjectsOfWorks">Mit <? echo $person_nameAsString ?> verwandte Themen</a>&nbsp;|&nbsp;
-                                <a href="#worksWithSimilarSubjects">B&uuml;cher &amp; Co. mit ähnlichen Themen</a>&nbsp;|&nbsp;
-                            </div>
-                            <!-- end class col-md-12 -->
-                        </div>
                         <!-- end class results-top row -->
                         <div class="container-fluid">
                             <div class="row">
@@ -169,7 +152,7 @@
                                     <!-- unclear what "partner" means
                                     <div class="row">
                                         <dt class="col-sm-2">
-                                        <p>PartinerInnen:</p></dt>
+                                        <p>PartnerInnen:</p></dt>
                                         <dd class="col-sm-10"><p><? echo $person_partner ?></p></dd>
                                     </div>
                                     -->
@@ -193,6 +176,15 @@
                             <!-- end id collapse-more -->
                         </div>
                         <!-- end class container-fluid -->
+                        <div class="row">
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#works">» B&uuml;cher &amp; Co.</a>
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#authorsOfCommonWorks">» Co-AutorInnen von <? echo $person_nameAsString ?></a>
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#worksOfAuthorsOfCommonWorks">» B&uuml;cher &amp; Co. von Co-AutorInnen</a>
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#authorsWithSameGenres">» AutorInnen mit gleichen Genres</a>
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#authorsWithSameMovement">» AutorInnen der gleichen Bewegung/Epoche</a>
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#subjectsOfWorks">» Mit <? echo $person_nameAsString ?> verwandte Themen</a>
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#worksWithSimilarSubjects">» B&uuml;cher &amp; Co. mit ähnlichen Themen</a>
+                        </div>
 
                         <!-- SEGMENT Werke -->
                         <?=$this->render("elasticsearch/resultsdetails.phtml")?>
