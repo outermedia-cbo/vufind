@@ -115,7 +115,6 @@ class ESQueryBuilder implements ESQueryBuilderInterface
         {
             //add number of results to search expression
             $searchBody = $searchBody . ',"size": ' . $size;
-//            $searchBody = $searchBody . ',"size": 1';
         }
         //Add offset to search body
         $from=$this->params->get('from')[0];
@@ -123,7 +122,6 @@ class ESQueryBuilder implements ESQueryBuilderInterface
         {
             //add start index to search expression
             $searchBody = $searchBody . ',"from": ' . $from;
-//            $searchBody = $searchBody . ',"from": 1';
         }
         //finalise search expression
         $searchBody = $searchBody . "}\n";
