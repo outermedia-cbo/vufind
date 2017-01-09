@@ -59,7 +59,7 @@ $exportFormats = array('EndNote', 'BibTeX');
 /* href="<?=$this->url('cart-doexport')?>?f=<?=$format?>"*/
 ?>
 
-<div class="<?=$this->layoutClass('mainbody')?>">
+<div class="<?=$this->layoutClass('mainbody')?> resultView">
     <? if ( $this->recordTotal > 0 ): ?>
         <div class="results-top row">
             <div class="col-md-9">
@@ -67,6 +67,7 @@ $exportFormats = array('EndNote', 'BibTeX');
                 <h2 class="visible-print-block"><?=$this->transEsc('Your_Search') . ": "?><span><?=$this->lookfor?>, <?=$this->recordTotal . ' ' . $this->transEsc('hits for your search')?></span></h2>
             </div>
             <div class="col-md-3">
+                <!-- Don't display search tools because login functionalities currently do not work for linked.swissbib
                 <div class="searchtools">
                     <div class="searchtools hidden-print">
                         <a href="<?=$this->results->getUrlQuery()->setViewParam('rss')?>" title="<?=$this->transEsc('Get RSS Feed')?>"><i class="fa fa-rss"></i></a>
@@ -79,7 +80,9 @@ $exportFormats = array('EndNote', 'BibTeX');
                                 <a href="<?=$this->url('myresearch-savesearch')?>?save=<?=urlencode($this->results->getSearchId())?>" title="<?=$this->transEsc('save_search')?>"><i class="fa fa-plus-square"></i></a>
                             <? endif; ?>
                         <? endif; ?>
+                        -->
                         <!-- Styling & Funktionstests -->
+                        <!-- Don't display search tools because login functionalities currently do not work for linked.swissbib
                         <a class="export-toggle dropdown-toggle hidden-xs hidden-sm" data-toggle="dropdown" href="<?=$this->recordLink()->getActionUrl($this->driver, 'Export')?>" title=" <?=$this->transEsc('Export Record') ?>"><i class="fa fa-share"></i></a>
                         <ul class="dropdown-menu" role="export-menu">
                             <? foreach ($exportFormats as $format): ?>
@@ -90,6 +93,7 @@ $exportFormats = array('EndNote', 'BibTeX');
                         </ul>
                     </div>
                 </div>
+                -->
             </div>
         </div>
     <? else: ?>
@@ -121,3 +125,6 @@ $exportFormats = array('EndNote', 'BibTeX');
     <? endforeach; ?>
 </div>
 <? /* End Narrow Search Options */ ?>
+<!-- sidebar -->
+<?=$this->render("elasticsearch/sidebar.phtml")?>
+

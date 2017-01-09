@@ -71,7 +71,7 @@ class ElasticSearch implements AutocompleteInterface{
 
             if ($type == 'person') {
                 if (!isset($current['_source']['dbp:birthDate']) && !isset($current['_source']['schema:birthDate']) && !isset($current['_source']['dbp:birthYear'])) {
-                        $birthDate = "?";
+                        $birthDate = "";
                     } elseif (isset($current['_source']['schema:birthDate'])) {
                         $birthDate = $this->parseDate($current['_source']['schema:birthDate']);
                     } elseif (isset($current['_source']['dbp:birthDate'])) {
@@ -81,7 +81,7 @@ class ElasticSearch implements AutocompleteInterface{
                 }
 
                 if (!isset($current['_source']['dbp:deathDate']) && !isset($current['_source']['schema:deathDate']) && !isset($current['_source']['dbp:deathYear'])) {
-                    $deathDate = "?";
+                    $deathDate = "";
                 } elseif (isset($current['_source']['schema:deathDate'])) {
                     $deathDate = $this->parseDate($current['_source']['schema:deathDate']);
                 } elseif (isset($current['_source']['dbp:deathDate'])) {
@@ -95,9 +95,9 @@ class ElasticSearch implements AutocompleteInterface{
                 } elseif (!empty($birthDate) && empty($deathDate)) {
                     $birthAndDeathDates = ' (' . $birthDate . ' - ?)';
                 } elseif (!empty($deathDate) && empty($birthDate)) {
-                    $birthAndDeathDates = ' (? - ' . $deathDate . ')';
+                    $birthAndDeathDates = '';
                 } else {
-                    $birthAndDeathDates = "?";
+                    $birthAndDeathDates = "";
                 }
 
                 if(isset($current['_source']['foaf:firstName']) && isset($current['_source']['foaf:lastName']))
@@ -107,7 +107,7 @@ class ElasticSearch implements AutocompleteInterface{
                 elseif(isset($current['_source']['foaf:name']))
                     $displayname = $current['_source']['foaf:name'] . $birthAndDeathDates;
                 else
-                    $displayname = "?";
+                    $displayname = "";
             }
 
             if ($type == 'DEFAULT') { // subject

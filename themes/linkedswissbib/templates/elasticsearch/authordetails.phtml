@@ -16,10 +16,12 @@
             $person_deathDate = $singleResult->getDeathDate();
             $person_deathPlace = $singleResult->getDeathPlace();
             $person_externalLinks = $singleResult->getPersonExternalLinks();
-            $person_genre = $singleResult->getGenre();
+            $person_genreAsLiteral = $singleResult->getGenreAsLiteral();
+            $person_genreAsUri = $singleResult->getGenreAsUri();
             $person_influenced = $singleResult->getInfluenced();
             $person_influencedBy = $singleResult->getInfluencedBy();
-            $person_movement = $singleResult->getMovement();
+            $person_movementAsLiteral = $singleResult->getMovementAsLiteral();
+            $person_movementAsUri = $singleResult->getMovementAsUri();
             $person_nameAsString = $singleResult->getNameAsString();
             $person_nationality = $singleResult->getNationality();
             $person_notableWork = $singleResult->getNotableWork();
@@ -39,7 +41,8 @@
         <ul class="breadcrumb hidden-print">
 
             <li>
-                <a href=" <?= $basePath ?>/Exploration/AuthorDetails?lookfor=<? echo $person_uniqueId ?>&amp;type=AuthorForId">Suche</a>
+                <!-- Temporary solution  -->
+                <a onclick="goBack()">Suche</a>
             </li>
             <!-- Example from swissbib classic
                 <a href="/Search/Results?lookfor=malaria&type=AllFields">Suche: malaria</a>
@@ -48,7 +51,7 @@
         </ul>
     </div>
     <?
-    if (($person_nameAsString == "Keine Inhalte vorhanden") || ($person_nameAsString == '')) {
+    if (($person_nameAsString == "Nicht bekannt") || ($person_nameAsString == '')) {
     ?><h3><? echo "Oje, hier scheinen keine verlinkten Daten vorhanden zu sein!";?></h3>
     </br><button class="btn btn-primary" onclick="goBack()">Zurück</button>
     <? } else { ?>
@@ -58,22 +61,6 @@
             <div class="col-md-12 col-table-fix-md dirty-hack-column">
                 <div class="row bg-grey">
                     <div class="col-md-9 col-table-fix-md resultView bg-white">
-                        <div class="results-top row">
-                            <div class="col-md-12">
-                                <!-- search results incl. icon
-                                    <h1><i class="fa fa-search"></i> <span>Suchergebnisse</span></h1>
-                                    <h2 class="visible-print-block">Ihre Suche: <span>malaria, 4048 Treffer</span></h2>
-                                -->
-                                <b>Springe zu:&nbsp;</b>
-                                <a href="#works">B&uuml;cher &amp; Co. von <? echo $person_nameAsString ?></a>&nbsp;|&nbsp;
-                                <a href="#authorsOfCommonWorks">Co-AutorInnen von <? echo $person_nameAsString ?></a>&nbsp;|&nbsp;
-                                <a href="#worksOfAuthorsOfCommonWorks">B&uuml;cher &amp; Co. von <? echo $person_nameAsString ?>s Co-AutorInnen</a>&nbsp;|&nbsp;
-                                <a href="#subjectsOfWorks">Mit <? echo $person_nameAsString ?> verwandte Themen</a>&nbsp;|&nbsp;
-                                <a href="#worksWithSimilarSubjects">B&uuml;cher &amp; Co. mit ähnlichen Themen wie <? echo $person_nameAsString ?></a>&nbsp;|&nbsp;
-                                <a href="#authorsOfWorksWithSimilarSubjects">AutorInnen von B&uuml;chern &amp; Co. mit ähnlichen Themen wie <? echo $person_nameAsString ?></a>
-                            </div>
-                            <!-- end class col-md-12 -->
-                        </div>
                         <!-- end class results-top row -->
                         <div class="container-fluid">
                             <div class="row">
@@ -140,12 +127,12 @@
                                     <div class="row">
                                         <dt class="col-sm-2">
                                         <p>Genre:</dt>
-                                        <dd class="col-sm-10"><? echo $person_genre ?></p></dd>
+                                        <dd class="col-sm-10"><? echo $person_genreAsLiteral ?></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
-                                        <p>Bewegung, Zeit, Ära (Movement):</p></dt>
-                                        <dd class="col-sm-10"><p><? echo $person_movement ?></p></dd>
+                                        <p>Epoche, Bewegung:</p></dt>
+                                        <dd class="col-sm-10"><p><? echo $person_movementAsLiteral ?></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
@@ -162,11 +149,13 @@
                                         <p>EhegattInnen:</p></dt>
                                         <dd class="col-sm-10"><p><? echo $person_spouse ?></p></dd>
                                     </div>
+                                    <!-- unclear what "partner" means
                                     <div class="row">
                                         <dt class="col-sm-2">
-                                        <p>PartinerInnen:</p></dt>
+                                        <p>PartnerInnen:</p></dt>
                                         <dd class="col-sm-10"><p><? echo $person_partner ?></p></dd>
                                     </div>
+                                    -->
                                     <div class="row">
                                         <dt class="col-sm-2">
                                         <p>Beeinflusst durch:</p></dt>
@@ -187,6 +176,15 @@
                             <!-- end id collapse-more -->
                         </div>
                         <!-- end class container-fluid -->
+                        <div class="row">
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#works">» B&uuml;cher &amp; Co.</a>
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#authorsOfCommonWorks">» Co-AutorInnen von <? echo $person_nameAsString ?></a>
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#worksOfAuthorsOfCommonWorks">» B&uuml;cher &amp; Co. von Co-AutorInnen</a>
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#authorsWithSameGenres">» AutorInnen mit gleichen Genres</a>
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#authorsWithSameMovement">» AutorInnen der gleichen Bewegung/Epoche</a>
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#subjectsOfWorks">» Mit <? echo $person_nameAsString ?> verwandte Themen</a>
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#worksWithSimilarSubjects">» B&uuml;cher &amp; Co. mit ähnlichen Themen wie <? echo $person_nameAsString ?></a>
+                        </div>
 
                         <!-- SEGMENT Werke -->
                         <?=$this->render("elasticsearch/resultsdetails.phtml")?>
@@ -194,13 +192,16 @@
                         <script>
                             var person_uniqueId = "<? echo $person_uniqueId?>";
                             var person_nameAsString = "<? echo $person_nameAsString ?>";
-                            writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAsString);
+                            var person_genreAsUri = "<? echo $person_genreAsUri ?>";
+                            var person_movementAsUri = "<? echo $person_movementAsUri ?>";
+                            writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAsString, person_genreAsUri, person_movementAsUri);
                         </script>
                         <?=$this->render("elasticsearch/ad_moduleGalleryAuthorsOfCommonWorks.phtml")?>
                         <?=$this->render("elasticsearch/ad_moduleCarouselWorksOfAuthorsOfCommonWorks.phtml")?>
+                        <?=$this->render("elasticsearch/ad_moduleGalleryAuthorsWithSameGenres.phtml")?>
+                        <?=$this->render("elasticsearch/ad_moduleGalleryAuthorsWithSameMovement.phtml")?>
                         <?=$this->render("elasticsearch/ad_moduleTagCloudSubjectsOfWorks.phtml")?>
                         <?=$this->render("elasticsearch/ad_moduleListWorksWithSimilarSubjects.phtml")?>
-                        <?=$this->render("elasticsearch/ad_moduleGalleryAuthorsOfWorksWithSimilarSubjects.phtml")?>
                     </div>
                     <!-- end class col-md-9 col-table-fix-md resultView bg-white -->
                     <!-- sidebar -->
