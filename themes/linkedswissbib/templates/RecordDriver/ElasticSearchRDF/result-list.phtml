@@ -12,9 +12,6 @@ $uniqueID = $record->getUniqueID();
 $nameAsLabel = $this->driver->getNameAsString();
 $birthAndDeathDate = $this->driver->getBirthAndDeathYear();
 ?>
-<div class="knowledgeCard">
-    <?=$this->render("elasticsearch/knowledgeCard.phtml")?>
-</div>
 <div class="<?=$this->driver->supportsAjaxStatus()?'ajaxItem ':''?>col-xs-11 gutter-1">
   <input type="hidden" value="<?=$this->escapeHtmlAttr($this->driver->getUniqueID())?>" class="hiddenId" />
   <input type="hidden" value="<?=$this->escapeHtmlAttr($this->driver->getResourceSource())?>" class="hiddenSource" />
