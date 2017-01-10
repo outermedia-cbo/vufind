@@ -1,8 +1,8 @@
 <?
 // A driver-specific template may pass in format overrides; check for these before going to the driver itself:
-$formats = isset($this->overrideFormats) ? $this->overrideFormats : $this->driver->tryMethod('getFormats');
+$formats = isset($this->overrideFormats) ? $this->overrideFormats : $this->driver->tryMethod('getFormatsOpenUrl');
 if (is_array($formats) && !empty($formats)) {
-    foreach ($formats as $format) {
+    foreach (preg_grep('/^[^X]/', $formats) as $format) {
         echo "%0 $format\n";
     }
 } else {
@@ -10,15 +10,21 @@ if (is_array($formats) && !empty($formats)) {
     echo "%0 Book\n";
 }
 
-$author = $this->driver->tryMethod('getPrimaryAuthor');
-if (!empty($author)) {
-    echo "%A $author\n";
-}
-
-$secondaryAuthors = $this->driver->tryMethod('getSecondaryAuthors');
-if (is_array($secondaryAuthors)) {
-    foreach ($secondaryAuthors as $current) {
-        echo "%E $current\n";
+$authors = $this->driver->tryMethod('getDeduplicatedAuthors');
+if (is_array($authors)) {
+    if (!empty($authors['main'])) {
+        reset($authors['main']);
+        echo "%A " . key($authors['main']) . "\n";
+    }
+    if (!empty($authors['corporate'])) {
+        reset($authors['corporate']);
+        echo "%A " . key($authors['corporate']) . "\n";
+    }
+    if (is_array($authors['secondary']) && !empty($authors['secondary'])) {
+        reset($authors['secondary']);
+        foreach ($authors['secondary'] as $current => $currentVal) {
+            echo "%E $current\n";
+        }
     }
 }
 
@@ -77,6 +83,19 @@ $title = rtrim($this->driver->getTitle(), " /");
 echo "%T $title\n";
 
 $journalTitle = $this->driver->tryMethod('getContainerTitle');
+
+if (empty($journalTitle)) {
+    $hostItems = $this->driver->tryMethod('getHostItemEntry');
+    if (!empty($hostItems)) {
+        foreach ($hostItems as $hostItem) {
+            echo "%J {$hostItem['title']},\n";
+            if (!empty($hostItem['related'])) {
+                echo "%V = {$hostItem['related']},\n";
+            }
+        }
+    }
+}
+
 if (!empty($journalTitle)) {
     echo "%J $journalTitle\n";
     $volume = $this->driver->tryMethod('getContainerVolume');

@@ -20,11 +20,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind2
+ * @category VuFind
  * @package  Search
  * @author   Demian Katz <demian.katz@villanova.edu>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org   Main Site
+ * @link     https://vufind.org Main Site
  */
 namespace VuFind\Search\Solr;
 
@@ -40,11 +40,11 @@ use Zend\EventManager\EventInterface;
 /**
  * Solr spelling listener.
  *
- * @category VuFind2
+ * @category VuFind
  * @package  Search
  * @author   Demian Katz <demian.katz@villanova.edu>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org   Main Site
+ * @link     https://vufind.org Main Site
  */
 class InjectSpellingListener
 {
@@ -109,6 +109,9 @@ class InjectSpellingListener
      */
     public function onSearchPre(EventInterface $event)
     {
+        if ($event->getParam('context') != 'search') {
+            return $event;
+        }
         $backend = $event->getTarget();
         if ($backend === $this->backend) {
             $params = $event->getParam('params');
@@ -148,8 +151,8 @@ class InjectSpellingListener
      */
     public function onSearchPost(EventInterface $event)
     {
-        // Do nothing if spelling is disabled....
-        if (!$this->active) {
+        // Do nothing if spelling is disabled or context is wrong
+        if (!$this->active || $event->getParam('context') != 'search') {
             return $event;
         }
 

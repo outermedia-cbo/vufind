@@ -1,12 +1,7 @@
-/**
- * Created by thomas on 04.04.16.
- */
-
-
 $(document).ready(function() {
 
     // Search autocomplete
-    $('.autocomplete').typeahead(
+    $('.twitterautocomplete').typeahead(
         {
             highlight: true,
             minLength: 3
@@ -18,9 +13,12 @@ $(document).ready(function() {
                 return data['val'][2];
             },
             source: function(query, cb) {
-                var searcher = extractClassParams('.autocomplete');
+                var searcher = extractClassParams('.twitterautocomplete');
+                //todo we have to throw away this stupid /sbrd and the global path variable in
+                //layout.phtml line 25 (theme linked swissbib
                 $.ajax({
-                    url: path + '/AJAX/JSON',
+
+                    url: '/AJAX/JSON',
                     data: {
                         q:query,
                         method:'getACSuggestions',
@@ -51,7 +49,7 @@ $(document).ready(function() {
                     return data['val'][2];
             },
             source: function(query, cb) {
-                var searcher = extractClassParams('.autocomplete');
+                var searcher = extractClassParams('.twitterautocomplete');
                 $.ajax({
                     url: path + '/AJAX/JSON',
                     data: {
@@ -86,7 +84,7 @@ $(document).ready(function() {
                 return data['val'][2];
             },
             source: function(query, cb) {
-                var searcher = extractClassParams('.autocomplete');
+                var searcher = extractClassParams('.twitterautocomplete');
                 $.ajax({
                     url: path + '/AJAX/JSON',
                     data: {
@@ -116,7 +114,8 @@ $(document).ready(function() {
         } 
     ).bind('typeahead:selected', function(obj, datum, name) {
 
-            var baseurl = 'http://' + window.location.hostname + '/sbrd/';
+            //var baseurl = 'http://' + window.location.hostname + '/sbrd/';
+            var baseurl = 'http://' + window.location.hostname;
 
             var postfix;
 
@@ -128,6 +127,6 @@ $(document).ready(function() {
                 postfix = 'Record/' + datum['val'][0];
             }
 
-            window.location.href = baseurl + postfix;
+            window.location.href = baseurl + "/" + postfix;
         });
 });

@@ -16,4 +16,20 @@ class Factory {
             $sm->getServiceLocator()->get('VuFind\SearchResultsPluginManager')
         );
     }
+
+
+    /**
+     * Construct the Solr plugin.
+     *
+     * @param ServiceManager $sm Service manager.
+     *
+     * @return Solr
+     */
+    public static function getSolr(ServiceManager $sm)
+    {
+        return new Solr(
+            $sm->getServiceLocator()->get('VuFind\SearchResultsPluginManager')
+        );
+    }
+
 }

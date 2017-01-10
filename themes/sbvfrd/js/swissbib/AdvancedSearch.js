@@ -1,3 +1,5 @@
+'use strict';
+
 swissbib.AdvancedSearch = {
 
   searchDetails: {},
@@ -17,9 +19,18 @@ swissbib.AdvancedSearch = {
   init: function () {
     if (this.isInAdvancedSearch()) {
       this.initJsTree();
+      this.initChosenMultiSelect();
 
       $("#addGroupLink").removeClass("offscreen");
     }
+
+    if (this.isInAdvancedClassificationSearch()) {
+      this.initAdvancedClassificationTabs();
+    }
+  },
+
+  initChosenMultiSelect: function() {
+    $('.chosen-select').chosen({no_results_text: VuFind.translate('MultiSelectNothingFound')});
   },
 
   /**
@@ -27,17 +38,46 @@ swissbib.AdvancedSearch = {
    */
   initJsTree: function () {
     jQuery(".classification-tree").jstree().bind("select_node.jstree", this.onJsTreeSelectNode);
+    jQuery(".classification-tree").bind("close_node.jstree", this.onJsTreeCloseNode);
   },
 
+  /**
+   * @param {Event} event
+   * @param {Object} data
+   *
+   * @return void
+   */
+  onJsTreeCloseNode: function(event, data) {
+    data.instance.deselect_node(data.node);
+  },
+
+  /**
+   * @param {Event} event
+   * @param {Object} data
+   *
+   * @return void
+   */
   onJsTreeSelectNode: function (event, data) {
     var el = jQuery('#' + data.selected[0]);
 
-    el.toggleClass("selected");
-    el.hasClass("selected") ? el.find("input").attr("name", "filter[]") : el.find("input").removeAttr("name");
+    if (el.data('openchildren') === 'yes') {
+      if (data.instance.is_open(data.node)) {
+        data.instance.close_node(data.node);
+      } else {
+        data.instance.open_node(data.node);
+      }
+    } else {
+      el.find("input").first().attr("name", "filter[]");
 
-    if (swissbib.AdvancedSearch.catTreeAutoSend)  swissbib.AdvancedSearch.sendForm(el);
+      if (swissbib.AdvancedSearch.catTreeAutoSend)  swissbib.AdvancedSearch.sendForm(el);
+    }
   },
 
+  /**
+   * @param {Element} el
+   *
+   * @return void
+   */
   sendForm: function (el) {
     jQuery(el).parents('form:first').submit();
   },
@@ -50,6 +90,16 @@ swissbib.AdvancedSearch = {
    */
   isInAdvancedSearch: function () {
     return location.pathname.indexOf('/Advanced') >= 0;
+  },
+
+
+  /**
+   * Check whether current view is the advanced classification view
+   *
+   * @return    {Boolean}
+   */
+  isInAdvancedClassificationSearch: function () {
+    return location.pathname.indexOf('/AdvancedClassification') >= 0;
   },
 
 
@@ -386,9 +436,14 @@ swissbib.AdvancedSearch = {
   },
 
 
-  initializeTabs: function (tabContainerId, activeTabId) {
-    var index = $(activeTabId).length > 0 ? $(activeTabId).index() - 1 : 0;
-    $(tabContainerId).tabs({ active: index });
+  /**
+   * Initializes classification tabs
+   */
+  initAdvancedClassificationTabs: function() {
+    $('#tabbed-tree').find('.nav-tabs a').click(function (e) {
+      e.preventDefault()
+      $(this).tab('show')
+    })
   }
 
 };

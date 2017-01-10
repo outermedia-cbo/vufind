@@ -12,7 +12,7 @@
  */
 
 
-namespace Swissbib\Module\Config;
+namespace LinkedSwissbib\Module\Config;
 
 
 $config = [
@@ -24,7 +24,9 @@ $config = [
             'exploration'   => 'LinkedSwissbib\Controller\ElasticsearchController',
             'elasticsearch' => 'LinkedSwissbib\Controller\ElasticsearchController',
             'inference'     => 'LinkedSwissbib\Controller\SparqlController',
-            'ajax'          => 'LinkedSwissbib\Controller\AjaxController'
+            'ajax'          => 'LinkedSwissbib\Controller\AjaxController',
+            'search'        => 'LinkedSwissbib\Controller\SearchController'
+
 
         ]
     ],
@@ -34,6 +36,12 @@ $config = [
             'LinkedSwissbib\SearchParamsPluginManager' => 'LinkedSwissbib\Service\Factory::getSearchParamsPluginManager',
             'LinkedSwissbib\SearchResultsPluginManager' => 'LinkedSwissbib\Service\Factory::getSearchResultsPluginManager',
             'LinkedSwissbib\RecordDriverPluginManager' => 'LinkedSwissbib\Service\Factory::getRecordDriverPluginManager',
+            'VuFind\SearchOptionsPluginManager'        => 'LinkedSwissbib\Service\Factory::getSearchOptionsPluginManager',
+            'VuFind\SearchParamsPluginManager'         => 'LinkedSwissbib\Service\Factory::getSearchParamsPluginManager',
+            'VuFind\SearchResultsPluginManager'        => 'LinkedSwissbib\Service\Factory::getSearchResultsPluginManager',
+            'Swissbib\ExtendedSolrFactoryHelper'       => 'LinkedSwissbib\Search\Helper\Factory::getExtendedSolrFactoryHelper',
+
+
 
         ]
 
@@ -48,24 +56,16 @@ $config = [
             'autocomplete' => [
                 'factories' => [
                     'esac' => 'LinkedSwissbib\VuFind\Autocomplete\Factory::getElasticSearch',
+                    'solr' =>  'LinkedSwissbib\VuFind\Autocomplete\Factory::getSolr',
                 ],
             ],
-            'search_options' => [
-                'abstract_factories' => ['LinkedSwissbib\Search\Options\PluginFactory'],
-            ],
-            'search_params' => [
-                'abstract_factories' => ['LinkedSwissbib\Search\Params\PluginFactory'],
-            ],
-            'search_results' => [
-                'abstract_factories' => ['LinkedSwissbib\Search\Results\PluginFactory'],
-            ],
-            'recorddriver' => array(
+            'recorddriver' => [
                 'abstract_factories' => ['LinkedSwissbib\RecordDriver\PluginFactory'],
-                'factories' => array(
+                'factories' => [
                     'elasticsearchRecordDriver' => 'LinkedSwissbib\RecordDriver\Factory::getElasticSearchRdfRecordDriver',
 
-                )
-            ),
+                ]
+            ]
 
         ]
     ],
@@ -76,16 +76,37 @@ $config = [
         //vufind_search_options seems to be deprecated now search_options
         //look it up (we need it for saved searches
         'plugin_managers' => [
-            'vufind_search_options' => [
+            'search_options' => [
                 'abstract_factories' => array('LinkedSwissbib\Search\Options\PluginFactory'),
             ],
-            'vufind_search_params' => [
+            'search_params' => [
                 'abstract_factories' => array('LinkedSwissbib\Search\Params\PluginFactory'),
             ],
-            'vufind_search_results' => [
+            'search_results' => [
                 'abstract_factories' => array('LinkedSwissbib\Search\Results\PluginFactory'),
+            ],
+
+            'search_backend' => [
+                'factories' => [
+                    'ElasticSearch' => 'LinkedSwissbib\Search\Factory\ElasticSearchBackendFactory',
+                ]
+            ],
+            'autocomplete' => [
+                'factories' => [
+                    'esac' => 'LinkedSwissbib\VuFind\Autocomplete\Factory::getElasticSearch',
+                    'solr' =>  'LinkedSwissbib\VuFind\Autocomplete\Factory::getSolr',
+                ],
+            ],
+            'recorddriver' => [
+                'abstract_factories' => ['LinkedSwissbib\RecordDriver\PluginFactory'],
+                'factories' => [
+                    'elasticsearchRecordDriver' => 'LinkedSwissbib\RecordDriver\Factory::getElasticSearchRdfRecordDriver',
+
+                ]
             ]
-        ],
+
+
+        ]
     ]
 
 

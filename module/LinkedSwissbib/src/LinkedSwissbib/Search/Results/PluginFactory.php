@@ -12,9 +12,12 @@
 namespace LinkedSwissbib\Search\Results;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Swissbib\VuFind\Search\Results\PluginFactory as SwissbibPluginFactory;
+
+use Swissbib\VuFind\Search\Helper\ExtendedSolrFactoryHelper;
 
 
-class PluginFactory extends \VuFind\ServiceManager\AbstractPluginFactory
+class PluginFactory extends SwissbibPluginFactory
 {
 
     /**
@@ -22,8 +25,38 @@ class PluginFactory extends \VuFind\ServiceManager\AbstractPluginFactory
      */
     public function __construct()
     {
-        $this->defaultNamespace = 'LinkedSwissbib\Search';
-        $this->classSuffix = '\Results';
+
+        parent::__construct();
+    }
+
+
+
+
+    /**
+     * CanCreateServiceWithName
+     *
+     * @param ServiceLocatorInterface $serviceLocator ServiceLocatorInterface
+     * @param String                  $name           Name
+     * @param String                  $requestedName  RequestedName
+     *
+     * @return mixed
+     */
+    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator,
+                                             $name, $requestedName
+    ) {
+        /**
+         * ExtendedSolrFactoryHelper
+         *
+         * @var ExtendedSolrFactoryHelper $extendedTargetHelper
+         */
+        $extendedTargetHelper = $serviceLocator->getServiceLocator()
+            ->get('Swissbib\ExtendedSolrFactoryHelper');
+        $this->defaultNamespace = $extendedTargetHelper
+            ->getNamespace($name, $requestedName);
+
+        return parent::canCreateServiceWithName(
+            $serviceLocator, $name, $requestedName
+        );
     }
 
     /**
@@ -38,23 +71,18 @@ class PluginFactory extends \VuFind\ServiceManager\AbstractPluginFactory
     public function createServiceWithName(ServiceLocatorInterface $serviceLocator,
                                           $name, $requestedName
     ) {
-        $params = $serviceLocator->getServiceLocator()
-            ->get('LinkedSwissbib\SearchParamsPluginManager')->get($requestedName);
-        $class = $this->getClassName($name, $requestedName);
-        return new $class($params);
+        /**
+         * ExtendedSolrFactoryHelper
+         *
+         * @var ExtendedSolrFactoryHelper $extendedTargetHelper
+         */
+        $extendedTargetHelper = $serviceLocator->getServiceLocator()
+            ->get('Swissbib\ExtendedSolrFactoryHelper');
+        $this->defaultNamespace = $extendedTargetHelper
+            ->getNamespace($name, $requestedName);
+
+        return parent::createServiceWithName($serviceLocator, $name, $requestedName);
     }
-
-
-    /**
-     * @inheritDoc
-     */
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
-    {
-        $this->defaultNamespace    = 'LinkedSwissbib\Search';
-
-        return parent::canCreateServiceWithName($serviceLocator, $name, $requestedName);
-    }
-
 
 
 }

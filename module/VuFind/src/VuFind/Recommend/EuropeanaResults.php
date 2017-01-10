@@ -19,12 +19,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @category VuFind2
+ * @category VuFind
  * @package  Recommendations
  * @author   Lutz Biedinger <lutz.biedinger@gmail.com>
  * @author   Demian Katz <demian.katz@villanova.edu>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/vufind2:recommendation_modules Wiki
+ * @link     https://vufind.org/wiki/development:plugins:recommendation_modules Wiki
  */
 namespace VuFind\Recommend;
 use Zend\Feed\Reader\Reader as FeedReader;
@@ -34,12 +34,12 @@ use Zend\Feed\Reader\Reader as FeedReader;
  *
  * This class provides recommendations by using the WorldCat Terminologies API.
  *
- * @category VuFind2
+ * @category VuFind
  * @package  Recommendations
  * @author   Lutz Biedinger <lutz.biedinger@gmail.com>
  * @author   Demian Katz <demian.katz@villanova.edu>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
- * @link     http://vufind.org/wiki/vufind2:recommendation_modules Wiki
+ * @link     https://vufind.org/wiki/development:plugins:recommendation_modules Wiki
  */
 class EuropeanaResults implements RecommendInterface,
     \VuFindHttp\HttpServiceAwareInterface, \Zend\Log\LoggerAwareInterface
@@ -227,12 +227,12 @@ class EuropeanaResults implements RecommendInterface,
         $parsedFeed = FeedReader::import($this->targetUrl);
         $resultsProcessed = [];
         foreach ($parsedFeed as $value) {
-            $link = (string)$value->link;
+            $link = $value->getLink();
             if (!empty($link)) {
                 $resultsProcessed[] = [
-                    'title' => (string)$value->title,
+                    'title' => $value->getTitle(),
                     'link' => substr($link, 0, strpos($link, '.srw')) . '.html',
-                    'enclosure' => (string)$value->enclosure['url']
+                    'enclosure' => $value->getEnclosure()['url']
                 ];
             }
             if (count($resultsProcessed) == $this->limit) {

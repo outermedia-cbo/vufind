@@ -83,6 +83,29 @@ p {
   background: @link-color;
 }
 
+.alert {
+  padding: 15px;
+  margin: 20px 0;
+  border: none;
+  border-radius: 0;
+}
+
+.alert.alert-success {
+  border-left: 5px solid @state-success-border;
+}
+
+.alert.alert-info {
+  border-left: 5px solid @state-info-border;
+}
+
+.alert.alert-warning {
+  border-left: 5px solid @state-warning-border;
+}
+
+.alert.alert-danger {
+  border-left: 5px solid @state-danger-border;
+}
+
 /* btn styles */
 .btn-primary,
 .pager li & > a,
@@ -302,7 +325,7 @@ header {
         .btn-default {
           min-width: 0;
           width: 37px;
-          border-radius: 0 2px 2px 0;
+          /*border-radius: 0 2px 2px 0;*/
           padding: 5px 0;
 
           i {
@@ -529,7 +552,8 @@ a.list-group-item.active:focus {
   text-indent: -9999px;
   height: 123px;
   width: 100%;
-  background: transparent url("@{theme-base-path}images/logo_swissbib.png") no-repeat 0 0;
+  background: transparent url("@{theme-base-path}images/swissbib.svg") no-repeat 0 10px;
+  background-size: 200px 63px;
 }
 
 .container {
@@ -617,9 +641,11 @@ ul[aria-labelledby=dropdownLibraries] {
   }
   [data-toggle="collapse"].title:after {
     content: '\25B2';
+    float: right;
   }
   [data-toggle="collapse"].title.collapsed:after {
     content: '\25BC';
+    float: right;
   }
   [data-toggle="collapse"][href*="publishDate"].title,
   [data-toggle="collapse"][href*="PublicationDate"].title {
@@ -645,11 +671,12 @@ ul[aria-labelledby=dropdownLibraries] {
     padding-right: 2px;
     background-color: transparent;
   }
+  .badge a {color:@link-color}
   .list-group-item {
     text-overflow: ellipsis;
     overflow: hidden;
     border: 1px solid #CCC;
-    padding-left: 8px;
+    //padding-left: 8px;
     padding-right: 8px;
   }
   .list-group-item.title {
@@ -719,6 +746,10 @@ ul[aria-labelledby=dropdownLibraries] {
   .tt-hint {
     display: none;
   }
+  .tt-suggestion.tt-cursor {
+    color: @white;
+    background-color: @link-color;
+  }
 }
 
 /* detail toolbar */
@@ -782,7 +813,8 @@ ul[aria-labelledby=dropdownLibraries] {
 
 
     h3 {
-      font-size: 16px;
+      font-weight: 400;
+      font-size: 18px;
       margin-bottom: 26px;
     }
 
@@ -807,7 +839,19 @@ ul[aria-labelledby=dropdownLibraries] {
   }
 }
 
+/* similar items tab */
+#similar-items-carousel {
+  .hover-overlay {
+    img {
+      max-height: 140px;
+    }
 
+    .thumbico {
+      margin: 10px 0;
+      height: 150px;
+    }
+  }
+}
 
 .recordTabs,
 .tab-content {
@@ -816,11 +860,6 @@ ul[aria-labelledby=dropdownLibraries] {
 
 .tab-content {
   min-height: 100px;
-}
-
-
-.holdingsAjaxSpinner {
-  display: none;
 }
 
 div.memorize {
@@ -936,6 +975,7 @@ div.memorize {
   min-height: 320px;
   max-width: 95%;
   margin-top: 30px;
+  margin-left: -15px;
   border-radius: 2px;
   padding: 20px 20px 0 20px;
 
@@ -1032,6 +1072,14 @@ footer {
     background-color: @white;
     margin-bottom: 20px;
   }
+
+  .swissuniversities img {
+    margin-left: 5px;
+  }
+
+  .powered-by img {
+    width: 240px;
+  }
 }
 
 #advSearchForm {
@@ -1120,9 +1168,10 @@ footer {
     }
 
     label {
-      font-size: 18px;
+      /* interferres with jus-advanced-search. no sideeffects seen (so far) */
+      /*font-size: 18px;*/
+      /*margin-top: 20px;*/
       margin-bottom: 10px;
-      margin-top: 20px;
 
       &.ranges {
         margin-bottom: 0;
@@ -1300,33 +1349,437 @@ footer {
 }
 
 /* jusbib classification tree tabs */
-#tabbed-tree.tabs > .nav.nav-tabs {
-  border: none;
-  margin: 20px 0;
+#tabbed-tree.tabs {
+  &  > .nav.nav-tabs {
+    border: none;
+    margin: 20px 0;
 
-  & > li {
-    & > a {
-      border-bottom-left-radius: 2px;
-      border-bottom-right-radius: 2px;
+    & > li {
+      & > a {
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+        border: none;
+      }
+    }
+    & > li:active, & > li.active,
+    & > li:focus,
+    & > li:hover {
+      & > a {
+        color: @white;
+        border: none;
+        background-color: @theme-color;
+        font-weight: inherit;
+      }
     }
   }
-  & > li:active, & > li.ui-state-active,
-  & > li:focus, & > li.ui-state-focus,
-  & > li:hover, & > li.ui-state-hover {
-    & > a {
-      background-color: @theme-color;
-      font-weight: inherit;
+
+  & > .tab-content > div {
+    display: none;
+
+    &.active {
+      display: block;
     }
   }
 }
 
 .jstree-default {
+  /**
+   * jstree responsive css
+   */
+  .jstree-icon {
+    background-image: url("@{theme-base-path}css/jsTree/themes/default/40px.png");
+  }
+  .jstree-node,
+  .jstree-leaf > .jstree-ocl {
+    background: transparent;
+  }
+  .jstree-node {
+    min-height: 40px;
+    line-height: 40px;
+    margin-left: 40px;
+    min-width: 40px;
+    white-space: nowrap;
+  }
+  .jstree-anchor {
+    line-height: 40px;
+    height: 40px;
+  }
+  .jstree-icon,
+  .jstree-icon:empty {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+  }
+  > .jstree-container-ul > .jstree-node {
+    margin-left: 0;
+  }
+  .jstree-default-responsive.jstree-rtl .jstree-node {
+    margin-left: 0;
+    margin-right: 40px;
+  }
+  .jstree-default-responsive.jstree-rtl .jstree-container-ul > .jstree-node {
+    margin-right: 0;
+  }
+  .jstree-ocl,
+  .jstree-themeicon,
+  .jstree-checkbox {
+    background-size: 120px 200px;
+  }
+  .jstree-leaf > .jstree-ocl {
+    background: transparent;
+  }
+  .jstree-open > .jstree-ocl {
+    background-position: 0 0px !important;
+  }
+  .jstree-closed > .jstree-ocl {
+    background-position: 0 -40px !important;
+  }
+  .jstree-default-responsive.jstree-rtl .jstree-closed > .jstree-ocl {
+    background-position: -40px 0px !important;
+  }
+  .jstree-themeicon {
+    background-position: -40px -40px;
+  }
+  .jstree-checkbox,
+  .jstree-checkbox:hover {
+    background-position: -40px -80px;
+  }
+  .jstree-clicked > .jstree-checkbox,
+  .jstree-clicked > .jstree-checkbox:hover {
+    background-position: 0 -80px;
+  }
+  .jstree-anchor > .jstree-undetermined,
+  .jstree-anchor > .jstree-undetermined:hover {
+    background-position: 0 -120px;
+  }
+  .jstree-anchor {
+    font-weight: normal;
+    font-size: 1em;
+    text-shadow: none;
+  }
+  > .jstree-striped {
+    background: transparent;
+  }
+  .jstree-wholerow {
+    border-top: 1px solid rgba(255, 255, 255, 0.7);
+    border-bottom: 1px solid rgba(64, 64, 64, 0.2);
+    background: #ebebeb;
+    height: 40px;
+  }
+  .jstree-wholerow-hovered {
+    background: #e7f4f9;
+  }
+  .jstree-wholerow-clicked {
+    background: #beebff;
+  }
+  .jstree-children .jstree-last > .jstree-wholerow {
+    box-shadow: inset 0 -6px 3px -5px #666666;
+  }
+  .jstree-children .jstree-open > .jstree-wholerow {
+    box-shadow: inset 0 6px 3px -5px #666666;
+    border-top: 0;
+  }
+  .jstree-children .jstree-open + .jstree-open {
+    box-shadow: none;
+  }
+  .jstree-node,
+  .jstree-icon,
+  .jstree-node > .jstree-ocl,
+  .jstree-themeicon,
+  .jstree-checkbox {
+    background-image: url("@{theme-base-path}css/jsTree/themes/default/40px.png");
+    background-size: 120px 200px;
+  }
+  .jstree-node {
+    background-position: -80px 0;
+    background-repeat: repeat-y;
+  }
+  .jstree-last {
+    background: transparent;
+  }
+  .jstree-leaf > .jstree-ocl {
+    background-position: -40px -120px;
+  }
+  .jstree-last > .jstree-ocl {
+    background-position: -40px -160px;
+  }
+  .jstree-themeicon-custom {
+    background-color: transparent;
+    background-image: none;
+    background-position: 0 0;
+  }
+  .jstree-file {
+    background: url("@{theme-base-path}css/jsTree/themes/default/40px.png") 0 -160px no-repeat;
+    background-size: 120px 200px;
+  }
+  .jstree-folder {
+    background: url("@{theme-base-path}css/jsTree/themes/default/40px.png") -40px -40px no-repeat;
+    background-size: 120px 200px;
+  }
+
+  /**
+   * vufind css (is restricted to .facet children)
+   */
+  .jstree-open > .jstree-ocl:before {
+    content: "\f068";
+  }
+  .jstree-closed > .jstree-ocl:before {
+    content: "\f067";
+  }
+  .jstree-leaf > .jstree-ocl:before {
+    content: " ";
+  }
+  .jstree-ocl:before {
+    font-family: 'FontAwesome';
+    float: left;
+    speak: none;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration:
+    inherit;
+    cursor: pointer;
+    padding: 0;
+    width: 10px;
+    margin-left: -10px;
+  }
+
+  /**
+   * custom css
+   */
   a.jstree-hovered,
-  a.jstree-clicked {
+  a.jstree-clicked,
+  a.jstree-clicked > .badge,
+  a.jstree-clicked i {
     background: @link-color;
     color: @white;
     box-shadow: none;
   }
+  a {
+    white-space:normal !important; height: auto;
+  }
+  .jstree-icon, .jstree-icon:empty {
+    &:hover {
+      color: @link-color;
+    }
+  }
+  li > ins {
+    vertical-align:top;
+  }
+  .jstree-anchor {
+    line-height: 25px;
+    height: auto !important;
+    & > i {
+      display: none;
+    }
+  }
+  .jstree-open > .jstree-ocl,
+  .jstree-closed > .jstree-ocl {
+    background-position: -40px -129px !important; //overwrite jstree responsive !important
+    background: url("@{theme-base-path}images/custom-jstree-40px.png");
+    background-size: 120px 200px;
+  }
+  .jstree-leaf {
+    height: auto;
+  }
+  .jstree-leaf a{
+    height: auto !important;
+  }
+  .jstree-icon, .jstree-icon:empty {
+    width: 39px;
+    height: 25px;
+    line-height: 26px;
+  }
+  .jstree-node {
+    min-height: 25px;
+    line-height: 25px;
+  }
+  .jstree-leaf > .jstree-ocl {
+    background-position: -40px -128px;
+  }
+  ul.jstree-children > li:last-child {
+    background: url("@{theme-base-path}css/jsTree/themes/default/40px.png");
+    background-size: 120px 200px;
+    background-position: -80px -188px;
+    background-repeat: no-repeat;
+  }
+  .jstree-node {
+    margin-left: 35px;
+    padding-right: 20px;
+  }
+  .jstree-last {
+    background: url("@{theme-base-path}css/jsTree/themes/default/40px.png");
+    background-size: 120px 200px;
+    background-position: -80px -188px;
+    background-repeat: no-repeat;
+  }
+}
+
+.hierarchy-tree .jstree-ocl:before,
+.jstree-default  .jstree-ocl:before {
+  margin-left: 30px;
+  font-size: 15px;
+}
+
+.hierarchy-tree .jstree-container-ul,
+.hierarchy-tree .jstree-children,
+.jstree-default .jstree-container-ul,
+.jstree-default .jstree-children {
+  padding-left: 0;
+}
+
+.hierarchy-tree .jstree-anchor,
+.jstree-default .jstree-anchor {
+  margin-left: 6px;
+}
+
+#hierarchyTreeHolder {
+  border: none;
+  overflow: hidden;
+
+  .form-control {
+    margin: 10px 0;
+  }
+
+  .btn-default {
+    .mixin-btn-primary;
+  }
+}
+
+#hierarchyTree {
+  margin-left: -20px;
+}
+
+.sidebar {
+  .jstree-default {
+    .jstree-container-ul > .jstree-node {
+      background-color: @white;
+      border-bottom: none;
+      background-image: none;
+      margin-left: 0;
+      padding: 0;
+
+      & > .jstree-ocl {
+        background-image: none;
+      }
+      & > .jstree-ocl:before {
+        margin-left: 0;
+      }
+      & > .jstree-icon,
+      & > .jstree-icon:empty {
+        width: 14px;
+        padding: 0 20px 0 12px;
+        height: 34px;
+        line-height: 34px;
+        display: block;
+        float: left;
+      }
+      & > .jstree-children > .jstree-node {
+        margin-left: 0;
+      }
+      & > .jstree-anchor {
+        margin-left: 0;
+        display: block;
+        background-image: none;
+        .main,
+        .main > i {
+          line-height: 34px;
+        }
+        .badge {
+          line-height: 28px;
+        }
+      }
+    }
+    .jstree-ocl:before {
+      font-size: 12px;
+      margin-left: 25px;
+    }
+    .jstree-node {
+      color: @font-color;
+      margin-left: 14px;
+      padding-right: 0;
+      background-position: -83px 0px;
+
+      .jstree-anchor {
+        display: block;
+        margin-left: -14px;
+      }
+
+      .jstree-icon,
+      .jstree-icon:empty {
+        float: left;
+        height: 20px;
+        margin-right: 2px;
+      }
+    }
+    a.jstree-hovered {
+      background-color: rgba(120,120,120,0.1);
+      color: @font-color;
+      .jstree-node {
+        background-color: @white;
+      }
+      & > .badge {
+        background-color: transparent;
+        color: @font-color;
+      }
+    }
+    li.jstree-facet ul {
+      padding-left: 0;
+    }
+    .jstree-leaf > .jstree-ocl {
+      background-position: -43px -128px;
+    }
+    ul.jstree-children > li:last-child {
+      background-position: -83px -187px;
+    }
+    a.jstree-clicked {
+      background: @link-color-transparent;
+    }
+    a.jstree-clicked > .badge, a.jstree-clicked i {
+      background: transparent;
+    }
+    a.jstree-hovered.jstree-clicked,
+    a.jstree-hovered.jstree-clicked > .badge,
+    a.jstree-hovered.jstree-clicked i  {
+      background-color: @link-color;
+      color: @white;
+      box-shadow: none;
+    }
+    .badge {
+      line-height: 18px;
+    }
+    span.main.applied i {
+      padding-top: 5px;
+    }
+    .jstree-open > .jstree-ocl,
+    .jstree-closed > .jstree-ocl {
+      background-position: -43px -128px !important; //overwrite jstree responsive !important
+    }
+  }
+  .jstree-facet .jstree-container-ul  li.active {
+    background-color: @white;
+    color: @font-color;
+  }
+  .jstree-facet .jstree-container-ul li.active a.jstree-anchor {
+    background-color: transparent;
+    color: @font-color;
+  }
+  .jstree-facet .jstree-container-ul li.active > i {
+    background-color: transparent;
+    color: @white;
+  }
+  .jstree-facet .jstree-container-ul li.active > a.jstree-anchor {
+    background-color: @link-color-transparent;
+    color: @white;
+  }
+  .jstree-facet .list-group-item.active,
+  .jstree-facet .list-group-item.active:hover,
+  .jstree-facet .list-group-item.active:focus {
+    border: 1px solid @content-box-border-color;
+  }
+}
+
+#treeSearch {
+  margin: 10px 0;
 }
 
 .nav.nav-tabs.jus {
@@ -1367,8 +1820,37 @@ div.resultView form.form-inline div.btn-group input[name="print"] {
   background: lighten(#F7F7F7, 20%);
   font-weight: bold;
   background-color: #F7F7F7;
-
-
-
 }
 
+#remove-search-text {
+  position: absolute;
+  left: -40px;
+  top: 0;
+  z-index: 10;
+  padding: 9px 12px;
+  font-size: 18px;
+  color: @link-color;
+  cursor: pointer;
+  display: none;
+
+  &:hover {
+    color: @highlight-color;
+  }
+}
+
+#swissbib-feedback-form {
+  label.label-radio {
+    font-weight: normal;
+    padding-left: 8px;
+  }
+  textarea.form-control {
+    min-height: 120px;
+  }
+  form {
+    margin: 20px 0;
+  }
+}
+
+a > i.fa-info-circle {
+  cursor: pointer;
+}

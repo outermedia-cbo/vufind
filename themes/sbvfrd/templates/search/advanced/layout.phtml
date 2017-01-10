@@ -6,7 +6,7 @@
   $this->layout()->searchbox = false;
 
   // Set up breadcrumbs:
-  $lastSearchLink = $this->getLastSearchLink($this->transEsc('Search'), '', '</li>');
+  $lastSearchLink = $this->searchMemory()->getLastSearchLink($this->transEsc('Search'), '', '</li>');
 
   $this->layout()->breadcrumbs = ($lastSearchLink ? $lastSearchLink : '')
     . '<li class="active">' . $this->transEsc('Advanced') . '</li>';
@@ -42,6 +42,10 @@
       array('searchDetails' => $searchDetails)
     )
   );
+
+  $this->jsTranslations()->addStrings([
+      'MultiSelectNothingFound' => 'MultiSelectNothingFound',
+  ]);
 ?>
 
 <?= $this->render('search/advanced/templates-handlebars') ?>
@@ -98,5 +102,4 @@
     </form>
   </div>
 </div>
-
 <?= $this->render('search/advanced/sidebar') ?>

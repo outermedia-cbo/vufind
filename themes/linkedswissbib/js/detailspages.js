@@ -48,12 +48,13 @@ function getCoverLink (array, key) {
 function getBibResLink (array, key) {
     //get ID
     var bibliographicResource_id = array[key]._source['@id'];
-    //extract ID to link to the Solr record
-    var id_classic = bibliographicResource_id.slice(46);
-    var url_start = 'http://' + window.location.hostname +
-        '/sbrd/Record/';
-    var link_bibRes = url_start + id_classic;
-    return link_bibRes;
+    //we have something like this
+    //data.swissbib.ch/Record/[recordId]
+    //and we are looking for the recordId
+    var url = /[^\/]+$/;
+    var result = bibliographicResource_id.match(url);
+    return 'http://' + window.location.hostname + '/Record/' + result;
+
 }
 
 //Helper function for carousel
@@ -124,8 +125,8 @@ function getTagCloudContentAsArray (data, gndIdsAsString) {
                 var id = array[key]._source['@id'];
                 var count = getOccurrences(gndIdsAsString, id);
                 var link = 'http://' + window.location.hostname +
-                    '/sbrd/Exploration/SubjectDetails?lookfor=' + id + '&type=SubjectById';
-                result.push({counts: count, tag: tag, id: id, href: link})
+                    '/Exploration/SubjectDetails?lookfor=' + id + '&type=SubjectById';
+                result.push({counts: count, tag: tag, href: link})
             }
         }
     }
@@ -159,7 +160,7 @@ function getPersonAuthorsNameThumbnailIconAsString(data, person_uniqueId) {
                     var person_id = array[key]._source['@id'];
                     // create <li> including ican and name as link to author's details page
                     result += '<li><a href="http://' + window.location.hostname +
-                    '/sbrd/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="recordcover" src=" ' + thumbnail + ' " alt=" ' + name + ' "><figcaption>' + name + ' ' + '</a>';
+                    '/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="thumbnail" src=" ' + thumbnail + ' " alt=" ' + name + ' "><figcaption>' + name + ' ' + '</a>';
                     result += '<span class="fa fa-info-circle fa-lg kcopenerAuthor" authorId="' + person_id +'"></span></figcaption></figure></li>';
                 }
             }
@@ -276,11 +277,11 @@ function getSubjectPreferredNamesAsString (data, knowledgeCardStatement) {
                 var literal = getSubjectPreferredName(array, key);
                 if (knowledgeCardStatement == 'withKnowledgeCard') {
                     result += '<a href="http://' + window.location.hostname +
-                    '/sbrd/Exploration/SubjectDetails?lookfor=' + id + '&type=SubjectById">' + literal + '</a> <span class="fa fa-info-circle fa-lg kcopenerSubject" subjectId="' + id +'"></span>, ';
+                    '/Exploration/SubjectDetails?lookfor=' + id + '&type=SubjectById">' + literal + '</a> <span class="fa fa-info-circle fa-lg kcopenerSubject" subjectId="' + id +'"></span>, ';
                     result = result.replace('undefined, ', ' ');
                 } else {
                     result += '<a href="http://' + window.location.hostname +
-                    '/sbrd/Exploration/SubjectDetails?lookfor=' + id + '&type=SubjectById">' + literal + ', ';
+                    '/Exploration/SubjectDetails?lookfor=' + id + '&type=SubjectById">' + literal + ', ';
                     result = result.replace('undefined, ', ' ');
                 }
 
@@ -337,7 +338,7 @@ function writeBibliographicResourceIntoHtmlClass(data, htmlClass) {
 function writePersonAuthorsNameThumbnailIconIntoHtmlClass (personIdsAsString, htmlClass, person_uniqueId) {
     $.ajax({
         url: "http://" + window.location.hostname +
-        "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+        "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
         type: "POST",
         data: {"lookfor": personIdsAsString},
         success: function (data) {
@@ -354,7 +355,7 @@ function writePersonAuthorsNameThumbnailIconIntoHtmlClass (personIdsAsString, ht
 function writeSubjectNamesIntoHtmlId (gndIdsAsString, htmlId, knowledgeCardStatement) {
     $.ajax({
         url: "http://" + window.location.hostname +
-        "/sbrd/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
+        "/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
         type: "POST",
         data: {"lookfor": gndIdsAsString},
         success: function (result) {
@@ -371,7 +372,7 @@ function writeSubjectNamesIntoHtmlId (gndIdsAsString, htmlId, knowledgeCardState
 function writeSubjectNamesIntoTagCloud (gndIdsAsString, htmlId) {
     $.ajax({
         url: "http://" + window.location.hostname +
-        "/sbrd/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
+        "/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
         type: "POST",
         data: {"lookfor": gndIdsAsString},
         success: function (data) {
@@ -396,7 +397,7 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAs
     //get IDs from type bibliographicResources: ids of resources, ids contributors of resources, ids subjects of resources
     $.ajax({
         url: "http://" + window.location.hostname +
-        "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+        "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
         type: "POST",
         data: {"lookfor": person_uniqueId},
         success: function (data) {
@@ -409,7 +410,7 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAs
 
             $.ajax({
                 url: "http://" + window.location.hostname +
-                "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
                 data: {"lookfor": idSubject},
                 success: function (data) {
@@ -423,7 +424,7 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAs
 
             $.ajax({
                 url: "http://" + window.location.hostname +
-                "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
                 data: {"lookfor": person_genreAsUri},
                 success: function (data) {
@@ -474,7 +475,7 @@ function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_pre
     //get IDs from type bibliographicResources: ids of resources, ids contributors of resources, ids subjects of resources
     $.ajax({
         url: "http://" + window.location.hostname +
-        "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+        "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
         type: "POST",
         data: {"lookfor": subject_uniqueId},
         success: function (data) {
@@ -486,7 +487,7 @@ function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_pre
 
             $.ajax({
                 url: "http://" + window.location.hostname +
-                "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
                 data: {"lookfor": idSubject},
                 success: function (data) {
@@ -499,7 +500,7 @@ function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_pre
 
             $.ajax({
                 url: "http://" + window.location.hostname +
-                "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
                 data: {"lookfor": gndIds_subject_broaderTerms},
                 success: function (data) {
