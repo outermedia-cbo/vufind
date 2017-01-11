@@ -354,7 +354,7 @@ class ElasticSearchRDF extends AbstractBase
         }
     }
 
-    public function getBirthAndDeathYear($birthYear, $deathYear)
+    public function getBirthAndDeathYear()
     {
         $fallback = "Nicht bekannt";
         $birthYear = $this->getBirthYear();
