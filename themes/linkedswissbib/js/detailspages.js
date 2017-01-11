@@ -126,7 +126,7 @@ function getTagCloudContentAsArray (data, gndIdsAsString) {
                 var count = getOccurrences(gndIdsAsString, id);
                 var link = 'http://' + window.location.hostname +
                     '/Exploration/SubjectDetails?lookfor=' + id + '&type=SubjectById';
-                result.push({counts: count, tag: tag, href: link})
+                result.push({counts: count, tag: tag, id: id, href: link})
             }
         }
     }
@@ -160,7 +160,7 @@ function getPersonAuthorsNameThumbnailIconAsString(data, person_uniqueId) {
                     var person_id = array[key]._source['@id'];
                     // create <li> including ican and name as link to author's details page
                     result += '<li><a href="http://' + window.location.hostname +
-                    '/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="thumbnail" src=" ' + thumbnail + ' " alt=" ' + name + ' "><figcaption>' + name + ' ' + '</a>';
+                    '/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="recordcover" src=" ' + thumbnail + ' " alt=" ' + name + ' "><figcaption>' + name + ' ' + '</a>';
                     result += '<span class="fa fa-info-circle fa-lg kcopenerAuthor" authorId="' + person_id +'"></span></figcaption></figure></li>';
                 }
             }
