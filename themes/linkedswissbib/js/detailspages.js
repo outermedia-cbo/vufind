@@ -438,7 +438,7 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAs
 
             $.ajax({
                 url: "http://" + window.location.hostname +
-                "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
                 data: {"lookfor": person_movementAsUri},
                 success: function (data) {
@@ -452,7 +452,7 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAs
 
             $.ajax({
                 url: "http://" + window.location.hostname +
-                "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
                 data: {"lookfor": idContributorFromBibRes},
                 success: function (data) {
@@ -515,7 +515,7 @@ function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_pre
 
             $.ajax({
                 url: "http://" + window.location.hostname +
-                "/sbrd/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
                 data: {"lookfor": gndIds_subject_narrowerTerms},
                 success: function (data) {
