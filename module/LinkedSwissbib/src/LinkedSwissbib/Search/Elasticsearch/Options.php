@@ -17,6 +17,7 @@ use VuFind\Search\Base\Options as BaseOptions;
 class Options  extends BaseOptions
 {
 
+    protected $autocompleteEnabled = true;
 
     /**
      * Return the route name for the search results action.
