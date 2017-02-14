@@ -55,35 +55,46 @@ li {
 }
 
 /* Autocomplete*/
+
+.search-tabs-box {
+  margin-bottom: -5px;
+}
+
+.twitterautocomplete {
+  margin-top: 5px;
+}
+
 .tt-dropdown-menu {
   right: 0px;
   width: 100%;
-  max-width: 649px;
-  margin-top: -11px;
+  max-width: 648px;
+  margin-top: -15px;
 }
 
 .tt-suggestion {
-  background-color: white;
-  border-color: white;
-  border-style: solid;
-  text-overflow: ellipsis;
+  background-color: white !important;
+  text-overflow: ellipsis !important;
   white-space: nowrap !important;
-  overflow: hidden;
+  overflow: hidden !important;
+  padding-left: 5px !important;
 }
 
 .tt-suggestion.tt-cursor {
-  background-color: #50bf9e;
-  color: #fff;
+  background-color: #50bf9e !important;
+  color: #fff !important;
 }
 
 .tt-suggestion:last-child {
   margin-bottom: -10px;
 }
 
+.twitter-typeahead {
+  max-width: 648px;
+}
+
 .autocomplete-header {
   background-color: #0d785b !important;
   color: #fff;
-  border: 1px solid #ddd;
   cursor: pointer;
   display: block;
   margin-bottom: -1px;
@@ -108,7 +119,20 @@ li {
 	}
 }
 
+.tt-dropdown-menu .tt-suggestion,
+.tt-menu .tt-suggestion {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #333333;
+}
 
+.tt-dropdown-menu .tt-suggestion p,
+.tt-menu .tt-suggestion p {
+  margin: 0;
+}
 /* Modules detailspages*/
 span.labelAsString {
   font-size: inherit;
