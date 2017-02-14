@@ -34,7 +34,7 @@ function getCoverLink (array, key) {
     if ("bibo:isbn10" in array[key]._source) {
         var isbn10 = array[key]._source['bibo:isbn10'];
         if (typeof isbn10 !== 'undefined') {
-            var url_start = 'https://resources.swissbib.ch/Cover/Show?isn=';
+            var url_start = 'https://swissbib.ch/Cover/Show?isn=';
             var url_end = '&size=large';
             var link_cover = url_start + isbn10 + url_end;
         }

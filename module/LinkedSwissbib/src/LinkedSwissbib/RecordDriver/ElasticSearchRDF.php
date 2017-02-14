@@ -455,7 +455,7 @@ class ElasticSearchRDF extends AbstractBase
     {
         if (isset($this->fields['_source']['bibo:isbn10'])) {
             $isbn10 = $this->fields['_source']['bibo:isbn10'];
-            $url_start = 'https://resources.swissbib.ch/Cover/Show?isn=';
+            $url_start = 'https://www.swissbib.ch/Cover/Show?isn=';
             $url_end = '&size=small';
             $link_cover = $url_start . $isbn10 . $url_end;
             return $link_cover;
