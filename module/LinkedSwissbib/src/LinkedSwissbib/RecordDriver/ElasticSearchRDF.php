@@ -576,7 +576,7 @@ class ElasticSearchRDF extends AbstractBase
     //returns always dummy image
     public function getSubjectThumbnail()
     {
-        return $this->getValueIfAvailable('dbp:thumbnail', "../themes/linkedswissbib/images/icon_no_image_available.gif");
+        return $this->getValueIfAvailable('dbp:thumbnail', "../themes/linkedswissbib/images/subjectAvatar.png");
     }
 
 // TODO: gibt immer nur ein Element zurück, da return die Funktion sofort beendet
