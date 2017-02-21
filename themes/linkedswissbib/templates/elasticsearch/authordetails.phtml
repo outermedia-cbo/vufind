@@ -34,9 +34,6 @@
             $instances[] = $singleResult;
     endforeach;
     ?>
-    <div class="knowledgeCard">
-        <?=$this->render("elasticsearch/knowledgeCard.phtml")?>
-    </div>
     <div class="container container-table-fix-md breadcrumbWrapper">
         <ul class="breadcrumb hidden-print">
 
@@ -216,6 +213,9 @@
     <!-- container container-table-fix-md -->
     <? } ?>
     <div id="bottom-puffer"></div>
+</div>
+<div class="knowledgeCard">
+    <?=$this->render("elasticsearch/knowledgeCard.phtml")?>
 </div>
 <!-- end class main -->
 <!-- MODAL IN CASE WE NEED ONE -->

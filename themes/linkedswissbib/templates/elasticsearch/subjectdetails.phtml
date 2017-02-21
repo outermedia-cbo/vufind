@@ -23,9 +23,6 @@
             $instances[] = $singleResult;
     endforeach;
     ?>
-    <div class="knowledgeCard">
-        <?=$this->render("elasticsearch/knowledgeCard.phtml")?>
-    </div>
     <script>
         var gndIds_subject_relatedTerms = "<? echo $subject_uriForRelatedTerms ?>";
         writeSubjectNamesIntoHtmlId(gndIds_subject_relatedTerms, "#subject_relatedTerms", "withKnowledgeCard");
@@ -185,6 +182,9 @@
     <? } ?>
     <!-- container container-table-fix-md -->
     <div id="bottom-puffer"></div>
+</div>
+<div class="knowledgeCard">
+    <?=$this->render("elasticsearch/knowledgeCard.phtml")?>
 </div>
 <!-- end class main -->
 <!-- MODAL IN CASE WE NEED ONE -->
