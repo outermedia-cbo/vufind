@@ -54,7 +54,13 @@ $formats = $viewRecord->getFormatList();
             <span class="hidden-xs label"><strong><?= $this->transEsc('Author') ?>:</strong></span>
             <span>
                <?= $this->escapeHtml($responsible) ?>
-            </span><br />
+            </span>
+            <span id="<? echo $uniqueID ?>"></span><br />
+            <script>
+                var uniqueIdSolr = '#' + '<? echo $uniqueID ?>';
+                var uniqueIdES = 'http://data.swissbib.ch/bibliographicResource/' + "<? echo $uniqueID;?>";
+                writeContentOfPersonsIntoHtml(uniqueIdSolr, uniqueIdES);
+            </script>
         <? endif; ?>
     </div>
 

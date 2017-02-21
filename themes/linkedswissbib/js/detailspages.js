@@ -136,6 +136,37 @@ function getTagCloudContentAsArray (data, gndIdsAsString) {
     return result;
 }
 
+//Helper function knowledge Card for Solr result list
+//generates list of authors including name and icon (knowledge card)
+//persons only! no organisations!
+function getPersonAuthorsNameIconAsString(data) {
+    var array = data.person;
+    if (typeof array !== 'undefined') {
+        if ($.isArray(array)) {
+            var result = "";
+            for (var key in array) {
+                //get id
+                var person_id = array[key]._source['@id'];
+                //get name
+                var person = array[key]._source['rdf:type'];
+                // if type is person and person is not subject of the details page
+                if ((person == 'http://xmlns.com/foaf/0.1/Person')) {
+                    //get author's name as label
+                    var name = getPersonNameAsString(data, key);
+                    //get person's id
+                    var person_id = array[key]._source['@id'];
+                    // create icon and name as link to author's details page
+                    result += '<a style="display:inline;" href="http://' + window.location.hostname +
+                    '/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId">' + name + '</a>';
+                    result += '<span class="fa fa-info-circle fa-lg kcopenerAuthor" style="display:inline;" authorId="' + person_id +'"></span>';
+
+                }
+            }
+        }
+    }
+    return result;
+}
+
 //Helper function thumbnail gallery
 //generates gallery for authors including thumbnail, name and icon (knowledge card)
 //persons only! no organisations!
@@ -522,6 +553,38 @@ function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_pre
                     //console.log(data);
                     //works with narrower subjects
                     writeBibliographicResourceIntoHtmlClass(data, ".sd_worksWithNarrowerSubjects");
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+}
+
+// Write contents of person into file via unique Id from Solr --> result-list (Solr)
+function writeContentOfPersonsIntoHtml (htmlId, uniqueId) {
+    $.ajax({
+        url: "http://" + window.location.hostname +
+        "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+        type: "POST",
+        data: {"lookfor": uniqueId},
+        success: function (data) {
+            var idContributorFromBibRes = getIdsFromPropertyInBibliographicResourcesAsString(data, 'dct:contributor');
+            $.ajax({
+                url: "http://" + window.location.hostname +
+                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                type: "POST",
+                data: {"lookfor": idContributorFromBibRes},
+                success: function (data) {
+                    var result = getPersonAuthorsNameIconAsString(data);
+                    //id must consist of Solr unique Id
+                    if (typeof result !== 'undefined') {
+                        $(htmlId).html('<br /><strong>Mehr Details zu: </strong>' + result);
+                    }
                 },
                 error: function (e) {
                     console.log(e);
