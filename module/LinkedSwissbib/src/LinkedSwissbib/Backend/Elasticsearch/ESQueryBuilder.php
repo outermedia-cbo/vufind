@@ -110,7 +110,7 @@ class ESQueryBuilder implements ESQueryBuilderInterface
 
         $getParams['body'] = $searchBody;
         $getParams['type'] = array("person", "DEFAULT");
-        $getParams['index'] = array("lsb");
+        $getParams['index'] = array("lsb", "gnd");
 
         return $getParams;
     }

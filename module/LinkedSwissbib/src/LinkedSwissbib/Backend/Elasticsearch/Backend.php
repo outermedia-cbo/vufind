@@ -12,6 +12,7 @@
 namespace LinkedSwissbib\Backend\Elasticsearch;
 
 
+use VuFind\XSLT\Import\VuFind;
 use VuFindSearch\Backend\AbstractBackend;
 use VuFindSearch\ParamBag;
 use VuFindSearch\Query\AbstractQuery;
@@ -20,7 +21,8 @@ use VuFindSearch\Response\RecordCollectionFactoryInterface;
 use LinkedSwissbib\Backend\Elasticsearch\ESParamBag;
 use VuFindSearch\Response\RecordCollectionInterface;
 use VuFindSearch\Backend\Exception\BackendException;
-use LinkedSwissbib\esQuery;
+use VuFindSearch\Query\Query as VuFindQuery;
+//use LinkedSwissbib\esQuery;
 
 class Backend extends AbstractBackend
 {
@@ -107,6 +109,10 @@ class Backend extends AbstractBackend
         }
 
         $this->getQueryBuilder()->setParams($params);
+        if ($query  instanceof VuFindQuery && is_null($query->getString())) {
+            //todo: it's a hack because ES5 doesn't accept null values for queries
+            $query->setString("");
+        }
         $esDSLParams = $this->getQueryBuilder()->build($query);
 
 
