@@ -1,0 +1,31 @@
+<!-- Functionalities currently not supported by linked.swissbib
+<form class="form-inline" action="<?= $this->basePath() ?>/Search/Results" method="get" name="sort">
+    <input name="lookfor" value="malaria" type="hidden"><input name="type" value="AllFields" type="hidden">
+    <input name="sortControlElement" value="sortControlElement" type="hidden">
+    <label for="sort_options_1">Sortieren nach</label>
+    <select id="sort_options_1" name="sort" class="jumpMenu form-control">
+        <option value="relevance" selected="selected">Relevanz</option>
+        <option value="publishDateSort desc">Jahr (neuestes zuerst)</option>
+        <option value="publishDateSort asc">Jahr (ältestes zuerst)</option>
+        <option value="author_sort asc">Autor (A-Z)</option>
+        <option value="author_sort desc">Autor (Z-A)</option>
+        <option value="title_sort asc">Titel (A-Z)</option>
+        <option value="title_sort desc">Titel (Z-A)</option>
+    </select>
+    <noscript><input type="submit" class="btn btn-default" value="Suchen" /></noscript>
+</form>
+<form class="form-inline" action="<?= $this->basePath() ?>/Search/Results?lookfor=malaria&amp;type=AllFields" method="post">
+    <input name="limitControlElement" value="limitControlElement" type="hidden">
+    <label for="limit">Treffer pro Seite</label>
+    <select id="limit" name="limit" class="jumpMenu form-control">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20" selected="selected">20</option>
+        <option value="40">40</option>
+        <option value="60">60</option>
+        <option value="80">80</option>
+        <option value="100">100</option>
+    </select>
+    <noscript><input type="submit" value="Suchen" /></noscript>
+</form>
+-->

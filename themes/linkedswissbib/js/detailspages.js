@@ -22,7 +22,7 @@ function getIdsFromPropertyInBibliographicResourcesAsString (data, property) {
         }
     }
     if (!result) {
-        result = '';
+        result = "Nicht bekannt";
     }
     return result;
 }
@@ -34,7 +34,7 @@ function getCoverLink (array, key) {
     if ("bibo:isbn10" in array[key]._source) {
         var isbn10 = array[key]._source['bibo:isbn10'];
         if (typeof isbn10 !== 'undefined') {
-            var url_start = 'https://resources.swissbib.ch/Cover/Show?isn=';
+            var url_start = 'https://swissbib.ch/Cover/Show?isn=';
             var url_end = '&size=large';
             var link_cover = url_start + isbn10 + url_end;
         }
@@ -75,7 +75,7 @@ function getItemForCarousel (array, keyStart, keyEnd){
             result += '<div class="col-sm-3"><a href="' + link_bibRes + '" class="hover-overlay" style="max-height: 200px;"><img title="'+ bibResTitle +'" src="' + link_cover + '" style="max-height: 200px;"><div class="content"><b>' + bibResTitle +'</b></div></a></div>';
         }
     } else {
-        fallbackItem = '<div class="col-sm-3"><a href="/Record/335357466" class="hover-overlay" style="max-height: 200px;"> <img title="Selfish : poems"src="https://resources.swissbib.ch/Cover/Show?isn=1555977081&size=large" style="max-height: 200px;"> <div class="content"></div></a>';
+        fallbackItem = '<span class="hover-overlay" style="min-height: 200px;">Nicht bekannt</span>';
         var result= fallbackItem;
     }
     return result;
@@ -95,7 +95,7 @@ function getBibResForCarousel (data) {
         var result = [item0, item1, item2];
     }
     if (!result) {
-        result = 'Keine Inhalte vorhanden';
+        result = 'Nicht bekannt';
     }
     return result;
 }
@@ -126,12 +126,43 @@ function getTagCloudContentAsArray (data, gndIdsAsString) {
                 var count = getOccurrences(gndIdsAsString, id);
                 var link = 'http://' + window.location.hostname +
                     '/Exploration/SubjectDetails?lookfor=' + id + '&type=SubjectById';
-                result.push({counts: count, tag: tag, href: link})
+                result.push({counts: count, tag: tag, id: id, href: link})
             }
         }
     }
     if (!result) {
-        result = "Keine Inhalte vorhanden";
+        result = "Nicht bekannt";
+    }
+    return result;
+}
+
+//Helper function knowledge Card for Solr result list
+//generates list of authors including name and icon (knowledge card)
+//persons only! no organisations!
+function getPersonAuthorsNameIconAsString(data) {
+    var array = data.person;
+    if (typeof array !== 'undefined') {
+        if ($.isArray(array)) {
+            var result = "";
+            for (var key in array) {
+                //get id
+                var person_id = array[key]._source['@id'];
+                //get name
+                var person = array[key]._source['rdf:type'];
+                // if type is person and person is not subject of the details page
+                if ((person == 'http://xmlns.com/foaf/0.1/Person')) {
+                    //get author's name as label
+                    var name = getPersonNameAsString(data, key);
+                    //get person's id
+                    var person_id = array[key]._source['@id'];
+                    // create icon and name as link to author's details page
+                    result += '<a style="display:inline;" href="http://' + window.location.hostname +
+                    '/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId">' + name + '</a>';
+                    result += '<span class="fa fa-info-circle fa-lg kcopenerAuthor" style="display:inline;" authorId="' + person_id +'"></span>';
+
+                }
+            }
+        }
     }
     return result;
 }
@@ -160,29 +191,41 @@ function getPersonAuthorsNameThumbnailIconAsString(data, person_uniqueId) {
                     var person_id = array[key]._source['@id'];
                     // create <li> including ican and name as link to author's details page
                     result += '<li><a href="http://' + window.location.hostname +
-                    '/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="thumbnail" src=" ' + thumbnail + ' " alt=" ' + name + ' "><figcaption>' + name + ' ' + '</a>';
+                    '/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="recordcover" src=" ' + thumbnail + ' " alt=" ' + name + ' "><figcaption>' + name + ' ' + '</a>';
                     result += '<span class="fa fa-info-circle fa-lg kcopenerAuthor" authorId="' + person_id +'"></span></figcaption></figure></li>';
                 }
             }
         }
     }
     if (!result) {
-        result = "Keine Inhalte vorhanden";
+        result = "Nicht bekannt";
     }
     return result;
+}
+
+//Duplicated code: same function in authordetails.js
+function checkForArrays (property) {
+    if ($.isArray(property)) {
+        return property[0];
+    } else {
+        return property;
+    }
 }
 
 //Similar in extractName in authordetails.js!!! --> knowledgeCard
 function getPersonNameAsString(array, key) {
     var  array = array.person[key]._source;
     if (('foaf:lastName' in array) && ('foaf:firstName') in array) {
-        return array['foaf:firstName'] + ' ' + array['foaf:lastName'];
+        //not ideal solution since it matches first and last name that do not actually belong together
+        var firstName = checkForArrays(array['foaf:firstName']);
+        var lastName = checkForArrays(array['foaf:lastName']);
+        return firstName + ' ' + lastName;
     } else if ('foaf:lastName' in array) {
-        return array['foaf:lastName'];
+        return checkForArrays(array['foaf:lastName']);
     } else if ('foaf:name' in array) {
-        return array['foaf:name'];
+        return checkForArrays(array['foaf:name']);
     } else {
-        return 'Keine Inhalte vorhanden';
+        return 'Nicht bekannt';
     }
 }
 
@@ -223,7 +266,7 @@ function writeSubjectLiteralsAsStringIntoHtmlId (data, gndUri, htmlId) {
         }
     }
     if (!result) {
-        result = "Keine Inhalte vorhanden";
+        result = "Nicht bekannt";
     }
     $(htmlId).text(result);
 }
@@ -279,7 +322,7 @@ function getSubjectPreferredNamesAsString (data, knowledgeCardStatement) {
         }
     }
     if (!result) {
-        result = "Keine Inhalte vorhanden";
+        result = "Nicht bekannt";
     }
     return result;
 }
@@ -312,12 +355,12 @@ function writeBibliographicResourceIntoHtmlClass(data, htmlClass) {
                 var title = array[key]._source['dct:title'];
                 var link_bibRes = getBibResLink(array, key);
                 // create <li> that links to the Solr record
-                result += '<a href="' + link_bibRes + '"><i class="fa fa-arrow-right"></i> ' + title +'</br>';
+                result += '<li style="margin-bottom: 5px;"><i class="fa-li fa fa-long-arrow-right"></i><a title="' + title +'" href="' + link_bibRes + '"> ' + title +'</a></li>';
             }
         }
     }
     if (!result) {
-        result = 'Keine Inhalte vorhanden';
+        result = 'Nicht bekannt';
     }
     $(htmlClass).html(result);
 }
@@ -365,7 +408,7 @@ function writeSubjectNamesIntoTagCloud (gndIdsAsString, htmlId) {
         data: {"lookfor": gndIdsAsString},
         success: function (data) {
             var tags = getTagCloudContentAsArray(data, gndIdsAsString);
-            if (tags == "Keine Inhalte vorhanden") {
+            if (tags == "Nicht bekannt") {
                 $(htmlId).text(tags);
             } else {
                 $(htmlId).hotag({
@@ -381,7 +424,7 @@ function writeSubjectNamesIntoTagCloud (gndIdsAsString, htmlId) {
 }
 
 // Write contents of person with unique Id into file --> authordetails
-function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAsString) {
+function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAsString, person_genreAsUri, person_movementAsUri) {
     //get IDs from type bibliographicResources: ids of resources, ids contributors of resources, ids subjects of resources
     $.ajax({
         url: "http://" + window.location.hostname +
@@ -403,8 +446,35 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAs
                 data: {"lookfor": idSubject},
                 success: function (data) {
                     var idsContributorFromBibRes = getIdsFromPropertyInBibliographicResourcesAsString(data, 'dct:contributor');
-                    writePersonAuthorsNameThumbnailIconIntoHtmlClass (idsContributorFromBibRes, ".ad_authorsOfWorksWithSimilarSubjects", person_uniqueId);
                     writeBibliographicResourceIntoHtmlClass(data, ".ad_worksWithSimilarSubjects");
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+
+            $.ajax({
+                url: "http://" + window.location.hostname +
+                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                type: "POST",
+                data: {"lookfor": person_genreAsUri},
+                success: function (data) {
+                    //works of authors with same genres
+                    writePersonAuthorsNameThumbnailIconIntoHtmlClass (person_genreAsUri, ".ad_authorsWithSameGenres", person_uniqueId);
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+
+            $.ajax({
+                url: "http://" + window.location.hostname +
+                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                type: "POST",
+                data: {"lookfor": person_movementAsUri},
+                success: function (data) {
+                    //works of authors with same genres
+                    writePersonAuthorsNameThumbnailIconIntoHtmlClass (person_movementAsUri, ".ad_authorsWithSameMovement", person_uniqueId);
                 },
                 error: function (e) {
                     console.log(e);
@@ -418,7 +488,7 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAs
                 data: {"lookfor": idContributorFromBibRes},
                 success: function (data) {
                     //works of authors of common works
-                    writeBibliographicResourcesIntoCarouselHtmlClasses (data, ".ad_item0", ".ad_item1", ".ad_item2");
+                    writeBibliographicResourcesIntoCarouselHtmlClasses (data, ".item0", ".item1", ".item2");
                 },
                 error: function (e) {
                     console.log(e);
@@ -432,7 +502,7 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAs
 }
 
 // Write contents of gnd subject with unique Id into file --> subjectdetails
-function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_preferredNameAsString) {
+function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_preferredNameAsString, gndIds_subject_broaderTerms, gndIds_subject_narrowerTerms) {
     //get IDs from type bibliographicResources: ids of resources, ids contributors of resources, ids subjects of resources
     $.ajax({
         url: "http://" + window.location.hostname +
@@ -452,7 +522,7 @@ function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_pre
                 type: "POST",
                 data: {"lookfor": idSubject},
                 success: function (data) {
-                    writeBibliographicResourcesIntoCarouselHtmlClasses (data, ".sd_item0", ".sd_item1", ".sd_item2");
+                    writeBibliographicResourcesIntoCarouselHtmlClasses (data, ".item0", ".item1", ".item2");
                 },
                 error: function (e) {
                     console.log(e);
@@ -463,11 +533,58 @@ function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_pre
                 url: "http://" + window.location.hostname +
                 "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
+                data: {"lookfor": gndIds_subject_broaderTerms},
+                success: function (data) {
+                    //console.log(data);
+                    //works with broader subjects
+                    writeBibliographicResourceIntoHtmlClass(data, ".sd_worksWithBroaderSubjects");
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+
+            $.ajax({
+                url: "http://" + window.location.hostname +
+                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                type: "POST",
+                data: {"lookfor": gndIds_subject_narrowerTerms},
+                success: function (data) {
+                    //console.log(data);
+                    //works with narrower subjects
+                    writeBibliographicResourceIntoHtmlClass(data, ".sd_worksWithNarrowerSubjects");
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+}
+
+// Write contents of person into file via unique Id from Solr --> result-list (Solr)
+function writeContentOfPersonsIntoHtml (htmlId, uniqueId) {
+    $.ajax({
+        url: "http://" + window.location.hostname +
+        "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+        type: "POST",
+        data: {"lookfor": uniqueId},
+        success: function (data) {
+            var idContributorFromBibRes = getIdsFromPropertyInBibliographicResourcesAsString(data, 'dct:contributor');
+            $.ajax({
+                url: "http://" + window.location.hostname +
+                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                type: "POST",
                 data: {"lookfor": idContributorFromBibRes},
                 success: function (data) {
-                    console.log(data);
-                    //works of co-authors of work with main subject
-                    writeBibliographicResourceIntoHtmlClass(data, ".sd_worksOfAuthorsWithWorksWithSubject");
+                    var result = getPersonAuthorsNameIconAsString(data);
+                    //id must consist of Solr unique Id
+                    if (typeof result !== 'undefined') {
+                        $(htmlId).html('<br /><strong>Mehr Details zu: </strong>' + result);
+                    }
                 },
                 error: function (e) {
                     console.log(e);

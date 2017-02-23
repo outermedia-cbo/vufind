@@ -86,7 +86,7 @@ class ESQueryBuilder implements ESQueryBuilderInterface
         if ($vuFindQuery->getHandler() == 'AuthorByIdMulti') {
             $querystring = $vuFindQuery->getString();
             $uris = explode(',',$querystring);
-            $getParams['body'] = '{"index":"testsb","type":"person"}'."\n".'{"query":{"filtered":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}}}'."\n".'{"index":"testsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n".'{"index":"testsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"dct:contributor":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n".'{"index":"testsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"dct:subject":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n";
+            $getParams['body'] = '{"index":"testsb","type":"person"}'."\n".'{"query":{"filtered":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}}}'."\n".'{"index":"testsb","type":"organisation"}'."\n".'{"query":{"filtered":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}}}'."\n".'{"index":"testsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n".'{"index":"testsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"dct:contributor":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n".'{"index":"testsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"dct:subject":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n".'{"index":"testsb","type":"person"}'."\n".'{"query":{"filtered":{"filter":{"in":{"dbp:genre":["' . implode('","', $uris) . '"]}}}}}'."\n".'{"index":"testsb","type":"person"}'."\n".'{"query":{"filtered":{"filter":{"in":{"dbp:movement":["' . implode('","', $uris) . '"]}}}}}'."\n";
             $getParams['type'] = array("person"); //TODO: Find out whether this line is necessary
             $getParams['index'] = $searchHandlerType->getIndices();
 
@@ -108,9 +108,31 @@ class ESQueryBuilder implements ESQueryBuilderInterface
         $esQuery = new MultisearchQuery($vuFindQuery,$searchHandlerType->getSpec(), $this);
         $searchBody =  $esQuery->build();
 
+        //strip last element from search expression
+        $searchBody=substr($searchBody,0,-2); //remove "}\n" from search expression
+        //Add size to search body
+        $size=$this->params->get('size')[0];
+        if (isset($size) && is_numeric($size))
+        {
+            //add number of results to search expression
+            $searchBody = $searchBody . ',"size": ' . $size;
+        }
+        //Add offset to search body
+        $from=$this->params->get('from')[0];
+        if (isset($size) && is_numeric($size))
+        {
+            //add start index to search expression
+            $searchBody = $searchBody . ',"from": ' . $from;
+        }
+        //finalise search expression
+        $searchBody = $searchBody . "}\n";
+
+
+
         $getParams['body'] = $searchBody;
         $getParams['type'] = array("person", "DEFAULT");
         $getParams['index'] = array("testsb");
+
 
         return $getParams;
     }

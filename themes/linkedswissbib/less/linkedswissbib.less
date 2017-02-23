@@ -1,12 +1,9 @@
-/* Accordion */
-
-
-
 /* Figures */
 
 figure {
   display: table-cell;
   padding-right: 20px;
+  padding-top: 10px;
 }
 
 figcaption {
@@ -58,26 +55,49 @@ li {
 }
 
 /* Autocomplete*/
+
+.search-tabs-box {
+  margin-bottom: -5px !important;
+}
+
+.twitterautocomplete {
+  margin-top: 5px;
+}
+
 .tt-dropdown-menu {
   right: 0px;
   width: 100%;
-  max-width: 649px;
-  margin-top: -11px;
+  max-width: 646px;
+  margin-top: -15px;
+}
+
+.tt-suggestion {
+  border-style: solid !important;
+  border-width: 1px !important;
+  border-color: #ccc #ccc #fff !important;
+  background-color: white !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  padding-left: 5px !important;
 }
 
 .tt-suggestion.tt-cursor {
-  background-color: #50bf9e;
-  color: #fff;
+  background-color: #50bf9e !important;
+  color: #fff !important;
 }
 
 .tt-suggestion:last-child {
   margin-bottom: -10px;
 }
 
+.twitter-typeahead {
+  max-width: 648px;
+}
+
 .autocomplete-header {
   background-color: #0d785b !important;
   color: #fff;
-  border: 1px solid #ddd;
   cursor: pointer;
   display: block;
   margin-bottom: -1px;
@@ -102,7 +122,20 @@ li {
 	}
 }
 
+.tt-dropdown-menu .tt-suggestion,
+.tt-menu .tt-suggestion {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #333333;
+}
 
+.tt-dropdown-menu .tt-suggestion p,
+.tt-menu .tt-suggestion p {
+  margin: 0;
+}
 /* Modules detailspages*/
 span.labelAsString {
   font-size: inherit;
@@ -112,7 +145,7 @@ span.labelAsString {
 .ui-dialog { z-index: 1000 !important ;}
 
 #similar-items-carousel-home-works .carousel-indicators, #similar-items-carousel-home-authors .carousel-indicators, #similar-items-carousel-home-subjects .carousel-indicators {
-  margin-bottom: -20% !important;
+  margin-bottom: -25% !important;
   margin-top:20px;
   left: 22.5%;
   width: 120%;
@@ -146,8 +179,9 @@ span.labelAsString {
 #similar-items-carousel-home-works .hover-overlay > img, #similar-items-carousel-home-authors .hover-overlay > img, #similar-items-carousel-home-subjects .hover-overlay > img {
   display: inline !important;
   margin: auto !important;
+  min-height: 150px !important;
   max-height: 150px !important;
-  max-width: 120px !important;
+  max-width: 110px !important;
   position: relative !important;
   text-align: left !important;
 }
@@ -159,40 +193,6 @@ span.labelAsString {
 }
 
 /* KnowledgeCard*/
-
-#similar-items-carousel-knowledgeCard .carousel-indicators {
-  bottom: 0;
-}
-
-#similar-items-carousel-knowledgeCard .carousel-indicators li {
-  background: rgba(255, 255, 255, 0.3) none repeat scroll 0 0;
-  border-color: #222222;
-  height: 8px;
-  margin: 2px;
-  width: 8px;
-}
-
-#similar-items-carousel-knowledgeCard .hover-overlay img {
-  margin: 10px 0;
-  max-width: 100%;
-}
-#similar-items-carousel-knowledgeCard .hover-overlay .content {
-  background: rgba(0, 0, 0, 0.5) none repeat scroll 0 0;
-  color: #ffffff;
-  display: none;
-  height: 100%;
-  left: 0;
-  padding: 0.5em 0.5em 0;
-  position: absolute;
-  top: 0;
-  width: 100%;
-}
-#similar-items-carousel-knowledgeCard .hover-overlay:hover .content {
-  display: block;
-}
-#similar-items-carousel-knowledgeCard .item {
-  padding: 0 4em;
-}
 
 .kcopenerAuthor .kcopenerSubject {
   cursor: pointer;

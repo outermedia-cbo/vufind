@@ -1,42 +1,43 @@
 <!-- start sidebar -->
 <div style="" class="sidebar col-md-3 col-table-fix-md hidden-print resultView">
     <h4>FAQ</h4>
-    <?
-    $results = $this->results->getResults();
-    foreach ($results as $singleResult):
-        if ($singleResult->isPerson()) { ?>
-            <!-- FAQ1 for authordetails -->
-        <ul class="list-group" id="side-panel-faq1">
-            <li class="list-group-item title" data-toggle="collapse" href="#side-collapse-faq1">
-                Was ist eine Personenseite?
-            </li>
-            <div id="side-collapse-faq1" class="collapse in">
-                <span  class="list-group-item facetAND">Die Personenseite enthält durch <a target="_blank" href="https://de.wikipedia.org/wiki/Linked_Open_Data"><i class="fa fa-external-link"></i> Linked Open Data (LOD)</a> angereichterte Angaben zu Personen, welche als VerfasserInnen  oder Beitragende in den Medien von swissbib aufgeführt werden. Als Datenquellen zur Anreicherung werden die <a target="_blank" href="http://wiki.dbpedia.org/"><i class="fa fa-external-link"></i> DBpedia</a>, die <a target="_blank" href="http://www.dnb.de/DE/Standardisierung/GND/gnd_node.html"><i class="fa fa-external-link"></i> GND</a> sowie <a target="_blank" href="http://viaf.org/"><i class="fa fa-external-link"></i> VIAF</a>  genutzt.</span>
-            </div>
-            <!-- end class collapse in -->
-        </ul>
-        <? } elseif($singleResult->isSubject()) { ?>
-            <!-- FAQ1 for subjectdetails -->
-            <ul class="list-group" id="side-panel-faq1">
-                <li class="list-group-item title" data-toggle="collapse" href="#side-collapse-faq1">
-                    Was ist eine Themenseite?
-                </li>
-                <div id="side-collapse-faq1" class="collapse in">
-                    <span  class="list-group-item facetAND">Die Themenseite enthält durch <a target="_blank" href="https://de.wikipedia.org/wiki/Linked_Open_Data"><i class="fa fa-external-link"></i> Linked Open Data (LOD)</a> angereichterte Angaben zu Themen, welche als Schlagworte in den Medien von swissbib aufgeführt werden. Als Datenquelle zur Anreicherung wird die <a target="_blank" href="http://www.dnb.de/DE/Standardisierung/GND/gnd_node.html"><i class="fa fa-external-link"></i> Gemeinsame Normadatei (GND)</a> der Deutschen Nationalbibliothek genutzt.</span>
-                </div>
-                <!-- end class collapse in -->
-            </ul>
-        <?}
-    endforeach;
-    ?>
-
+    <ul class="list-group" id="side-panel-faq1">
+        <li class="list-group-item title collapsed" data-toggle="collapse" aria-expanded="false"
+            href="#side-collapse-faq1">
+            Weshalb gibt es so viele gleiche Treffer?
+        </li>
+        <div id="side-collapse-faq1" class="collapse" aria-expanded="false">
+            <span class="list-group-item facetAND">In einem <a target="_blank" href="http://swissbib.blogspot.ch/2016/04/swissbib-data-goes-linked-teil-2.html"><i class="fa fa-external-link"></i> Linking-Prozess</a> wird versucht, AutorInnen in swissbib eindeutig zu identifizieren und gleiche AutorInnen zu einer Person zusammenzufügen (Matching). Dies geschieht mittels Abgleich von Anhaltspunkten wie Namen oder Lebensdaten. Um die Qualität der Daten sicherzustellen, sind die Regeln für dieses Matching relativ streng: Gibt es nicht genug Anhaltspunkte (Lebensdaten, <a target="_blank" href="http://www.dnb.de/DE/Standardisierung/GND/gnd_node.html"><i class="fa fa-external-link"></i>GND-</a>Identifier etc.), dass es sich tatsächlich um denselben Autor handelt, behandelt der Algorithmus die AutorInnen "vorsichtshalber" als zwei verschiedene Personen.</span>
+        </div>
+        <!-- end class collapse in -->
+    </ul>
     <ul class="list-group" id="side-panel-faq2">
-        <li class="list-group-item title" data-toggle="collapse"
-            href="#side-collapse-faq2">
+        <li class="list-group-item title collapsed" data-toggle="collapse" aria-expanded="false" href="#side-collapse-faq2">
+            Was ist eine Personenseite?
+        </li>
+        <div id="side-collapse-faq2" class="collapse" aria-expanded="false">
+            <span class="list-group-item facetAND">Die Personenseite enthält durch <a target="_blank" href="https://de.wikipedia.org/wiki/Linked_Open_Data"><i class="fa fa-external-link"></i> Linked Open Data (LOD)</a> angereichterte Angaben zu Personen, welche als VerfasserInnen  oder Beitragende in den Medien von swissbib aufgeführt werden. Als Datenquellen zur Anreicherung werden die <a target="_blank" href="http://wiki.dbpedia.org/"><i class="fa fa-external-link"></i> DBpedia</a>, die <a target="_blank" href="http://www.dnb.de/DE/Standardisierung/GND/gnd_node.html"><i class="fa fa-external-link"></i> GND</a> sowie <a target="_blank" href="http://viaf.org/"><i class="fa fa-external-link"></i> VIAF</a>  genutzt.</span>
+        </div>
+        <!-- end class collapse in -->
+    </ul>
+
+    <ul class="list-group" id="side-panel-faq3">
+        <li class="list-group-item title collapsed" data-toggle="collapse" aria-expanded="false" href="#side-collapse-faq3">
+            Was ist eine Themenseite?
+        </li>
+        <div id="side-collapse-faq3" class="collapse" aria-expanded="false">
+            <span class="list-group-item facetAND">Die Themenseite enthält durch <a target="_blank" href="https://de.wikipedia.org/wiki/Linked_Open_Data"><i class="fa fa-external-link"></i> Linked Open Data (LOD)</a> angereichterte Angaben zu Themen, welche als Schlagworte in den Medien von swissbib aufgeführt werden. Als Datenquelle zur Anreicherung wird die <a target="_blank" href="http://www.dnb.de/DE/Standardisierung/GND/gnd_node.html"><i class="fa fa-external-link"></i> Gemeinsame Normadatei (GND)</a> der Deutschen Nationalbibliothek genutzt.</span>
+        </div>
+        <!-- end class collapse in -->
+    </ul>
+
+    <ul class="list-group" id="side-panel-faq4">
+        <li class="list-group-item title collapsed" data-toggle="collapse" aria-expanded="false"
+            href="#side-collapse-faq4">
             Was ist linked.swissbib?
         </li>
-        <div id="side-collapse-faq2" class="collapse in">
-            <span  class="list-group-item facetAND">Das Projekt linked.swissbib.ch hat zum Ziel, den Metakatalog swissbib mit einem neuen Service verlinkter Daten in das semantische Web zu integrieren. Die Publikation der Daten ist für 2017 vorgesehen.
+        <div id="side-collapse-faq4" class="collapse" aria-expanded="false">
+            <span class="list-group-item facetAND">Das Projekt linked.swissbib.ch hat zum Ziel, den Metakatalog swissbib mit einem neuen Service verlinkter Daten in das semantische Web zu integrieren. Die Publikation der Daten ist für 2017 vorgesehen.
 Erfahren Sie in <a target="_blank" href="http://swissbib.blogspot.ch/2016/04/swissbib-data-goes-linked-teil-1.html"><i class="fa fa-external-link"></i> vier Blog-Artikeln</a> mehr über den ganzen Prozess.</span>
         </div>
         <!-- end class collapse in -->

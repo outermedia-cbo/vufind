@@ -97,8 +97,14 @@ class Backend extends AbstractBackend
         //which is at the end a PHP array
         $params = $params ?: new ESParamBag();
 
-        //$params->set('rows', $limit);
-        //$params->set('start', $offset);
+        if (isset($limit) && is_numeric($limit))
+        {
+            $params->set('size',$limit);
+        }
+        if (isset($offset) && is_numeric($offset))
+        {
+            $params->set('from',$offset);
+        }
 
         $this->getQueryBuilder()->setParams($params);
         $esDSLParams = $this->getQueryBuilder()->build($query);

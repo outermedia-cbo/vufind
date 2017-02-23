@@ -22,10 +22,11 @@
         } else
             $instances[] = $singleResult;
     endforeach;
+    //Check if there are bibliographic resources about the subject
+    if (count($instances) == 0) {
+        $subject_availableInBibRes = "false";
+    }
     ?>
-    <div class="knowledgeCard">
-        <?=$this->render("elasticsearch/knowledgeCard.phtml")?>
-    </div>
     <script>
         var gndIds_subject_relatedTerms = "<? echo $subject_uriForRelatedTerms ?>";
         writeSubjectNamesIntoHtmlId(gndIds_subject_relatedTerms, "#subject_relatedTerms", "withKnowledgeCard");
@@ -40,16 +41,19 @@
         <ul class="breadcrumb hidden-print">
 
             <li>
-                <a href=" <?= $basePath ?>/Exploration/SubjectDetails?lookfor=<? echo $subject_uniqueId ?>&amp;type=SubjectById">Suche</a>
+                <!-- Temporary solution  -->
+                <a onclick="goBack()">Suche</a>
             </li>
             <!-- Example from swissbib classic
                 <a href="/Search/Results?lookfor=malaria&type=AllFields">Suche: malaria</a>
             -->
             <li class="active">Themenseite: <? echo $subject_preferredName ?></li>
         </ul>
+
     </div>
     <?
-    if (($subject_preferredName == "Keine Inhalte vorhanden") || ($subject_preferredName == '') ) {
+    //Don't display subject details pages if there is no information about the subject or if there are no bibliographic resources about the subject
+    if (($subject_preferredName == "Nicht bekannt") || ($subject_preferredName == '') || $subject_availableInBibRes == "false" ) {
     ?><h3><? echo "Oje, hier scheinen keine verlinkten Daten vorhanden zu sein!";?></h3>
     </br><button class="btn btn-primary" onclick="goBack()">Zurück</button>
     <? } else { ?>
@@ -59,20 +63,6 @@
             <div class="col-md-12 col-table-fix-md dirty-hack-column">
                 <div class="row bg-grey">
                     <div class="col-md-9 col-table-fix-md resultView bg-white">
-                        <div class="results-top row">
-                            <div class="col-md-12">
-                                <!-- search results incl. icon
-                                    <h1><i class="fa fa-search"></i> <span>Suchergebnisse</span></h1>
-                                    <h2 class="visible-print-block">Ihre Suche: <span>malaria, 4048 Treffer</span></h2>
-                                -->
-                                <b>Springe zu:&nbsp;</b>
-                                <a href="#works">B&uuml;cher &amp; Co. zum Thema <? echo $subject_preferredName ?></a>&nbsp;|&nbsp;
-                                <a href="#authorsOfWorksWithSubject">AutorInnen von B&uuml;chern &amp; Co. mit dem Thema <? echo $subject_preferredName ?></a>&nbsp;|&nbsp;
-                                <a href="#worksWithSimilarSubjects">B&uuml;cher &amp; Co. mit ähnlichen Themen</a>&nbsp;|&nbsp;
-                                <a href="#worksOfAuthorsWithWorksWithSubject">B&uuml;cher &amp; Co. von AutorInnen, die u.a. zum Thema <? echo $subject_preferredName ?> veröffentlichen</a>&nbsp;|&nbsp;
-                            </div>
-                            <!-- end class col-md-12 -->
-                        </div>
                         <!-- end class results-top row -->
                         <div class="container-fluid">
                             <div class="row">
@@ -90,11 +80,7 @@
                                     <!-- name variants -->
                                     <div class="meta">
                                         <span><strong>Namensvarianten: </strong></span><span><? echo $subject_alternativeNames ?></span><br>
-                                    </div>
-                                    <!-- Themengebiet GND-Systematik -->
-                                    <div class="meta">
-                                        <span><strong>Themengebiet (GND): </strong></span><span><? echo $subject_gndSubjectCategory ?></span><br><br>
-                                    </div>
+                                    </div><br>
                                     <div id="accordion" class="panel-group" aria-multiselectable="true"
                                          role="tablist">
                                         <div id="holdings-details" class="panel panel-default">
@@ -145,7 +131,13 @@
                                         <dt class="col-sm-2">
                                         <!-- Dewey Decimal Classification -->
                                         <p>Dewey Decimal <br> Classification (Notation):</p></dt>
-                                        <dd class="col-sm-10"><p><? echo $subject_ddc ?></p></dd>
+                                        <dd class="col-sm-10"><p><? echo $subject_ddc ?> (Website zurzeit offline)</p></dd>
+                                    </div>
+                                    <div class="row">
+                                        <dt class="col-sm-2">
+                                        <!-- Themengebiet GND-Systematik -->
+                                        <p>Themengebiet (GND):</p></dt>
+                                        <dd class="col-sm-10"><p><? echo $subject_gndSubjectCategory ?></p></dd>
                                     </div>
                                     <div class="row">
                                         <dt class="col-sm-2">
@@ -158,6 +150,14 @@
                             <!-- end id collapse-more -->
                         </div>
                         <!-- end class container-fluid -->
+                        <div class="row">
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#works">» B&uuml;cher &amp; Co.</a>
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#authorsOfWorksWithSubject">» AutorInnen zum Thema <? echo $subject_preferredName ?></a>
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#worksWithSimilarSubjects">» B&uuml;cher &amp; Co. mit ähnlichen Themen</a>
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#worksWithBroaderSubjects">» B&uuml;cher &amp; Co. zu übergeordneten Themen</a>
+                            <a class="ui-button" style="margin-bottom: 5px;" href="#worksWithNarrowerSubjects">» B&uuml;cher &amp; Co. zu untergeordneten Themen</a>
+                        </div>
+
                         <!-- SEGMENT Werke -->
                         <?=$this->render("elasticsearch/resultsdetails.phtml")?>
 
@@ -166,11 +166,14 @@
                         <script>
                             var subject_uniqueId = "<? echo $subject_uniqueId?>";
                             var subject_preferredNameAsString = "<? echo $subject_preferredName ?>";
-                            writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_preferredNameAsString);
+                            var gndIds_subject_broaderTerms = "<? echo $subject_uriForBroaderTerms ?>";
+                            var gndIds_subject_narrowerTerms = "<? echo $subject_uriForNarrowerTerms ?>";
+                            writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_preferredNameAsString, gndIds_subject_broaderTerms, gndIds_subject_narrowerTerms);
                         </script>
                         <?=$this->render("elasticsearch/sd_moduleGalleryAuthorsOfWorksWithSubjects.phtml")?>
                         <?=$this->render("elasticsearch/sd_moduleCarouselWorksWithSimilarSubjects.phtml")?>
-                        <?=$this->render("elasticsearch/sd_moduleListWorksOfAuthorsWithWorksWithSubject.phtml")?>
+                        <?=$this->render("elasticsearch/sd_moduleListWorksWithBroaderSubjects.phtml")?>
+                        <?=$this->render("elasticsearch/sd_moduleListWorksWithNarrowerSubjects.phtml")?>
                     </div>
                     <!-- end class col-md-9 col-table-fix-md resultView bg-white -->
                     <!-- sidebar -->
@@ -185,6 +188,9 @@
     <? } ?>
     <!-- container container-table-fix-md -->
     <div id="bottom-puffer"></div>
+</div>
+<div class="knowledgeCard">
+    <?=$this->render("elasticsearch/knowledgeCard.phtml")?>
 </div>
 <!-- end class main -->
 <!-- MODAL IN CASE WE NEED ONE -->

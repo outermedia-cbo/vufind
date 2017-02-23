@@ -1,0 +1,134 @@
+<?
+$instances = array();
+$basePath = $this->basePath();
+$results = $this->results->getResults();
+foreach ($results as $singleResult):
+    if ($singleResult->isPerson()) {
+        $person_uniqueId = $singleResult->getUniqueID();
+    } elseif ($singleResult->isSubject()) {
+        $subject_uniqueId = $singleResult->getUniqueID();
+    } else
+        $instances[] = $singleResult;
+endforeach;
+?>
+
+<?
+foreach ($instances as $instance):
+$author = $instance->getName();
+$coverImage = $instance->getCover();
+$edition = $instance->getEdition();
+$format = $instance->getRdfTypeTrimmed();
+$holdingInstitution = "ETH Zürich - Bibliothek HDB";
+$instance_uniqueId = $instance->getID();
+$linkToHoldings = "#";
+$linkToOtherEditions = "#";
+$numberOfInstitutions = "2 Bibliotheken";
+$publicationStatement = $instance->getPublicationStatement();
+$statementOfResponsibility = $instance->getStatementOfResponsibility();
+$title = $instance->getTitle();
+$year = $instance->getYear();
+{
+?>
+    <div id="result<?=$i++ ?>" class="row result clearfix">
+        <div class="col-xs-11 gutter-1">
+            <!--
+            <input value="330861492" class="hiddenId" type="hidden">
+            <input value="VuFind" class="hiddenSource" type="hidden">
+            -->
+            <!-- image -->
+            <div class="hidden-xs col-sm-3 col-md-2 no-gutter hidden-print">
+                <a href="<? echo $coverImage ?>" class="img-responsive">
+                    <img alt="" class="recordcover" src=<? echo $coverImage ?>>
+                </a>
+            </div>
+            <!-- end class hidden-xs col-sm-3 col-md-2 no-gutter hidden-print -->
+            <!-- Kurztitel (vorher class="col-xs-7 col-sm-8 col-md-7" -->
+            <div class="col-xs-10 col-sm-8 col-md-7">
+                <div>
+                    <h2>
+                        <a href="<?= $basePath ?>/Record/<? echo $instance_uniqueId ?>"
+                           class="title singleLinkForBulk" title="<? echo $title ?>"><? echo $title ?></a>
+                    </h2>
+                </div>
+                <!-- Untertitel und Verfasserangabe -->
+                <div class="meta">
+                    <span id="subtitle"><? echo $statementOfResponsibility ?></span><br>
+                    <span class="hidden-xs label"><strong>Verfasser/Beitragende:</strong></span><span
+                        class="authoruris"><? echo $author ?></span><br>
+                </div> <!-- Attribut einfügen -->
+                <!-- end class meta -->
+                <!-- Zeitschriftentitel, Erscheinungsjahr -->
+                <div class="meta">
+                    <span class="hidden-xs label"><strong>Jahr:</strong></span><span><? echo $year ?></span><br>
+                </div>
+                <!-- end class meta -->
+                <!-- Ausgabe -->
+                <div class="meta">
+                        <span
+                                class="hidden-xs label"><strong>Ausgabe:</strong></span><span><? echo $edition ?></span><br>
+                </div>
+                <!-- end class meta -->
+                <!-- ID #TODO: Why do we need this?
+                <div class="meta visible-print-block">
+                    <span class="hidden-xs label"><strong>ID:</strong></span>
+                    <span>330861492</span><br>
+                </div>
+                -->
+                <!-- end class meta visible-print-block -->
+                <!-- Medien-Typ -->
+                <div class="meta">
+                        <span
+                                class="hidden-xs label"><strong>Format:</strong></span><span><? echo $format ?>
+                    <!--<span class="iconlabel bk020000">Buch  </span> --></span><br>
+                </div>
+                <!-- end class meta -->
+            </div>
+            <!-- end class col-xs-10 col-sm-8 col-md-7 -->
+            <div class="col-xs-1 col-md-3 actions">
+                <div>
+                    <!-- Don't display search tools because login functionalities currently do not work for linked.swissbib
+                    <a class="btn btn-primary dropdown-toggle hidden-print" id="dropdownLibraries"
+                       data-toggle="dropdown">
+                        <span><i class="fa fa-institution"></i></span>
+                        <span class="hidden-xs hidden-sm"><? echo $numberOfInstitutions ?></span>
+                    </a>
+                    <span class="visible-print-inline"><i class="fa fa-institution"></i></span>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownLibraries">
+                        <li role="presentation">
+                            <a role="menuitem" href="<? echo $linkToHoldings ?>">
+                                <span class="a-before"></span><? echo $holdingInstitution ?>
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" href="<? echo $linkToHoldings ?>">
+                                <span class="a-before"></span><? echo $holdingInstitution ?>
+                            </a>
+                        </li>
+                    </ul>
+                    <a class="btn btn-primary btn-frbr hidden-print" href="<? $linkToOtherEditions ?>"
+                       title="Weitere Ausgaben">
+                        <span><i class="fa fa-eye"></i></span>
+                        <span class="hidden-xs hidden-sm">Weitere Ausgaben</span>
+                    </a>
+                    <a class="btn btn-primary hidden-print" href="#" title="Zu Merkliste hinzufügen">
+                        <span class="memorizelistadd"><i class="fa fa-list-ul"></i></span>
+                        <span class="hidden-xs hidden-sm">Merkliste</span>
+                    </a>
+                    <div class="savedLists alert alert-info hidden hidden-xs hidden-sm hidden-print">
+                        <strong>Gespeichert in:</strong>
+                    </div>
+                    -->
+                </div>
+            </div>
+            <!-- end class col-xs-1 col-md-3 actions -->
+            <!-- COINS #TODO: Why do we need this?
+            <span class="Z3988 hidden-print" title="ctx_ver=Z39.88-2004&amp;ctx_enc=info%3Aofi%2Fenc%3AUTF-8&amp;rfr_id=info%3Asid%2Fbaselbern.swissbib.ch%3Agenerator&amp;rft.title=Malaria+%3A+poems&amp;rft.date=2014&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.genre=book&amp;rft.btitle=Malaria+%3A+poems&amp;rft.au=Conaway%2C+Cameron&amp;rft.place=East+Lansing%2C+Mich&amp;rft.pub=Michigan+State+University+Press&amp;rft.edition=&amp;rft.isbn=1611861446"></span>
+            -->
+        </div>
+        <!-- end class col-xs-11 gutter-1 -->
+    </div>
+    <!-- end class row result clearfix -->
+<?
+}
+endforeach;
+?>

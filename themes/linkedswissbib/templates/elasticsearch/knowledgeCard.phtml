@@ -44,7 +44,7 @@
                 }
                 if (!result) {
                     if (!fallbackResult) {
-                        var result = 'Keine Inhalte vorhanden';
+                        var result = 'Nicht bekannt';
                     } else {
                         var result = fallbackResult;
                     }
@@ -62,7 +62,7 @@
                 } else if (dbpYear in dates) {
                     var date =  dates[dbpYear];
                 } else {
-                    var date =  'Keine Inhalte vorhanden';
+                    var date =  'Nicht bekannt';
                 }
 
                 //check whether first character is a number or not
@@ -83,15 +83,30 @@
                     } else if (date.length == 4) {
                         var kc_date = date;
                     } else {
-                        var kc_date = 'Keine Inhalte vorhanden';
+                        var kc_date = 'Nicht bekannt';
                     }
                 // if the first character is not a number
                 } else {
-                    var kc_date = 'Keine Inhalte vorhanden';
-                    var kc_year = 'Keine Inhalte vorhanden';
+                    var kc_date = 'Nicht bekannt';
+                    var kc_year = 'Nicht bekannt';
                 }
                 return [kc_date, kc_year];
                 //console.log(result);
+            }
+
+            function combineDates (birthDate, deathDate) {
+                var fallback = 'Nicht bekannt';
+                if ((birthDate !== fallback) && (deathDate !== fallback)) {
+                    return ' (' + birthDate + ' - ' + deathDate + ')';
+                } else if ((birthDate !== fallback) && (deathDate == fallback)) {
+                    return ' (' + birthDate + ' - ?)';
+                } else if ((birthDate !== fallback) && (deathDate == fallback)) {
+                    return ' (? - ' + deathDate + ')';
+                } else if ((birthDate == '') && (deathDate == fallback)) {
+                    return '';
+                } else {
+                    return '';
+                }
             }
 
             $("#dialogAuthor, #dialogSubject").dialog({width: $(window).width() * 0.9 });
@@ -116,6 +131,7 @@
                     var deathDates = getDate(data,'dbp:deathDate', 'schema:deathDate', 'dbp:deathYear');
                     var kc_deathDate = deathDates[0];
                     var kc_deathYear = deathDates[1];
+                    var kc_birthAndDeathYear = combineDates (kc_birthYear, kc_deathYear);
                     var kc_birthPlace = getPersonValuesAsString(data, 'lsb:dbpBirthPlaceAsLiteral');
                     var kc_deathPlace = getPersonValuesAsString(data, 'lsb:dbpDeathPlaceAsLiteral');
                     var kc_nationality = getPersonValuesAsString(data, 'lsb:dbpNationalityAsLiteral');
@@ -126,7 +142,7 @@
 
                     //Contents KnowledgeCard
                     $('#kc_authorid').attr('href', linkToAuthordetailsWorks);
-                    $('#kc_link').attr('href', linkToAuthordetails);
+                    $('#kc_personLink').attr('href', linkToAuthordetails);
                     $('#kc_birthDate').text(kc_birthDate);
                     $('#kc_birthPlace').text(kc_birthPlace);
                     $('#kc_deathDate').text(kc_deathDate);
@@ -137,7 +153,7 @@
                     writeSubjectNamesIntoHtmlId (kc_subject, '#kc_subject', "withoutKnowledgeCard");
                     writeBibliographicResourceIntoHtmlClass(data, '.kc_works');
                     $('#kc_thumbnail').attr('src', kc_thumbnail);
-                    $('#ui-id-1').text(kc_name + ' (' + kc_birthYear + ' - ' + kc_deathYear + ')'); //Title/Widget-Header
+                    $('#ui-id-1').text(kc_name + kc_birthAndDeathYear); //Title/Widget-Header
 
                     $( "#dialogAuthor" ).dialog( "open" );
 
@@ -165,7 +181,8 @@
                         $('.kc_subjectPreferredName').text(kc_subjectPreferredName);
                         $('#ui-id-2').text(kc_subjectPreferredName); //Title/Widget-Header
                         $('#kc_subjectid').attr('href', linkToSubjectdetailsWorks);
-                        $('#kc_link').attr('href', linkToSubjectdetails);
+                        $('#kc_subjectLink').attr('href', linkToSubjectdetails);
+
                         // get subject's alternative names
                         writeSubjectLiteralsAsStringIntoHtmlId (data, 'http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading', '#kc_subjectAlternativeNames');
                         // get subject's definition
@@ -229,11 +246,11 @@
         </div>
         <div class="col-sm-12">
             <div class="row">
-                <div class="kc_works"></div>
+                <ul class="kc_works fa-ul"></ul>
                 <a  id="kc_authorid" class="btn btn-link" href="">» Mehr B&uuml;cher &amp; Co. von <span class="kc_name labelAsString"></span></a>
             </div>
             <div class="row">
-                <a  id="kc_link" class="btn btn-link" style="float:right;" href="">» Zur Personenseite von <span class="kc_name"></span></a>
+                <a  id="kc_personLink" class="ui-button" style="float:right;" href=""><strong>» Zur Personenseite von <span class="kc_name"></strong></span></a>
             </div>
         </div>
     </div>
@@ -243,7 +260,7 @@
         <!-- SEGEMENT Header -->
         <div class="row">
             <div class="col-sm-3 col-md-2">
-                <img class="img-responsive" id="kc_thumbnail" src= "../themes/linkedswissbib/images/icon_no_image_available.gif" alt="kc_thumbnail">
+                <img class="img-responsive" id="kc_thumbnail" src= "../themes/linkedswissbib/images/subjectAvatar.png" alt="kc_thumbnail">
             </div>
             <div class="col-sm-9">
                 <!-- alternative names -->
@@ -262,11 +279,11 @@
         </div>
         <div class="col-sm-12">
             <div class="row">
-                <div class="kc_works"></div>
+                <ul class="kc_works fa-ul"></ul>
                 <a id="kc_subjectid" class="btn btn-link" href="">» Mehr B&uuml;cher &amp; Co. zum Thema <span class="kc_subjectPreferredName labelAsString"></span></a>
             </div>
             <div class="row">
-                <a  id="kc_link" class="btn btn-link" style="float:right;" href="">» Zur Themenseite von <span class="kc_subjectPreferredName"></span></a>
+                <a  id="kc_subjectLink" class="ui-button" style="float:right;" href=""><strong>» Zur Themenseite von <span class="kc_subjectPreferredName"></strong></span></a>
             </div>
         </div>
     </div>

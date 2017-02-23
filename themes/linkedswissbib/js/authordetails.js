@@ -42,8 +42,15 @@ $(document).ready(function() {
                 data: {"lookfor": uri},
                 success: function (msg) {
                     // Zugriff auf JSON über "msg"
-                    var uri = msg.person[0]._source["@id"]; // can't use variable 'uri' from outside directly
-                    var name = extractName(msg.person[0]);
+
+                    if (msg.hasOwnProperty('organisation')) {
+                        var uri = msg.organisation[0]._source["@id"]; // can't use variable 'uri' from outside directly
+                        var name = extractName(msg.organisation[0]);
+
+                    } else {
+                        var uri = msg.person[0]._source["@id"]; // can't use variable 'uri' from outside directly
+                        var name = extractName(msg.person[0]);
+                    }
                     uri2name[uri] = name;
 
                     var fullNameString;
@@ -83,17 +90,28 @@ $(document).ready(function() {
         return (string.indexOf(substring) !== -1); // http://stackoverflow.com/a/1789952
     }
 
+    function checkForArrays (property) {
+        if ($.isArray(property)) {
+            return property[0];
+        } else {
+            return property;
+        }
+    }
+
     function extractName(json) {
         var source = json._source;
 
         if (('foaf:lastName' in source) && ('foaf:firstName') in source) {
-            return source['foaf:firstName'] + ' ' + source['foaf:lastName'];
+            //not ideal solution since it matches first and last name that do not actually belong together
+            var firstName = checkForArrays(source['foaf:firstName']);
+            var lastName = checkForArrays(source['foaf:lastName']);
+            return firstName + ' ' + lastName;
         } else if ('foaf:lastName' in source) {
-            return source['foaf:lastName'];
+            return checkForArrays(source['foaf:lastName']);
         } else if ('foaf:name' in source) {
-            return source['foaf:name'];
+            return source['foaf:name'][0];
         } else if ('rdf:type' != "http://xmlns.com/foaf/0.1/Person") {
-            return source['rdfs:label'];
+            return checkForArrays(source['rdfs:label']);
         } else {
             return '';
         }

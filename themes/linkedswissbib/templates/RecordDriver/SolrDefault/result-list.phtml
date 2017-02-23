@@ -54,7 +54,13 @@ $formats = $viewRecord->getFormatList();
             <span class="hidden-xs label"><strong><?= $this->transEsc('Author') ?>:</strong></span>
             <span>
                <?= $this->escapeHtml($responsible) ?>
-            </span><br />
+            </span>
+            <span id="<? echo $uniqueID ?>"></span><br />
+            <script>
+                var uniqueIdSolr = '#' + '<? echo $uniqueID ?>';
+                var uniqueIdES = 'http://data.swissbib.ch/bibliographicResource/' + "<? echo $uniqueID;?>";
+                writeContentOfPersonsIntoHtml(uniqueIdSolr, uniqueIdES);
+            </script>
         <? endif; ?>
     </div>
 
@@ -111,7 +117,7 @@ $formats = $viewRecord->getFormatList();
         <? endif; ?>
 
       <? if (!empty($showFRBR) && $showFRBR && !empty($groupID) && !strcmp($results->getParams()->getSearchHandler(), 'FRBR') == 0) : ?>
-        <a class="btn btn-primary btn-frbr hidden-print" href="<?= $this->url('search-results') . '?lookfor=' . $groupID . "&type=FRBR&limit=" . $results->getParams()->getLimit() . "&sort=publishDateSort+desc" ?>"
+        <a class="btn btn-primary btn-frbr hidden-print" href="<?= $this->url('search-results') . '?lookfor=' . $groupID . "&type=FRBR&limit=" . $this->params->getLimit() . "&sort=publishDateSort+desc" ?>"
            title="<?= $this->transEsc('Other Editions') ?>">
           <span><i class="fa fa-eye"></i></span>
           <span class="hidden-xs hidden-sm"><?= $this->transEsc('Other Editions') ?></span>
