@@ -22,6 +22,10 @@
         } else
             $instances[] = $singleResult;
     endforeach;
+    //Check if there are bibliographic resources about the subject
+    if (count($instances) == 0) {
+        $subject_availableInBibRes = "false";
+    }
     ?>
     <script>
         var gndIds_subject_relatedTerms = "<? echo $subject_uriForRelatedTerms ?>";
@@ -45,9 +49,11 @@
             -->
             <li class="active">Themenseite: <? echo $subject_preferredName ?></li>
         </ul>
+
     </div>
     <?
-    if (($subject_preferredName == "Nicht bekannt") || ($subject_preferredName == '') ) {
+    //Don't display subject details pages if there is no information about the subject or if there are no bibliographic resources about the subject
+    if (($subject_preferredName == "Nicht bekannt") || ($subject_preferredName == '') || $subject_availableInBibRes == "false" ) {
     ?><h3><? echo "Oje, hier scheinen keine verlinkten Daten vorhanden zu sein!";?></h3>
     </br><button class="btn btn-primary" onclick="goBack()">Zurück</button>
     <? } else { ?>
