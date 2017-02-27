@@ -24,7 +24,7 @@ SubjectById:
   UsedTypes:
     - DEFAULT
   UsedIndex:
-    - lsb
+    - gnd
   query:
     multi_match:
       fields:
