@@ -86,7 +86,9 @@ class ESQueryBuilder implements ESQueryBuilderInterface
         if ($vuFindQuery->getHandler() == 'AuthorByIdMulti') {
             $querystring = $vuFindQuery->getString();
             $uris = explode(',',$querystring);
-            $getParams['body'] = '{"index":"lsb","type":"person"}'."\n".'{"query":{"filtered":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}}}'."\n".'{"index":"lsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n".'{"index":"lsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"dct:contributor":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n".'{"index":"lsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"dct:subject":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n";
+            //$getParams['body'] = '{"index":"lsb","type":"person"}'."\n".'{"query":{"filtered":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}}}'."\n".'{"index":"lsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n".'{"index":"lsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"dct:contributor":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n".'{"index":"lsb","type":"bibliographicResource"}'."\n".'{"query":{"filtered":{"filter":{"in":{"dct:subject":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n";
+            //$getParams['body'] = '{"index":"lsb","type":"person"}'."\n".'{"query":"bool":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}}}'."\n".'{"index":"lsb","type":"bibliographicResource"}'."\n".'{"query":{"bool":{"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n".'{"index":"lsb","type":"bibliographicResource"}'."\n".'{"query":{"bool":{"filter":{"in":{"dct:contributor":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n".'{"index":"lsb","type":"bibliographicResource"}'."\n".'{"query":{"bool":{"filter":{"in":{"dct:subject":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n";
+            $getParams['body'] = '{"index":"lsb","type":"person"}'."\n".'{"query":{"bool":{"must":[{"match_all":{}}],"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}}}}'."\n".'{"index":"lsb","type":"bibliographicResource"}'."\n".'{"query":{"bool":{"must":[{"match_all":{}}],"filter":{"in":{"@id":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n".'{"index":"lsb","type":"bibliographicResource"}'."\n".'{"query":{"bool":{"must":[{"match_all":{}}],"filter":{"in":{"dct:contributor":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n".'{"index":"lsb","type":"bibliographicResource"}'."\n".'{"query":{"bool":{"must":[{"match_all":{}}],"filter":{"in":{"dct:subject":["' . implode('","', $uris) . '"]}}}},"size":100}'."\n";
             $getParams['type'] = array("person"); //TODO: Find out whether this line is necessary
             $getParams['index'] = $searchHandlerType->getIndices();
 
@@ -96,7 +98,9 @@ class ESQueryBuilder implements ESQueryBuilderInterface
         if ($vuFindQuery->getHandler() == 'SubjectByIdMulti') {
             $querystring = $vuFindQuery->getString();
             $uris = explode(',',$querystring);
-            $getParams['body'] = '{"index":"gnd","type":"DEFAULT"}'."\n".'{"query":{"filtered":{"filter":{"in":{"_id":["' . implode('","', $uris) . '"]}}}}}'."\n";
+            $getParams['body'] = '{"index":"gnd","type":"DEFAULT"}'."\n".'{"query":{"bool":{"must":[{"match_all":{}}],"filter":{"in":{"_id":["' . implode('","', $uris) . '"]}}}}}'."\n";
+            //$getParams['body'] = '{"index":"gnd","type":"DEFAULT"}'."\n".'{"query":"bool":{"filter":{"in":{"_id":["' . implode('","', $uris) . '"]}}}}'."\n";
+            //$getParams['body'] = '{"index":"gnd","type":"DEFAULT"}'."\n".'{"query":{"filtered":{"filter":{"in":{"_id":["' . implode('","', $uris) . '"]}}}}}'."\n";
             //$getParams['body'] = '{"query":{"filtered":{"filter":{"in":{"_id":["' . implode('","', $uris) . '"]}}}}}'."\n";
             $getParams['type'] = array("DEFAULT"); //TODO: Find out whether this line is necessary
             $getParams['index'] = array("gnd");
