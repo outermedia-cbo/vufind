@@ -438,6 +438,12 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAs
             writePersonAuthorsNameThumbnailIconIntoHtmlClass (idContributorFromBibRes, ".ad_authorsOfCommonWorks", person_uniqueId);
             writeSubjectNamesIntoTagCloud(idSubject, "#ad_tagCloudSubjectsOfWorks");
             writeLabelIntoHtml (person_nameAsString);
+            //works of authors with same genres
+            writePersonAuthorsNameThumbnailIconIntoHtmlClass (person_genreAsUri, ".ad_authorsWithSameGenres", person_uniqueId);
+            //works of authors with same movements
+            writePersonAuthorsNameThumbnailIconIntoHtmlClass (person_movementAsUri, ".ad_authorsWithSameMovement", person_uniqueId);
+
+
 
             $.ajax({
                 url: "http://" + window.location.hostname +
@@ -447,34 +453,6 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAs
                 success: function (data) {
                     var idsContributorFromBibRes = getIdsFromPropertyInBibliographicResourcesAsString(data, 'dct:contributor');
                     writeBibliographicResourceIntoHtmlClass(data, ".ad_worksWithSimilarSubjects");
-                },
-                error: function (e) {
-                    console.log(e);
-                }
-            });
-
-            $.ajax({
-                url: "http://" + window.location.hostname +
-                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
-                type: "POST",
-                data: {"lookfor": person_genreAsUri},
-                success: function (data) {
-                    //works of authors with same genres
-                    writePersonAuthorsNameThumbnailIconIntoHtmlClass (person_genreAsUri, ".ad_authorsWithSameGenres", person_uniqueId);
-                },
-                error: function (e) {
-                    console.log(e);
-                }
-            });
-
-            $.ajax({
-                url: "http://" + window.location.hostname +
-                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
-                type: "POST",
-                data: {"lookfor": person_movementAsUri},
-                success: function (data) {
-                    //works of authors with same genres
-                    writePersonAuthorsNameThumbnailIconIntoHtmlClass (person_movementAsUri, ".ad_authorsWithSameMovement", person_uniqueId);
                 },
                 error: function (e) {
                     console.log(e);
