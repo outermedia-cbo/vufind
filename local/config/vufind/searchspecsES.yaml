@@ -76,11 +76,14 @@ AutocompleteAuthor:
         - foaf:name
         - foaf:firstName
         - foaf:lastName
-        - dbp:pseudonym
+        - dbp:pseudonym.de
+        - dbp:pseudonym.en
+        - dbp:pseudonym.fr
+        - dbp:pseudonym.it
         - schema:alternateName
         #- rdfs:label
       type: cross_fields
-      operator: and
+      operator: or
 
 AutocompleteInstance:
   Multisearch:
@@ -101,13 +104,13 @@ AutocompleteSubject:
   UsedTypes:
     - DEFAULT
   UsedIndex:
-    - lsb
+    - gnd
   query:
     multi_match:
       fields:
         #- http://d-nb_info/standards/elementset/lsb#preferredNameForTheConferenceOrEvent.@value
-        - http://d-nb_info/standards/elementset/lsb#preferredNameForTheSubjectHeading.@value
-        - http://d-nb_info/standards/elementset/lsb#variantNameForTheSubjectHeading.@value
+        - http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading.@value
+        - http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading.@value
         - @type
       type: cross_fields
       operator: and
@@ -156,8 +159,13 @@ Person:
         - foaf:name
         - foaf:firstName
         - foaf:lastName
-        - dbp:pseudonym
+        - dbp:pseudonym.de
+        - dbp:pseudonym.en
+        - dbp:pseudonym.fr
+        - dbp:pseudonym.it
         - schema:alternateName
+        - # "dbp:thumbnail^5" boosts results that contain query string by factor 5; does not work currently since only whole words can be queried because the index does not contain partial words
+        - dbp:thumbnail^5
         #- rdfs:label
       type: cross_fields
       operator: and
