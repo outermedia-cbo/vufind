@@ -70,7 +70,10 @@
         <span class="input-group-btn">
            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
             <? if ($advSearch): ?>
-              <a href="<?=$this->url($advSearch)?>" class="btn btn-link advancedSearchLink"><?=$this->transEsc("Advanced Search")?></a>
+                <!-- Don't display advanced search since it does not work in linked.swissbib
+                <a href="--><?//=$this->url($advSearch)?><!--" class="btn btn-link advancedSearchLink" type="hidden">--><?//=$this->transEsc("Advanced Search")?><!--</a>-->
+                <!-- Display this instead: -->
+                <a class="btn btn-link advancedSearchLink" type="hidden" style="color:#50bf9e" ><?=$this->transEsc("Advanced Search")?></a>
             <!-- Quick fix to display input-group-btn with same size in all tabs -->
             <? else: ?>
                 <a class="btn btn-link advancedSearchLink" style="color:#50bf9e" ><?=$this->transEsc("Advanced Search")?></a>
