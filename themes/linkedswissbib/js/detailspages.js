@@ -159,9 +159,11 @@ function getPersonAuthorsNameIconAsString(data) {
                     result += '<a style="display:inline;" href="http://' + window.location.hostname +
                     '/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId">' + name + '</a>';
                     result += '<span class="fa fa-info-circle fa-lg kcopenerAuthor" style="display:inline;" authorId="' + person_id +'"></span>';
-
+                    result +=  '; ';
                 }
             }
+            result = result.substring(0, result.length - 2);
+
         }
     }
     return result;
