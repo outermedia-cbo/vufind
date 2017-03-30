@@ -83,6 +83,8 @@ class ESQueryBuilder implements ESQueryBuilderInterface
             $searchHandlerType = $this->getSearchHandler('allfields');
         }
 
+        // Queries for AJAX controller
+        // Searches in index lsb; @id in type person, organisation and bibliographic resource, as well as dbp:movement and dbp:genre, dct:contributor, dct:subject
         if ($vuFindQuery->getHandler() == 'AuthorByIdMulti') {
             $querystring = $vuFindQuery->getString();
             $uris = explode(',',$querystring);
@@ -95,6 +97,8 @@ class ESQueryBuilder implements ESQueryBuilderInterface
             return $getParams;
         }
 
+        // Queries for AJAX controller
+        // Searches in index gnd; _id in type DEFAULT
         if ($vuFindQuery->getHandler() == 'SubjectByIdMulti') {
             $querystring = $vuFindQuery->getString();
             $uris = explode(',',$querystring);
@@ -111,6 +115,7 @@ class ESQueryBuilder implements ESQueryBuilderInterface
         $esQuery = new MultisearchQuery($vuFindQuery,$searchHandlerType->getSpec(), $this);
         $searchBody =  $esQuery->build();
 
+        //Quick fix: Enable return of correct number of items (results)
         //strip last element from search expression
         $searchBody=substr($searchBody,0,-2); //remove "}\n" from search expression
         //Add size to search body

@@ -27,6 +27,7 @@ class ElasticsearchController extends AbstractSearch
     public function resultsAction()
     {
         $query = $this->getRequest()->getQuery();
+        //necessary for result list with detail pages author
         $query->set('type','Person');
         return parent::resultsAction();
     }

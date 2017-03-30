@@ -77,6 +77,7 @@ class ElasticSearchRDF extends AbstractBase
         return $result;
     }
 
+    // Some properties are available in several languages. The idea is to load the properties in the language of the Website. At the moment, German is set as default language (see below)
     private function getValueFromArray($lang, $array)
     {
         $result = ""; $fallbackResult = "";
@@ -449,7 +450,7 @@ class ElasticSearchRDF extends AbstractBase
         return str_replace($search, "", $subject);
     }
 
-    /* Currently on URIs available */
+    /* Currently as URIs available */
 
     public function getCover()
     {
@@ -508,7 +509,7 @@ class ElasticSearchRDF extends AbstractBase
         }
     }
 
-    /* independent from given language */
+    /* independent from given language (Website language) */
     public function getLanguage()
     {
         if (isset($this->fields['_source']['dct:language'])) {

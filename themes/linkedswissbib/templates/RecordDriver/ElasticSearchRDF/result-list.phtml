@@ -30,6 +30,7 @@ $birthAndDeathDate = $this->driver->getBirthAndDeathYear();
   <div class="col-xs-10 col-sm-8 col-md-7">
     <div>
         <h2>
+            <!-- include link and knowledge card icon for persons -->
             <a href="/Exploration/AuthorDetails?lookfor=<?echo $uniqueID?>&type=AuthorForId" style="display:inline;" class="title singleLinkForBulk" title="<?= $this->escapeHtml($nameAsLabel) ?>">
                 <?= $this->escapeHtml($nameAsLabel) ?></a>
                 <span class="fa fa-info-circle fa-lg kcopenerAuthor"  style="display:inline;" authorId="<? echo $uniqueID ?>"></span>

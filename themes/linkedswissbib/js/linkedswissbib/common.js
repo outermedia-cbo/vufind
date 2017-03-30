@@ -6,6 +6,7 @@ $(document).ready(function() {
             highlight: true,
             minLength: 3
         }, {
+            //Display bibliographicResources in autocomplete
             templates: {
                 header: '<h4 class="autocomplete-header">B&uuml;cher &amp; Co.</h4>'
             },
@@ -43,6 +44,7 @@ $(document).ready(function() {
             }
         } , {
             templates: {
+                //Display persons in autocomplete
                 header: '<h4 class="autocomplete-header">AutorInnen</h4>'
             },
             displayKey: function(data){
@@ -77,8 +79,9 @@ $(document).ready(function() {
                 });
             }
         }, {
+            //Display subjects (GND) in autocomplete
             templates: {
-                header: '<h4 class="autocomplete-header">Themen</h4>'
+            header: '<h4 class="autocomplete-header">Themen</h4>'
             },
             displayKey: function(data) {
                 return data['val'][2];
@@ -113,7 +116,7 @@ $(document).ready(function() {
             }
         } 
     ).bind('typeahead:selected', function(obj, datum, name) {
-
+            // Build link to landing page: details pages author and subject and full record of bibliographic resources
             //var baseurl = 'http://' + window.location.hostname + '/sbrd/';
             var baseurl = 'http://' + window.location.hostname;
 

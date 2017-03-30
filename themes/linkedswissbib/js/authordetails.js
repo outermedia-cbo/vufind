@@ -43,11 +43,13 @@ $(document).ready(function() {
                 success: function (msg) {
                     // Zugriff auf JSON über "msg"
 
+                    // If URI is an organisation don't display a link or knowledge card but only the name (literal)
                     if (msg.hasOwnProperty('organisation')) {
                         var uri = msg.organisation[0]._source["@id"]; // can't use variable 'uri' from outside directly
                         var name = extractName(msg.organisation[0]);
 
                     } else {
+                    // If URI is a person extract its literal
                         var uri = msg.person[0]._source["@id"]; // can't use variable 'uri' from outside directly
                         var name = extractName(msg.person[0]);
                     }
@@ -55,6 +57,7 @@ $(document).ready(function() {
 
                     var fullNameString;
                     if (isAuthorUriRealPerson(uri)) {
+                        // Add link and knowledge card to literal
                         fullNameString = '<a href="http://' + window.location.hostname +
                             '/Exploration/AuthorDetails?lookfor=' + uri + '&type=AuthorForId">' + name + '</a>';
                         fullNameString += '<span class="fa fa-info-circle fa-lg kcopenerAuthor" authorId="' + uri +'"></span>';
@@ -74,6 +77,7 @@ $(document).ready(function() {
         return theString.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, "\\$&"); // http://stackoverflow.com/a/13157996
     }
 
+    // Replaces URI/@id with name of the person
     function replaceInAuthorUris(theOld, theNew) {
 
         $( ".authoruris" ).each(function() {
@@ -81,6 +85,7 @@ $(document).ready(function() {
         });
     }
 
+    // Check whether URI is a person or organisation
     function isAuthorUriRealPerson(uri) {
         var substring = "http://data.swissbib.ch/organisation/";
         return !(isStringContainingSubstring(uri, substring));
@@ -98,6 +103,7 @@ $(document).ready(function() {
         }
     }
 
+    // Extract literals of URIs
     function extractName(json) {
         var source = json._source;
 

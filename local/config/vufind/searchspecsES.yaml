@@ -148,6 +148,7 @@ AllFields:
 #              operator:
 #                - and # should be default
 
+#Used for result list authors
 Person:
   UsedTypes:
     - person

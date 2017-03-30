@@ -1,3 +1,5 @@
+// File contains javascript code for various files in themes/linkedswissbib
+
 //go back function, returns to previous page
 function goBack() {
     window.history.back();
@@ -45,6 +47,7 @@ function getCoverLink (array, key) {
 }
 
 //Helper function for carousel
+// get link to full record of bibliographic resource
 function getBibResLink (array, key) {
     //get ID
     var bibliographicResource_id = array[key]._source['@id'];
@@ -114,6 +117,7 @@ function getOccurrences(string, substring){
 }
 
 //Helper function for tag cloud
+// create array to create tag cloud (see also jquery.hotag.js) for subjects
 function getTagCloudContentAsArray (data, gndIdsAsString) {
     var array = data.DEFAULT;
     if (typeof array !== 'undefined') {
@@ -171,7 +175,7 @@ function getPersonAuthorsNameIconAsString(data) {
 
 //Helper function thumbnail gallery
 //generates gallery for authors including thumbnail, name and icon (knowledge card)
-//persons only! no organisations!
+//persons only! no organisations! --> similar to authordetails.js
 function getPersonAuthorsNameThumbnailIconAsString(data, person_uniqueId) {
     var array = data.person;
     if (typeof array !== 'undefined') {
@@ -255,6 +259,7 @@ function getSubjectLiteral (array, key) {
     return result;
 }
 
+// Mainly used to fill fields in "More Details" accordion on detial pages subject
 function writeSubjectLiteralsAsStringIntoHtmlId (data, gndUri, htmlId) {
     var array = data.DEFAULT[0]._source[gndUri];
     if (typeof array !== 'undefined') {
