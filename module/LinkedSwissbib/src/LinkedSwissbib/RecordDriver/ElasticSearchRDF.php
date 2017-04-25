@@ -522,7 +522,36 @@ class ElasticSearchRDF extends AbstractBase
 
     public function getSubjectAlternativeNames($lang = '@value')
     {
-        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading');
+
+        $variantNameForTheSubjectHeading = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#variantNameForTheSubjectHeading');
+        $variantNameForTheConferenceOrEvent = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#variantNameForTheConferenceOrEvent');
+        $variantNameForTheCorporateBody = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#variantNameForTheCorporateBody');
+        $variantNameForTheFamily = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#variantNameForTheFamily');
+        $variantNameEntityForThePerson = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#variantNameEntityForThePerson');
+        $variantNameForThePerson = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#variantNameForThePerson');
+        $variantNameForThePlaceOrGeographicName = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#variantNameForThePlaceOrGeographicName');
+        $variantNameForTheWork = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#variantNameForTheWork');
+
+        if ($variantNameForTheSubjectHeading != "Nicht bekannt") {
+            return $variantNameForTheSubjectHeading;
+        } elseif ($variantNameForTheConferenceOrEvent != "Nicht bekannt") {
+            return $variantNameForTheConferenceOrEvent;
+        } elseif ($variantNameForTheCorporateBody != "Nicht bekannt") {
+            return $variantNameForTheCorporateBody;
+        } elseif ($variantNameForTheFamily != "Nicht bekannt") {
+            return $variantNameForTheFamily;
+        } elseif ($variantNameForThePerson != "Nicht bekannt") {
+            return $variantNameForThePerson;
+        } elseif ($variantNameEntityForThePerson != "Nicht bekannt") {
+            return $variantNameEntityForThePerson;
+        } elseif ($variantNameForThePlaceOrGeographicName != "Nicht bekannt") {
+            return $variantNameForThePlaceOrGeographicName;
+        } elseif ($variantNameForTheWork != "Nicht bekannt") {
+            return $variantNameForTheWork;
+        } else {
+            //return "Nicht bekannt"
+            return $variantNameForTheSubjectHeading;
+        }
     }
 
     public function getSubjectUriForBroaderTerms($lang = 'de')
@@ -566,7 +595,35 @@ class ElasticSearchRDF extends AbstractBase
 
     public function getSubjectPreferredName($lang = 'de')
     {
-        return $result = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading');
+        $preferredNameForTheSubjectHeading = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#preferredNameForTheSubjectHeading');
+        $preferredNameForTheConferenceOrEvent = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#preferredNameForTheConferenceOrEvent');
+        $preferredNameForTheCorporateBody = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#preferredNameForTheCorporateBody');
+        $preferredNameForTheFamily = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#preferredNameForTheFamily');
+        $preferredNameEntityForThePerson = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#preferredNameEntityForThePerson');
+        $preferredNameForThePerson = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#preferredNameForThePerson');
+        $preferredNameForThePlaceOrGeographicName = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#preferredNameForThePlaceOrGeographicName');
+        $preferredNameForTheWork = $this->getNestedValueForProperty($lang, 'http://d-nb_info/standards/elementset/gnd#preferredNameForTheWork');
+
+        if ($preferredNameForTheSubjectHeading != "Nicht bekannt") {
+            return $preferredNameForTheSubjectHeading;
+        } elseif ($preferredNameForTheConferenceOrEvent != "Nicht bekannt") {
+            return $preferredNameForTheConferenceOrEvent;
+        } elseif ($preferredNameForTheCorporateBody != "Nicht bekannt") {
+            return $preferredNameForTheCorporateBody;
+        } elseif ($preferredNameForTheFamily != "Nicht bekannt") {
+            return $preferredNameForTheFamily;
+        } elseif ($preferredNameEntityForThePerson != "Nicht bekannt") {
+            return $preferredNameEntityForThePerson;
+        } elseif ($preferredNameForThePerson != "Nicht bekannt") {
+            return $preferredNameForThePerson;
+        } elseif ($preferredNameForThePlaceOrGeographicName != "Nicht bekannt") {
+            return $preferredNameForThePlaceOrGeographicName;
+        } elseif ($preferredNameForTheWork != "Nicht bekannt") {
+            return $preferredNameForTheWork;
+        } else {
+            //return "Nicht bekannt"
+            return $preferredNameForTheSubjectHeading;
+        }
     }
 
     public function getSubjectUriForRelatedTerms($lang = 'de')
