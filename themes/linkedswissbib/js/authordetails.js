@@ -36,8 +36,7 @@ $(document).ready(function() {
             var value = uri2name[uri];
 
             $.ajax({
-                url: "http://" + window.location.hostname +
-                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                url: VuFind.path + "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
                 data: {"lookfor": uri},
                 success: function (msg) {
@@ -49,7 +48,7 @@ $(document).ready(function() {
                         var name = extractName(msg.organisation[0]);
 
                     } else {
-                    // If URI is a person extract its literal
+                        // If URI is a person extract its literal
                         var uri = msg.person[0]._source["@id"]; // can't use variable 'uri' from outside directly
                         var name = extractName(msg.person[0]);
                     }
@@ -58,8 +57,8 @@ $(document).ready(function() {
                     var fullNameString;
                     if (isAuthorUriRealPerson(uri)) {
                         // Add link and knowledge card to literal
-                        fullNameString = '<a href="http://' + window.location.hostname +
-                            '/Exploration/AuthorDetails?lookfor=' + uri + '&type=AuthorForId">' + name + '</a>';
+                        fullNameString = '<a href="' + VuFind.path + '/Exploration/AuthorDetails?lookfor=' + uri +
+                            '&type=AuthorForId">' + name + '</a>';
                         fullNameString += '<span class="fa fa-info-circle fa-lg kcopenerAuthor" authorId="' + uri +'"></span>';
                     } else {
                         fullNameString = name;
