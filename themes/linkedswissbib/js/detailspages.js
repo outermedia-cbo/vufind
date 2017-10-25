@@ -56,7 +56,7 @@ function getBibResLink (array, key) {
     //and we are looking for the recordId
     var url = /[^\/]+$/;
     var result = bibliographicResource_id.match(url);
-    return 'http://' + window.location.hostname + '/Record/' + result;
+    return VuFind.path + '/Record/' + result;
 
 }
 
@@ -128,8 +128,7 @@ function getTagCloudContentAsArray (data, gndIdsAsString) {
                 var tag = getSubjectPreferredName(array, key);
                 var id = array[key]._source['@id'];
                 var count = getOccurrences(gndIdsAsString, id);
-                var link = 'http://' + window.location.hostname +
-                    '/Exploration/SubjectDetails?lookfor=' + id + '&type=SubjectById';
+                var link = VuFind.path + '/Exploration/SubjectDetails?lookfor=' + id + '&type=SubjectById';
                 result.push({counts: count, tag: tag, id: id, href: link})
             }
         }
@@ -160,7 +159,7 @@ function getPersonAuthorsNameIconAsString(data) {
                     //get person's id
                     var person_id = array[key]._source['@id'];
                     // create icon and name as link to author's details page
-                    result += '<a style="display:inline;" href="http://' + window.location.hostname +
+                    result += '<a style="display:inline;" href="' + VuFind.path +
                     '/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId">' + name + '</a>';
                     result += '<span class="fa fa-info-circle fa-lg kcopenerAuthor" style="display:inline;" authorId="' + person_id +'"></span>';
                     result +=  '; ';
@@ -196,7 +195,7 @@ function getPersonAuthorsNameThumbnailIconAsString(data, person_uniqueId) {
                     //get person's id
                     var person_id = array[key]._source['@id'];
                     // create <li> including ican and name as link to author's details page
-                    result += '<li><a href="http://' + window.location.hostname +
+                    result += '<li><a href="' + VuFind.path +
                     '/Exploration/AuthorDetails?lookfor=' + person_id + '&type=AuthorForId"><figure><img class="recordcover" src=" ' + thumbnail + ' " alt=" ' + name + ' "><figcaption>' + name + ' ' + '</a>';
                     result += '<span class="fa fa-info-circle fa-lg kcopenerAuthor" authorId="' + person_id +'"></span></figcaption></figure></li>';
                 }
@@ -314,11 +313,11 @@ function getSubjectPreferredNamesAsString (data, knowledgeCardStatement) {
                 var id = array[key]._source['@id'];
                 var literal = getSubjectPreferredName(array, key);
                 if (knowledgeCardStatement == 'withKnowledgeCard') {
-                    result += '<a href="http://' + window.location.hostname +
+                    result += '<a href="' + VuFind.path +
                     '/Exploration/SubjectDetails?lookfor=' + id + '&type=SubjectById">' + literal + '</a> <span class="fa fa-info-circle fa-lg kcopenerSubject" subjectId="' + id +'"></span>, ';
                     result = result.replace('undefined, ', ' ');
                 } else {
-                    result += '<a href="http://' + window.location.hostname +
+                    result += '<a href="' + VuFind.path +
                     '/Exploration/SubjectDetails?lookfor=' + id + '&type=SubjectById">' + literal + ', ';
                     result = result.replace('undefined, ', ' ');
                 }
@@ -375,8 +374,7 @@ function writeBibliographicResourceIntoHtmlClass(data, htmlClass) {
 // Write ((add) literals and other elements into html classes --> authordetails
 function writePersonAuthorsNameThumbnailIconIntoHtmlClass (personIdsAsString, htmlClass, person_uniqueId) {
     $.ajax({
-        url: "http://" + window.location.hostname +
-        "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+        url: VuFind.path + "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
         type: "POST",
         data: {"lookfor": personIdsAsString},
         success: function (data) {
@@ -392,8 +390,7 @@ function writePersonAuthorsNameThumbnailIconIntoHtmlClass (personIdsAsString, ht
 // Write literals of gnd ids into html Id --> knowledgeCard, subjectdetails
 function writeSubjectNamesIntoHtmlId (gndIdsAsString, htmlId, knowledgeCardStatement) {
     $.ajax({
-        url: "http://" + window.location.hostname +
-        "/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
+        url: VuFind.path + "/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
         type: "POST",
         data: {"lookfor": gndIdsAsString},
         success: function (result) {
@@ -409,8 +406,7 @@ function writeSubjectNamesIntoHtmlId (gndIdsAsString, htmlId, knowledgeCardState
 // Write literals of gnd ids into tag cloud --> authordetails
 function writeSubjectNamesIntoTagCloud (gndIdsAsString, htmlId) {
     $.ajax({
-        url: "http://" + window.location.hostname +
-        "/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
+        url: VuFind.path + "/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
         type: "POST",
         data: {"lookfor": gndIdsAsString},
         success: function (data) {
@@ -434,8 +430,7 @@ function writeSubjectNamesIntoTagCloud (gndIdsAsString, htmlId) {
 function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAsString, person_genreAsUri, person_movementAsUri) {
     //get IDs from type bibliographicResources: ids of resources, ids contributors of resources, ids subjects of resources
     $.ajax({
-        url: "http://" + window.location.hostname +
-        "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+        url: VuFind.path + "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
         type: "POST",
         data: {"lookfor": person_uniqueId},
         success: function (data) {
@@ -453,8 +448,7 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAs
 
 
             $.ajax({
-                url: "http://" + window.location.hostname +
-                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                url: VuFind.path + "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
                 data: {"lookfor": idSubject},
                 success: function (data) {
@@ -467,8 +461,7 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAs
             });
 
             $.ajax({
-                url: "http://" + window.location.hostname +
-                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                url: VuFind.path + "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
                 data: {"lookfor": idContributorFromBibRes},
                 success: function (data) {
@@ -490,8 +483,7 @@ function writeAuthordetailsModuleContentIntoHtml (person_uniqueId, person_nameAs
 function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_preferredNameAsString, gndIds_subject_broaderTerms, gndIds_subject_narrowerTerms) {
     //get IDs from type bibliographicResources: ids of resources, ids contributors of resources, ids subjects of resources
     $.ajax({
-        url: "http://" + window.location.hostname +
-        "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+        url: VuFind.path + "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
         type: "POST",
         data: {"lookfor": subject_uniqueId},
         success: function (data) {
@@ -502,8 +494,7 @@ function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_pre
             writeLabelIntoHtml (subject_preferredNameAsString);
 
             $.ajax({
-                url: "http://" + window.location.hostname +
-                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                url: VuFind.path + "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
                 data: {"lookfor": idSubject},
                 success: function (data) {
@@ -515,8 +506,7 @@ function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_pre
             });
 
             $.ajax({
-                url: "http://" + window.location.hostname +
-                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                url: VuFind.path + "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
                 data: {"lookfor": gndIds_subject_broaderTerms},
                 success: function (data) {
@@ -530,8 +520,7 @@ function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_pre
             });
 
             $.ajax({
-                url: "http://" + window.location.hostname +
-                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                url: VuFind.path + "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
                 data: {"lookfor": gndIds_subject_narrowerTerms},
                 success: function (data) {
@@ -553,15 +542,13 @@ function writeSubjectdetailsModuleContentIntoHtml (subject_uniqueId, subject_pre
 // Write contents of person into file via unique Id from Solr --> result-list (Solr)
 function writeContentOfPersonsIntoHtml (htmlId, uniqueId) {
     $.ajax({
-        url: "http://" + window.location.hostname +
-        "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+        url: VuFind.path + "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
         type: "POST",
         data: {"lookfor": uniqueId},
         success: function (data) {
             var idContributorFromBibRes = getIdsFromPropertyInBibliographicResourcesAsString(data, 'dct:contributor');
             $.ajax({
-                url: "http://" + window.location.hostname +
-                "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
+                url: VuFind.path + "/Ajax/Json?method=getAuthorMulti&searcher=Elasticsearch",
                 type: "POST",
                 data: {"lookfor": idContributorFromBibRes},
                 success: function (data) {
