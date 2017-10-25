@@ -1,4 +1,4 @@
-<script src="../themes/linkedswissbib/js/detailspages.js"></script>
+<? $this->headScript()->appendFile("detailspages.js"); ?>
 <!-- Knowledge Card for both person and subject -->
 <div class="knowledgeCard">
     <script>
@@ -260,7 +260,7 @@
         <!-- SEGEMENT Header -->
         <div class="row">
             <div class="col-sm-3 col-md-2">
-                <img class="img-responsive" id="kc_thumbnail" src= "../themes/linkedswissbib/images/subjectAvatar.png" alt="kc_thumbnail">
+                <img class="img-responsive" id="kc_thumbnail" src= "<?=$this->imageLink('subjectAvatar.png')?>" alt="kc_thumbnail">
             </div>
             <div class="col-sm-9">
                 <!-- alternative names -->
