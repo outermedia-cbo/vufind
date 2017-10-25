@@ -1,8 +1,9 @@
 <div role="main" class="main">
-    <script src="../themes/linkedswissbib/js/authordetails.js"></script>
-    <script src="../themes/linkedswissbib/js/detailspages.js"></script>
     <?
-    $instances = array();
+	$this->headScript()->appendFile("authordetails.js");
+	$this->headScript()->appendFile("detailspages.js");
+
+	$instances = array();
     $basePath = $this->basePath();
     $results = $this->results->getResults();
     foreach ($results as $singleResult):
