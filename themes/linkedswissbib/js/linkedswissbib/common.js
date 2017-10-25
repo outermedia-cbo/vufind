@@ -19,7 +19,7 @@ $(document).ready(function() {
                 //layout.phtml line 25 (theme linked swissbib
                 $.ajax({
 
-                    url: '/AJAX/JSON',
+                    url: VuFind.path + '/AJAX/JSON',
                     data: {
                         q:query,
                         method:'getACSuggestions',
@@ -117,9 +117,6 @@ $(document).ready(function() {
         } 
     ).bind('typeahead:selected', function(obj, datum, name) {
             // Build link to landing page: details pages author and subject and full record of bibliographic resources
-            //var baseurl = 'http://' + window.location.hostname + '/sbrd/';
-            var baseurl = 'http://' + window.location.hostname;
-
             var postfix;
 
             if (datum['val'][1] == 'person') {
@@ -130,6 +127,6 @@ $(document).ready(function() {
                 postfix = 'Record/' + datum['val'][0];
             }
 
-            window.location.href = baseurl + "/" + postfix;
+            window.location.href = VuFind.path + "/" + postfix;
         });
 });
