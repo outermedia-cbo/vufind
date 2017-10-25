@@ -114,12 +114,12 @@
             $(document).on('click', '.kcopenerAuthor', function() {
                 //console.log("kcopener was clicked");
                 var authorId = $(this).attr("authorid")
-                var linkToAuthordetailsWorks = 'http://' + window.location.hostname +
+                var linkToAuthordetailsWorks = VuFind.path +
                 '/Exploration/AuthorDetails?lookfor=' + authorId + '&type=AuthorForId#works';
-                var linkToAuthordetails = 'http://' + window.location.hostname +
+                var linkToAuthordetails = VuFind.path +
                     '/Exploration/AuthorDetails?lookfor=' + authorId + '&type=AuthorForId';
                 $.ajax({
-                    url: "http://" + window.location.hostname +
+                    url: VuFind.path +
                     "/Ajax/Json?&method=getAuthorMulti&searcher=Elasticsearch",
                     type: "POST",
                     data: {"lookfor": authorId},
@@ -167,12 +167,12 @@
             $(document).on('click', '.kcopenerSubject', function() {
                 //console.log("kcopener was clicked");
                 var subjectId = $(this).attr("subjectid");
-                var linkToSubjectdetailsWorks = 'http://' + window.location.hostname +
+                var linkToSubjectdetailsWorks = VuFind.path +
                     '/Exploration/SubjectDetails?lookfor=' + subjectId + '&type=SubjectById#works';
-                var linkToSubjectdetails = 'http://' + window.location.hostname +
+                var linkToSubjectdetails = VuFind.path +
                     '/Exploration/SubjectDetails?lookfor=' + subjectId + '&type=SubjectById';
                 $.ajax({
-                    url: "http://" + window.location.hostname +
+                    url: VuFind.path +
                     "/Ajax/Json?&method=getSubjectMulti&searcher=Elasticsearch",
                     type: "POST",
                     data: {"lookfor": subjectId },
@@ -190,7 +190,7 @@
                         $( "#dialogSubject" ).dialog( "open" );
 
                         $.ajax({
-                            url: "http://" + window.location.hostname +
+                            url: VuFind.path +
                             "/Ajax/Json?&method=getAuthorMulti&searcher=Elasticsearch",
                             type: "POST",
                             data: {"lookfor": subjectId },
