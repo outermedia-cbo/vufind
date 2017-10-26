@@ -1,5 +1,6 @@
-<script src="../themes/linkedswissbib/js/detailspages.js"></script>
 <?
+$this->headScript()->appendFile("detailspages.js");
+
 /** @var VuFind\RecordDriver\SolrDefault $record */
 $record         = $this->driver;
 /** @var Swissbib\View\Helper\Record $viewRecord */
