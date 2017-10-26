@@ -8,7 +8,7 @@ $(document).ready(function() {
         }, {
             //Display bibliographicResources in autocomplete
             templates: {
-                header: '<h4 class="autocomplete-header">B&uuml;cher &amp; Co.</h4>'
+                header: '<h4 class="autocomplete-header">' + VuFind.translate('tab.swissbib') + '</h4>'
             },
             displayKey: function(data) {
                 return data['val'][2];
@@ -45,7 +45,7 @@ $(document).ready(function() {
         } , {
             templates: {
                 //Display persons in autocomplete
-                header: '<h4 class="autocomplete-header">AutorInnen</h4>'
+                header: '<h4 class="autocomplete-header">' + VuFind.translate('Author') + '</h4>'
             },
             displayKey: function(data){
                     return data['val'][2];
@@ -81,7 +81,7 @@ $(document).ready(function() {
         }, {
             //Display subjects (GND) in autocomplete
             templates: {
-            header: '<h4 class="autocomplete-header">Themen</h4>'
+            header: '<h4 class="autocomplete-header">' + VuFind.translate('Topics') + '</h4>'
             },
             displayKey: function(data) {
                 return data['val'][2];

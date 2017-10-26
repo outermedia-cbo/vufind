@@ -83,6 +83,16 @@
   }
   ?>
   <?
+  // SwissBib JS Translations
+  $this->jsTranslations()->addStrings(
+	array(
+	  'tab.swissbib' => 'tab.swissbib',
+	  'Author' => 'Author',
+	  'Topics' => 'Topics',
+	)
+  );
+  ?>
+  <?
   $root = rtrim($this->url('home'), '/');
   $translations = $this->jsTranslations()->getJSON();
   $dsb = DEFAULT_SEARCH_BACKEND;
