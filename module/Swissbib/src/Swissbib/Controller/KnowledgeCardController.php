@@ -76,9 +76,8 @@ class KnowledgeCardController extends AbstractBase
             return $this->createViewModel(
                 [
                 "driver" => $driver,
-                "subSubjects" => $subSubjects,
-                "parentSubjects" => $parentSubjects
-                ]
+                "parents" => $parentSubjects
+              ]
             );
         } catch (\Exception $e) {
             return $this->createErrorView($id);
